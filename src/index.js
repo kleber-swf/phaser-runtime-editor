@@ -18,7 +18,9 @@ class RuntimeEditor extends Phaser.Plugin {
 	 */
 	setup(game, group) {
 		const editor = new Editor(game, group)
-		new Panel(game, editor);
+		const panel = new Panel(game, editor);
+		game.stage.add(editor);
+		game.stage.add(panel);
 	}
 }
 
