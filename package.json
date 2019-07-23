@@ -1,0 +1,19 @@
+{
+  "name": "phaser-runtime-editor",
+  "version": "0.0.1",
+  "description": "A simple plugin to edit a Phaser 2 game at runtime",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "phaser",
+    "phaser-2",
+    "phaser-ce",
+    "debug",
+    "editor",
+    "runtime"
+  ],
+  "author": "Kleber Silva <kleber.swf@gmail.com>",
+  "license": "MIT"
+}
