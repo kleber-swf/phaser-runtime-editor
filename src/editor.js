@@ -10,7 +10,6 @@ export class Editor extends Phaser.Group {
 		super(game, null, '_RuntimeEditor_Editor_');
 		this.root = root;
 		this.onObjectSelected = new Phaser.Signal();
-		this.visible = false;
 
 		this.inputHandler = this.setupInput(game);
 		this.rootBounds = root.getBounds();
@@ -52,19 +51,6 @@ export class Editor extends Phaser.Group {
 			.lineStyle(1, 0xFFFF00, 0.5)
 			.drawRect(r.x, r.y, r.width - r.x, r.height - r.y)
 			.endFill();
-	}
-
-	/**
-	 * @param {boolean} value
-	 */
-	setVisible(value) {
-		this.visible = value;
-		if (!value) {
-			this.game.scale.onSizeChange.remove(this.onSizeChange, this);
-			return;
-		}
-		this.game.scale.onSizeChange.add(this.onSizeChange, this);
-		this.updateArea();
 	}
 
 	onSizeChange() {

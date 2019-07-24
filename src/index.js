@@ -1,35 +1,31 @@
-import { Editor } from './editor';
+import { EditorContainer } from './editor.container';
 import { Menu } from './menu';
 import _defs from './_defs';
-import { PropertiesPanel } from './properties.panel';
 
 class RuntimeEditor extends Phaser.Plugin {
 	/**
-	 * 
 	 * @param {Phaser.Game} game 
 	 * @param {Phaser.Group} group
 	 */
 	constructor(game, group) {
 		super(game, game.plugins);
+		this.group = group;
+		this.container = null;
 		_defs();
-		this.setup(game, group);
+
+		const menu = new Menu(game);
+		menu.edit.events.onInputDown.add(this.toggleEditor, this);
+		game.stage.add(menu);
+		this.menu = menu;
 	}
 
-	/**
-	 * @param {Phaser.Game} game
-	 * @param {Phaser.Group} group 
-	 */
-	setup(game, group) {
-		const editor = new Editor(game, group)
-		const menu = new Menu(game, editor);
-		const panel = new PropertiesPanel(game, 'Properties');
-
-		game.stage.add(editor);
-		game.stage.add(menu);
-		game.stage.add(panel);
-		panel.position.set(game.scale.getParentBounds().width - panel.width, 0);
-
-		editor.onObjectSelected.add(panel.onObjectSelected, panel);
+	toggleEditor() {
+		if (!this.container) {
+			this.container = new EditorContainer(this.game, this.group);
+			this.game.stage.add(this.container);
+		}
+		this.container.toggleVisible();
+		this.game.stage.setChildIndex(this.menu, this.game.stage.children.length - 1);
 	}
 }
 
