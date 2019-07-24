@@ -1,6 +1,6 @@
 import { Editor } from './editor';
 
-export class Panel extends Phaser.Group {
+export class Menu extends Phaser.Group {
 	/**
 	 * @param {Phaser.Game} game 
 	 * @param {Editor} editor 
