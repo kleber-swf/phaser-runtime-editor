@@ -1,4 +1,4 @@
-import { Editor } from "./editor";
+import { Editor } from './editor';
 
 export class Panel extends Phaser.Group {
 	/**
@@ -22,7 +22,7 @@ export class Panel extends Phaser.Group {
 	}
 
 	toggleEditor() {
-		this.editor.visible = !this.editor.visible;
-		this.game.paused = this.editor.visible;
+		this.editor.setVisible(!this.editor.visible);
+		// this.game.paused = this.editor.visible;
 	}
 }

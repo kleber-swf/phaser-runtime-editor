@@ -1,5 +1,6 @@
 import { Editor } from './editor';
 import { Panel } from './panel';
+import _defs from './_defs';
 
 class RuntimeEditor extends Phaser.Plugin {
 	/**
@@ -9,6 +10,7 @@ class RuntimeEditor extends Phaser.Plugin {
 	 */
 	constructor(game, group) {
 		super(game, game.plugins);
+		_defs();
 		this.setup(game, group);
 	}
 
