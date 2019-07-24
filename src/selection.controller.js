@@ -134,9 +134,15 @@ export class SelectionController extends Phaser.Group {
 		const obj = this.selectedObject;
 		if (!obj) return;
 		this.position.set(x, y);
-		obj.position.set(this.objDownPos.x + (this.x - this.downPos.x) / this.game.world.scale.x,
-			this.objDownPos.y + (this.y - this.downPos.y) / this.game.world.scale.y);
-		console.log(x, this.objDownPos.x, obj.x);
+		const parentScale = { x: 1, y: 1 };
+		if (obj.parent) {
+			const ws = obj.parent.worldScale;
+			parentScale.x = ws.x;
+			parentScale.y = ws.y;
+		}
+		// TODO what the f*ck is happening here? Why do I have to divide by the parent's scale?
+		obj.position.set(this.objDownPos.x + (this.x - this.downPos.x) / parentScale.x,
+			this.objDownPos.y + (this.y - this.downPos.y) / parentScale.y);
 	}
 
 	stopDrag() {
