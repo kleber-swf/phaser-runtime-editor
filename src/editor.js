@@ -69,6 +69,7 @@ export class Editor extends Phaser.Group {
 
 	onSizeChange() {
 		this.updateArea();
+		this.selection.select(this.selectedObject);
 	}
 
 	onInputDown() {
@@ -146,11 +147,5 @@ export class Editor extends Phaser.Group {
 		this.selectedObject = obj;
 		this.selection.select(obj);
 		this.onObjectSelected.dispatch(obj);
-	}
-
-	onEditorPropertyChanged(prop, value) {
-		if (!this.selectedObject) return;
-		this.selectedObject[prop] = value;
-		setTimeout(() => this.selection.redraw(), 20);
 	}
 }
