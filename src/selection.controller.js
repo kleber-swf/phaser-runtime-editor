@@ -1,3 +1,5 @@
+import { rootInfo } from "./root.info";
+
 const BORDER_COLOR = 0x5E9FF2;
 const BORDER_WIDTH = 2;
 const BORDER_ALPHA = 1;
@@ -82,21 +84,20 @@ export class SelectionController extends Phaser.Group {
 	redraw() {
 		const obj = this.selectedObject;
 		const b = obj.getBounds();
-		const half = { w: b.width * 0.5, h: b.height * 0.5 };
-		this.position.set(b.centerX, b.centerY);
+		this.position.set(b.x, b.y);
 		this.dragHandler.clear()
 			.lineStyle(BORDER_WIDTH, SHADOW_COLOR, SHADOW_ALPHA)
-			.drawRect(-half.w + 1, -half.h + 1, b.width, b.height)
+			.drawRect(1, 1, b.width, b.height)
 			.lineStyle(BORDER_WIDTH, BORDER_COLOR, BORDER_ALPHA)
 			.beginFill(0, 0)
-			.drawRect(-half.w, -half.h, b.width, b.height)
+			.drawRect(0, 0, b.width, b.height)
 			.endFill();
 
-		this.pivotHandler.position.set(obj.pivot.x - half.w, obj.pivot.y - half.h);
+		this.pivotHandler.position.set(obj.pivot.x * rootInfo.scale.x, obj.pivot.y * rootInfo.scale.y);
 		const hasAnchor = 'anchor' in obj;
 		this.anchorHandler.visible = hasAnchor;
 		if (hasAnchor)
-			this.anchorHandler.position.set((obj.anchor.x * obj.width) - half.w, (obj.anchor.y * obj.height) - half.h);
+			this.anchorHandler.position.set(obj.anchor.x * b.width, obj.anchor.y * b.height);
 	}
 
 	update() {

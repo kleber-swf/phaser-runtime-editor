@@ -1,3 +1,4 @@
+import { rootInfo } from './root.info';
 import { SelectionController } from './selection.controller';
 
 export class Editor extends Phaser.Group {
@@ -13,7 +14,6 @@ export class Editor extends Phaser.Group {
 
 		this.inputHandler = this.setupInput(game);
 		this.rootBounds = root.getBounds();
-		this.rootScale = new Phaser.Point();
 
 		this.selection = this.add(new SelectionController(game));
 		this.rootGraphics = game.add.graphics(0, 0, this);
@@ -42,9 +42,9 @@ export class Editor extends Phaser.Group {
 			.endFill();
 
 		const r = this.rootBounds = this.root.getBounds();
-		this.rootScale = this.root.worldScale;
-		r.x = this.root.x * this.rootScale.x;
-		r.y = this.root.y * this.rootScale.y;
+		rootInfo.scale = this.root.worldScale;
+		r.x = this.root.x * rootInfo.scale.x;
+		r.y = this.root.y * rootInfo.scale.y;
 
 		this.rootGraphics
 			.clear()
