@@ -92,13 +92,14 @@ export class PropertiesPanel extends Panel {
 	onObjectSelected(obj) {
 		this.obj = obj;
 		this.visible = !!obj;
+		if (!this.visible) return;
+		this._nameLabel.text = obj.name ? obj.name : '';
+		this._typeLabel.text = obj.constructor.name;
 	}
 
 	update() {
 		if (!this.obj) return;
 		const obj = this.obj;
-		this._nameLabel.text = obj.name ? obj.name : '';
-		this._typeLabel.text = obj.constructor.name;
 		this._xLabel.text = obj.x.toFixed(1);
 		this._yLabel.text = obj.y.toFixed(1);
 	}
