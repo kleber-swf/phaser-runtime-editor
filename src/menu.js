@@ -8,13 +8,13 @@ export class Menu extends Phaser.Group {
 	constructor(game, editor) {
 		super(game, null, '_RuntimeEditor_Panel_');
 		this.editor = editor;
-		this.createPanel(game);
+		this.createItems(game);
 	}
 
 	/**
 	 * @param {Phaser.Game} game 
 	 */
-	createPanel(game) {
+	createItems(game) {
 		var text = game.add.text(0, 0, 'EDIT', { font: '16px "Source Code Pro",Consolas,"Courier New",monospaced', fontWeight: 'bold', fill: '#FFFFFF' }, this);
 		text.inputEnabled = true;
 		text.input.useHandCursor = true;

@@ -3,13 +3,13 @@ import { SelectionController } from './selection.controller';
 
 export class Editor extends Phaser.Group {
 	/**
-	 * 
 	 * @param {Phaser.Game} game 
 	 * @param {Phaser.Group} root
 	 */
 	constructor(game, root) {
 		super(game, null, '_RuntimeEditor_Editor_');
 		this.root = root;
+		this.onObjectSelected = new Phaser.Signal();
 		this.visible = false;
 
 		this.inputHandler = this.setupInput(game);
@@ -145,6 +145,7 @@ export class Editor extends Phaser.Group {
 		}
 		this.selectedObject = obj;
 		this.selection.select(obj);
+		this.onObjectSelected.dispatch(obj);
 	}
 
 	onEditorPropertyChanged(prop, value) {
