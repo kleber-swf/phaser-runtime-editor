@@ -15,12 +15,19 @@ const EXTRA_HANDLE_WIDTH = 2;
 const EXTRA_HANDLE_COLOR = 0xD9D5C5;
 const EXTRA_HANDLE_ALPHA = 0.8;
 
+const KEYS = {
+	ArrowUp: { x: 0, y: -1 },
+	ArrowDown: { x: 0, y: 1 },
+	ArrowLeft: { x: -1, y: 0 },
+	ArrowRight: { x: 1, y: 0 }
+};
 
 export class SelectionController extends Phaser.Group {
 	/** @param {Phaser.Game} game */
 	constructor(game) {
 		super(game);
 		this.dragHandler = game.add.graphics(0, 0, this);
+		this.input = game.input;
 
 		this.pivotHandler = game.add.graphics(0, 0, this)
 			.lineStyle(EXTRA_HANDLE_WIDTH, SHADOW_COLOR, SHADOW_ALPHA)
@@ -36,15 +43,7 @@ export class SelectionController extends Phaser.Group {
 			.lineStyle(EXTRA_HANDLE_WIDTH, EXTRA_HANDLE_COLOR, EXTRA_HANDLE_ALPHA)
 			.drawCircle(0, 0, 8);
 
-		// Input.onKeyDown.add(this.onKeyDown, this);
-		// Input.onKeyUp.add(this.onKeyUp, this);
-
-		this.keys = {
-			ArrowUp: { x: 0, y: -1 },
-			ArrowDown: { x: 0, y: 1 },
-			ArrowLeft: { x: -1, y: 0 },
-			ArrowRight: { x: 1, y: 0 }
-		};
+		game.input.keyboard.addCallbacks(this, this.onKeyDown, this.onKeyUp);
 
 		this.keyDown = null;
 		this.keyDownId = null;
@@ -79,6 +78,7 @@ export class SelectionController extends Phaser.Group {
 		}
 		this.redraw();
 		this.visible = true;
+		this.objDownPos = { x: obj.x, y: obj.y };
 	}
 
 	redraw() {
@@ -107,22 +107,21 @@ export class SelectionController extends Phaser.Group {
 			return;
 		}
 		if (this.isDown) {
-			this.isDragging = this.game.input.mousePointer.positionDown.distance(this.game.input.mousePointer) > DRAG_THRESHOLD;
+			this.isDragging = this.input.mousePointer.positionDown.distance(this.input.mousePointer) > DRAG_THRESHOLD;
 			return;
 		}
 	}
 
 	onInputUp() {
 		this.isDown = false;
-		if (this.isDragging) {
-			this.stopDrag();
-			return true;
-		}
-		return false;
+		if (!this.isDragging)
+			return false;
+		this.stopDrag();
+		return true;
 	}
 
 	dragUpdate() {
-		const { x, y } = this.game.input.mousePointer;
+		const { x, y } = this.input.mousePointer;
 		this.setPosition(x - this.localMouseDown.x, y - this.localMouseDown.y);
 	}
 
@@ -154,7 +153,7 @@ export class SelectionController extends Phaser.Group {
 	readyForDrag() {
 		if (!this.selectedObject) return;
 		this.isDown = true;
-		const mousePos = this.game.input.mousePointer;
+		const mousePos = this.input.mousePointer;
 		this.localMouseDown = { x: mousePos.x - this.x, y: mousePos.y - this.y };
 
 		this.objDownPos = { x: this.selectedObject.x, y: this.selectedObject.y };
@@ -166,19 +165,22 @@ export class SelectionController extends Phaser.Group {
 
 	/**
 	 * @private
-	 * @param {KeyboardEvent} id
+	 * @param {KeyboardEvent} e
 	 */
 	onKeyDown(e) {
-		if (!(e.key in this.keys)) return;
+		if (!(e.key in KEYS)) return;
+		e.preventDefault();
 		this.keyDownId = e.key;
-		const key = this.keyDown = this.keys[this.keyDownId];
+		const key = this.keyDown = KEYS[this.keyDownId];
 		const m = e.shiftKey ? LARGE_MOVE_STEP : SMALL_MOVE_STEP;
-		this.setPosition(this.x + key.x * m, this.y + key.y * m);
+		this.setPosition(this.x + key.x * m * rootInfo.scale.x, this.y + key.y * m * rootInfo.scale.y);
 	}
 
 	onKeyUp(e) {
-		if (this.keyDownId === e.key)
-			this.keyDown = null;
+		if (this.keyDownId !== e.key)
+			return;
+		e.preventDefault();
+		this.keyDown = null;
 	}
 
 	// #endregion

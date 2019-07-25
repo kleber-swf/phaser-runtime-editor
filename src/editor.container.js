@@ -18,6 +18,7 @@ export class EditorContainer extends Phaser.Group {
 		editor.onObjectSelected.add(panel.onObjectSelected, panel);
 		this.visible = false;
 	}
+
 	toggleVisible() {
 		this.visible = !this.visible;
 		if (!this.visible) {
@@ -28,6 +29,7 @@ export class EditorContainer extends Phaser.Group {
 		this.panel.position.set(this.game.scale.getParentBounds().width - this.panel.width, 0);
 		this.onSizeChange();
 	}
+
 	onSizeChange() {
 		this.editor.onSizeChange();
 	}
