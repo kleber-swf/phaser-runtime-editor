@@ -1,20 +1,21 @@
 const padding = { x: 8, y: 4 };
-const headerHeight = 16;
+const headerHeight = 20;
 const labelWidth = 30;
-const labelHeight = 10;
+const labelHeight = 14;
 const indentWidth = 12;
 
-const labelStyle = { font: '10px "Source Code Pro",Consolas,"Courier New",monospaced', fill: '#AAAAAA' };
-const valueStyle = { font: '10px "Source Code Pro",Consolas,"Courier New",monospaced', fill: '#CCCCCC', fontWeight: 'bold' };
+const labelStyle = { font: '14px "Source Code Pro",Consolas,"Courier New",monospaced', fill: '#AAAAAA' };
+const valueStyle = { font: '14px "Source Code Pro",Consolas,"Courier New",monospaced', fill: '#CCCCCC', fontWeight: 'bold' };
 
 export class Panel extends Phaser.Group {
 	constructor(game, name, title) {
 		super(game, null, name);
 		this._width = 160;
-		this._height = 100;
+		this._height = 140;
 		this.widget = null;
 		this.createWidget(game, title);
 		this.redraw();
+		this.scale = this.game.scale.scaleFactor;
 	}
 
 	createWidget(game, title) {

@@ -5,7 +5,7 @@ export default {
 	output: {
 		name: 'phaser-runtime-editor',
 		file: pkg.main,
-		format: 'umd',
-		sourcemap: true
+		format: 'amd',
+		sourcemap: false
 	}
 }
