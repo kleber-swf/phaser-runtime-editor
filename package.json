@@ -1,6 +1,6 @@
 {
 	"name": "phaser-runtime-editor",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "A simple plugin to edit a Phaser 2 game at runtime",
 	"main": "dist/phaser-runtime-editor.js",
 	"keywords": [
