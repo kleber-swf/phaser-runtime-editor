@@ -18,8 +18,8 @@
 		"build": "rollup -c rollup.config.js"
 	},
 	"devDependencies": {
-		"phaser-ce": "^2.13.2",
-		"rollup": "^1.17.0"
+		"phaser-ce": "^2.16.1",
+		"rollup": "^1.32.1"
 	},
 	"dependencies": {}
 }
