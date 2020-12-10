@@ -16,10 +16,10 @@ const EXTRA_HANDLE_COLOR = 0xD9D5C5;
 const EXTRA_HANDLE_ALPHA = 0.8;
 
 const KEYS = {
-	ArrowUp: { x: 0, y: -1 },
-	ArrowDown: { x: 0, y: 1 },
-	ArrowLeft: { x: -1, y: 0 },
-	ArrowRight: { x: 1, y: 0 }
+	ArrowUp: { call: 'moveThrough', param: { x: 0, y: -1 } },
+	ArrowDown: { call: 'moveThrough', param: { x: 0, y: 1 } },
+	ArrowLeft: { call: 'moveThrough', param: { x: -1, y: 0 } },
+	ArrowRight: { call: 'moveThrough', param: { x: 1, y: 0 } }
 };
 
 export class SelectionController extends Phaser.Group {
@@ -45,7 +45,6 @@ export class SelectionController extends Phaser.Group {
 
 		game.input.keyboard.addCallbacks(this, this.onKeyDown, this.onKeyUp);
 
-		this.keyDown = null;
 		this.keyDownId = null;
 
 		this.select(null);
@@ -171,16 +170,20 @@ export class SelectionController extends Phaser.Group {
 		if (!(e.key in KEYS)) return;
 		e.preventDefault();
 		this.keyDownId = e.key;
-		const key = this.keyDown = KEYS[this.keyDownId];
-		const m = e.shiftKey ? LARGE_MOVE_STEP : SMALL_MOVE_STEP;
-		this.setPosition(this.x + key.x * m * rootInfo.scale.x, this.y + key.y * m * rootInfo.scale.y);
+		const action = KEYS[this.keyDownId];
+		this[action.call](e, action.param);
 	}
 
 	onKeyUp(e) {
 		if (this.keyDownId !== e.key)
 			return;
 		e.preventDefault();
-		this.keyDown = null;
+	}
+
+	moveThrough(e, param) {
+		const m = e.shiftKey ? LARGE_MOVE_STEP : SMALL_MOVE_STEP;
+		this.setPosition(this.x + param.x * m * rootInfo.scale.x, this.y + param.y * m * rootInfo.scale.y);
+		console.log('here');
 	}
 
 	// #endregion

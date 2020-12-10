@@ -1,6 +1,6 @@
 const padding = { x: 8, y: 4 };
 const headerHeight = 20;
-const labelWidth = 30;
+const labelWidth = 50;
 const labelHeight = 14;
 const indentWidth = 12;
 
