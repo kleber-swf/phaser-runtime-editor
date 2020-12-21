@@ -2,10 +2,10 @@ import { Editor } from './editor';
 import { PropertiesPanel } from './properties.panel';
 
 export class EditorContainer extends Phaser.Group {
-    /**
-     * @param {Phaser.Game} game
-     * @param {Phaser.Group} root
-     */
+	/**
+	 * @param {Phaser.Game} game
+	 * @param {Phaser.Group} root
+	 */
 	constructor(game, root) {
 		super(game, null, '_Runtime_Editor_Container_');
 		const editor = new Editor(game, root);
@@ -26,7 +26,7 @@ export class EditorContainer extends Phaser.Group {
 			return;
 		}
 		this.game.scale.onSizeChange.add(this.onSizeChange, this);
-		this.panel.position.set(this.game.scale.getParentBounds().width - this.panel.width, 0);
+		this.panel.position.set(this.game.width - this.panel.width, 0);
 		this.onSizeChange();
 	}
 
