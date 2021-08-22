@@ -1,4 +1,11 @@
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'game', { preload: preload, create: create, update: update, render: render });
+const game = new Phaser.Game({
+	width: 1920,
+	height: 1080,
+	renderer: Phaser.AUTO,
+	parent: 'game',
+	scaleMode: Phaser.ScaleManager.EXACT_FIT,
+	state: { preload, create, update },
+});
 
 function preload() {
 	game.stage.backgroundColor = '#007236';
@@ -7,12 +14,12 @@ function preload() {
 	game.load.image('phaser', 'assets/sprites/phaser1.png');
 }
 
-var cursors;
-var logo1;
-var logo2;
+let cursors;
+let logo1;
+let logo2;
 
 function create() {
-	// game.plugins.add(new PhaserRuntimeEditor(game, game.root));
+	game.plugins.add(new PhaserRuntimeEditor.Plugin(game));
 	//  Modify the world and camera bounds
 	game.world.setBounds(-1000, -1000, 2000, 2000);
 
@@ -44,8 +51,4 @@ function update() {
 
 	if (cursors.left.isDown) game.camera.x -= 4;
 	else if (cursors.right.isDown) game.camera.x += 4;
-}
-
-function render() {
-	game.debug.cameraInfo(game.camera, 32, 32);
 }

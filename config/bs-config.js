@@ -15,5 +15,4 @@ module.exports = {
 		'./example/**/*'
 	],
 	ghostMode: false,
-	open: false,
 };
