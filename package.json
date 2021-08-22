@@ -28,8 +28,9 @@
 	"input": "src/index.ts",
 	"scripts": {
 		"dev": "rollup -w -c ./config/rollup.config.dev.js",
-		"barrel": "barrelsby -c barrelsby.json",
-		"predev": "npm run barrel"
+		"barrel": "barrelsby -c ./config/barrelsby.json",
+		"predev": "npm run barrel",
+		"example": "browser-sync start -c ./config/bs-config.js"
 	},
 	"dependencies": {
 		"phaser-ce": "^2.18.0"
@@ -39,6 +40,7 @@
 		"@rollup/plugin-node-resolve": "^13.0.4",
 		"@rollup/plugin-typescript": "^8.2.5",
 		"barrelsby": "^2.2.0",
+		"browser-sync": "^2.27.5",
 		"rollup": "^2.56.2",
 		"tslib": "^2.3.1",
 		"typescript": "^4.3.5"
