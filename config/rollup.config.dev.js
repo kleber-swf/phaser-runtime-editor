@@ -22,7 +22,7 @@ export default {
 	output: {
 		dir: './dist',
 		format: 'umd',
-		name: 'PhaserRuntimeEditor',
+		name: pkg.module,
 		esModule: false,
 		exports: 'named',
 		sourcemap: true,

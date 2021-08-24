@@ -1,6 +1,6 @@
+import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import { terser } from 'rollup-plugin-terser';
-import commonjs from '@rollup/plugin-commonjs';
 
 const pkg = require('../package.json');
 
@@ -21,9 +21,9 @@ export default [
 		],
 		output: [
 			{
-				file: './dist/phaser-runtime-editor.min.js',
+				file: pkg.main.substring(0, pkg.main.lastIndexOf('.')) + '.min.js',
 				format: 'umd',
-				name: 'PhaserRuntimeEditor',
+				name: pkg.module,
 				exports: 'named',
 				globals: {
 					'phaser-ce': 'Phaser',
@@ -31,28 +31,4 @@ export default [
 			}
 		],
 	},
-	// {
-	// 	input: pkg.input,
-	// 	external: [
-	// 		...Object.keys(pkg.dependencies || {}),
-	// 		...Object.keys(pkg.peerDependencies || {}),
-	// 	],
-	// 	treeshake: false,
-	// 	plugins: [
-	// 		commonjs(),
-	// 		typescript({
-	// 			tsconfig: 'tsconfig.json',
-	// 			rootDir: './src',
-	// 			outDir: './dist',
-	// 			declaration: true,
-	// 			emitDeclarationOnly: true,
-	// 			sourceMap: true,
-	// 		}),
-	// 	],
-	// 	output: {
-	// 		dir: './dist',
-	// 		esModule: false,
-	// 		sourcemap: true,
-	// 	},
-	// }
 ];

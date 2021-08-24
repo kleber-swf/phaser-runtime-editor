@@ -26,6 +26,7 @@
 	},
 	"main": "dist/index.js",
 	"input": "src/index.ts",
+	"module": "PhaserRuntimeEditor",
 	"scripts": {
 		"dev": "rollup -w -c ./config/rollup.config.dev.js",
 		"barrel": "barrelsby -c ./config/barrelsby.json",
@@ -42,6 +43,7 @@
 		"barrelsby": "^2.2.0",
 		"browser-sync": "^2.27.5",
 		"rollup": "^2.56.2",
+		"terser": "^5.7.1",
 		"tslib": "^2.3.1",
 		"typescript": "^4.3.5"
 	}
