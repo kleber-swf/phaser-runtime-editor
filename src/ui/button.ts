@@ -32,7 +32,7 @@ export class Button extends Phaser.Group {
 	}
 
 	private createGraphics(game: Phaser.Game, config: ButtonConfig) {
-		const g = new Phaser.Graphics(game).beginFill(0, 1).drawRect(0, 0, config.width, config.height).endFill();
+		const g = new Phaser.Graphics(game);
 		this.add(g);
 
 		g.inputEnabled = true;

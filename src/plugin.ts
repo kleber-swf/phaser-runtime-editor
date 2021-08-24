@@ -1,13 +1,10 @@
 import Phaser from 'phaser-ce';
 import { Stage } from './stage';
-import { ToolBar } from './ui/toolbar';
 
 export class Plugin extends Phaser.Plugin {
-	public constructor(game: Phaser.Game, public group?: Phaser.Group | Phaser.Stage) {
+	public constructor(game: Phaser.Game, group?: Phaser.Group | Phaser.Stage) {
 		super(game, game.plugins);
-		this.group = group || game.stage;
-
-		const stage = new Stage(game, game.stage);
+		const stage = new Stage(game, group, game.stage);
 		// this.container = null;
 		// _defs();
 
