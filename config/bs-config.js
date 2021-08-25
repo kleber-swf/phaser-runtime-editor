@@ -12,7 +12,7 @@ module.exports = {
 	],
 	files: [
 		'./dist/index.js',
-		'./example/**/*'
+		'./example/**/*.*'
 	],
 	ghostMode: false,
 };

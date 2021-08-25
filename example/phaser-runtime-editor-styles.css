@@ -1,0 +1,30 @@
+pre-stage {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	justify-content: stretch;
+}
+
+pre-stage .pre-game-col {
+	flex: 1;
+}
+
+pre-toolbar {
+	background-color: #000;
+	height: 40px;
+	display: block;
+}
+
+.pre-game {
+	flex: 1;
+}

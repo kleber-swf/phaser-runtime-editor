@@ -1,17 +1,15 @@
 import Phaser from 'phaser-ce';
-import { Stage } from './stage';
+import { Stage } from './ui/stage';
+
 
 export class Plugin extends Phaser.Plugin {
 	public constructor(game: Phaser.Game, group?: Phaser.Group | Phaser.Stage) {
 		super(game, game.plugins);
-		const stage = new Stage(game, group, game.stage);
-		// this.container = null;
-		// _defs();
 
-		// const menu = new Menu(game);
-		// menu.edit.events.onInputDown.add(this.toggleEditor, this);
-		// game.stage.add(menu);
-		// this.menu = menu;
+		const stage = document.createElement('pre-stage') as Stage;
+		document.body.appendChild(stage);
+
+		stage.game = game;
 	}
 
 	// toggleEditor() {
@@ -23,5 +21,3 @@ export class Plugin extends Phaser.Plugin {
 	// 	this.game.stage.setChildIndex(this.menu, this.game.stage.children.length - 1);
 	// }
 }
-
-// Phaser.Plugin.RuntimeEditor = RuntimeEditor;

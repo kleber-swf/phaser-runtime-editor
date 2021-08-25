@@ -4,6 +4,11 @@ export class EditorView extends Phaser.Group {
 
 	constructor(game: Phaser.Game, container: Phaser.Group | Phaser.Stage, parent: Phaser.Group | Phaser.Stage) {
 		super(game, parent);
+		
+		// const scale = game.scale.scaleFactor;
+		// this.scale.copyFrom(scale);
+		// game.scale.onSizeChange.add(() => this.scale.copyFrom(game.scale.scaleFactor));
+		
 		this.container = container;
 		this.touchArea = this.createTouchArea(game);
 		this.redrawTouchArea();
