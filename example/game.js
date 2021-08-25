@@ -5,6 +5,7 @@ const game = new Phaser.Game({
 	parent: 'game',
 	scaleMode: Phaser.ScaleManager.SHOW_ALL,
 	state: { preload, create, update },
+	disableVisibilityChange: true
 });
 
 function preload() {
