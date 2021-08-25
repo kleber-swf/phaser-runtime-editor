@@ -1,7 +1,7 @@
 import { ActionsToolbar } from './actions.toolbar';
 import { PropertiesToolbar } from './properties.toolbar';
 
-export class Stage extends HTMLDivElement {
+export class Stage extends HTMLElement {
 	public static eid = 'phred-stage';
 
 	private _game: Phaser.Game;
@@ -24,22 +24,17 @@ export class Stage extends HTMLDivElement {
 		this._game = game;
 	}
 
-	constructor() {
-		super();
-		this.classList.add(Stage.eid);
-	}
-	
 	public connectedCallback() {
 		const content = this._content = document.createElement('div');
 		content.classList.add('phred-content');
 		this.appendChild(content);
 
-		this._actions = document.createElement('div', { is: ActionsToolbar.eid });
+		this._actions = document.createElement(ActionsToolbar.eid);
 		content.appendChild(this._actions);
 
-		this._properties = document.createElement('div', { is: PropertiesToolbar.eid });
+		this._properties = document.createElement(PropertiesToolbar.eid);
 		this.appendChild(this._properties);
 	}
 }
 
-customElements.define(Stage.eid, Stage, { extends: 'div' });
+customElements.define(Stage.eid, Stage);

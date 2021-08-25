@@ -1,10 +1,5 @@
-export class PropertiesToolbar extends HTMLDivElement {
+export class PropertiesToolbar extends HTMLElement {
 	public static eid = 'phred-properties-toolbar';
-
-	constructor() {
-		super();
-		this.classList.add(PropertiesToolbar.eid);
-	}
 }
 
-customElements.define(PropertiesToolbar.eid, PropertiesToolbar, { extends: 'div' });
+customElements.define(PropertiesToolbar.eid, PropertiesToolbar);

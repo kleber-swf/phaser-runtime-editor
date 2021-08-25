@@ -1,10 +1,5 @@
-export class ActionsToolbar extends HTMLDivElement {
+export class ActionsToolbar extends HTMLElement {
 	public static eid = 'phred-actions-toolbar';
-
-	constructor() {
-		super();
-		this.classList.add(ActionsToolbar.eid);
-	}
 }
 
-customElements.define(ActionsToolbar.eid, ActionsToolbar, { extends: 'div' });
+customElements.define(ActionsToolbar.eid, ActionsToolbar);
