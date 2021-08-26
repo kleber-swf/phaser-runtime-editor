@@ -7,7 +7,7 @@ export class Stage extends Widget {
 
 	private _game: Phaser.Game;
 	private _actions: ActionsToolbar;
-	private _content: HTMLElement;
+	private _gameContainer: HTMLElement;
 	private _properties: PropertiesToolbar;
 
 	public get game() { return this._game; }
@@ -16,11 +16,11 @@ export class Stage extends Widget {
 		if (game) {
 			const el = game.canvas.parentElement;
 			el.classList.add('phred-game');
-			this._content.appendChild(el);
+			this._gameContainer.appendChild(el);
 		} else if (this._game) {
 			const el = this._game.canvas.parentElement;
 			el.classList.remove('phred-game');
-			this._content.removeChild(el);
+			this._gameContainer.removeChild(el);
 		}
 		this._game = game;
 	}
@@ -28,12 +28,16 @@ export class Stage extends Widget {
 	public connectedCallback() {
 		super.connectedCallback();
 
-		const content = this._content = document.createElement('div');
+		const content = document.createElement('div');
 		content.classList.add('phred-content');
 		this.appendChild(content);
 
 		this._actions = document.createElement(ActionsToolbar.eid) as ActionsToolbar;
 		content.appendChild(this._actions);
+
+		this._gameContainer = document.createElement('div');
+		this._gameContainer.classList.add('phred-game-container');
+		content.appendChild(this._gameContainer);
 
 		this._properties = document.createElement(PropertiesToolbar.eid) as PropertiesToolbar;
 		this.appendChild(this._properties);

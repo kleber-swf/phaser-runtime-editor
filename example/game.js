@@ -9,7 +9,7 @@ const game = new Phaser.Game({
 });
 
 function preload() {
-	game.stage.backgroundColor = '#007236';
+	game.stage.backgroundColor = '#000';
 	game.load.image('mushroom', 'assets/sprites/mushroom2.png');
 	game.load.image('sonic', 'assets/sprites/sonic_havok_sanity.png');
 	game.load.image('phaser', 'assets/sprites/phaser1.png');
