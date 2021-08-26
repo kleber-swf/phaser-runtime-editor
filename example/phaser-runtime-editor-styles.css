@@ -55,3 +55,9 @@ phred-properties-toolbar {
 	box-shadow: -4px 0px 4px rgba(20, 20, 20, 0.5);
 	z-index: 2;
 }
+
+@media (min-width: 1600px) {
+	phred-properties-toolbar {
+		width: 400px;
+	}
+}
