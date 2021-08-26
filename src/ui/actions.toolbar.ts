@@ -1,4 +1,6 @@
-export class ActionsToolbar extends HTMLElement {
+import { Widget } from './widget';
+
+export class ActionsToolbar extends Widget {
 	public static eid = 'phred-actions-toolbar';
 }
 

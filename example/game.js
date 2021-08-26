@@ -47,7 +47,7 @@ function create() {
 	// cursors = game.input.keyboard.createCursorKeys();
 
 	game.add.graphics(0, 0, game.stage)
-		.lineStyle(7, 0xFF0000, 1)
+		.lineStyle(4, 0xFFFFFF, 1)
 		.beginFill(0, 0)
 		.drawRect(0, 0, game.width, game.height);
 }

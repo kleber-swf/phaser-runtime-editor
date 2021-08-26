@@ -1,4 +1,6 @@
-export class PropertiesToolbar extends HTMLElement {
+import { Widget } from './widget';
+
+export class PropertiesToolbar extends Widget {
 	public static eid = 'phred-properties-toolbar';
 }
 
