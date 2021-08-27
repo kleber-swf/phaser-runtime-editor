@@ -1,25 +1,50 @@
 {
 	"name": "phaser-runtime-editor",
-	"version": "0.0.6",
-	"description": "A simple plugin to edit a Phaser 2 game at runtime",
-	"main": "dist/phaser-runtime-editor.js",
-	"keywords": [
-		"phaser",
-		"phaser-2",
-		"phaser-ce",
-		"debug",
-		"editor",
-		"runtime"
-	],
+	"version": "0.0.1",
+	"description": "A runtime editor for Phaser-CE projects",
 	"author": "Kleber Silva <kleber.swf@gmail.com>",
 	"license": "MIT",
+	"keywords": [
+		"phaser-ce",
+		"runtime",
+		"editor",
+		"scene",
+		"game",
+		"development",
+		"gamedev"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/kleber-swf/phaser-runtime-editor.git"
+	},
+	"bugs": {
+		"url": "https://github.com/kleber-swf/phaser-runtime-editor/issues"
+	},
+	"homepage": "https://github.com/kleber-swf/phaser-runtime-editor#readme",
+	"publishConfig": {
+		"access": "public"
+	},
+	"main": "dist/index.js",
+	"input": "src/index.ts",
+	"module": "PhaserRuntimeEditor",
 	"scripts": {
-		"start": "rollup -c -w rollup.config.js",
-		"build": "rollup -c rollup.config.js"
+		"dev": "rollup -w -c ./config/rollup.config.dev.js",
+		"barrel": "barrelsby -c ./config/barrelsby.json",
+		"predev": "npm run barrel",
+		"example": "browser-sync start -c ./config/bs-config.js"
+	},
+	"dependencies": {
+		"phaser-ce": "^2.18.0"
 	},
 	"devDependencies": {
-		"phaser-ce": "^2.16.1",
-		"rollup": "^1.32.1"
-	},
-	"dependencies": {}
+		"@rollup/plugin-commonjs": "^20.0.0",
+		"@rollup/plugin-node-resolve": "^13.0.4",
+		"@rollup/plugin-typescript": "^8.2.5",
+		"barrelsby": "^2.2.0",
+		"browser-sync": "^2.27.5",
+		"rollup": "^2.56.2",
+		"terser": "^5.7.1",
+		"tslib": "^2.3.1",
+		"typescript": "^4.3.5"
+	}
 }
