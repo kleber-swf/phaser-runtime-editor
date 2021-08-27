@@ -28,7 +28,7 @@ export class EditorView extends Phaser.Group {
 		const graphics = new Phaser.Graphics(game);
 		graphics.inputEnabled = true;
 		graphics.events.onInputDown.add(this.onTouch, this);
-		// game.scale.onSizeChange.add(this.redrawTouchArea, this);
+		// TODO game.scale.onSizeChange.add(this.redrawTouchArea, this);
 		this.add(graphics);
 		return graphics;
 	}
@@ -44,8 +44,7 @@ export class EditorView extends Phaser.Group {
 	private onTouch(_: any, pointer: Phaser.Pointer) {
 		const result: PIXI.DisplayObject[] = [];
 		this.getObjectsUnderPoint(pointer.x, pointer.y, this.container.children, result);
-		console.log(result.map(e => e.name));
-		this.setSelection(result.length > 0 ? result[0] : null);
+		this.setSelection(result);
 	}
 
 	private getObjectsUnderPoint(x: number, y: number, children: PIXI.DisplayObject[], result: PIXI.DisplayObject[]) {
@@ -58,10 +57,28 @@ export class EditorView extends Phaser.Group {
 		}
 	}
 
-	private _selectedObject: PIXI.DisplayObject;
+	private _lastSelectionTree: PIXI.DisplayObject[];
+	private _lastSelectionTreeIndex = -1;
 
-	private setSelection(obj: PIXI.DisplayObject) {
-		this._selectedObject = obj;
-		this.selection.setSelection(obj);
+	private setSelection(selectionTree: PIXI.DisplayObject[]) {
+		if (!selectionTree) {
+			this.selection.setSelection(null);
+			this._lastSelectionTree = null;
+			this._lastSelectionTreeIndex = - 1;
+			return;
+		}
+
+		const areEqual = this._lastSelectionTree && this._lastSelectionTree.every((e, i) =>
+			i < selectionTree.length && e === selectionTree[i]
+		);
+
+		if (areEqual) {
+			this._lastSelectionTreeIndex = (this._lastSelectionTreeIndex + 1) % this._lastSelectionTree.length;
+		} else {
+			this._lastSelectionTree = selectionTree;
+			this._lastSelectionTreeIndex = 0;
+		}
+
+		this.selection.setSelection(selectionTree[this._lastSelectionTreeIndex]);
 	}
 }
