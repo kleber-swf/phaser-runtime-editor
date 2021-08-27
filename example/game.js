@@ -20,14 +20,33 @@ let logo1;
 let logo2;
 
 function create() {
-	game.plugins.add(new PhaserRuntimeEditor.Plugin(game));
+	game.plugins.add(new PhaserRuntimeEditor.Plugin(game, game.world));
 
-	// //  Modify the world and camera bounds
+	//  Modify the world and camera bounds
 	// game.world.setBounds(-1000, -1000, 2000, 2000);
 
-	// for (var i = 0; i < 200; i++) {
-	// 	game.add.sprite(game.world.randomX, game.world.randomY, 'mushroom');
-	// }
+	for (var i = 0; i < 20; i++) {
+		const x = game.world.randomX;
+		const y = game.world.randomY;
+		const s = Math.random() + 1;
+		const sprite = game.add.sprite(x, y, 'mushroom');
+		sprite.name = `m_${x}x${y}`;
+		sprite.scale.set(s, s);
+		const text = game.add.text(0, 0, `${x}x${y}`, {
+			fill: '#ffffff',
+			fontSize: 16,
+			stroke: '#000',
+			strokeThickness: 2,
+		});
+		text.name = `t_${x}x${y}`;
+		sprite.addChild(text);
+	}
+
+
+	// const parent = game.add.graphics(10, 10, game.world)
+	// 	.beginFill(0xFF0000, 0.2)
+	// 	.drawRect(0, 0, 1000, 800);
+	// parent.name = 'parent';
 
 	// game.add.text(0, 0, 'this text scrolls\nwith the background', { font: '32px Arial', fill: '#f26c4f', align: 'center' });
 
@@ -46,16 +65,16 @@ function create() {
 	// game.add.tween(logo2.cameraOffset).to({ y: 400 }, 2000, Phaser.Easing.Back.InOut, true, 0, 2000, true);
 	// cursors = game.input.keyboard.createCursorKeys();
 
-	game.add.graphics(0, 0, game.stage)
-		.lineStyle(4, 0xFFFFFF, 1)
-		.beginFill(0, 0)
-		.drawRect(0, 0, game.width, game.height);
+	// game.add.graphics(0, 0, game.stage)
+	// 	.lineStyle(4, 0xFFFFFF, 1)
+	// 	.beginFill(0, 0)
+	// 	.drawRect(0, 0, game.width, game.height);
 }
 
 function update() {
-	// if (cursors.up.isDown) game.camera.y -= 4;
-	// else if (cursors.down.isDown) game.camera.y += 4;
+	// 	if (cursors.up.isDown) game.camera.y -= 4;
+	// 	else if (cursors.down.isDown) game.camera.y += 4;
 
-	// if (cursors.left.isDown) game.camera.x -= 4;
-	// else if (cursors.right.isDown) game.camera.x += 4;
+	// 	if (cursors.left.isDown) game.camera.x -= 4;
+	// 	else if (cursors.right.isDown) game.camera.x += 4;
 }
