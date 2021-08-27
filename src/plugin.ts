@@ -14,13 +14,4 @@ export class Plugin extends Phaser.Plugin {
 
 		stage.game = game;
 	}
-
-	// toggleEditor() {
-	// 	if (!this.container) {
-	// 		this.container = new EditorContainer(this.game, this.group);
-	// 		this.game.stage.add(this.container);
-	// 	}
-	// 	this.container.toggleVisible();
-	// 	this.game.stage.setChildIndex(this.menu, this.game.stage.children.length - 1);
-	// }
 }

@@ -19,10 +19,6 @@ export class EditorView extends Phaser.Group {
 		game.world.__skip = true;
 
 		this.model = new EditorModel();
-
-		// const scale = game.scale.scaleFactor;
-		// this.scale.copyFrom(scale);
-		// game.scale.onSizeChange.add(() => this.scale.copyFrom(game.scale.scaleFactor));
 		this.container = container;
 
 		this.touchArea = this.createTouchArea(game);
@@ -37,8 +33,6 @@ export class EditorView extends Phaser.Group {
 		area.inputEnabled = true;
 		area.events.onInputDown.add(this.onInputDown, this);
 		area.events.onInputUp.add(this.onInputUp, this);
-		// TODO is this really necessary?
-		// game.scale.onSizeChange.add(this.redrawTouchArea, this);
 		return this.add(area);
 	}
 
@@ -67,7 +61,7 @@ export class EditorView extends Phaser.Group {
 	}
 
 	private trySelectOver(pointer: Phaser.Pointer) {
-		const objects: PIXI.DisplayObject[] = [];	// TODO cache
+		const objects: PIXI.DisplayObject[] = [];
 		this.getObjectsUnderPoint(pointer.x, pointer.y, this.container.children, objects);
 
 		const selection = this.model.setSelectionTree(objects);
