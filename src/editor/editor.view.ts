@@ -52,13 +52,9 @@ export class EditorView extends Phaser.Group {
 
 	private onInputDown(_: any, pointer: Phaser.Pointer) {
 		this._isDragging = false;
-		this._hasSelected = this.trySelectOver(pointer);
-		if (this._hasSelected) {
-			this._lastPos.set(pointer.x, pointer.y);
-		}
-		// if (!this.selection.selectedObject) return;
-		// this._overSelection = this.selection.getBounds().contains(pointer.x, pointer.y);
-		// this._lastPos.set(pointer.x, pointer.y);
+		this._hasSelected = !this.selection.getBounds().contains(pointer.x, pointer.y)
+			&& this.trySelectOver(pointer);
+		this._lastPos.set(pointer.x, pointer.y);
 	}
 
 	private onInputUp(_: any, pointer: Phaser.Pointer) {
