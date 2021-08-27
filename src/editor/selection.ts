@@ -8,7 +8,15 @@ const ANCHOR_COLOR = 0xFFFFFF;
 const ANCHOR_STROKE = 0xD9B448;
 
 export class Selection extends Phaser.Graphics {
+	private _obj: PIXI.DisplayObject;
+
+	constructor(game: Phaser.Game) {
+		super(game);
+		this.__skip = true;
+	}
+
 	public setSelection(obj: PIXI.DisplayObject) {
+		this._obj = obj;
 		this.clear();
 		if (!obj) return;
 
@@ -26,7 +34,9 @@ export class Selection extends Phaser.Graphics {
 			.lineStyle(4, BORDER_STROKE, 1)
 			.drawRect(0, 0, bounds.width, bounds.height)
 			.lineStyle(2, BORDER_COLOR, 1)
-			.drawRect(0, 0, bounds.width, bounds.height);
+			.beginFill(0, 0)
+			.drawRect(0, 0, bounds.width, bounds.height)
+			.endFill();
 	}
 
 	private drawPivot(pivot: PIXI.Point) {
