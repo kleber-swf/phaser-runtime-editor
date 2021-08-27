@@ -1,6 +1,9 @@
 import { EditorModel } from './editor.model';
 import { Selection } from './selection';
 
+// TODO should this be relative to screen size, game scale or something? 
+const DRAG_DISTANCE = 20;
+
 export class EditorView extends Phaser.Group {
 	private readonly touchArea: Phaser.Graphics;
 	private readonly container: Phaser.Group | Phaser.Stage;
@@ -48,12 +51,16 @@ export class EditorView extends Phaser.Group {
 	}
 
 	private onInputDown(_: any, pointer: Phaser.Pointer) {
+		this._isDragging = false;
 		if (!this.selection.selectedObject) return;
 		this._overSelection = this.selection.getBounds().contains(pointer.x, pointer.y);
 		this._lastPos.set(pointer.x, pointer.y);
 	}
 
 	private onInputUp(_: any, pointer: Phaser.Pointer) {
+		const wasDragging = this._isDragging;
+		this._isDragging = false;
+		if (wasDragging) return;
 		const objects: PIXI.DisplayObject[] = [];	// TODO cache
 		this.getObjectsUnderPoint(pointer.x, pointer.y, this.container.children, objects);
 		const selection = this.model.setSelectionTree(objects);
@@ -72,11 +79,19 @@ export class EditorView extends Phaser.Group {
 
 	private _overSelection: boolean;
 	private _lastPos = new Phaser.Point();
+	private _isDragging = false;
 
 	public update() {
 		super.update();
 		const pointer = this.game.input.mousePointer;
 		if (!(pointer.isDown && this._overSelection)) return;
+		if (!this._isDragging) {
+			const dx = pointer.x - pointer.positionDown.x;
+			const dy = pointer.y - pointer.positionDown.y;
+			const dist = Math.sqrt(dx * dx + dy * dy);
+			this._isDragging = dist > DRAG_DISTANCE;
+			return;
+		}
 		this.selection.move(pointer.x - this._lastPos.x, pointer.y - this._lastPos.y);
 		this._lastPos.set(pointer.x, pointer.y);
 	}
