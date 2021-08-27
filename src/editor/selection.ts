@@ -11,13 +11,12 @@ export class Selection extends Phaser.Graphics {
 	private readonly scaleKnobs: Phaser.Graphics[];
 
 	private _obj: PIXI.DisplayObject = null;
-	public get hasObject() { return this._obj !== null; }
+	public get hasObject() { return !!this._obj; }
 
 	constructor(game: Phaser.Game) {
 		super(game);
 		this.name = '__selection';
 		this.__skip = true;
-
 		this.scaleKnobs = this.createScaleKnobs();
 	}
 
@@ -29,7 +28,8 @@ export class Selection extends Phaser.Graphics {
 				.beginFill(BORDER_COLOR, 1)
 				.drawCircle(0, 0, 16);
 			knob.inputEnabled = true;
-			knob.events.onInputDown.add(() => console.log('here'));
+			knob.events.onInputDown.add(this.startScaling, this);
+			knob.events.onInputUp.add(this.stopScaling, this);
 			this.addChild(knob);
 			knobs.push(knob);
 		}
@@ -42,9 +42,21 @@ export class Selection extends Phaser.Graphics {
 		if (!obj) return;
 
 		const bounds = obj.getBounds();
+		this._objUnscaledBounds.setTo(
+			bounds.x, bounds.y,
+			bounds.width / obj.scale.x,
+			bounds.height / obj.scale.y,
+		);
 
+		this.redraw();
+	}
+
+	private redraw() {
+		this.clear();
+		if (!this._obj) return;
+		const bounds = this._obj.getBounds();
 		this.drawBorder(bounds);
-		// this.drawPivot(obj.pivot);
+		this.drawPivot(this._obj.pivot);
 		// this.drawAnchor(obj.anchor, bounds);
 		this.drawScaleKnobs(bounds);
 		this.position.set(bounds.x, bounds.y);
@@ -96,5 +108,30 @@ export class Selection extends Phaser.Graphics {
 		this.position.set(pos.x + deltaX, pos.y + deltaY);
 		pos = this._obj.position;
 		this._obj.position.set(pos.x + deltaX, pos.y + deltaY);
+	}
+
+
+	private _scaling = false;
+	private _objUnscaledBounds = new Phaser.Rectangle();
+
+	private startScaling() { this._scaling = true; }
+	private stopScaling() { this._scaling = false; }
+
+	private doScale(pointer: Phaser.Pointer) {
+		const distX = pointer.x - this._objUnscaledBounds.x;
+		const distY = pointer.y - this._objUnscaledBounds.y;
+
+		this._obj.scale.set(
+			distX / this._objUnscaledBounds.width,
+			distY / this._objUnscaledBounds.height,
+		);
+
+		this.redraw();
+	}
+
+
+	public update() {
+		super.update();
+		if (this._scaling) this.doScale(this.game.input.mousePointer);
 	}
 }
