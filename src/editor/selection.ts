@@ -8,14 +8,32 @@ const ANCHOR_COLOR = 0xFFFFFF;
 const ANCHOR_STROKE = 0xD9B448;
 
 export class Selection extends Phaser.Graphics {
+	private readonly scaleKnobs: Phaser.Graphics[];
+
 	private _obj: PIXI.DisplayObject = null;
-	// public get selectedObject() { return this._obj; }
 	public get hasObject() { return this._obj !== null; }
 
 	constructor(game: Phaser.Game) {
 		super(game);
 		this.name = '__selection';
 		this.__skip = true;
+
+		this.scaleKnobs = this.createScaleKnobs();
+	}
+
+	private createScaleKnobs() {
+		const knobs: Phaser.Graphics[] = [];
+		for (let i = 0; i < 4; i++) {
+			const knob = new Phaser.Graphics(this.game)
+				.lineStyle(2, BORDER_STROKE, 1)
+				.beginFill(BORDER_COLOR, 1)
+				.drawCircle(0, 0, 16);
+			knob.inputEnabled = true;
+			knob.events.onInputDown.add(() => console.log('here'));
+			this.addChild(knob);
+			knobs.push(knob);
+		}
+		return knobs;
 	}
 
 	public setSelection(obj: PIXI.DisplayObject) {
@@ -26,17 +44,10 @@ export class Selection extends Phaser.Graphics {
 		const bounds = obj.getBounds();
 
 		this.drawBorder(bounds);
-		this.drawPivot(obj.pivot);
-		this.drawAnchor(obj.anchor, bounds);
-
+		// this.drawPivot(obj.pivot);
+		// this.drawAnchor(obj.anchor, bounds);
+		this.drawScaleKnobs(bounds);
 		this.position.set(bounds.x, bounds.y);
-	}
-
-	public move(deltaX: number, deltaY: number) {
-		let pos: PIXI.Point = this.position;
-		this.position.set(pos.x + deltaX, pos.y + deltaY);
-		pos = this._obj.position;
-		this._obj.position.set(pos.x + deltaX, pos.y + deltaY);
 	}
 
 	private drawBorder(bounds: PIXI.Rectangle) {
@@ -69,7 +80,21 @@ export class Selection extends Phaser.Graphics {
 		this
 			.lineStyle(3, ANCHOR_STROKE, 1)
 			.drawCircle(bounds.width * anchor.x, bounds.height * anchor.y, 10)
-			.lineStyle(1, ANCHOR_COLOR, 1)
+			.lineStyle(2, ANCHOR_COLOR, 1)
 			.drawCircle(bounds.width * anchor.x, bounds.height * anchor.y, 10);
+	}
+
+	private drawScaleKnobs(bounds: PIXI.Rectangle) {
+		this.scaleKnobs[0].position.set(0, 0);
+		this.scaleKnobs[1].position.set(bounds.width, 0);
+		this.scaleKnobs[2].position.set(bounds.width, bounds.height);
+		this.scaleKnobs[3].position.set(0, bounds.height);
+	}
+
+	public move(deltaX: number, deltaY: number) {
+		let pos: PIXI.Point = this.position;
+		this.position.set(pos.x + deltaX, pos.y + deltaY);
+		pos = this._obj.position;
+		this._obj.position.set(pos.x + deltaX, pos.y + deltaY);
 	}
 }

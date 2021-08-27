@@ -10,6 +10,18 @@ export class EditorView extends Phaser.Group {
 	private readonly selection: Selection;
 	private readonly model: EditorModel;
 
+	/** Whether the mouse down has already selected an object */
+	private _hasSelected: boolean;
+
+	/** The last position the mouse was down (for dragging purposes) */
+	private _lastPos = new Phaser.Point();
+
+	/** Whether the user is dragging */
+	private _isDragging = false;
+
+	/** Whether the input down event happened here */
+	private _isInputDown = false;
+
 	constructor(game: Phaser.Game, container: Phaser.Group | Phaser.Stage, parent: Phaser.Group | Phaser.Stage) {
 		super(game, parent);
 		this.name = '__editor';
@@ -37,21 +49,22 @@ export class EditorView extends Phaser.Group {
 	}
 
 	private redrawTouchArea() {
-		const sm = this.game;
 		this.touchArea.clear()
 			.beginFill(0, 0)
-			.drawRect(0, 0, sm.width, sm.height)
+			.drawRect(0, 0, this.game.width, this.game.height)
 			.endFill();
 	}
 
 	private onInputDown(_: any, pointer: Phaser.Pointer) {
 		this._isDragging = false;
+		this._isInputDown = true;
 		this._hasSelected = !this.selection.getBounds().contains(pointer.x, pointer.y)
 			&& this.trySelectOver(pointer);
 		this._lastPos.set(pointer.x, pointer.y);
 	}
 
 	private onInputUp(_: any, pointer: Phaser.Pointer) {
+		this._isInputDown = false;
 		const wasDragging = this._isDragging;
 		this._isDragging = false;
 		if (wasDragging) return;
@@ -79,14 +92,10 @@ export class EditorView extends Phaser.Group {
 		}
 	}
 
-	private _hasSelected: boolean;
-	private _lastPos = new Phaser.Point();
-	private _isDragging = false;
-
 	public update() {
 		super.update();
 		const pointer = this.game.input.mousePointer;
-		if (!(pointer.isDown && this.selection.hasObject)) return;
+		if (!(this._isInputDown && pointer.isDown && this.selection.hasObject)) return;
 		if (!this._isDragging) {
 			const dx = pointer.x - pointer.positionDown.x;
 			const dy = pointer.y - pointer.positionDown.y;
