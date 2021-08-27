@@ -9,9 +9,11 @@ const ANCHOR_STROKE = 0xD9B448;
 
 export class Selection extends Phaser.Graphics {
 	private _obj: PIXI.DisplayObject;
+	public get selectedObject() { return this._obj; }
 
 	constructor(game: Phaser.Game) {
 		super(game);
+		this.name = '__selection';
 		this.__skip = true;
 	}
 
@@ -27,6 +29,13 @@ export class Selection extends Phaser.Graphics {
 		this.drawAnchor(obj.anchor, bounds);
 
 		this.position.set(bounds.x, bounds.y);
+	}
+
+	public move(deltaX: number, deltaY: number) {
+		let pos: PIXI.Point = this.position;
+		this.position.set(pos.x + deltaX, pos.y + deltaY);
+		pos = this._obj.position;
+		this._obj.position.set(pos.x + deltaX, pos.y + deltaY);
 	}
 
 	private drawBorder(bounds: PIXI.Rectangle) {

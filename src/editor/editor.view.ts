@@ -9,6 +9,7 @@ export class EditorView extends Phaser.Group {
 
 	constructor(game: Phaser.Game, container: Phaser.Group | Phaser.Stage, parent: Phaser.Group | Phaser.Stage) {
 		super(game, parent);
+		this.name = '__editor';
 
 		this.__skip = true;
 		game.stage.__skip = true;
@@ -31,6 +32,7 @@ export class EditorView extends Phaser.Group {
 	private createTouchArea(game: Phaser.Game): Phaser.Graphics {
 		const area = new Phaser.Graphics(game);
 		area.inputEnabled = true;
+		area.events.onInputDown.add(this.onInputDown, this);
 		area.events.onInputUp.add(this.onInputUp, this);
 		// TODO is this really necessary?
 		// game.scale.onSizeChange.add(this.redrawTouchArea, this);
@@ -45,8 +47,14 @@ export class EditorView extends Phaser.Group {
 			.endFill();
 	}
 
+	private onInputDown(_: any, pointer: Phaser.Pointer) {
+		if (!this.selection.selectedObject) return;
+		this._overSelection = this.selection.getBounds().contains(pointer.x, pointer.y);
+		this._lastPos.set(pointer.x, pointer.y);
+	}
+
 	private onInputUp(_: any, pointer: Phaser.Pointer) {
-		const objects: PIXI.DisplayObject[] = [];
+		const objects: PIXI.DisplayObject[] = [];	// TODO cache
 		this.getObjectsUnderPoint(pointer.x, pointer.y, this.container.children, objects);
 		const selection = this.model.setSelectionTree(objects);
 		this.selection.setSelection(selection);
@@ -60,5 +68,16 @@ export class EditorView extends Phaser.Group {
 			if ('children' in child) this.getObjectsUnderPoint(x, y, child.children, objects);
 			if (bounds.contains(x, y)) objects.push(child);
 		}
+	}
+
+	private _overSelection: boolean;
+	private _lastPos = new Phaser.Point();
+
+	public update() {
+		super.update();
+		const pointer = this.game.input.mousePointer;
+		if (!(pointer.isDown && this._overSelection)) return;
+		this.selection.move(pointer.x - this._lastPos.x, pointer.y - this._lastPos.y);
+		this._lastPos.set(pointer.x, pointer.y);
 	}
 }
