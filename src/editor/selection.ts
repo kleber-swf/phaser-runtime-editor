@@ -8,8 +8,9 @@ const ANCHOR_COLOR = 0xFFFFFF;
 const ANCHOR_STROKE = 0xD9B448;
 
 export class Selection extends Phaser.Graphics {
-	private _obj: PIXI.DisplayObject;
-	public get selectedObject() { return this._obj; }
+	private _obj: PIXI.DisplayObject = null;
+	// public get selectedObject() { return this._obj; }
+	public get hasObject() { return this._obj !== null; }
 
 	constructor(game: Phaser.Game) {
 		super(game);

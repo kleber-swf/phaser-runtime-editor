@@ -52,19 +52,31 @@ export class EditorView extends Phaser.Group {
 
 	private onInputDown(_: any, pointer: Phaser.Pointer) {
 		this._isDragging = false;
-		if (!this.selection.selectedObject) return;
-		this._overSelection = this.selection.getBounds().contains(pointer.x, pointer.y);
-		this._lastPos.set(pointer.x, pointer.y);
+		this._hasSelected = this.trySelectOver(pointer);
+		if (this._hasSelected) {
+			this._lastPos.set(pointer.x, pointer.y);
+		}
+		// if (!this.selection.selectedObject) return;
+		// this._overSelection = this.selection.getBounds().contains(pointer.x, pointer.y);
+		// this._lastPos.set(pointer.x, pointer.y);
 	}
 
 	private onInputUp(_: any, pointer: Phaser.Pointer) {
 		const wasDragging = this._isDragging;
 		this._isDragging = false;
 		if (wasDragging) return;
+		if (this._hasSelected) return;
+		this.trySelectOver(pointer);
+		this._hasSelected = false;
+	}
+
+	private trySelectOver(pointer: Phaser.Pointer) {
 		const objects: PIXI.DisplayObject[] = [];	// TODO cache
 		this.getObjectsUnderPoint(pointer.x, pointer.y, this.container.children, objects);
+
 		const selection = this.model.setSelectionTree(objects);
 		this.selection.setSelection(selection);
+		return selection !== null;
 	}
 
 	private getObjectsUnderPoint(x: number, y: number, children: PIXI.DisplayObject[], objects: PIXI.DisplayObject[]) {
@@ -77,14 +89,14 @@ export class EditorView extends Phaser.Group {
 		}
 	}
 
-	private _overSelection: boolean;
+	private _hasSelected: boolean;
 	private _lastPos = new Phaser.Point();
 	private _isDragging = false;
 
 	public update() {
 		super.update();
 		const pointer = this.game.input.mousePointer;
-		if (!(pointer.isDown && this._overSelection)) return;
+		if (!(pointer.isDown && this.selection.hasObject)) return;
 		if (!this._isDragging) {
 			const dx = pointer.x - pointer.positionDown.x;
 			const dy = pointer.y - pointer.positionDown.y;
