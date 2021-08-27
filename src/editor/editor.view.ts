@@ -1,9 +1,11 @@
+import { EditorModel } from './editor.model';
 import { Selection } from './selection';
 
 export class EditorView extends Phaser.Group {
 	private readonly touchArea: Phaser.Graphics;
 	private readonly container: Phaser.Group | Phaser.Stage;
 	private readonly selection: Selection;
+	private readonly model: EditorModel;
 
 	constructor(game: Phaser.Game, container: Phaser.Group | Phaser.Stage, parent: Phaser.Group | Phaser.Stage) {
 		super(game, parent);
@@ -11,6 +13,8 @@ export class EditorView extends Phaser.Group {
 		this.__skip = true;
 		game.stage.__skip = true;
 		game.world.__skip = true;
+
+		this.model = new EditorModel();
 
 		// const scale = game.scale.scaleFactor;
 		// this.scale.copyFrom(scale);
@@ -24,13 +28,13 @@ export class EditorView extends Phaser.Group {
 		this.addChild(this.selection);
 	}
 
-	private createTouchArea(game: Phaser.Game) {
-		const graphics = new Phaser.Graphics(game);
-		graphics.inputEnabled = true;
-		graphics.events.onInputDown.add(this.onTouch, this);
-		// TODO game.scale.onSizeChange.add(this.redrawTouchArea, this);
-		this.add(graphics);
-		return graphics;
+	private createTouchArea(game: Phaser.Game): Phaser.Graphics {
+		const area = new Phaser.Graphics(game);
+		area.inputEnabled = true;
+		area.events.onInputUp.add(this.onInputUp, this);
+		// TODO is this really necessary?
+		// game.scale.onSizeChange.add(this.redrawTouchArea, this);
+		return this.add(area);
 	}
 
 	private redrawTouchArea() {
@@ -41,44 +45,20 @@ export class EditorView extends Phaser.Group {
 			.endFill();
 	}
 
-	private onTouch(_: any, pointer: Phaser.Pointer) {
-		const result: PIXI.DisplayObject[] = [];
-		this.getObjectsUnderPoint(pointer.x, pointer.y, this.container.children, result);
-		this.setSelection(result);
+	private onInputUp(_: any, pointer: Phaser.Pointer) {
+		const objects: PIXI.DisplayObject[] = [];
+		this.getObjectsUnderPoint(pointer.x, pointer.y, this.container.children, objects);
+		const selection = this.model.setSelectionTree(objects);
+		this.selection.setSelection(selection);
 	}
 
-	private getObjectsUnderPoint(x: number, y: number, children: PIXI.DisplayObject[], result: PIXI.DisplayObject[]) {
+	private getObjectsUnderPoint(x: number, y: number, children: PIXI.DisplayObject[], objects: PIXI.DisplayObject[]) {
 		for (let i = children.length - 1; i >= 0; i--) {
 			const child = children[i];
 			if (child.__skip || !('getBounds' in child)) continue;
 			const bounds: PIXI.Rectangle = child.getBounds();
-			if ('children' in child) this.getObjectsUnderPoint(x, y, child.children, result);
-			if (bounds.contains(x, y)) result.push(child);
+			if ('children' in child) this.getObjectsUnderPoint(x, y, child.children, objects);
+			if (bounds.contains(x, y)) objects.push(child);
 		}
-	}
-
-	private _lastSelectionTree: PIXI.DisplayObject[];
-	private _lastSelectionTreeIndex = -1;
-
-	private setSelection(selectionTree: PIXI.DisplayObject[]) {
-		if (!selectionTree) {
-			this.selection.setSelection(null);
-			this._lastSelectionTree = null;
-			this._lastSelectionTreeIndex = - 1;
-			return;
-		}
-
-		const areEqual = this._lastSelectionTree && this._lastSelectionTree.every((e, i) =>
-			i < selectionTree.length && e === selectionTree[i]
-		);
-
-		if (areEqual) {
-			this._lastSelectionTreeIndex = (this._lastSelectionTreeIndex + 1) % this._lastSelectionTree.length;
-		} else {
-			this._lastSelectionTree = selectionTree;
-			this._lastSelectionTreeIndex = 0;
-		}
-
-		this.selection.setSelection(selectionTree[this._lastSelectionTreeIndex]);
 	}
 }

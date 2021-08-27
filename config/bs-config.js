@@ -9,6 +9,10 @@ module.exports = {
 				'./node_modules/phaser-ce/build'
 			],
 		},
+		{
+			route: '/src',
+			dir: ['./src']
+		}
 	],
 	files: [
 		'./dist/index.js',
