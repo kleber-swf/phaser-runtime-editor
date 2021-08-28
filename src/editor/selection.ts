@@ -184,8 +184,8 @@ export class Scaler {
 		obj.pivot.set(transformPivot.x, transformPivot.y);
 
 		obj.position.set(
-			pos.x + (transformPivot.x - originalPivot.x * obj.scale.x),
-			pos.y + (transformPivot.y - originalPivot.y * obj.scale.y),
+			pos.x + (transformPivot.x - originalPivot.x) * obj.scale.x,
+			pos.y + (transformPivot.y - originalPivot.y) * obj.scale.y,
 		);
 
 		this.objOriginalPivot = originalPivot;
@@ -201,8 +201,8 @@ export class Scaler {
 
 		obj.pivot.set(originalPivot.x, originalPivot.y);
 		obj.position.set(
-			pos.x - (transformPivot.x - originalPivot.x * obj.scale.x),
-			pos.y - (transformPivot.y - originalPivot.y * obj.scale.y),
+			pos.x - (transformPivot.x - originalPivot.x) * obj.scale.x,
+			pos.y - (transformPivot.y - originalPivot.y) * obj.scale.y,
 		);
 	}
 
