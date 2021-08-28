@@ -123,13 +123,10 @@ export class Selection extends Phaser.Graphics {
 	public update() {
 		super.update();
 		if (this._scaling) {
-			this.scaler.scale(this.game.input.mousePointer);
+			const pointer = this.game.input.mousePointer;
+			this.scaler.scaleToPoint(pointer.x, pointer.y);
 			this.redraw();
 		}
-	}
-
-	postUpdate() {
-		if (this._obj) this._obj.updateTransform();
 	}
 }
 
@@ -148,77 +145,61 @@ export class ScaleKnob extends Phaser.Graphics {
 	}
 }
 
-
+// TODO inverted scale
 export class Scaler {
-	private objUnscaledBounds = new Phaser.Rectangle();
+	private readonly uncaledBound = new Phaser.Rectangle();
+	private readonly originalPivot = new PIXI.Point();
+	private readonly transformPivot = new PIXI.Point();
+
 	private obj: PIXI.DisplayObject;
-	private objOriginalPivot = new PIXI.Point();
-	private knob: ScaleKnob;
 
 	private _left: boolean;
 	private _top: boolean;
 
 	public startScaling(obj: PIXI.DisplayObject, knob: ScaleKnob) {
 		this.obj = obj;
-		this.knob = knob;
 		this._left = knob.xwf === 0;
 		this._top = knob.yhf === 0;
 
 		const bounds = obj.getBounds();
 
-		this.objUnscaledBounds.setTo(
+		this.uncaledBound.setTo(
 			bounds.x + bounds.width * knob.xwf,
 			bounds.y + bounds.height * knob.yhf,
 			bounds.width / obj.scale.x,
 			bounds.height / obj.scale.y,
 		);
 
-		const originalPivot = this.obj.pivot.clone();
-		const transformPivot = new Phaser.Point(
+		this.originalPivot.set(obj.pivot.x, obj.pivot.y);
+
+		this.transformPivot.set(
 			knob.xwf * (bounds.width / obj.scale.x),
 			knob.yhf * (bounds.height / obj.scale.y),
 		);
 
 		const pos = obj.position.clone();
 
-		obj.pivot.set(transformPivot.x, transformPivot.y);
+		obj.pivot.set(this.transformPivot.x, this.transformPivot.y);
 
 		obj.position.set(
-			pos.x + (transformPivot.x - originalPivot.x) * obj.scale.x,
-			pos.y + (transformPivot.y - originalPivot.y) * obj.scale.y,
+			pos.x + (this.transformPivot.x - this.originalPivot.x) * obj.scale.x,
+			pos.y + (this.transformPivot.y - this.originalPivot.y) * obj.scale.y,
 		);
-
-		this.objOriginalPivot = originalPivot;
 	}
 
 	public stopScaling() {
 		const obj = this.obj;
-		const bounds = obj.getBounds();
-		const pos = obj.position;
-		const knob = this.knob;
-		const originalPivot = this.objOriginalPivot;
-		const transformPivot = obj.pivot.clone();
-
-		obj.pivot.set(originalPivot.x, originalPivot.y);
+		obj.pivot.set(this.originalPivot.x, this.originalPivot.y);
 		obj.position.set(
-			pos.x - (transformPivot.x - originalPivot.x) * obj.scale.x,
-			pos.y - (transformPivot.y - originalPivot.y) * obj.scale.y,
+			obj.x - (this.transformPivot.x - this.originalPivot.x) * obj.scale.x,
+			obj.y - (this.transformPivot.y - this.originalPivot.y) * obj.scale.y,
 		);
 	}
 
-	public scale(pointer: Phaser.Pointer) {
-		const ub = this.objUnscaledBounds;
-		const distX = this._left
-			? pointer.x - ub.x
-			: ub.x - pointer.x;
-
-		const distY = this._top
-			? pointer.y - ub.y
-			: ub.y - pointer.y;
-
-		this.obj.scale.set(
-			distX / ub.width,
-			distY / ub.height,
-		);
+	public scaleToPoint(x: number, y: number) {
+		const ub = this.uncaledBound;
+		const distX = this._left ? x - ub.x : ub.x - x;
+		const distY = this._top ? y - ub.y : ub.y - y;
+		this.obj.scale.set(distX / ub.width, distY / ub.height,);
 	}
 }
