@@ -69,6 +69,7 @@ function create() {
 	for (let i = 0; i < game.width; i += 100) grid.moveTo(i, 0).lineTo(i, game.height);
 	for (let i = 0; i < game.height; i += 100) grid.moveTo(0, i).lineTo(game.width, i);
 
+	grid.__skip = true;
 	game.world.add(grid);
 
 	const SIZE = 200;
@@ -117,6 +118,14 @@ function create() {
 	child = el(DIST * 2, DIST * 2, SIZE, SIZE, parent, 'child-a1-p1');
 	child.anchor.set(1, 1);
 	child.pivot.set(SIZE, SIZE);
+
+
+	child = el(DIST * 3, 100, SIZE*2, SIZE*2, parent, 'child');
+	child.pivot.set(SIZE * 1.5, SIZE * 1.5);
+	
+	child = el(DIST * 3+200, 500+DIST, SIZE*2, SIZE*2, parent, 'child');
+	child.pivot.set(SIZE * 2.5, SIZE * 2.5);
+	child.scale.set(0.5, 0.5);
 
 
 	// game.add.text(0, 0, 'this text scrolls\nwith the background', { font: '32px Arial', fill: '#f26c4f', align: 'center' });
