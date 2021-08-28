@@ -50,7 +50,7 @@ export class Selection extends Phaser.Graphics {
 		if (!this._obj) return;
 		const bounds = this._obj.getBounds();
 		this.drawBorder(bounds);
-		this.drawPivot(this._obj.pivot);
+		this.drawPivot(this._scaling ? this.scaler.originalPivot : this._obj.pivot);
 		this.drawAnchor(this._obj.anchor, bounds);
 		this.drawScaleKnobs(bounds);
 		this.position.set(bounds.x, bounds.y);
@@ -67,7 +67,6 @@ export class Selection extends Phaser.Graphics {
 	}
 
 	private drawPivot(pivot: PIXI.Point) {
-		// TODO should't I use the scale too?
 		this
 			.lineStyle(3, PIVOT_STROKE, 1)
 			.moveTo(pivot.x - 10, pivot.y)
@@ -147,9 +146,9 @@ export class ScaleKnob extends Phaser.Graphics {
 
 // TODO inverted scale
 export class Scaler {
-	private readonly uncaledBound = new Phaser.Rectangle();
-	private readonly originalPivot = new PIXI.Point();
-	private readonly transformPivot = new PIXI.Point();
+	public readonly unscaledBounds = new Phaser.Rectangle();
+	public readonly originalPivot = new PIXI.Point();
+	public readonly transformPivot = new PIXI.Point();
 
 	private obj: PIXI.DisplayObject;
 
@@ -163,7 +162,7 @@ export class Scaler {
 
 		const bounds = obj.getBounds();
 
-		this.uncaledBound.setTo(
+		this.unscaledBounds.setTo(
 			bounds.x + bounds.width * knob.xwf,
 			bounds.y + bounds.height * knob.yhf,
 			bounds.width / obj.scale.x,
@@ -197,7 +196,7 @@ export class Scaler {
 	}
 
 	public scaleToPoint(x: number, y: number) {
-		const ub = this.uncaledBound;
+		const ub = this.unscaledBounds;
 		const distX = this._left ? x - ub.x : ub.x - x;
 		const distY = this._top ? y - ub.y : ub.y - y;
 		this.obj.scale.set(distX / ub.width, distY / ub.height,);
