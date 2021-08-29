@@ -18,7 +18,8 @@ Scaling:
 	[x] inverse scaling
 	[x] separate files
 	[x] scale handler
-	[ ] cursors
+	[x] cursors
+	[ ] larger area
 	[ ] drag threshold
 	[ ] proportional scaling
 	[ ] scaling from center
