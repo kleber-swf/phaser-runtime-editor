@@ -1,5 +1,3 @@
-import { BORDER_COLOR, BORDER_STROKE } from '../../editor.colors';
-
 export class ScaleKnob extends Phaser.Graphics {
 	private readonly _cursor: string;
 
@@ -10,9 +8,9 @@ export class ScaleKnob extends Phaser.Graphics {
 			.beginFill(0, 0)
 			.drawCircle(0, 0, 18)
 			.endFill()
-			.lineStyle(2, BORDER_STROKE, 1)
-			.beginFill(BORDER_COLOR, 1)
-			.drawCircle(0, 0, 14);
+			.lineStyle(2, 0xFFFFFF, 1)
+			.beginFill(0xFF8C64, 1)
+			.drawRect(-7, -7, 14, 14);
 
 		this.inputEnabled = true;
 		this.events.onInputOver.add(this.onInputOver, this);
