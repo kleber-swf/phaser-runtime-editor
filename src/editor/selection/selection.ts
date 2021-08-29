@@ -1,54 +1,26 @@
-import { Scaler } from './scaler';
+import { ANCHOR_COLOR, ANCHOR_STROKE, BORDER_COLOR, BORDER_STROKE, PIVOT_COLOR, PIVOT_STROKE } from '../editor.colors';
+import { ScaleHandler } from './scale/scale.handler';
 
-export const BORDER_COLOR = 0xFFFFFF;
-export const BORDER_STROKE = 0x3498DB;
-
-export const PIVOT_COLOR = 0xFFFFFF;
-export const PIVOT_STROKE = 0x2ECC71;
-
-export const ANCHOR_COLOR = 0xFFFFFF;
-export const ANCHOR_STROKE = 0xD9B448;
 
 export class Selection extends Phaser.Graphics {
-	private readonly scaleKnobs: ScaleKnob[];
-
 	private _obj: PIXI.DisplayObject = null;
 	public get hasObject() { return !!this._obj; }
+
+	private readonly scaleController: ScaleHandler;
 
 	constructor(game: Phaser.Game) {
 		super(game);
 		this.name = '__selection';
 		this.__skip = true;
-		this.scaler = new Scaler();
-		this.scaleKnobs = this.createScaleKnobs();
+		this.scaleController = new ScaleHandler(game);
+		this.addChild(this.scaleController);
 		this.setSelection(null);
-	}
-
-	private createScaleKnobs() {
-		const knobs: ScaleKnob[] = [
-			new ScaleKnob(this.game, 1, 1),		// top left
-			new ScaleKnob(this.game, 0, 1),		// top right
-			new ScaleKnob(this.game, 0, 0),		// bottom right
-			new ScaleKnob(this.game, 1, 0),		// bottom left
-
-			new ScaleKnob(this.game, 0.5, 1),	// top
-			new ScaleKnob(this.game, 1, 0.5),	// right
-			new ScaleKnob(this.game, 0.5, 0),	// bottom
-			new ScaleKnob(this.game, 0, 0.5),	// left
-		];
-
-		knobs.forEach(k => {
-			k.events.onInputDown.add(() => this.startScaling(k), this);
-			k.events.onInputUp.add(this.stopScaling, this);
-			this.addChild(k);
-		});
-
-		return knobs;
 	}
 
 	public setSelection(obj: PIXI.DisplayObject) {
 		this._obj = obj;
 		this.clear();
+		this.scaleController.selectedObject = obj;
 		if (this.visible = !!obj) this.redraw();
 	}
 
@@ -57,19 +29,12 @@ export class Selection extends Phaser.Graphics {
 		if (!this._obj) return;
 		const bounds = this._obj.getBounds();
 		this.drawBorder(bounds);
-		this.drawPivot(this._scaling ? this.scaler.originalPivot : this._obj.pivot);
+		this.drawPivot(this.scaleController.scaling
+			? this.scaleController.scaler.originalPivot
+			: this._obj.pivot);
 		this.drawAnchor(this._obj.anchor, bounds);
-		this.drawScaleKnobs(bounds);
-		if (this._scaling) this._drawTransformPivot(this.scaler.transformPivot);
+		this.scaleController.redraw(bounds);
 		this.position.set(bounds.x, bounds.y);
-	}
-
-	private _drawTransformPivot(pivot: PIXI.Point) {
-		this
-			.lineStyle(2, 0xFFFFFF, 1)
-			.beginFill(0xFF8888, 1)
-			.drawCircle(pivot.x, pivot.y, 30)
-			.endFill();
 	}
 
 	private drawBorder(bounds: PIXI.Rectangle) {
@@ -106,19 +71,6 @@ export class Selection extends Phaser.Graphics {
 			.drawCircle(bounds.width * anchor.x, bounds.height * anchor.y, 10);
 	}
 
-	private drawScaleKnobs(bounds: PIXI.Rectangle) {
-		const knobs = this.scaleKnobs;
-		knobs[0].position.set(0, 0);											// top left
-		knobs[1].position.set(bounds.width, 0);							// top right
-		knobs[2].position.set(bounds.width, bounds.height);			// bottom right
-		knobs[3].position.set(0, bounds.height);							// bottom right
-
-		knobs[4].position.set(bounds.width * 0.5, 0);					// top
-		knobs[5].position.set(0, bounds.height * 0.5);					// right
-		knobs[6].position.set(bounds.width * 0.5, bounds.height);	// bottom
-		knobs[7].position.set(bounds.width, bounds.height * 0.5);	// left
-	}
-
 	public move(deltaX: number, deltaY: number) {
 		let pos: PIXI.Point = this.position;
 		this.position.set(pos.x + deltaX, pos.y + deltaY);
@@ -126,40 +78,10 @@ export class Selection extends Phaser.Graphics {
 		this._obj.position.set(pos.x + deltaX, pos.y + deltaY);
 	}
 
-	// #region Scaling
-
-	private _scaling = false;
-	private scaler: Scaler;
-
-	private startScaling(knob: ScaleKnob) {
-		this.scaler.startScaling(this._obj, knob.factorH, knob.factorV);
-		this._scaling = true;
-	}
-
-	public stopScaling() {
-		this._scaling = false;
-		this.scaler.stopScaling();
-		this.redraw();
-	}
-
-	// #endregion
-
 	public update() {
 		super.update();
-		if (this._scaling) {
-			const pointer = this.game.input.mousePointer;
-			this.scaler.scaleToPoint(pointer.x, pointer.y);
+		if (this.scaleController.handle()) {
 			this.redraw();
 		}
-	}
-}
-
-export class ScaleKnob extends Phaser.Graphics {
-	constructor(game: Phaser.Game, public readonly factorH: number, public readonly factorV: number) {
-		super(game);
-		this.lineStyle(2, BORDER_STROKE, 1)
-			.beginFill(BORDER_COLOR, 1)
-			.drawCircle(0, 0, 16);
-		this.inputEnabled = true;
 	}
 }

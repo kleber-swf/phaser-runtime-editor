@@ -4,6 +4,8 @@ Selection:
 Translation:
 	[x] translation
 	[x] move with having to select first
+	[ ] move cursor
+	[ ] translation handler
 	[ ] snapping (10px)
 	[ ] keyboard shortcuts
 		[ ] use arrows to move 1px
@@ -15,7 +17,7 @@ Scaling:
 	[x] scale from sides
 	[x] inverse scaling
 	[x] separate files
-	[ ] knob model
+	[x] scale handler
 	[ ] cursors
 	[ ] drag threshold
 	[ ] proportional scaling
@@ -25,7 +27,7 @@ Scaling:
 
 Rotation:
 	[ ] show knobs
-	[ ] rotation
+	[ ] rotation handler
 	[ ] snapping (45°)
 
 Properties view:
