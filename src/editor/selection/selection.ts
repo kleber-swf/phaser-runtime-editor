@@ -1,11 +1,13 @@
-const BORDER_COLOR = 0xFFFFFF;
-const BORDER_STROKE = 0x3498DB;
+import { Scaler } from './scaler';
 
-const PIVOT_COLOR = 0xFFFFFF;
-const PIVOT_STROKE = 0x2ECC71;
+export const BORDER_COLOR = 0xFFFFFF;
+export const BORDER_STROKE = 0x3498DB;
 
-const ANCHOR_COLOR = 0xFFFFFF;
-const ANCHOR_STROKE = 0xD9B448;
+export const PIVOT_COLOR = 0xFFFFFF;
+export const PIVOT_STROKE = 0x2ECC71;
+
+export const ANCHOR_COLOR = 0xFFFFFF;
+export const ANCHOR_STROKE = 0xD9B448;
 
 export class Selection extends Phaser.Graphics {
 	private readonly scaleKnobs: ScaleKnob[];
@@ -112,9 +114,9 @@ export class Selection extends Phaser.Graphics {
 		knobs[3].position.set(0, bounds.height);							// bottom right
 
 		knobs[4].position.set(bounds.width * 0.5, 0);					// top
-		knobs[5].position.set(0, bounds.height * 0.5);					// left
+		knobs[5].position.set(0, bounds.height * 0.5);					// right
 		knobs[6].position.set(bounds.width * 0.5, bounds.height);	// bottom
-		knobs[7].position.set(bounds.width, bounds.height * 0.5);	// right
+		knobs[7].position.set(bounds.width, bounds.height * 0.5);	// left
 	}
 
 	public move(deltaX: number, deltaY: number) {
@@ -124,12 +126,13 @@ export class Selection extends Phaser.Graphics {
 		this._obj.position.set(pos.x + deltaX, pos.y + deltaY);
 	}
 
+	// #region Scaling
 
 	private _scaling = false;
 	private scaler: Scaler;
 
 	private startScaling(knob: ScaleKnob) {
-		this.scaler.startScaling(this._obj, knob);
+		this.scaler.startScaling(this._obj, knob.factorH, knob.factorV);
 		this._scaling = true;
 	}
 
@@ -138,6 +141,8 @@ export class Selection extends Phaser.Graphics {
 		this.scaler.stopScaling();
 		this.redraw();
 	}
+
+	// #endregion
 
 	public update() {
 		super.update();
@@ -150,78 +155,11 @@ export class Selection extends Phaser.Graphics {
 }
 
 export class ScaleKnob extends Phaser.Graphics {
-	constructor(game: Phaser.Game,
-		public readonly factorH: number,
-		public readonly factorV: number,
-	) {
+	constructor(game: Phaser.Game, public readonly factorH: number, public readonly factorV: number) {
 		super(game);
 		this.lineStyle(2, BORDER_STROKE, 1)
 			.beginFill(BORDER_COLOR, 1)
 			.drawCircle(0, 0, 16);
 		this.inputEnabled = true;
-	}
-}
-
-// TODO inverted scale
-export class Scaler {
-	public readonly unscaledBounds = new Phaser.Rectangle();
-	public readonly originalPivot = new PIXI.Point();
-	public readonly transformPivot = new PIXI.Point();
-
-	private obj: PIXI.DisplayObject;
-
-	private _distFactorH: number;
-	private _distFactorV: number;
-	private _scaleH: boolean;
-	private _scaleV: boolean;
-
-	public startScaling(obj: PIXI.DisplayObject, knob: ScaleKnob) {
-		this.obj = obj;
-		const { factorH, factorV } = knob;
-
-		const dirH = Math.min(0, Math.sign(obj.scale.x));
-		const dirV = Math.min(0, Math.sign(obj.scale.y));
-
-		this._distFactorH = Math.sign(factorH - 1) || 1;
-		this._distFactorV = Math.sign(factorV - 1) || 1;
-		this._scaleH = factorH !== 0.5;
-		this._scaleV = factorV !== 0.5;
-
-		const bounds = obj.getBounds();
-		this.unscaledBounds.setTo(
-			bounds.x + bounds.width * factorH,
-			bounds.y + bounds.height * factorV,
-			bounds.width / obj.scale.x,
-			bounds.height / obj.scale.y,
-		);
-
-		this.originalPivot.set(obj.pivot.x, obj.pivot.y);
-
-		this.transformPivot.set(
-			(factorH + dirH) * this.unscaledBounds.width,
-			(factorV + dirV) * this.unscaledBounds.height,
-		);
-
-		obj.pivot.set(this.transformPivot.x, this.transformPivot.y);
-
-		obj.position.set(
-			obj.x + (this.transformPivot.x - this.originalPivot.x) * obj.scale.x,
-			obj.y + (this.transformPivot.y - this.originalPivot.y) * obj.scale.y,
-		);
-	}
-
-	public stopScaling() {
-		const obj = this.obj;
-		obj.pivot.set(this.originalPivot.x, this.originalPivot.y);
-		obj.position.set(
-			obj.x - (this.transformPivot.x - this.originalPivot.x) * obj.scale.x,
-			obj.y - (this.transformPivot.y - this.originalPivot.y) * obj.scale.y,
-		);
-	}
-
-	public scaleToPoint(x: number, y: number) {
-		const ub = this.unscaledBounds;
-		if (this._scaleH) this.obj.scale.x = ((ub.x - x) * this._distFactorH) / ub.width;
-		if (this._scaleV) this.obj.scale.y = ((ub.y - y) * this._distFactorV) / ub.height;
 	}
 }

@@ -14,10 +14,10 @@ Scaling:
 	[x] scale from corners
 	[x] scale from sides
 	[x] inverse scaling
+	[x] separate files
 	[ ] knob model
 	[ ] cursors
 	[ ] drag threshold
-	[ ] separate files
 	[ ] proportional scaling
 	[ ] scaling from center
 	[ ] scaling from original pivot

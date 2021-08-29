@@ -1,5 +1,5 @@
 import { EditorModel } from './editor.model';
-import { Selection } from './selection';
+import { Selection } from './selection/selection';
 
 // TODO should this be relative to screen size, game scale or something? 
 const DRAG_DISTANCE = 20;
