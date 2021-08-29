@@ -177,15 +177,17 @@ export class Scaler {
 
 	public startScaling(obj: PIXI.DisplayObject, knob: ScaleKnob) {
 		this.obj = obj;
-		this._distFactorH = Math.sign(knob.factorH - 1) || 1;
-		this._distFactorV = Math.sign(knob.factorV - 1) || 1;
-		this._scaleH = knob.factorH !== 0.5;
-		this._scaleV = knob.factorV !== 0.5;
+		const { factorH, factorV } = knob;
+
+		this._distFactorH = Math.sign(factorH - 1) || 1;
+		this._distFactorV = Math.sign(factorV - 1) || 1;
+		this._scaleH = factorH !== 0.5;
+		this._scaleV = factorV !== 0.5;
 
 		const bounds = obj.getBounds();
 		this.unscaledBounds.setTo(
-			bounds.x + bounds.width * knob.factorH,
-			bounds.y + bounds.height * knob.factorV,
+			bounds.x + bounds.width * factorH,
+			bounds.y + bounds.height * factorV,
 			bounds.width / obj.scale.x,
 			bounds.height / obj.scale.y,
 		);
@@ -193,8 +195,8 @@ export class Scaler {
 		this.originalPivot.set(obj.pivot.x, obj.pivot.y);
 
 		this.transformPivot.set(
-			knob.factorH * this.unscaledBounds.width,
-			knob.factorV * this.unscaledBounds.height,
+			factorH * this.unscaledBounds.width,
+			factorV * this.unscaledBounds.height,
 		);
 
 		obj.pivot.set(this.transformPivot.x, this.transformPivot.y);
