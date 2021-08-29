@@ -19,7 +19,7 @@ Scaling:
 	[x] separate files
 	[x] scale handler
 	[x] cursors
-	[ ] larger area
+	[x] larger area
 	[ ] drag threshold
 	[ ] proportional scaling
 	[ ] scaling from center

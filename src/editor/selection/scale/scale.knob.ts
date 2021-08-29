@@ -6,9 +6,13 @@ export class ScaleKnob extends Phaser.Graphics {
 	constructor(game: Phaser.Game, public readonly factorH: number, public readonly factorV: number) {
 		super(game);
 		this.__skip = true;
-		this.lineStyle(2, BORDER_STROKE, 1)
+		this
+			.beginFill(0, 0)
+			.drawCircle(0, 0, 18)
+			.endFill()
+			.lineStyle(2, BORDER_STROKE, 1)
 			.beginFill(BORDER_COLOR, 1)
-			.drawCircle(0, 0, 16);
+			.drawCircle(0, 0, 14);
 		this.inputEnabled = true;
 		this.events.onInputOver.add(this.onInputOver, this);
 		this.events.onInputOut.add(this.onInputOut, this);
@@ -19,11 +23,6 @@ export class ScaleKnob extends Phaser.Graphics {
 		else this._cursor = 'nesw-resize';
 	}
 
-	private onInputOver() {
-		this.game.canvas.style.cursor = this._cursor;
-	}
-
-	private onInputOut() {
-		this.game.canvas.style.cursor = 'auto';
-	}
+	private onInputOver() { this.game.canvas.style.cursor = this._cursor; }
+	private onInputOut() { this.game.canvas.style.cursor = 'auto'; }
 }
