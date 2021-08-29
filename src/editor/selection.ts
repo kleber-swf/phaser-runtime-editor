@@ -24,10 +24,15 @@ export class Selection extends Phaser.Graphics {
 
 	private createScaleKnobs() {
 		const knobs: ScaleKnob[] = [
-			new ScaleKnob(this.game, 1, 1, 0, 0),	// top left
-			new ScaleKnob(this.game, 0, 1, 1, 0),	// top right
-			new ScaleKnob(this.game, 0, 0, 1, 1),	// bottom right
-			new ScaleKnob(this.game, 1, 0, 0, 1),	// bottom left
+			new ScaleKnob(this.game, 1, 1),		// top left
+			new ScaleKnob(this.game, 0, 1),		// top right
+			new ScaleKnob(this.game, 0, 0),		// bottom right
+			new ScaleKnob(this.game, 1, 0),		// bottom left
+
+			new ScaleKnob(this.game, 1, 0.5),	// top
+			new ScaleKnob(this.game, 0, 0.5),	// right
+			new ScaleKnob(this.game, 0.5, 0),	// bottom
+			new ScaleKnob(this.game, 1, 0.5),	// left
 		];
 
 		knobs.forEach(k => {
@@ -53,7 +58,16 @@ export class Selection extends Phaser.Graphics {
 		this.drawPivot(this._scaling ? this.scaler.originalPivot : this._obj.pivot);
 		this.drawAnchor(this._obj.anchor, bounds);
 		this.drawScaleKnobs(bounds);
+		if (this._scaling) this._drawTransformPivot(this.scaler.transformPivot);
 		this.position.set(bounds.x, bounds.y);
+	}
+
+	private _drawTransformPivot(pivot: PIXI.Point) {
+		this
+			.lineStyle(2, 0xFFFFFF, 1)
+			.beginFill(0xFF8888, 1)
+			.drawCircle(pivot.x, pivot.y, 30)
+			.endFill();
 	}
 
 	private drawBorder(bounds: PIXI.Rectangle) {
@@ -91,10 +105,16 @@ export class Selection extends Phaser.Graphics {
 	}
 
 	private drawScaleKnobs(bounds: PIXI.Rectangle) {
-		this.scaleKnobs[0].position.set(0, 0);
-		this.scaleKnobs[1].position.set(bounds.width, 0);
-		this.scaleKnobs[2].position.set(bounds.width, bounds.height);
-		this.scaleKnobs[3].position.set(0, bounds.height);
+		const knobs = this.scaleKnobs;
+		knobs[0].position.set(0, 0);											// top left
+		knobs[1].position.set(bounds.width, 0);							// top right
+		knobs[2].position.set(bounds.width, bounds.height);			// bottom right
+		knobs[3].position.set(0, bounds.height);							// bottom right
+
+		knobs[4].position.set(bounds.width * 0.5, 0);					// top
+		knobs[5].position.set(0, bounds.height * 0.5);					// left
+		knobs[6].position.set(bounds.width * 0.5, bounds.height);	// bottom
+		knobs[7].position.set(bounds.width, bounds.height * 0.5);	// right
 	}
 
 	public move(deltaX: number, deltaY: number) {
@@ -133,8 +153,6 @@ export class ScaleKnob extends Phaser.Graphics {
 	constructor(game: Phaser.Game,
 		public readonly xwf: number,
 		public readonly yhf: number,
-		public readonly pxf: number,
-		public readonly pyf: number,
 	) {
 		super(game);
 		this.lineStyle(2, BORDER_STROKE, 1)
@@ -172,17 +190,15 @@ export class Scaler {
 		this.originalPivot.set(obj.pivot.x, obj.pivot.y);
 
 		this.transformPivot.set(
-			knob.xwf * (bounds.width / obj.scale.x),
-			knob.yhf * (bounds.height / obj.scale.y),
+			knob.xwf * this.unscaledBounds.width,
+			knob.yhf * this.unscaledBounds.height,
 		);
-
-		const pos = obj.position.clone();
 
 		obj.pivot.set(this.transformPivot.x, this.transformPivot.y);
 
 		obj.position.set(
-			pos.x + (this.transformPivot.x - this.originalPivot.x) * obj.scale.x,
-			pos.y + (this.transformPivot.y - this.originalPivot.y) * obj.scale.y,
+			obj.x + (this.transformPivot.x - this.originalPivot.x) * obj.scale.x,
+			obj.y + (this.transformPivot.y - this.originalPivot.y) * obj.scale.y,
 		);
 	}
 
