@@ -29,10 +29,10 @@ export class Selection extends Phaser.Graphics {
 			new ScaleKnob(this.game, 0, 0),		// bottom right
 			new ScaleKnob(this.game, 1, 0),		// bottom left
 
-			new ScaleKnob(this.game, 1, 0.5),	// top
-			new ScaleKnob(this.game, 0, 0.5),	// right
+			new ScaleKnob(this.game, 0.5, 1),	// top
+			new ScaleKnob(this.game, 1, 0.5),	// right
 			new ScaleKnob(this.game, 0.5, 0),	// bottom
-			new ScaleKnob(this.game, 1, 0.5),	// left
+			new ScaleKnob(this.game, 0, 0.5),	// left
 		];
 
 		knobs.forEach(k => {
@@ -172,12 +172,15 @@ export class Scaler {
 
 	private _left: boolean;
 	private _top: boolean;
+	private _scaleH: boolean;
+	private _scaleV: boolean;
 
 	public startScaling(obj: PIXI.DisplayObject, knob: ScaleKnob) {
 		this.obj = obj;
 		this._left = knob.xwf === 0;
 		this._top = knob.yhf === 0;
-
+		this._scaleH = knob.xwf !== 0.5;
+		this._scaleV = knob.yhf !== 0.5;
 		const bounds = obj.getBounds();
 
 		this.unscaledBounds.setTo(
@@ -213,8 +216,13 @@ export class Scaler {
 
 	public scaleToPoint(x: number, y: number) {
 		const ub = this.unscaledBounds;
-		const distX = this._left ? x - ub.x : ub.x - x;
-		const distY = this._top ? y - ub.y : ub.y - y;
-		this.obj.scale.set(distX / ub.width, distY / ub.height,);
+		if (this._scaleH) {
+			const distX = this._left ? x - ub.x : ub.x - x;
+			this.obj.scale.x = distX / ub.width;
+		}
+		if (this._scaleV) {
+			const distY = this._top ? y - ub.y : ub.y - y;
+			this.obj.scale.y = distY / ub.height;
+		}
 	}
 }
