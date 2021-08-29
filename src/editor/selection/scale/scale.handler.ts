@@ -62,7 +62,7 @@ export class ScaleHandler extends Phaser.Group {
 		this._scaling = true;
 	}
 
-	public stopScaling() {
+	private stopScaling() {
 		this._scaling = false;
 		this.scaler.stopScaling();
 	}
@@ -73,7 +73,6 @@ export class ScaleHandler extends Phaser.Group {
 		this.scaler.scaleToPoint(pointer.x, pointer.y);
 		return true;
 	}
-
 
 	private _tmpTransformPivotGizmo: Phaser.Graphics;
 

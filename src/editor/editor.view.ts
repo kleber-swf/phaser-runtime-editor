@@ -1,8 +1,6 @@
+import { DragUtil } from './drag.util';
 import { EditorModel } from './editor.model';
 import { Selection } from './selection/selection';
-
-// TODO should this be relative to screen size, game scale or something? 
-const DRAG_DISTANCE = 20;
 
 export class EditorView extends Phaser.Group {
 	private readonly touchArea: Phaser.Graphics;
@@ -97,10 +95,7 @@ export class EditorView extends Phaser.Group {
 		const pointer = this.game.input.mousePointer;
 		if (!(this._isInputDown && pointer.isDown && this.selection.hasObject)) return;
 		if (!this._isDragging) {
-			const dx = pointer.x - pointer.positionDown.x;
-			const dy = pointer.y - pointer.positionDown.y;
-			const dist = Math.sqrt(dx * dx + dy * dy);
-			this._isDragging = dist > DRAG_DISTANCE;
+			this._isDragging = DragUtil.shouldStartDrag(pointer);
 			return;
 		}
 		this.selection.move(pointer.x - this._lastPos.x, pointer.y - this._lastPos.y);

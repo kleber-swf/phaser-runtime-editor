@@ -13,6 +13,7 @@ export class ScaleKnob extends Phaser.Graphics {
 			.lineStyle(2, BORDER_STROKE, 1)
 			.beginFill(BORDER_COLOR, 1)
 			.drawCircle(0, 0, 14);
+
 		this.inputEnabled = true;
 		this.events.onInputOver.add(this.onInputOver, this);
 		this.events.onInputOut.add(this.onInputOut, this);
