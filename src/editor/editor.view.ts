@@ -92,8 +92,9 @@ export class EditorView extends Phaser.Group {
 
 	public update() {
 		super.update();
+		if (!this._isInputDown) return;
 		const pointer = this.game.input.mousePointer;
-		if (!(this._isInputDown && pointer.isDown && this.selection.hasObject)) return;
+		if (!(pointer.isDown && this.selection.hasObject)) return;
 		if (!this._isDragging) {
 			this._isDragging = DragUtil.shouldStartDrag(pointer);
 			return;

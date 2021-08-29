@@ -4,12 +4,6 @@ Selection:
 Translation:
 	[x] translation
 	[x] move with having to select first
-	[ ] move cursor
-	[ ] translation handler
-	[ ] snapping (10px)
-	[ ] keyboard shortcuts
-		[ ] use arrows to move 1px
-		[ ] use shift+arrows to move 10px
 
 Scaling:
 	[x] show knobs
@@ -20,16 +14,10 @@ Scaling:
 	[x] scale handler
 	[x] cursors
 	[x] larger area
-	[ ] drag threshold
-	[ ] proportional scaling
-	[ ] scaling from center
-	[ ] scaling from original pivot
-	[ ] snapping (0.1x)
 
 Rotation:
-	[ ] show knobs
+	[ ] knobs
 	[ ] rotation handler
-	[ ] snapping (45°)
 
 Properties view:
 	[x] properties panel
@@ -47,9 +35,29 @@ Properties view:
 General Features:
 	[x] editor layout
 	[ ] undo / redo
-	[ ] copy selected properties to clipboard
 	[ ] hide gizmos
+	[ ] toggle enabled
+
+
+======================================================
+
+Advanced Translation:
+	[ ] snapping (10px)
+	[ ] keyboard shortcuts
+		[ ] use arrows to move 1px
+		[ ] use shift+arrows to move 10px
+
+Advanced Scaling:
+	[ ] proportional scaling
+	[ ] scaling from center
+	[ ] scaling from original pivot
+	[ ] snapping (0.1x)
+
+Advanced Rotation:
+	[ ] snapping (45°)
+
+Adcanved Features:
+	[ ] copy selected properties to clipboard
 	[ ] show grid
 	[ ] help: keyboard shorcuts
 	[ ] toolbar: tool selector
-	[ ] toggle enabled
