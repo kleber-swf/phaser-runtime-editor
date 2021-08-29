@@ -179,6 +179,9 @@ export class Scaler {
 		this.obj = obj;
 		const { factorH, factorV } = knob;
 
+		const dirH = Math.min(0, Math.sign(obj.scale.x));
+		const dirV = Math.min(0, Math.sign(obj.scale.y));
+
 		this._distFactorH = Math.sign(factorH - 1) || 1;
 		this._distFactorV = Math.sign(factorV - 1) || 1;
 		this._scaleH = factorH !== 0.5;
@@ -195,8 +198,8 @@ export class Scaler {
 		this.originalPivot.set(obj.pivot.x, obj.pivot.y);
 
 		this.transformPivot.set(
-			factorH * this.unscaledBounds.width,
-			factorV * this.unscaledBounds.height,
+			(factorH + dirH) * this.unscaledBounds.width,
+			(factorV + dirV) * this.unscaledBounds.height,
 		);
 
 		obj.pivot.set(this.transformPivot.x, this.transformPivot.y);

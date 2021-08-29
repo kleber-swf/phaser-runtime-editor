@@ -13,7 +13,7 @@ Scaling:
 	[x] show knobs
 	[x] scale from corners
 	[x] scale from sides
-	[ ] inverse scaling
+	[x] inverse scaling
 	[ ] knob model
 	[ ] cursors
 	[ ] drag threshold

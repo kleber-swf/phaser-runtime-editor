@@ -124,7 +124,7 @@ function create() {
 	child.pivot.set(SIZE * 1.5, SIZE * 1.5);
 
 	child = el(DIST * 3, 500, SIZE, SIZE, parent, 'child');
-	child.scale.set(-1, 1);
+	child.scale.set(-1, -1);
 
 
 	// game.add.text(0, 0, 'this text scrolls\nwith the background', { font: '32px Arial', fill: '#f26c4f', align: 'center' });
