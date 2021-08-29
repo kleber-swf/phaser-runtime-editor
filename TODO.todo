@@ -1,0 +1,63 @@
+Selection:
+	[x] natural parent selection
+	
+Translation:
+	[x] translation
+	[x] move with having to select first
+
+Scaling:
+	[x] show knobs
+	[x] scale from corners
+	[x] scale from sides
+	[x] inverse scaling
+	[x] separate files
+	[x] scale handler
+	[x] cursors
+	[x] larger area
+
+Rotation:
+	[ ] knobs
+	[ ] rotation handler
+
+Properties view:
+	[x] properties panel
+	[ ] default properties editor for built in types
+		[ ] string
+		[ ] boolean
+		[ ] number
+		[ ] object
+		[ ] array
+	[ ] custom properties editor for PIXI/Phaser common types
+		[ ] Point
+		[ ] Rectangle
+		[ ] Matrix
+
+General Features:
+	[x] editor layout
+	[ ] undo / redo
+	[ ] hide gizmos
+	[ ] toggle enabled
+
+
+======================================================
+
+Advanced Translation:
+	[ ] snapping (10px)
+	[ ] keyboard shortcuts
+		[ ] use arrows to move 1px
+		[ ] use shift+arrows to move 10px
+
+Advanced Scaling:
+	[ ] proportional scaling
+	[ ] scaling from center
+	[ ] scaling from original pivot
+	[ ] snapping (0.1x)
+
+Advanced Rotation:
+	[ ] snapping (45°)
+
+Adcanved Features:
+	[ ] copy selected properties to clipboard
+	[ ] show grid
+	[ ] help: keyboard shorcuts
+	[ ] toolbar: tool selector

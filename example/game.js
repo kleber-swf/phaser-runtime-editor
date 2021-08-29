@@ -1,6 +1,6 @@
 const game = new Phaser.Game({
 	width: 1920,
-	height: 1080,
+	height: 1600,
 	renderer: Phaser.AUTO,
 	parent: 'game',
 	scaleMode: Phaser.ScaleManager.SHOW_ALL,
@@ -46,19 +46,85 @@ function create() {
 	// }
 
 
-	const child0 = el(20, 20, 1000, 900, game.world, 'child_0');
-	
-	const child00 = el(40, 40, 500, 500, child0, 'child_0-0');
-	const child01 = el(300, 80, 500, 200, child0, 'child_0-1');
-	const child02 = el(800, 500, 200, 200, child0, 'child_0-2');
-	child02.pivot.set(100, 100);
-	const child03 = el(700, 650, 200, 200, child0, 'child_0-3');
-	child03.anchor.set(0.5, 0.5);
+	// const child0 = el(20, 20, 1000, 900, game.world, 'child_0');
 
-	const child000 = el(400, 400, 200, 200, child00, 'child_0-0-0');
-	const child001 = el(20, 280, 200, 200, child00, 'child_0-0-1');
-	const child010 = el(200, 20, 160, 160, child01, 'child_0-1-0');
+	// const child00 = el(40, 40, 500, 500, child0, 'child_0-0');
+	// const child01 = el(300, 80, 500, 200, child0, 'child_0-1');
+	// const child02 = el(800, 500, 200, 200, child0, 'child_0-2');
+	// child02.pivot.set(100, 100);
+	// const child03 = el(700, 650, 200, 200, child0, 'child_0-3');
+	// child03.pivot.set(1, 1);
+	// child03.anchor.set(0.5, 0.5);
 
+	// const child000 = el(400, 400, 200, 200, child00, 'child_0-0-0');
+	// const child001 = el(20, 280, 200, 200, child00, 'child_0-0-1');
+	// const child010 = el(200, 20, 160, 160, child01, 'child_0-1-0');
+
+	const grid = new Phaser.Graphics(game);
+
+	grid.lineStyle(1, 0x777777, 0.1);
+	for (let i = 0; i < game.width; i += 10) grid.moveTo(i, 0).lineTo(i, game.height);
+	for (let i = 0; i < game.height; i += 10) grid.moveTo(0, i).lineTo(game.width, i);
+	grid.lineStyle(1, 0x999999, 0.1);
+	for (let i = 0; i < game.width; i += 100) grid.moveTo(i, 0).lineTo(i, game.height);
+	for (let i = 0; i < game.height; i += 100) grid.moveTo(0, i).lineTo(game.width, i);
+
+	grid.__skip = true;
+	game.world.add(grid);
+
+	const SIZE = 200;
+	const DIST = 400;
+
+	const parent = new Phaser.Group(game, game.world);
+	parent.position.set(100, 300)
+
+	// 0   0
+	let child = el(DIST * 0, DIST * 0, SIZE, SIZE, parent, 'child-a0-p0');
+
+	// 0   .5
+	child = el(DIST * 1, DIST * 0, SIZE, SIZE, parent, 'child-a0-p.5');
+	child.pivot.set(0.5 * SIZE, 0.5 * SIZE);
+
+	// 0   1
+	child = el(DIST * 2, DIST * 0, SIZE, SIZE, parent, 'child-a0-p1');
+	child.pivot.set(SIZE, SIZE);
+
+
+	// .5  0
+	child = el(DIST * 0, DIST * 1, SIZE, SIZE, parent, 'child-a.5-p0');
+	child.anchor.set(0.5, 0.5);
+
+	// .5  .5
+	child = el(DIST * 1, DIST * 1, SIZE, SIZE, parent, 'child-a.5-p.5');
+	child.anchor.set(0.5, 0.5);
+	child.pivot.set(0.5 * SIZE, 0.5 * SIZE);
+
+	// .5  1
+	child = el(DIST * 2, DIST * 1, SIZE, SIZE, parent, 'child-a.5-p1');
+	child.anchor.set(0.5, 0.5);
+	child.pivot.set(SIZE, SIZE);
+
+
+	// 1   0
+	child = el(DIST * 0, DIST * 2, SIZE, SIZE, parent, 'child-a1-p0');
+	child.anchor.set(1, 1);
+
+	// 1   .5
+	child = el(DIST * 1, DIST * 2, SIZE, SIZE, parent, 'child-a1-p.5');
+	child.anchor.set(1, 1);
+	child.pivot.set(0.5 * SIZE, 0.5 * SIZE);
+
+	// 1   1
+	child = el(DIST * 2, DIST * 2, SIZE, SIZE, parent, 'child-a1-p1');
+	child.anchor.set(1, 1);
+	child.pivot.set(SIZE, SIZE);
+
+
+	child = el(DIST * 3, 100, SIZE * 2, SIZE * 2, parent, 'child');
+	child.pivot.set(SIZE * 1.5, SIZE * 1.5);
+
+	child = el(DIST * 3, 500, SIZE, SIZE, parent, 'child');
+	child.scale.set(-1, -1);
 
 
 	// game.add.text(0, 0, 'this text scrolls\nwith the background', { font: '32px Arial', fill: '#f26c4f', align: 'center' });
