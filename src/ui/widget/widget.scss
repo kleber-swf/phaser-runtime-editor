@@ -1,5 +1,7 @@
+@import '../colors';
+
 .phred-widget {
-	background-color: #232323;
+	background-color: $background-color;
 	box-sizing: border-box;
-	color: #F2F2F2;
+	color: $on-background-color;
 }

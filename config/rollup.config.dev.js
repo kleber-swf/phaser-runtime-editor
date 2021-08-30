@@ -1,7 +1,8 @@
 import typescript from '@rollup/plugin-typescript';
-import postcssUrl from 'postcss-url';
+import autoprefixer from 'autoprefixer';
+import postcss from 'postcss';
 import browserSync from 'rollup-plugin-browsersync';
-import postcss from 'rollup-plugin-postcss';
+import scss from 'rollup-plugin-scss';
 
 const pkg = require('../package.json');
 const bsConfig = require('./bs-config');
@@ -14,16 +15,10 @@ export default {
 	],
 	treeshake: false,
 	plugins: [
-		postcss({
-			extract: 'phaser-runtime-editor-styles.css',
-			// minimize: true,
-
-			modules: {
-				generateScopedName: "[hash:base64:5]"
-			},
-			plugins: [
-				postcssUrl({ url: 'inline' })
-			]
+		scss({
+			processor: () => postcss([autoprefixer()]),
+			output: 'dist/phaser-runtime-editor-styles.css',
+			// outputStyle: 'compressed'
 		}),
 		typescript({
 			rootDir: './src',
