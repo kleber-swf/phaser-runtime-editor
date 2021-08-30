@@ -1,4 +1,5 @@
 import { ANCHOR_COLOR, ANCHOR_STROKE, BORDER_COLOR, BORDER_STROKE, PIVOT_COLOR, PIVOT_STROKE } from '../editor.colors';
+import { RotationHandler } from './rotation/rotation.handler';
 import { ScaleHandler } from './scale/scale.handler';
 
 export class Selection extends Phaser.Group {
@@ -7,6 +8,7 @@ export class Selection extends Phaser.Group {
 
 	private readonly view: Phaser.Graphics;
 	private readonly scaleHandler: ScaleHandler;
+	private readonly rotationHandler: RotationHandler;
 
 	constructor(game: Phaser.Game) {
 		super(game);
@@ -17,7 +19,12 @@ export class Selection extends Phaser.Group {
 		this.addChild(this.view);
 
 		this.scaleHandler = new ScaleHandler(game);
+		this.scaleHandler.visible = false;
 		this.addChild(this.scaleHandler);
+
+		this.rotationHandler = new RotationHandler(game);
+		this.rotationHandler.visible = true;
+		this.addChild(this.rotationHandler);
 
 		this.setSelection(null);
 	}
@@ -38,7 +45,8 @@ export class Selection extends Phaser.Group {
 			? this.scaleHandler.scaler.originalPivot
 			: this._obj.pivot);
 		this.drawAnchor(this._obj.anchor, bounds);
-		this.scaleHandler.redraw(bounds);
+		//this.scaleHandler.redraw(bounds);
+		this.rotationHandler.redraw(bounds);
 		this.position.set(bounds.x, bounds.y);
 	}
 

@@ -1,8 +1,8 @@
-import { ScaleKnob } from './scale.knob';
+import { ScaleGizmo } from './scale.gizmo';
 import { Scaler } from './scaler';
 
 export class ScaleHandler extends Phaser.Group {
-	private readonly knobs: ScaleKnob[];
+	private readonly gizmos: ScaleGizmo[];
 	private _scaling = false;
 
 	public readonly scaler: Scaler;
@@ -14,36 +14,36 @@ export class ScaleHandler extends Phaser.Group {
 		super(game);
 		this.__skip = true;
 		this.scaler = new Scaler();
-		this.knobs = this.createScaleKnobs(game);
+		this.gizmos = this.createGizmos(game);
 
 		this._tmpTransformPivotGizmo = new Phaser.Graphics(game);
 		this.addChild(this._tmpTransformPivotGizmo);
 	}
 
-	private createScaleKnobs(game: Phaser.Game) {
-		const knobs: ScaleKnob[] = [
-			new ScaleKnob(game, 1, 1),		// top left
-			new ScaleKnob(game, 0, 1),		// top right
-			new ScaleKnob(game, 0, 0),		// bottom right
-			new ScaleKnob(game, 1, 0),		// bottom left
+	private createGizmos(game: Phaser.Game) {
+		const gizmos: ScaleGizmo[] = [
+			new ScaleGizmo(game, 1, 1),		// top left
+			new ScaleGizmo(game, 0, 1),		// top right
+			new ScaleGizmo(game, 0, 0),		// bottom right
+			new ScaleGizmo(game, 1, 0),		// bottom left
 
-			new ScaleKnob(game, 0.5, 1),	// top
-			new ScaleKnob(game, 1, 0.5),	// right
-			new ScaleKnob(game, 0.5, 0),	// bottom
-			new ScaleKnob(game, 0, 0.5),	// left
+			new ScaleGizmo(game, 0.5, 1),	// top
+			new ScaleGizmo(game, 1, 0.5),	// right
+			new ScaleGizmo(game, 0.5, 0),	// bottom
+			new ScaleGizmo(game, 0, 0.5),	// left
 		];
 
-		knobs.forEach(k => {
-			k.events.onInputDown.add(() => this.startScaling(k), this);
-			k.events.onInputUp.add(this.stopScaling, this);
-			this.addChild(k);
+		gizmos.forEach(gizmo => {
+			gizmo.events.onInputDown.add(() => this.startScaling(gizmo), this);
+			gizmo.events.onInputUp.add(this.stopScaling, this);
+			this.addChild(gizmo);
 		});
 
-		return knobs;
+		return gizmos;
 	}
 
 	public redraw(bounds: PIXI.Rectangle) {
-		const knobs = this.knobs;
+		const knobs = this.gizmos;
 		knobs[0].position.set(0, 0);											// top left
 		knobs[1].position.set(bounds.width, 0);							// top right
 		knobs[2].position.set(bounds.width, bounds.height);			// bottom right
@@ -57,7 +57,7 @@ export class ScaleHandler extends Phaser.Group {
 		this._tmpDrawTransformPivot(this.scaler.transformPivot);
 	}
 
-	private startScaling(knob: ScaleKnob) {
+	private startScaling(knob: ScaleGizmo) {
 		this.scaler.startScaling(this.selectedObject, knob.factorH, knob.factorV);
 		this._scaling = true;
 	}
