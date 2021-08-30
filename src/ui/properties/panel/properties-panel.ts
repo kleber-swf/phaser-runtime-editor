@@ -6,9 +6,15 @@ export class PropertiesPanel extends Widget {
 
 	public connectedCallback() {
 		super.connectedCallback();
+		
 		const title = document.createElement('div');
+		title.classList.add('title');
 		this.appendChild(title);
-		title.append('TITLE')
+		title.append('PROPERTIES');
+
+		const content = document.createElement('div');
+		content.classList.add('content');
+		this.appendChild(content);
 	}
 }
 

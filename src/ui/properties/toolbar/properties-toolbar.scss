@@ -1,6 +1,8 @@
+@import 'colors';
+
 phred-properties-toolbar {
 	width: 250px;
-	box-shadow: -4px 0px 4px rgba(20, 20, 20, 0.5);
+	box-shadow: -4px 0px 4px $shadow-color;
 	z-index: 2;
 }
 
