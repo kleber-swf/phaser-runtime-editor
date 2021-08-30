@@ -20,6 +20,8 @@ export class EditorView extends Phaser.Group {
 	/** Whether the input down event happened here */
 	private _isInputDown = false;
 
+	public readonly onSelectedObjectChanged = new Phaser.Signal();
+
 	constructor(game: Phaser.Game, container: Phaser.Group | Phaser.Stage, parent: Phaser.Group | Phaser.Stage) {
 		super(game, parent);
 		this.name = '__editor';
@@ -75,9 +77,10 @@ export class EditorView extends Phaser.Group {
 		const objects: PIXI.DisplayObject[] = [];
 		this.getObjectsUnderPoint(pointer.x, pointer.y, this.container.children, objects);
 
-		const selection = this.model.setSelectionTree(objects);
-		this.selection.setSelection(selection);
-		return selection !== null;
+		const obj = this.model.setSelectionTree(objects);
+		this.selection.select(obj);
+		this.onSelectedObjectChanged.dispatch(obj);
+		return obj !== null;
 	}
 
 	private getObjectsUnderPoint(x: number, y: number, children: PIXI.DisplayObject[], objects: PIXI.DisplayObject[]) {

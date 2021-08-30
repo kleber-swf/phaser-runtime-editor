@@ -19,10 +19,10 @@ export class Selection extends Phaser.Group {
 		this.scaleHandler = new ScaleHandler(game);
 		this.addChild(this.scaleHandler);
 
-		this.setSelection(null);
+		this.select(null);
 	}
 
-	public setSelection(obj: PIXI.DisplayObject) {
+	public select(obj: PIXI.DisplayObject) {
 		this._obj = obj;
 		this.view.clear();
 		this.scaleHandler.selectedObject = obj;

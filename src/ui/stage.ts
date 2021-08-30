@@ -8,9 +8,9 @@ export class Stage extends Widget {
 	public static readonly tagId = 'phred-stage';
 
 	private _game: Phaser.Game;
-	private _actions: ActionsToolbar;
-	private _gameContainer: HTMLElement;
-	private _properties: PropertiesToolbar;
+	private actions: ActionsToolbar;
+	private gameContainer: HTMLElement;
+	private properties: PropertiesToolbar;
 
 	public get game() { return this._game; }
 
@@ -18,11 +18,11 @@ export class Stage extends Widget {
 		if (game) {
 			const el = game.canvas.parentElement;
 			el.classList.add('phred-game');
-			this._gameContainer.appendChild(el);
+			this.gameContainer.appendChild(el);
 		} else if (this._game) {
 			const el = this._game.canvas.parentElement;
 			el.classList.remove('phred-game');
-			this._gameContainer.removeChild(el);
+			this.gameContainer.removeChild(el);
 		}
 		this._game = game;
 	}
@@ -34,15 +34,19 @@ export class Stage extends Widget {
 		content.classList.add('phred-content');
 		this.appendChild(content);
 
-		this._actions = document.createElement(ActionsToolbar.tagId) as ActionsToolbar;
-		content.appendChild(this._actions);
+		this.actions = document.createElement(ActionsToolbar.tagId) as ActionsToolbar;
+		content.appendChild(this.actions);
 
-		this._gameContainer = document.createElement('div');
-		this._gameContainer.classList.add('phred-game-container');
-		content.appendChild(this._gameContainer);
+		this.gameContainer = document.createElement('div');
+		this.gameContainer.classList.add('phred-game-container');
+		content.appendChild(this.gameContainer);
 
-		this._properties = document.createElement(PropertiesToolbar.tagId) as PropertiesToolbar;
-		this.appendChild(this._properties);
+		this.properties = document.createElement(PropertiesToolbar.tagId) as PropertiesToolbar;
+		this.appendChild(this.properties);
+	}
+
+	public selectObject(obj: PIXI.DisplayObject) {
+		this.properties.selectObject(obj);
 	}
 }
 

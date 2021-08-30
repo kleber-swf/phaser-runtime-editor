@@ -4,11 +4,17 @@ import './properties-toolbar.scss';
 
 export class PropertiesToolbar extends Widget {
 	public static readonly tagId = 'phred-properties-toolbar';
+	private readonly panels: PropertiesPanel[] = [];	// TODO depend on an interface or abstract class here
 
 	public connectedCallback() {
 		super.connectedCallback();
-		const panel = document.createElement(PropertiesPanel.tagId);
+		const panel = document.createElement(PropertiesPanel.tagId) as PropertiesPanel;
 		this.appendChild(panel);
+		this.panels.push(panel);
+	}
+
+	public selectObject(obj: PIXI.DisplayObject) {
+		this.panels.forEach(p => p.selectObject(obj));
 	}
 }
 

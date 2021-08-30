@@ -12,8 +12,8 @@ export class Plugin extends Phaser.Plugin {
 		document.body.appendChild(stage);
 
 		group = group ?? game.world;
-		new EditorView(game, group, game.stage);
-
+		const editor = new EditorView(game, group, game.stage);
 		stage.game = game;
+		editor.onSelectedObjectChanged.add(stage.selectObject, stage);
 	}
 }
