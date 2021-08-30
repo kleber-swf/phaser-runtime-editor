@@ -1,0 +1,31 @@
+.phred-widget {
+	background-color: #232323;
+	box-sizing: border-box;
+}
+
+phred-stage {
+	flex: 1;
+	display: flex;
+	align-items: stretch;
+	justify-content: stretch;
+	width: 100%;
+	height: 100%;
+
+	.phred-content {
+		flex: 1;
+		display: inline-flex;
+		flex-direction: column;
+
+		.phred-game-container {
+			background-color: #1b1b1b;
+			flex: 1;
+			overflow: overlay;
+		}
+
+		.phred-game,
+		.phred-game * {
+			max-width: 100% !important;
+		}
+	}
+}
+

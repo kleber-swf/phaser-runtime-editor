@@ -1,5 +1,6 @@
-import { PropertiesPanel } from './properties.panel';
-import { Widget } from './widget';
+import { Widget } from '../../widget';
+import { PropertiesPanel } from '../panel/properties-panel';
+import './properties-toolbar.scss'
 
 export class PropertiesToolbar extends Widget {
 	public static readonly tagId = 'phred-properties-toolbar';
