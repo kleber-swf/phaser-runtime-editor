@@ -155,7 +155,7 @@ function el(x, y, w, h, parent, name) {
 	const color = COLORS[_colorIndex];
 	const g = game.add.graphics(x, y)
 		.lineStyle(1, color, 1)
-		.beginFill(color, 0.1)
+		.beginFill(color, 0.2)
 		.drawRect(0, 0, w, h)
 		.endFill();
 	parent.addChild(g);

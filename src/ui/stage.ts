@@ -3,7 +3,7 @@ import { PropertiesToolbar } from './properties.toolbar';
 import { Widget } from './widget';
 
 export class Stage extends Widget {
-	public static eid = 'phred-stage';
+	public static readonly tagId = 'phred-stage';
 
 	private _game: Phaser.Game;
 	private _actions: ActionsToolbar;
@@ -32,16 +32,16 @@ export class Stage extends Widget {
 		content.classList.add('phred-content');
 		this.appendChild(content);
 
-		this._actions = document.createElement(ActionsToolbar.eid) as ActionsToolbar;
+		this._actions = document.createElement(ActionsToolbar.tagId) as ActionsToolbar;
 		content.appendChild(this._actions);
 
 		this._gameContainer = document.createElement('div');
 		this._gameContainer.classList.add('phred-game-container');
 		content.appendChild(this._gameContainer);
 
-		this._properties = document.createElement(PropertiesToolbar.eid) as PropertiesToolbar;
+		this._properties = document.createElement(PropertiesToolbar.tagId) as PropertiesToolbar;
 		this.appendChild(this._properties);
 	}
 }
 
-customElements.define(Stage.eid, Stage);
+customElements.define(Stage.tagId, Stage);

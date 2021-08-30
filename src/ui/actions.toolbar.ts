@@ -1,7 +1,7 @@
 import { Widget } from './widget';
 
 export class ActionsToolbar extends Widget {
-	public static eid = 'phred-actions-toolbar';
+	public static readonly tagId = 'phred-actions-toolbar';
 }
 
-customElements.define(ActionsToolbar.eid, ActionsToolbar);
+customElements.define(ActionsToolbar.tagId, ActionsToolbar);
