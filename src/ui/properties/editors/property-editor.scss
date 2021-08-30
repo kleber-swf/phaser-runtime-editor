@@ -19,7 +19,7 @@ $property-foreground: $on-background-color;
 		flex: 1;
 		color: $property-foreground;
 
-		input[type="text"] {
+		input[type="text"], input[type="number"] {
 			width: 100%;
 			font-size: 16px;
 			background-color: $property-input-background;

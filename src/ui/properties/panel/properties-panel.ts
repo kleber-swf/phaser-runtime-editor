@@ -4,7 +4,7 @@ import { PropertyEditor } from '../editors/property-editor';
 import './properties-panel.scss';
 
 export class PropertiesPanel extends Widget {
-	public static readonly tagName = 'phed-properties-panel';
+	public static readonly tagName: string = 'phed-properties-panel';
 
 	private content: HTMLElement;
 

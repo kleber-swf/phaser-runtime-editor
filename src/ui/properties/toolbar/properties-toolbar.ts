@@ -3,7 +3,7 @@ import { PropertiesPanel } from '../panel/properties-panel';
 import './properties-toolbar.scss';
 
 export class PropertiesToolbar extends Widget {
-	public static readonly tagName = 'phred-properties-toolbar';
+	public static readonly tagName: string = 'phred-properties-toolbar';
 	private readonly panels: PropertiesPanel[] = [];	// TODO depend on an interface or abstract class here
 
 	public connectedCallback() {

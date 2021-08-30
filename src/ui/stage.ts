@@ -5,7 +5,7 @@ import { Widget } from './widget/widget';
 import './stage.scss';
 
 export class Stage extends Widget {
-	public static readonly tagName = 'phred-stage';
+	public static readonly tagName: string = 'phred-stage';
 
 	private _game: Phaser.Game;
 	private actions: ActionsToolbar;

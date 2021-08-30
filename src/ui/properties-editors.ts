@@ -1,8 +1,13 @@
+import { AlphaPropertyEditor } from './properties/editors/number/alpha-property-editor';
+import { NumberPropertyEditor } from './properties/editors/number/number-property-editor';
 import { StringPropertyEditor } from './properties/editors/string/string-property-editor';
 
+// TODO this name is awful. Please find a better one
 class PropertiesEditorsClass {
 	private readonly editors = {
 		string: StringPropertyEditor.tagName,
+		number: NumberPropertyEditor.tagName,
+		alpha: AlphaPropertyEditor.tagName,
 		default: StringPropertyEditor.tagName,
 	};
 

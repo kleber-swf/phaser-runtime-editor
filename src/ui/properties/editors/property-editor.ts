@@ -13,12 +13,12 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 		return label;
 	}
 
-	protected abstract createValue(value: T, propertyId: string): HTMLElement;
+	protected abstract createContent(value: T, propertyId: string): HTMLElement;
 
 	public setContent(name: string, value: T) {
 		const propId = `prop-${name}`;
 		const title = this.createLabel(name, propId);
-		const content = this.createValue(value, propId);
+		const content = this.createContent(value, propId);
 		this.appendChild(title);
 		this.appendChild(content);
 	}
