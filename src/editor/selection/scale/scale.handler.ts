@@ -15,9 +15,6 @@ export class ScaleHandler extends Phaser.Group {
 		this.__skip = true;
 		this.scaler = new Scaler();
 		this.gizmos = this.createGizmos(game);
-
-		this._tmpTransformPivotGizmo = new Phaser.Graphics(game);
-		this.addChild(this._tmpTransformPivotGizmo);
 	}
 
 	private createGizmos(game: Phaser.Game) {
@@ -53,8 +50,6 @@ export class ScaleHandler extends Phaser.Group {
 		gizmos[5].position.set(0, bounds.height * 0.5);					// right
 		gizmos[6].position.set(bounds.width * 0.5, bounds.height);	// bottom
 		gizmos[7].position.set(bounds.width, bounds.height * 0.5);	// left
-
-		this._tmpDrawTransformPivot(this.scaler.transformPivot);
 	}
 
 	private startScaling(gizmos: ScaleGizmo) {
@@ -72,15 +67,5 @@ export class ScaleHandler extends Phaser.Group {
 		const pointer = this.game.input.mousePointer;
 		this.scaler.scaleToPoint(pointer.x, pointer.y);
 		return true;
-	}
-
-	private _tmpTransformPivotGizmo: Phaser.Graphics;
-
-	private _tmpDrawTransformPivot(pivot: PIXI.Point) {
-		this._tmpTransformPivotGizmo.clear()
-			.lineStyle(2, 0xFFFFFF, 1)
-			.beginFill(0xFF8888, 1)
-			.drawCircle(pivot.x, pivot.y, 30)
-			.endFill();
 	}
 }
