@@ -37,11 +37,16 @@ export class PropertiesPanel extends Widget {
 			return;
 		}
 		this.content.style.visibility = 'visible';
-		['name', 'alpha'].forEach(prop => {
-			if (!(prop in obj)) return;
-			const elementId = PropertiesEditors.findEditorFor(prop, obj[prop]);
-			this.createPropertyRow(prop, obj[prop], elementId);
-		});
+		console.log(obj);
+
+		// TODO move this array to a proper place
+		// TODO they could have a type hint
+		['name', 'alpha', 'visible', 'dirty']
+			.forEach(prop => {
+				if (!(prop in obj)) return;
+				const elementId = PropertiesEditors.findEditorFor(prop, obj[prop]);
+				this.createPropertyRow(prop, obj[prop], elementId);
+			});
 	}
 }
 

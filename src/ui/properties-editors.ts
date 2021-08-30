@@ -1,3 +1,4 @@
+import { BooleanPropertyEditor } from './properties/editors/boolean/boolean-property-editor';
 import { AlphaPropertyEditor } from './properties/editors/number/alpha-property-editor';
 import { NumberPropertyEditor } from './properties/editors/number/number-property-editor';
 import { StringPropertyEditor } from './properties/editors/string/string-property-editor';
@@ -5,9 +6,15 @@ import { StringPropertyEditor } from './properties/editors/string/string-propert
 // TODO this name is awful. Please find a better one
 class PropertiesEditorsClass {
 	private readonly editors = {
+		// type
 		string: StringPropertyEditor.tagName,
 		number: NumberPropertyEditor.tagName,
+		boolean: BooleanPropertyEditor.tagName,
+
+		// name
 		alpha: AlphaPropertyEditor.tagName,
+		
+		// default
 		default: StringPropertyEditor.tagName,
 	};
 

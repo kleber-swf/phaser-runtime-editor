@@ -1,4 +1,4 @@
-@import 'colors';
+@import "colors";
 
 $property-input-background: rgba(white, 0.05);
 $property-foreground: $on-background-color;
@@ -9,7 +9,7 @@ $property-foreground: $on-background-color;
 	padding: 2px 0;
 
 	.property-title {
-		width: 30%;
+		width: 25%;
 		padding: 4px 2px 2px 0;
 		font-size: 14px;
 		color: rgba($on-background-color, 0.6);
@@ -18,16 +18,21 @@ $property-foreground: $on-background-color;
 	.property-content {
 		flex: 1;
 		color: $property-foreground;
+		padding: 2px 0;
 
-		input[type="text"], input[type="number"] {
-			width: 100%;
+		input {
 			font-size: 16px;
-			background-color: $property-input-background;
 			color: $property-foreground;
-			border: 1px solid transparent;
 			padding: 2px 4px;
-			outline: none !important;
 			transition: all 0.1s;
+		}
+		
+		input[type="text"],
+		input[type="number"] {
+			width: 100%;
+			background-color: $property-input-background;
+			border: 1px solid transparent;
+			outline: none !important;
 
 			&:focus {
 				border-color: rgba($on-background-color, 0.5);

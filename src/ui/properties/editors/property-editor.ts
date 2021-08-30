@@ -13,7 +13,17 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 		return label;
 	}
 
-	protected abstract createContent(value: T, propertyId: string): HTMLElement;
+	protected createContent(value: T, propertyId: string) {
+		const propContent = document.createElement('div');
+		propContent.classList.add('property-content');
+
+		const innerContent = this.createInnerContent(value, propertyId);
+		propContent.append(innerContent);
+
+		return propContent;
+	}
+
+	protected abstract createInnerContent(value: T, propertyId: string): HTMLElement;
 
 	public setContent(name: string, value: T) {
 		const propId = `prop-${name}`;
