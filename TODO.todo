@@ -22,15 +22,16 @@ Rotation:
 Properties view:
 	[x] properties panel
 	[ ] default properties editor for built in types
-		[ ] string
-		[ ] boolean
-		[ ] number
+		[x] string
+		[x] boolean
+		[x] number
 		[ ] object
 		[ ] array
 	[ ] custom properties editor for PIXI/Phaser common types
 		[ ] Point
 		[ ] Rectangle
 		[ ] Matrix
+	[ ] optimization: shold I create a object pool for PropertyEditors?
 
 General Features:
 	[x] editor layout
