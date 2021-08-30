@@ -1,5 +1,8 @@
 @import "colors";
 
+$property-input-background: rgba(white, 0.05);
+$property-foreground: $on-background-color;
+
 phed-properties-panel {
 	display: flex;
 	flex-direction: column;
@@ -14,7 +17,40 @@ phed-properties-panel {
 	}
 
 	.content {
-		padding: 12px;
+		padding: 12px 18px;
 		box-shadow: 0 2px 2px $shadow-color;
+	}
+
+	.property-editor {
+		display: flex;
+		flex-direction: row;
+		padding: 2px 0;
+
+		.property-title {
+			width: 30%;
+			padding: 4px 2px 2px 0;
+			font-size: 14px;
+			color: rgba($on-background-color, 0.6);
+		}
+
+		.property-content {
+			flex: 1;
+			color: $property-foreground;
+
+			input[type="text"] {
+				width: 100%;
+				font-size: 16px;
+				background-color: $property-input-background;
+				color: $property-foreground;
+				border: 1px solid transparent;
+				padding: 2px 4px;
+				outline: none !important;
+				transition: all 0.1s;
+
+				&:focus {
+					border-color: rgba($on-background-color, 0.5);
+				}
+			}
+		}
 	}
 }
