@@ -3,12 +3,12 @@ import { PropertiesPanel } from '../panel/properties-panel';
 import './properties-toolbar.scss';
 
 export class PropertiesToolbar extends Widget {
-	public static readonly tagId = 'phred-properties-toolbar';
+	public static readonly tagName = 'phred-properties-toolbar';
 	private readonly panels: PropertiesPanel[] = [];	// TODO depend on an interface or abstract class here
 
 	public connectedCallback() {
 		super.connectedCallback();
-		const panel = document.createElement(PropertiesPanel.tagId) as PropertiesPanel;
+		const panel = document.createElement(PropertiesPanel.tagName) as PropertiesPanel;
 		this.appendChild(panel);
 		this.panels.push(panel);
 	}
@@ -18,4 +18,4 @@ export class PropertiesToolbar extends Widget {
 	}
 }
 
-customElements.define(PropertiesToolbar.tagId, PropertiesToolbar);
+customElements.define(PropertiesToolbar.tagName, PropertiesToolbar);

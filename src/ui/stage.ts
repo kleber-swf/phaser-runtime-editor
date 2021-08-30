@@ -5,7 +5,7 @@ import { Widget } from './widget/widget';
 import './stage.scss';
 
 export class Stage extends Widget {
-	public static readonly tagId = 'phred-stage';
+	public static readonly tagName = 'phred-stage';
 
 	private _game: Phaser.Game;
 	private actions: ActionsToolbar;
@@ -34,14 +34,14 @@ export class Stage extends Widget {
 		content.classList.add('phred-content');
 		this.appendChild(content);
 
-		this.actions = document.createElement(ActionsToolbar.tagId) as ActionsToolbar;
+		this.actions = document.createElement(ActionsToolbar.tagName) as ActionsToolbar;
 		content.appendChild(this.actions);
 
 		this.gameContainer = document.createElement('div');
 		this.gameContainer.classList.add('phred-game-container');
 		content.appendChild(this.gameContainer);
 
-		this.properties = document.createElement(PropertiesToolbar.tagId) as PropertiesToolbar;
+		this.properties = document.createElement(PropertiesToolbar.tagName) as PropertiesToolbar;
 		this.appendChild(this.properties);
 	}
 
@@ -50,4 +50,4 @@ export class Stage extends Widget {
 	}
 }
 
-customElements.define(Stage.tagId, Stage);
+customElements.define(Stage.tagName, Stage);

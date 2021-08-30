@@ -8,7 +8,7 @@ export class Plugin extends Phaser.Plugin {
 	public constructor(game: Phaser.Game, group?: Phaser.Group | Phaser.Stage) {
 		super(game, game.plugins);
 
-		const stage = document.createElement(Stage.tagId) as Stage;
+		const stage = document.createElement(Stage.tagName) as Stage;
 		document.body.appendChild(stage);
 
 		group = group ?? game.world;

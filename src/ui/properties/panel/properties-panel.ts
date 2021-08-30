@@ -1,8 +1,10 @@
+import { PropertiesEditors } from 'ui/properties-editors';
 import { Widget } from 'ui/widget/widget';
+import { PropertyEditor } from '../editors/property-editor';
 import './properties-panel.scss';
 
 export class PropertiesPanel extends Widget {
-	public static readonly tagId = 'phed-properties-panel';
+	public static readonly tagName = 'phed-properties-panel';
 
 	private content: HTMLElement;
 
@@ -19,41 +21,28 @@ export class PropertiesPanel extends Widget {
 		this.appendChild(content);
 	}
 
-	private createPropertyRow(name: string, value: any) {
-		const propId = `prop-value-${name}`;
-
-		const prop = document.createElement('div');
-		prop.classList.add('property-editor');
-		this.content.appendChild(prop);
-
-		const propTitle = document.createElement('label');
-		propTitle.classList.add('property-title');
-		propTitle.append(name);
-		propTitle.setAttribute('for', propId);
-		prop.append(propTitle);
-
-		const propContent = document.createElement('div');
-		propContent.classList.add('property-content');
-		prop.append(propContent);
-
-		// TODO make this specific for each type of property
-		const propValue = document.createElement('input');
-		propValue.id = propId;
-		propValue.setAttribute('type', 'text');
-		propValue.setAttribute('value', value);
-		propContent.append(propValue);
+	private createPropertyRow(name: string, value: any, tagName: string) {
+		const row = document.createElement(tagName) as PropertyEditor<any>;
+		row.setContent(name, value);
+		this.content.appendChild(row);
 	}
 
 	public selectObject(obj: PIXI.DisplayObject) {
 		const emptyContent = this.content.cloneNode(false);
 		this.replaceChild(emptyContent, this.content);
 		this.content = emptyContent as HTMLElement;
-		
-		if (!obj) return;
-		['name', 'scale'].forEach(prop => {
-			if (prop in obj) this.createPropertyRow(prop, obj[prop]);
+
+		if (!obj) {
+			this.content.style.visibility = 'hidden';
+			return;
+		}
+		this.content.style.visibility = 'visible';
+		['name', 'alpha'].forEach(prop => {
+			if (!(prop in obj)) return;
+			const elementId = PropertiesEditors.findEditorFor(prop, obj[prop]);
+			this.createPropertyRow(prop, obj[prop], elementId);
 		});
 	}
 }
 
-customElements.define(PropertiesPanel.tagId, PropertiesPanel);
+customElements.define(PropertiesPanel.tagName, PropertiesPanel);
