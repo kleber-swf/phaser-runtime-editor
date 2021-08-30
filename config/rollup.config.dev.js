@@ -1,6 +1,8 @@
 import typescript from '@rollup/plugin-typescript';
+import browserSync from 'rollup-plugin-browsersync';
 
 const pkg = require('../package.json');
+const bsConfig = require('./bs-config');
 
 export default {
 	input: pkg.input,
@@ -18,6 +20,7 @@ export default {
 			declarationMap: true,
 			sourceMap: true,
 		}),
+		browserSync(bsConfig),
 	],
 	output: {
 		dir: './dist',
