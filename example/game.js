@@ -80,31 +80,31 @@ function create() {
 
 	// 0   0
 	let child = el(DIST * 0, DIST * 0, SIZE, SIZE, parent, 'child-a0-p0');
-
+	
 	// 0   .5
 	child = el(DIST * 1, DIST * 0, SIZE, SIZE, parent, 'child-a0-p.5');
 	child.pivot.set(0.5 * SIZE, 0.5 * SIZE);
-
+	
 	// 0   1
 	child = el(DIST * 2, DIST * 0, SIZE, SIZE, parent, 'child-a0-p1');
 	child.pivot.set(SIZE, SIZE);
-
-
+	
+	
 	// .5  0
 	child = el(DIST * 0, DIST * 1, SIZE, SIZE, parent, 'child-a.5-p0');
 	child.anchor.set(0.5, 0.5);
-
+	
 	// .5  .5
 	child = el(DIST * 1, DIST * 1, SIZE, SIZE, parent, 'child-a.5-p.5');
 	child.anchor.set(0.5, 0.5);
 	child.pivot.set(0.5 * SIZE, 0.5 * SIZE);
-
+	
 	// .5  1
 	child = el(DIST * 2, DIST * 1, SIZE, SIZE, parent, 'child-a.5-p1');
 	child.anchor.set(0.5, 0.5);
 	child.pivot.set(SIZE, SIZE);
-
-
+	
+	
 	// 1   0
 	child = el(DIST * 0, DIST * 2, SIZE, SIZE, parent, 'child-a1-p0');
 	child.anchor.set(1, 1);

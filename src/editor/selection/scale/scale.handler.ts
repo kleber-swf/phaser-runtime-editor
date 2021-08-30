@@ -43,22 +43,22 @@ export class ScaleHandler extends Phaser.Group {
 	}
 
 	public redraw(bounds: PIXI.Rectangle) {
-		const knobs = this.gizmos;
-		knobs[0].position.set(0, 0);											// top left
-		knobs[1].position.set(bounds.width, 0);							// top right
-		knobs[2].position.set(bounds.width, bounds.height);			// bottom right
-		knobs[3].position.set(0, bounds.height);							// bottom right
+		const gizmos = this.gizmos;
+		gizmos[0].position.set(0, 0);											// top left
+		gizmos[1].position.set(bounds.width, 0);							// top right
+		gizmos[2].position.set(bounds.width, bounds.height);			// bottom right
+		gizmos[3].position.set(0, bounds.height);							// bottom right
 
-		knobs[4].position.set(bounds.width * 0.5, 0);					// top
-		knobs[5].position.set(0, bounds.height * 0.5);					// right
-		knobs[6].position.set(bounds.width * 0.5, bounds.height);	// bottom
-		knobs[7].position.set(bounds.width, bounds.height * 0.5);	// left
+		gizmos[4].position.set(bounds.width * 0.5, 0);					// top
+		gizmos[5].position.set(0, bounds.height * 0.5);					// right
+		gizmos[6].position.set(bounds.width * 0.5, bounds.height);	// bottom
+		gizmos[7].position.set(bounds.width, bounds.height * 0.5);	// left
 
 		this._tmpDrawTransformPivot(this.scaler.transformPivot);
 	}
 
-	private startScaling(knob: ScaleGizmo) {
-		this.scaler.startScaling(this.selectedObject, knob.factorH, knob.factorV);
+	private startScaling(gizmos: ScaleGizmo) {
+		this.scaler.startScaling(this.selectedObject, gizmos.factorH, gizmos.factorV);
 		this._scaling = true;
 	}
 

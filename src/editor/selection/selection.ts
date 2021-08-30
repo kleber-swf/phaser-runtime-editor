@@ -33,7 +33,11 @@ export class Selection extends Phaser.Group {
 		this._obj = obj;
 		this.view.clear();
 		this.scaleHandler.selectedObject = obj;
-		if (this.visible = !!obj) this.redraw();
+		this.rotationHandler.selectedObject = obj;
+		if (this.visible = !!obj) {
+			this.redraw();
+			// this.pivot.set(obj.pivot.x, obj.pivot.y);
+		}
 	}
 
 	private redraw() {
@@ -48,6 +52,7 @@ export class Selection extends Phaser.Group {
 		//this.scaleHandler.redraw(bounds);
 		this.rotationHandler.redraw(bounds);
 		this.position.set(bounds.x, bounds.y);
+		this.rotation = this._obj.rotation;
 	}
 
 	private drawBorder(bounds: PIXI.Rectangle) {
@@ -94,5 +99,6 @@ export class Selection extends Phaser.Group {
 	public update() {
 		super.update();
 		if (this.scaleHandler.handle()) this.redraw();
+		if (this.rotationHandler.handle()) this.redraw();
 	}
 }

@@ -6,7 +6,7 @@ Translation:
 	[x] move with having to select first
 
 Scaling:
-	[x] show knobs
+	[x] show gizmos
 	[x] scale from corners
 	[x] scale from sides
 	[x] inverse scaling
@@ -16,7 +16,7 @@ Scaling:
 	[x] larger area
 
 Rotation:
-	[ ] knobs
+	[ ] gizmos
 	[ ] rotation handler
 
 Properties view:
