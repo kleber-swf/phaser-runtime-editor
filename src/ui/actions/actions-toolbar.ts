@@ -1,4 +1,4 @@
-import { Widget } from '../widget';
+import { Widget } from 'ui/widget/widget';
 import './actions-toolbar.scss'
 
 export class ActionsToolbar extends Widget {

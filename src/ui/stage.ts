@@ -1,7 +1,7 @@
-import { ActionsToolbar } from './actions-toolbar/actions-toolbar';
+import { ActionsToolbar } from './actions/actions-toolbar';
 import { PropertiesToolbar } from './properties/toolbar/properties-toolbar';
-import { Widget } from './widget';
 import './stage.scss';
+import { Widget } from './widget/widget';
 
 export class Stage extends Widget {
 	public static readonly tagId = 'phred-stage';
