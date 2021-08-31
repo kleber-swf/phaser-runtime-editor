@@ -47,15 +47,26 @@ export class Scaler {
 	public stopScaling() {
 		const obj = this.obj;
 		obj.pivot.set(this.originalPivot.x, this.originalPivot.y);
-		obj.position.set(
-			obj.x - (this.transformPivot.x - this.originalPivot.x) * obj.scale.x,
-			obj.y - (this.transformPivot.y - this.originalPivot.y) * obj.scale.y,
-		);
+		const pos = this.getObjectStopPosition();
+		obj.position.set(pos.x, pos.y);
 	}
 
 	public scaleToPoint(x: number, y: number) {
 		const ub = this.unscaledBounds;
 		if (this._scaleH) this.obj.scale.x = ((ub.x - x) * this._distFactorH) / ub.width;
 		if (this._scaleV) this.obj.scale.y = ((ub.y - y) * this._distFactorV) / ub.height;
+	}
+
+
+	private _stopPosition = new Phaser.Point();
+
+	public getObjectStopPosition() {
+		const { position, scale } = this.obj;
+		const { transformPivot, originalPivot } = this;
+		this._stopPosition.set(
+			position.x - (transformPivot.x - originalPivot.x) * scale.x,
+			position.y - (transformPivot.y - originalPivot.y) * scale.y,
+		);
+		return this._stopPosition;
 	}
 }
