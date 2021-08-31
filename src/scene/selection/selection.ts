@@ -1,4 +1,5 @@
 import { Data, DataOrigin } from 'data';
+import { PointUtil } from 'scene/util/math.util';
 import { ANCHOR_COLOR, ANCHOR_STROKE, BORDER_COLOR, BORDER_STROKE, PIVOT_COLOR, PIVOT_STROKE } from '../scene-colors';
 import { ScaleHandler } from './scale/scale.handler';
 
@@ -81,8 +82,11 @@ export class Selection extends Phaser.Group {
 	public move(deltaX: number, deltaY: number) {
 		let pos: PIXI.Point = this.position;
 		this.position.set(pos.x + deltaX, pos.y + deltaY);
+
+		const scale = this._selectedObject.parent?.worldScale ?? PointUtil.one;
 		pos = this._selectedObject.position;
-		this._selectedObject.position.set(pos.x + deltaX, pos.y + deltaY);
+		this._selectedObject.position.set(pos.x + deltaX / scale.x, pos.y + deltaY / scale.y);
+
 		Data.propertyChanged('position', pos, DataOrigin.SCENE);
 	}
 

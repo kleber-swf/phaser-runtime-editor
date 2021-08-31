@@ -1,7 +1,7 @@
 import { Data, DataOrigin } from 'data';
-import { DragUtil } from './drag.util';
 import { SceneMovel } from './scene-model';
 import { Selection } from './selection/selection';
+import { DragUtil } from './util/drag.util';
 
 export class SceneEditor extends Phaser.Group {
 	private readonly touchArea: Phaser.Graphics;

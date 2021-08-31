@@ -1,5 +1,6 @@
 Selection:
 	[x] natural parent selection
+	[x] global scale
 	[ ] skip invisible objects
 	
 Translation:
