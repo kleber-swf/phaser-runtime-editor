@@ -31,7 +31,7 @@ BASIC:
 			[x] number
 		[x] custom property editors for PIXI/Phaser common types
 			[x] Point
-		[ ] look for basic properties to inspect
+		[x] look for basic properties to inspect
 
 	Object Tree:
 		[ ] panel
