@@ -29,10 +29,12 @@ class PropertiesEditorsClass {
 
 	public readonly inspectableProperties: PropertyInspectionData[] = [
 		{ name: 'name', typeHint: 'string' },
-		{ name: 'alpha', typeHint: 'number', data: { min: 0, max: 1, step: 0.1 } },
-		{ name: 'visible', typeHint: 'boolean' },
 		{ name: 'position', typeHint: 'point' },
 		{ name: 'scale', typeHint: 'point' },
+		{ name: 'pivot', typeHint: 'point' },
+		{ name: 'anchor', typeHint: 'point' },
+		{ name: 'alpha', typeHint: 'number', data: { min: 0, max: 1, step: 0.1 } },
+		{ name: 'visible', typeHint: 'boolean' },
 	];
 
 	public findEditorFor(value: any, data: PropertyInspectionData) {
