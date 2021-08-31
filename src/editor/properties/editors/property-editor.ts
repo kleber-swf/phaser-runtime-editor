@@ -17,19 +17,24 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 	public setContent(prop: PropertyInspectionData, value: T, fieldId?: string) {
 		fieldId = fieldId ?? `${prop.name}-${PropertyEditor.randomId()}`;
 		this.prop = prop;
+
+		const titleCol = document.createElement('div');
+		titleCol.classList.add('property-title', prop.name);
+
 		const title = this.createLabel(fieldId, prop);
-		const content = this.createContent(value, fieldId, prop);
+		titleCol.appendChild(title);
+
+		const contentCol = this.createContent(value, fieldId, prop);
 
 		this.setInternalValue(value);
 		this.onchange = this.onValueChanged.bind(this);
 
-		this.appendChild(title);
-		this.appendChild(content);
+		this.appendChild(titleCol);
+		this.appendChild(contentCol);
 	}
 
 	protected createLabel(fieldId: string, prop: PropertyInspectionData): HTMLElement {
 		const label = document.createElement('label');
-		label.classList.add('property-title');
 		label.append(prop.name);
 		label.setAttribute('for', fieldId);
 		return label;
@@ -37,7 +42,7 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 
 	protected createContent(value: T, fieldId: string, prop: PropertyInspectionData) {
 		const propContent = document.createElement('div');
-		propContent.classList.add('property-content');
+		propContent.classList.add('property-content', prop.name);
 
 		const innerContent = this.createInnerContent(fieldId, value, prop);
 		propContent.append(innerContent);

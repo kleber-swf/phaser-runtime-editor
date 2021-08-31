@@ -1,6 +1,6 @@
 const game = new Phaser.Game({
 	width: 1920,
-	height: 1200,
+	height: 2000,
 	renderer: Phaser.AUTO,
 	parent: 'game',
 	scaleMode: Phaser.ScaleManager.SHOW_ALL,

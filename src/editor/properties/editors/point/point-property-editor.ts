@@ -2,6 +2,8 @@ import { PropertyInspectionData } from 'editor/properties-editors';
 import { NumberPropertyEditor } from '../number/number-property-editor';
 import { PropertyEditor } from '../property-editor';
 
+import './point-property-editor.scss';
+
 export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 	public static readonly tagName: string = 'phed-point-property-editor';
 

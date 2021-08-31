@@ -1,4 +1,4 @@
-@import "colors";
+@import 'colors';
 
 $property-input-background: rgba(white, 0.05);
 $property-foreground: $on-background-color;
@@ -6,33 +6,47 @@ $property-foreground: $on-background-color;
 .property-editor {
 	display: flex;
 	flex-direction: row;
-	padding: 2px 0;
+	padding: 0 2px;
 
 	&.has-children {
-		padding: 5px 0;
+		padding: 8px 0;
+
+		&>.property-content{
+			padding-right: 0;
+		}
 	}
 
 	.property-title {
-		width: 25%;
-		padding: 4px 2px 2px 0;
-		font-size: 14px;
-		color: rgba($on-background-color, 0.6);
+		min-width: 25%;
+		padding: 0 2px;
+		overflow: hidden;
+
+		label {
+			font-size: 14px;
+			color: rgba($on-background-color, 0.6);
+			text-overflow: ellipsis;
+			overflow: hidden;
+			display: inline-block;
+			width: 100%;
+			padding: 0 6px;
+		}
 	}
 
 	.property-content {
 		flex: 1;
 		color: $property-foreground;
-		padding: 2px 0;
+		padding: 1px 4px 1px 0;
+		display: flex;
 
 		input {
-			font-size: 16px;
+			font-size: 14px;
 			color: $property-foreground;
 			padding: 2px 4px;
 			transition: all 0.1s;
 		}
-		
-		input[type="text"],
-		input[type="number"] {
+
+		input[type='text'],
+		input[type='number'] {
 			width: 100%;
 			background-color: $property-input-background;
 			border: 1px solid transparent;

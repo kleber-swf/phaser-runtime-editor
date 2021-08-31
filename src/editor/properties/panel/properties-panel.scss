@@ -1,4 +1,4 @@
-@import "colors";
+@import 'colors';
 
 phed-properties-panel {
 	display: flex;
@@ -6,15 +6,15 @@ phed-properties-panel {
 	justify-content: stretch;
 
 	.title {
+		font-size: 12px;
 		font-weight: bold;
-		font-size: 14px;
 		color: rgba($on-background-color, 0.5);
 		background-color: rgba(black, 0.2);
 		padding: 6px 8px;
 	}
 
 	.content {
-		padding: 12px 18px;
+		padding: 12px 0px;
 		box-shadow: 0 2px 2px $shadow-color;
 	}
 }
