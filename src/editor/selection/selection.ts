@@ -8,7 +8,6 @@ export class Selection extends Phaser.Group {
 
 	private readonly view: Phaser.Graphics;
 	private readonly scaleHandler: ScaleHandler;
-	private _hasScheduledChanges = false;
 
 	constructor(game: Phaser.Game) {
 		super(game);
@@ -84,19 +83,12 @@ export class Selection extends Phaser.Group {
 		this.position.set(pos.x + deltaX, pos.y + deltaY);
 		pos = this._selectedObject.position;
 		this._selectedObject.position.set(pos.x + deltaX, pos.y + deltaY);
-		this._hasScheduledChanges = true;
+		Data.propertyChanged('position', pos, EDITOR);
 	}
 
 
 	public update() {
 		super.update();
-		if (this.scaleHandler.handle()) {
-			this.redraw();
-			this._hasScheduledChanges = true;
-		}
-		if (!this._hasScheduledChanges) return;
-		Data.propertyChanged('position', this._selectedObject.position, EDITOR);
-		Data.propertyChanged('scale', this._selectedObject.scale, EDITOR);
-		this._hasScheduledChanges = false;
+		if (this.scaleHandler.handle()) this.redraw();
 	}
 }

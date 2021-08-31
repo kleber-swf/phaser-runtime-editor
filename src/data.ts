@@ -24,10 +24,24 @@ class DataClass {
 	}
 
 	public propertyChanged(property: string, value: any, from: FROM) {
-		if (this._selectedObject)
-			this.onPropertyChanged[from].dispatch(property, value, this._selectedObject, from);
+		if (!this._selectedObject) return;
+		this._scheduledEvents[property] = { value, from };
+		this._hasScheduledEvents = true;
 	}
 
+	private _hasScheduledEvents = false;
+	private _scheduledEvents: { [id: string]: { value: any, from: FROM } } = {};
+
+	public dispatchScheduledEvents() {
+		if (!this._hasScheduledEvents) return;
+		this._hasScheduledEvents = false;
+		const events = this._scheduledEvents;
+		this._scheduledEvents = {};
+		Object.keys(events).forEach(k => {
+			const e = events[k];
+			this.onPropertyChanged[e.from].dispatch(k, e.value, this._selectedObject, e.from);
+		});
+	}
 }
 
 export const Data = new DataClass();

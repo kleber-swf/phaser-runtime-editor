@@ -4,7 +4,6 @@ import { EditorView } from './editor/editor.view';
 import './plugin.scss';
 import { Stage } from './ui/stage';
 
-
 export class Plugin extends Phaser.Plugin {
 	public constructor(game: Phaser.Game, group?: Phaser.Group | Phaser.Stage) {
 		super(game, game.plugins);
@@ -18,5 +17,9 @@ export class Plugin extends Phaser.Plugin {
 		stage.game = game;
 
 		Data.onSelectedObjectChanged.add(stage.selectObject, stage);
+	}
+
+	public postUpdate() {
+		Data.dispatchScheduledEvents();
 	}
 }
