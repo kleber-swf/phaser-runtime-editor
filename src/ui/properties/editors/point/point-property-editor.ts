@@ -20,10 +20,12 @@ export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 
 		const xinput = this.xinput = document.createElement(NumberPropertyEditor.tagName,) as NumberPropertyEditor;
 		xinput.setContent({ name: 'x', typeHint: 'number', data: prop.data }, value.x, fieldId);
+		xinput.onchange = this.onValueChanged.bind(this);
 		parent.appendChild(xinput);
-
+		
 		const yinput = this.yinput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;
 		yinput.setContent({ name: 'y', typeHint: 'number', data: prop.data }, value.y);
+		xinput.onchange = this.onValueChanged.bind(this);
 		parent.appendChild(yinput);
 
 		return parent;
