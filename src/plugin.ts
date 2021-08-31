@@ -1,8 +1,9 @@
+import { Data } from 'data';
 import Phaser from 'phaser-ce';
 import { EditorView } from './editor/editor.view';
+import './plugin.scss';
 import { Stage } from './ui/stage';
 
-import './plugin.scss';
 
 export class Plugin extends Phaser.Plugin {
 	public constructor(game: Phaser.Game, group?: Phaser.Group | Phaser.Stage) {
@@ -12,8 +13,10 @@ export class Plugin extends Phaser.Plugin {
 		document.body.appendChild(stage);
 
 		group = group ?? game.world;
-		const editor = new EditorView(game, group, game.stage);
+
+		new EditorView(game, group, game.stage);
 		stage.game = game;
-		editor.onSelectedObjectChanged.add(stage.selectObject, stage);
+
+		Data.onSelectedObjectChanged.add(stage.selectObject, stage);
 	}
 }

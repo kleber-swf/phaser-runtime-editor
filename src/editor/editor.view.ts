@@ -1,3 +1,4 @@
+import { Data } from 'data';
 import { DragUtil } from './drag.util';
 import { EditorModel } from './editor.model';
 import { Selection } from './selection/selection';
@@ -19,8 +20,6 @@ export class EditorView extends Phaser.Group {
 
 	/** Whether the input down event happened here */
 	private _isInputDown = false;
-
-	public readonly onSelectedObjectChanged = new Phaser.Signal();
 
 	constructor(game: Phaser.Game, container: Phaser.Group | Phaser.Stage, parent: Phaser.Group | Phaser.Stage) {
 		super(game, parent);
@@ -78,9 +77,14 @@ export class EditorView extends Phaser.Group {
 		this.getObjectsUnderPoint(pointer.x, pointer.y, this.container.children, objects);
 
 		const obj = this.model.setSelectionTree(objects);
-		this.selection.select(obj);
-		this.onSelectedObjectChanged.dispatch(obj);
+		this.selectObject(obj);
 		return obj !== null;
+	}
+
+	private selectObject(obj: PIXI.DisplayObject) {
+		// TODO is this the only place the selected object can be changed?
+		this.selection.select(obj);
+		Data.selectObject(obj);
 	}
 
 	private getObjectsUnderPoint(x: number, y: number, children: PIXI.DisplayObject[], objects: PIXI.DisplayObject[]) {

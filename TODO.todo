@@ -32,6 +32,7 @@ Properties view:
 		[ ] Rectangle
 		[ ] Matrix
 	[ ] optimization: shold I create a object pool for PropertyEditors?
+	[ ] two-way binding
 
 General Features:
 	[x] editor layout

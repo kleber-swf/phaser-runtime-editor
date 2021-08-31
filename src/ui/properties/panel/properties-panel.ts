@@ -1,4 +1,4 @@
-import { PropertiesEditors } from 'ui/properties-editors';
+import { PropertiesEditors, PropertyInspectionData } from 'ui/properties-editors';
 import { Widget } from 'ui/widget/widget';
 import { PropertyEditor } from '../editors/property-editor';
 import './properties-panel.scss';
@@ -21,9 +21,9 @@ export class PropertiesPanel extends Widget {
 		this.appendChild(content);
 	}
 
-	private createPropertyRow(name: string, value: any, tagName: string) {
+	private createPropertyRow(prop: PropertyInspectionData, value: any, tagName: string) {
 		const row = document.createElement(tagName) as PropertyEditor<any>;
-		row.setContent(name, value);
+		row.setContent(prop, value);
 		this.content.appendChild(row);
 	}
 
@@ -41,11 +41,11 @@ export class PropertiesPanel extends Widget {
 
 		// TODO move this array to a proper place
 		// TODO they could have a type hint
-		['name', 'alpha', 'visible', 'dirty']
+		PropertiesEditors.inspectableProperties
 			.forEach(prop => {
-				if (!(prop in obj)) return;
-				const elementId = PropertiesEditors.findEditorFor(prop, obj[prop]);
-				this.createPropertyRow(prop, obj[prop], elementId);
+				if (!(prop.name in obj)) return;
+				const elementId = PropertiesEditors.findEditorFor(obj[prop.name], prop);
+				this.createPropertyRow(prop, obj[prop.name], elementId);
 			});
 	}
 }
