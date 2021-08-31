@@ -1,4 +1,4 @@
-import { Data, EDITOR } from 'data';
+import { Data, DataOrigin } from 'data';
 import { ANCHOR_COLOR, ANCHOR_STROKE, BORDER_COLOR, BORDER_STROKE, PIVOT_COLOR, PIVOT_STROKE } from '../editor.colors';
 import { ScaleHandler } from './scale/scale.handler';
 
@@ -83,7 +83,7 @@ export class Selection extends Phaser.Group {
 		this.position.set(pos.x + deltaX, pos.y + deltaY);
 		pos = this._selectedObject.position;
 		this._selectedObject.position.set(pos.x + deltaX, pos.y + deltaY);
-		Data.propertyChanged('position', pos, EDITOR);
+		Data.propertyChanged('position', pos, DataOrigin.EDITOR);
 	}
 
 

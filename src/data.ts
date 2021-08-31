@@ -1,6 +1,7 @@
-export const EDITOR = 0;
-export const INSPECTOR = 1;
-type FROM = typeof EDITOR | typeof INSPECTOR;
+export enum DataOrigin {
+	EDITOR = 0,
+	INSPECTOR = 1,
+};
 
 class DataClass {
 	private _selectedObject: PIXI.DisplayObject;
@@ -14,23 +15,23 @@ class DataClass {
 		this.onSelectedObjectChanged.dispatch(value);
 	}
 
-	private readonly onPropertyChanged: Record<FROM, Phaser.Signal> = {
-		[EDITOR]: new Phaser.Signal(),
-		[INSPECTOR]: new Phaser.Signal(),
+	private readonly onPropertyChanged: Record<DataOrigin, Phaser.Signal> = {
+		[DataOrigin.EDITOR]: new Phaser.Signal(),
+		[DataOrigin.INSPECTOR]: new Phaser.Signal(),
 	};
 
-	public addPropertyChangedListener(from: FROM, listener: (property: string, value: any, obj?: PIXI.DisplayObject, from?: FROM) => void, context?: any) {
+	public addPropertyChangedListener(from: DataOrigin, listener: (property: string, value: any, obj?: PIXI.DisplayObject, from?: DataOrigin) => void, context?: any) {
 		this.onPropertyChanged[from].add(listener, context);
 	}
 
-	public propertyChanged(property: string, value: any, from: FROM) {
+	public propertyChanged(property: string, value: any, from: DataOrigin) {
 		if (!this._selectedObject) return;
 		this._scheduledEvents[property] = { value, from };
 		this._hasScheduledEvents = true;
 	}
 
 	private _hasScheduledEvents = false;
-	private _scheduledEvents: { [id: string]: { value: any, from: FROM } } = {};
+	private _scheduledEvents: { [id: string]: { value: any, from: DataOrigin } } = {};
 
 	public dispatchScheduledEvents() {
 		if (!this._hasScheduledEvents) return;

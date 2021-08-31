@@ -1,5 +1,5 @@
-import { Data, EDITOR } from 'data';
-import { InspectableTypes, PropertiesEditors, PropertyInspectionData } from 'ui/properties-editors';
+import { Data, DataOrigin } from 'data';
+import { PropertiesEditors, PropertyInspectionData } from 'ui/properties-editors';
 import { Widget } from 'ui/widget/widget';
 import { PropertyEditor } from '../editors/property-editor';
 import './properties-panel.scss';
@@ -22,7 +22,7 @@ export class PropertiesPanel extends Widget {
 		content.classList.add('content');
 		this.appendChild(content);
 
-		Data.addPropertyChangedListener(EDITOR, this.onPropertyChangedOnEditor, this);
+		Data.addPropertyChangedListener(DataOrigin.EDITOR, this.onPropertyChangedOnEditor, this);
 	}
 
 	private onPropertyChangedOnEditor(property: string, value: any) {
