@@ -24,7 +24,8 @@ class DataClass {
 	}
 
 	public propertyChanged(property: string, value: any, from: FROM) {
-		this.onPropertyChanged[from].dispatch(property, value, this._selectedObject, from);
+		if (this._selectedObject)
+			this.onPropertyChanged[from].dispatch(property, value, this._selectedObject, from);
 	}
 
 }

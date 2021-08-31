@@ -8,6 +8,14 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 		this.classList.add('property-editor');
 	}
 
+	public setContent(prop: PropertyInspectionData, value: T) {
+		const propId = `${prop.name}-${PropertyEditor.randomId()}`;
+		const title = this.createLabel(propId, prop);
+		const content = this.createContent(value, propId, prop);
+		this.appendChild(title);
+		this.appendChild(content);
+	}
+
 	protected createLabel(propertyId: string, prop: PropertyInspectionData): HTMLElement {
 		const label = document.createElement('label');
 		label.classList.add('property-title');
@@ -28,11 +36,5 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 
 	protected abstract createInnerContent(value: T, propertyId: string, prop: PropertyInspectionData): HTMLElement;
 
-	public setContent(prop: PropertyInspectionData, value: T) {
-		const propId = `${prop.name}-${PropertyEditor.randomId()}`;
-		const title = this.createLabel(propId, prop);
-		const content = this.createContent(value, propId, prop);
-		this.appendChild(title);
-		this.appendChild(content);
-	}
+	public abstract updateContent(value: T): void;
 }

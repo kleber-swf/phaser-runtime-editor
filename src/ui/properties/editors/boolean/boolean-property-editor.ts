@@ -4,6 +4,8 @@ import { PropertyEditor } from '../property-editor';
 export class BooleanPropertyEditor extends PropertyEditor<boolean> {
 	public static readonly tagName: string = 'phed-boolean-property-editor';
 
+	private input: HTMLElement;
+
 	protected createInnerContent(value: boolean, propertyId: string, prop: PropertyInspectionData) {
 		const input = document.createElement('input');
 		input.id = propertyId;
@@ -14,6 +16,12 @@ export class BooleanPropertyEditor extends PropertyEditor<boolean> {
 
 		return input;
 	}
+
+	public updateContent(value: boolean) {
+		if (value) this.input.setAttribute('checked', '');
+		else this.input.removeAttribute('checked');
+	}
+
 }
 
 customElements.define(BooleanPropertyEditor.tagName, BooleanPropertyEditor);

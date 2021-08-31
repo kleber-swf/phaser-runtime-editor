@@ -1,10 +1,12 @@
-import { PropertiesEditors, PropertyInspectionData } from 'ui/properties-editors';
+import { Data, EDITOR } from 'data';
+import { InspectableTypes, PropertiesEditors, PropertyInspectionData } from 'ui/properties-editors';
 import { Widget } from 'ui/widget/widget';
 import { PropertyEditor } from '../editors/property-editor';
 import './properties-panel.scss';
 
 export class PropertiesPanel extends Widget {
 	public static readonly tagName: string = 'phed-properties-panel';
+	private editors: Record<string, PropertyEditor<any>> = {};
 
 	private content: HTMLElement;
 
@@ -19,35 +21,45 @@ export class PropertiesPanel extends Widget {
 		const content = this.content = document.createElement('div');
 		content.classList.add('content');
 		this.appendChild(content);
+
+		Data.addPropertyChangedListener(EDITOR, this.onPropertyChangedOnEditor, this);
 	}
 
-	private createPropertyRow(prop: PropertyInspectionData, value: any, tagName: string) {
-		const row = document.createElement(tagName) as PropertyEditor<any>;
-		row.setContent(prop, value);
-		this.content.appendChild(row);
+	private onPropertyChangedOnEditor(property: string, value: any) {
+		this.editors[property]?.updateContent(value);
+	}
+
+	private createPropertyEditor(prop: PropertyInspectionData, value: any, tagName: string) {
+		const editor = document.createElement(tagName) as PropertyEditor<any>;
+		editor.setContent(prop, value);
+		this.content.appendChild(editor);
+		return editor;
 	}
 
 	public selectObject(obj: PIXI.DisplayObject) {
+		// TODO what happen with the instances? Are they garbage collected?
 		const emptyContent = this.content.cloneNode(false);
 		this.replaceChild(emptyContent, this.content);
 		this.content = emptyContent as HTMLElement;
+		this.editors = {};
 
 		if (!obj) {
 			this.content.style.visibility = 'hidden';
 			return;
 		}
-		this.content.style.visibility = 'visible';
-		console.log(obj);
 
-		// TODO move this array to a proper place
-		// TODO they could have a type hint
+		this.content.style.visibility = 'visible';
+
 		PropertiesEditors.inspectableProperties
 			.forEach(prop => {
 				if (!(prop.name in obj)) return;
 				const elementId = PropertiesEditors.findEditorFor(obj[prop.name], prop);
-				this.createPropertyRow(prop, obj[prop.name], elementId);
+				const editor = this.createPropertyEditor(prop, obj[prop.name], elementId);
+				this.editors[prop.name] = editor;
 			});
 	}
+
+
 }
 
 customElements.define(PropertiesPanel.tagName, PropertiesPanel);
