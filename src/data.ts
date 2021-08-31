@@ -19,11 +19,11 @@ class DataClass {
 		[INSPECTOR]: new Phaser.Signal(),
 	};
 
-	public addPropertyChangedListener(from: FROM, listener: (property: number, value: any, obj?: PIXI.DisplayObject, from?: FROM) => void, context?: any) {
+	public addPropertyChangedListener(from: FROM, listener: (property: string, value: any, obj?: PIXI.DisplayObject, from?: FROM) => void, context?: any) {
 		this.onPropertyChanged[from].add(listener, context);
 	}
 
-	public propertyChanged(property: keyof PIXI.DisplayObject, value: any, from: FROM) {
+	public propertyChanged(property: string, value: any, from: FROM) {
 		this.onPropertyChanged[from].dispatch(property, value, this._selectedObject, from);
 	}
 
