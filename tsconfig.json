@@ -16,7 +16,7 @@
 		"baseUrl": "src",
 		"paths": {
 			"scene/*": ["scene/*"],
-			"ui/*": ["ui/*"],
+			"editor/*": ["editor/*"],
 		}
 	},
 	"include": ["src"],

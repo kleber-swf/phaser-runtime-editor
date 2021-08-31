@@ -1,4 +1,4 @@
-import { PropertyInspectionData } from 'ui/properties-editors';
+import { PropertyInspectionData } from 'editor/properties-editors';
 import { PropertyEditor } from '../property-editor';
 
 export class NumberPropertyEditor extends PropertyEditor<number> {

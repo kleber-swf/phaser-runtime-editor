@@ -1,6 +1,6 @@
 import { Data, DataOrigin } from 'data';
-import { PropertiesEditors, PropertyInspectionData } from 'ui/properties-editors';
-import { Widget } from 'ui/widget/widget';
+import { PropertiesEditors, PropertyInspectionData } from 'editor/properties-editors';
+import { Widget } from 'editor/widget/widget';
 import { PropertyEditor } from '../editors/property-editor';
 import './properties-panel.scss';
 

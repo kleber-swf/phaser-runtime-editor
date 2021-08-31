@@ -2,10 +2,10 @@ import { ActionsToolbar } from './actions/actions-toolbar';
 import { PropertiesToolbar } from './properties/toolbar/properties-toolbar';
 import { Widget } from './widget/widget';
 
-import './stage.scss';
+import './editor.scss';
 
-export class Stage extends Widget {
-	public static readonly tagName: string = 'phred-stage';
+export class Editor extends Widget {
+	public static readonly tagName: string = 'phred-editor';
 
 	private _game: Phaser.Game;
 	private actions: ActionsToolbar;
@@ -50,4 +50,4 @@ export class Stage extends Widget {
 	}
 }
 
-customElements.define(Stage.tagName, Stage);
+customElements.define(Editor.tagName, Editor);

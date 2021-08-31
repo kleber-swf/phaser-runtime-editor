@@ -1,4 +1,4 @@
-import { Widget } from 'ui/widget/widget';
+import { Widget } from 'editor/widget/widget';
 import { PropertiesPanel } from '../panel/properties-panel';
 import './properties-toolbar.scss';
 

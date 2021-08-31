@@ -1,14 +1,14 @@
 import { Data } from 'data';
 import Phaser from 'phaser-ce';
-import { SceneEditor } from './scene/scene-editor';
+import { Editor } from './editor/editor';
 import './plugin.scss';
-import { Stage } from './ui/stage';
+import { SceneEditor } from './scene/scene-editor';
 
 export class Plugin extends Phaser.Plugin {
 	public constructor(game: Phaser.Game, group?: Phaser.Group | Phaser.Stage) {
 		super(game, game.plugins);
 
-		const stage = document.createElement(Stage.tagName) as Stage;
+		const stage = document.createElement(Editor.tagName) as Editor;
 		document.body.appendChild(stage);
 
 		group = group ?? game.world;

@@ -1,5 +1,5 @@
 import { Data, DataOrigin } from 'data';
-import { PropertyInspectionData } from 'ui/properties-editors';
+import { PropertyInspectionData } from 'editor/properties-editors';
 import './property-editor.scss';
 
 export abstract class PropertyEditor<T> extends HTMLElement {
