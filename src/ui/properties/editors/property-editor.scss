@@ -38,7 +38,7 @@ $property-foreground: $on-background-color;
 			border: 1px solid transparent;
 			outline: none !important;
 
-			&:focus {
+			&:not([readonly]):focus {
 				border-color: rgba($on-background-color, 0.5);
 			}
 		}
