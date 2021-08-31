@@ -1,0 +1,13 @@
+@import 'colors';
+
+phred-properties-toolbar {
+	width: 250px;
+	box-shadow: -4px 0px 4px $shadow-color;
+	z-index: 2;
+}
+
+@media (min-width: 1600px) {
+	phred-properties-toolbar {
+		width: 400px;
+	}
+}

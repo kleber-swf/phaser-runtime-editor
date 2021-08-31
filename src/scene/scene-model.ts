@@ -1,4 +1,4 @@
-export class EditorModel {
+export class SceneMovel {
 	private _lastSelectionTree: PIXI.DisplayObject[];
 	private _lastSelectionTreeIndex = -1;
 

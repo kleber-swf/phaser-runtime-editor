@@ -1,12 +1,13 @@
-import { DragUtil } from './drag.util';
-import { EditorModel } from './editor.model';
+import { Data, DataOrigin } from 'data';
+import { SceneMovel } from './scene-model';
 import { Selection } from './selection/selection';
+import { DragUtil } from './util/drag.util';
 
-export class EditorView extends Phaser.Group {
+export class SceneEditor extends Phaser.Group {
 	private readonly touchArea: Phaser.Graphics;
 	private readonly container: Phaser.Group | Phaser.Stage;
 	private readonly selection: Selection;
-	private readonly model: EditorModel;
+	private readonly model: SceneMovel;
 
 	/** Whether the mouse down has already selected an object */
 	private _hasSelected: boolean;
@@ -22,13 +23,13 @@ export class EditorView extends Phaser.Group {
 
 	constructor(game: Phaser.Game, container: Phaser.Group | Phaser.Stage, parent: Phaser.Group | Phaser.Stage) {
 		super(game, parent);
-		this.name = '__editor';
+		this.name = '__scene_editor';
 
 		this.__skip = true;
 		game.stage.__skip = true;
 		game.world.__skip = true;
 
-		this.model = new EditorModel();
+		this.model = new SceneMovel();
 		this.container = container;
 
 		this.touchArea = this.createTouchArea(game);
@@ -36,6 +37,14 @@ export class EditorView extends Phaser.Group {
 
 		this.selection = new Selection(game);
 		this.addChild(this.selection);
+		Data.setPropertyChangedListener(DataOrigin.INSPECTOR, this.onPropertyChangedInsideInspector.bind(this));
+	}
+
+	private onPropertyChangedInsideInspector(property: string, value: any, obj: PIXI.DisplayObject) {
+		if (!(obj && property in obj)) return;
+		obj[property] = value;
+		obj.updateTransform();
+		this.selection.redraw();
 	}
 
 	private createTouchArea(game: Phaser.Game): Phaser.Graphics {
@@ -75,9 +84,15 @@ export class EditorView extends Phaser.Group {
 		const objects: PIXI.DisplayObject[] = [];
 		this.getObjectsUnderPoint(pointer.x, pointer.y, this.container.children, objects);
 
-		const selection = this.model.setSelectionTree(objects);
-		this.selection.setSelection(selection);
-		return selection !== null;
+		const obj = this.model.setSelectionTree(objects);
+		this.selectObject(obj);
+		return obj !== null;
+	}
+
+	private selectObject(obj: PIXI.DisplayObject) {
+		// TODO is this the only place the selected object can be changed?
+		this.selection.select(obj);
+		Data.selectObject(obj);
 	}
 
 	private getObjectsUnderPoint(x: number, y: number, children: PIXI.DisplayObject[], objects: PIXI.DisplayObject[]) {

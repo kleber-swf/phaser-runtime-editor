@@ -1,9 +1,11 @@
-import { ANCHOR_COLOR, ANCHOR_STROKE, BORDER_COLOR, BORDER_STROKE, PIVOT_COLOR, PIVOT_STROKE } from '../editor.colors';
+import { Data, DataOrigin } from 'data';
+import { PointUtil } from 'scene/util/math.util';
+import { ANCHOR_COLOR, ANCHOR_STROKE, BORDER_COLOR, BORDER_STROKE, PIVOT_COLOR, PIVOT_STROKE } from '../scene-colors';
 import { ScaleHandler } from './scale/scale.handler';
 
 export class Selection extends Phaser.Group {
-	private _obj: PIXI.DisplayObject = null;
-	public get hasObject() { return !!this._obj; }
+	private _selectedObject: PIXI.DisplayObject = null;
+	public get hasObject() { return !!this._selectedObject; }
 
 	private readonly view: Phaser.Graphics;
 	private readonly scaleHandler: ScaleHandler;
@@ -19,28 +21,28 @@ export class Selection extends Phaser.Group {
 		this.scaleHandler = new ScaleHandler(game);
 		this.addChild(this.scaleHandler);
 
-		this.setSelection(null);
+		this.select(null);
 	}
 
-	public setSelection(obj: PIXI.DisplayObject) {
-		this._obj = obj;
+	public select(obj: PIXI.DisplayObject) {
+		this._selectedObject = obj;
 		this.view.clear();
 		this.scaleHandler.selectedObject = obj;
 		if (this.visible = !!obj) this.redraw();
 	}
 
-	private redraw() {
+	public redraw() {
 		this.view.clear();
-		if (!this._obj) return;
-		const bounds = this._obj.getBounds();
+		if (!this._selectedObject) return;
+		const bounds = this._selectedObject.getBounds();
 		this.drawBorder(bounds);
 		this.drawPivot(this.scaleHandler.scaling
 			? this.scaleHandler.scaler.originalPivot
-			: this._obj.pivot);
-		this.drawAnchor(this._obj.anchor, bounds);
+			: this._selectedObject.pivot);
+		this.drawAnchor(this._selectedObject.anchor, bounds);
 		this.scaleHandler.redraw(bounds);
 		this.position.set(bounds.x, bounds.y);
-		this.rotation = this._obj.rotation;
+		this.rotation = this._selectedObject.rotation;
 	}
 
 	private drawBorder(bounds: PIXI.Rectangle) {
@@ -80,9 +82,14 @@ export class Selection extends Phaser.Group {
 	public move(deltaX: number, deltaY: number) {
 		let pos: PIXI.Point = this.position;
 		this.position.set(pos.x + deltaX, pos.y + deltaY);
-		pos = this._obj.position;
-		this._obj.position.set(pos.x + deltaX, pos.y + deltaY);
+
+		const scale = this._selectedObject.parent?.worldScale ?? PointUtil.one;
+		pos = this._selectedObject.position;
+		this._selectedObject.position.set(pos.x + deltaX / scale.x, pos.y + deltaY / scale.y);
+
+		Data.propertyChanged('position', pos, DataOrigin.SCENE);
 	}
+
 
 	public update() {
 		super.update();

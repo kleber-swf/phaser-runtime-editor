@@ -1,3 +1,4 @@
+import { Data, DataOrigin } from 'data';
 import { ScaleGizmo } from './scale.gizmo';
 import { Scaler } from './scaler';
 
@@ -66,6 +67,11 @@ export class ScaleHandler extends Phaser.Group {
 		if (!this._scaling) return false;
 		const pointer = this.game.input.mousePointer;
 		this.scaler.scaleToPoint(pointer.x, pointer.y);
+
+		const pos = this.scaler.getObjectStopPosition();
+		Data.propertyChanged('scale', this.selectedObject.scale, DataOrigin.SCENE);
+		Data.propertyChanged('position', pos, DataOrigin.SCENE);
+
 		return true;
 	}
 }

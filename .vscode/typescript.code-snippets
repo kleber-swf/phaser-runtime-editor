@@ -1,0 +1,17 @@
+{
+	"element":{
+		"prefix": "element",
+		"body": [
+			"import './${TM_FILENAME_BASE}.scss';",
+			"",
+			"export class ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/} extends HTMLElement {",
+			"\tpublic static readonly tagName: string = 'phed-${TM_FILENAME_BASE}';",
+			"",
+			"\tpublic connectedCallback() {}",
+			"}",
+			"",
+			"customElements.define(${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/}.tagName, ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/});",
+			""
+		]
+	}
+}

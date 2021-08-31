@@ -1,6 +1,6 @@
 const game = new Phaser.Game({
 	width: 1920,
-	height: 1600,
+	height: 2000,
 	renderer: Phaser.AUTO,
 	parent: 'game',
 	scaleMode: Phaser.ScaleManager.SHOW_ALL,
@@ -155,7 +155,7 @@ function el(x, y, w, h, parent, name) {
 	const color = COLORS[_colorIndex];
 	const g = game.add.graphics(x, y)
 		.lineStyle(1, color, 1)
-		.beginFill(color, 0.1)
+		.beginFill(color, 0.2)
 		.drawRect(0, 0, w, h)
 		.endFill();
 	parent.addChild(g);

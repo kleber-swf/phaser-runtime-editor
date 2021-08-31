@@ -1,0 +1,26 @@
+phred-editor {
+	flex: 1;
+	display: flex;
+	align-items: stretch;
+	justify-content: stretch;
+	width: 100%;
+	height: 100%;
+
+	.phred-content {
+		flex: 1;
+		display: inline-flex;
+		flex-direction: column;
+
+		.phred-game-container {
+			background-color: #1B1B1B;
+			flex: 1;
+			overflow: overlay;
+		}
+
+		.phred-game,
+		.phred-game * {
+			max-width: 100% !important;
+		}
+	}
+}
+

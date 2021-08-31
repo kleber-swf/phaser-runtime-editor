@@ -1,0 +1,64 @@
+@import 'colors';
+
+$property-input-background: rgba(white, 0.05);
+$property-foreground: $on-background-color;
+
+.property-editor {
+	display: flex;
+	flex-direction: row;
+	padding: 0 2px;
+
+	&.has-children {
+		padding: 8px 0;
+
+		&>.property-content{
+			padding-right: 0;
+		}
+	}
+
+	.property-title {
+		min-width: 25%;
+		padding: 0 2px;
+		overflow: hidden;
+
+		label {
+			font-size: 14px;
+			color: rgba($on-background-color, 0.6);
+			text-overflow: ellipsis;
+			overflow: hidden;
+			display: inline-block;
+			width: 100%;
+			padding: 2px 6px;
+		}
+	}
+
+	.property-content {
+		flex: 1;
+		color: $property-foreground;
+		padding: 1px 4px 1px 0;
+		display: flex;
+
+		input {
+			font-size: 14px;
+			color: $property-foreground;
+			padding: 2px 4px;
+			transition: all 0.1s;
+
+			&[readonly] {
+				color: rgba($property-foreground, 0.5);
+			}
+		}
+
+		input[type='text'],
+		input[type='number'] {
+			width: 100%;
+			background-color: $property-input-background;
+			border: 1px solid transparent;
+			outline: none !important;
+
+			&:not([readonly]):focus {
+				border-color: rgba($on-background-color, 0.5);
+			}
+		}
+	}
+}

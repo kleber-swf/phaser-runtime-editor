@@ -1,63 +1,97 @@
-Selection:
-	[x] natural parent selection
-	
-Translation:
-	[x] translation
-	[x] move with having to select first
+BASIC:
+	Selection:
+		[x] natural parent selection
+		[x] global scale
+		[ ] skip invisible objects
+		
+	Translation:
+		[x] translation
+		[x] move with having to select first
 
-Scaling:
-	[x] show gizmos
-	[x] scale from corners
-	[x] scale from sides
-	[x] inverse scaling
-	[x] separate files
-	[x] scale handler
-	[x] cursors
-	[x] larger area
+	Scaling:
+		[x] show gizmos
+		[x] scale from corners
+		[x] scale from sides
+		[x] inverse scaling
+		[x] separate files
+		[x] scale handler
+		[x] cursors
+		[x] larger area
 
-Rotation:
-	[ ] gizmos
-	[ ] rotation handler
+	Rotation:
+		[ ] gizmos
+		[ ] rotation handler
 
-Properties view:
-	[x] properties panel
-	[ ] default properties editor for built in types
-		[ ] string
-		[ ] boolean
-		[ ] number
-		[ ] object
-		[ ] array
-	[ ] custom properties editor for PIXI/Phaser common types
-		[ ] Point
-		[ ] Rectangle
-		[ ] Matrix
+	Properties View:
+		[x] properties panel
+		[x] two-way binding
+		[x] default property editors for built in types
+			[x] string
+			[x] boolean
+			[x] number
+		[x] custom property editors for PIXI/Phaser common types
+			[x] Point
+		[x] look for basic properties to inspect
 
-General Features:
-	[x] editor layout
-	[ ] undo / redo
-	[ ] hide gizmos
-	[ ] toggle enabled
+	Object Tree:
+		[ ] panel
+		[ ] show complete object tree
+		[ ] selecting an object into the scene should select it in the tree
+		[ ] selecting an object into the true should select it in the scene
+		[ ] expand / collapse sub-trees
 
+	General Features:
+		[x] editor layout
+		[ ] hide panels
+		[ ] undo / redo
+		[ ] hide gizmos
+		[ ] toggle enabled
+		[ ] status bar
 
 ======================================================
 
-Advanced Translation:
-	[ ] snapping (10px)
-	[ ] keyboard shortcuts
-		[ ] use arrows to move 1px
-		[ ] use shift+arrows to move 10px
+ADVANCED:
+	Translation:
+		[ ] snapping (10px)
+		[ ] keyboard shortcuts
+			[ ] use arrows to move 1px
+			[ ] use shift+arrows to move 10px
 
-Advanced Scaling:
-	[ ] proportional scaling
-	[ ] scaling from center
-	[ ] scaling from original pivot
-	[ ] snapping (0.1x)
+	Scaling:
+		[ ] proportional scaling
+		[ ] scaling from center
+		[ ] scaling from original pivot
+		[ ] snapping (0.1x)
 
-Advanced Rotation:
-	[ ] snapping (45°)
+	Rotation:
+		[ ] snapping (45°)
 
-Adcanved Features:
-	[ ] copy selected properties to clipboard
-	[ ] show grid
-	[ ] help: keyboard shorcuts
-	[ ] toolbar: tool selector
+	Properties View:
+		[ ] default property editors for built in types
+			[ ] object
+			[ ] array
+		[ ] custom property editors for PIXI/Phaser common types
+			[ ] Rectangle
+			[ ] Matrix
+			[ ] color
+			[ ] enumerators
+		[ ] custom property editors for specific Phaser/PIXI types
+			[ ] PIXI.Sprite / Phaser.Sprite / Phaser.Image
+				[ ] key
+				[ ] frame
+				[ ] etc
+			[ ] Phaser.Graphics
+				[ ] fillAlpha
+				[ ] fillColor
+				[ ] etc
+			[ ] show them separated from the basic properties
+		[ ] optimization: shold I create a object pool for PropertyEditors?
+
+	Tree:
+		[ ] expand / collapse all with alt key
+
+	General Features:
+		[ ] copy selected properties to clipboard
+		[ ] show grid
+		[ ] help: keyboard shorcuts
+		[ ] toolbar: tool selector
