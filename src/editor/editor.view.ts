@@ -1,4 +1,4 @@
-import { Data } from 'data';
+import { Data, DataOrigin } from 'data';
 import { DragUtil } from './drag.util';
 import { EditorModel } from './editor.model';
 import { Selection } from './selection/selection';
@@ -37,6 +37,11 @@ export class EditorView extends Phaser.Group {
 
 		this.selection = new Selection(game);
 		this.addChild(this.selection);
+		Data.addPropertyChangedListener(DataOrigin.INSPECTOR, this.onPropertyChangedInsideInspector, this);
+	}
+
+	private onPropertyChangedInsideInspector(property: string, value: any, obj: PIXI.DisplayObject) {
+		if (obj && property in obj) obj[property] = value;
 	}
 
 	private createTouchArea(game: Phaser.Game): Phaser.Graphics {

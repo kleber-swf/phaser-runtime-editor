@@ -22,10 +22,10 @@ export class PropertiesPanel extends Widget {
 		content.classList.add('content');
 		this.appendChild(content);
 
-		Data.addPropertyChangedListener(DataOrigin.EDITOR, this.onPropertyChangedOnEditor, this);
+		Data.addPropertyChangedListener(DataOrigin.EDITOR, this.onPropertyChangedInsideEditor, this);
 	}
 
-	private onPropertyChangedOnEditor(property: string, value: any) {
+	private onPropertyChangedInsideEditor(property: string, value: any) {
 		this.editors[property]?.updateContent(value);
 	}
 
