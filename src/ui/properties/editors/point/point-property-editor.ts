@@ -4,6 +4,11 @@ import { PropertyEditor } from '../property-editor';
 export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 	public static readonly tagName: string = 'phed-point-property-editor';
 
+	public connectedCallback() {
+		super.connectedCallback();
+		this.classList.add('has-children');
+	}
+
 	protected createInnerContent(value: PIXI.Point, propertyId: string) {
 		value = value ?? new PIXI.Point(0, 0);
 

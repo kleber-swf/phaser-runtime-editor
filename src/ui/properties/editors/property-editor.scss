@@ -8,6 +8,10 @@ $property-foreground: $on-background-color;
 	flex-direction: row;
 	padding: 2px 0;
 
+	&.has-children {
+		padding: 5px 0;
+	}
+
 	.property-title {
 		width: 25%;
 		padding: 4px 2px 2px 0;
