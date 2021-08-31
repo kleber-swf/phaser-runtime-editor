@@ -3,6 +3,8 @@ export enum DataOrigin {
 	INSPECTOR = 1,
 };
 
+export type PropertyChangedListener = (property: string, value: any, obj?: PIXI.DisplayObject, from?: DataOrigin) => void;
+
 class DataClass {
 	private _selectedObject: PIXI.DisplayObject;
 
@@ -11,17 +13,18 @@ class DataClass {
 	public get selectedObject() { return this._selectedObject; }
 
 	public selectObject(value: PIXI.DisplayObject) {
+		if (value === this._selectedObject) return;
 		this._selectedObject = value;
 		this.onSelectedObjectChanged.dispatch(value);
 	}
 
-	private readonly onPropertyChanged: Record<DataOrigin, Phaser.Signal> = {
-		[DataOrigin.EDITOR]: new Phaser.Signal(),
-		[DataOrigin.INSPECTOR]: new Phaser.Signal(),
+	private readonly onPropertyChanged: Record<DataOrigin, PropertyChangedListener> = {
+		[DataOrigin.EDITOR]: null,
+		[DataOrigin.INSPECTOR]: null,
 	};
 
-	public addPropertyChangedListener(from: DataOrigin, listener: (property: string, value: any, obj?: PIXI.DisplayObject, from?: DataOrigin) => void, context?: any) {
-		this.onPropertyChanged[from].add(listener, context);
+	public setPropertyChangedListener(from: DataOrigin, listener: PropertyChangedListener) {
+		this.onPropertyChanged[from] = listener;
 	}
 
 	public propertyChanged(property: string, value: any, from: DataOrigin) {
@@ -40,7 +43,7 @@ class DataClass {
 		this._scheduledEvents = {};
 		Object.keys(events).forEach(k => {
 			const e = events[k];
-			this.onPropertyChanged[e.from].dispatch(k, e.value, this._selectedObject, e.from);
+			this.onPropertyChanged[e.from](k, e.value, this._selectedObject, e.from);
 		});
 	}
 }

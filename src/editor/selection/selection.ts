@@ -30,7 +30,7 @@ export class Selection extends Phaser.Group {
 		if (this.visible = !!obj) this.redraw();
 	}
 
-	private redraw() {
+	public redraw() {
 		this.view.clear();
 		if (!this._selectedObject) return;
 		const bounds = this._selectedObject.getBounds();

@@ -37,11 +37,14 @@ export class EditorView extends Phaser.Group {
 
 		this.selection = new Selection(game);
 		this.addChild(this.selection);
-		Data.addPropertyChangedListener(DataOrigin.INSPECTOR, this.onPropertyChangedInsideInspector, this);
+		Data.setPropertyChangedListener(DataOrigin.INSPECTOR, this.onPropertyChangedInsideInspector.bind(this));
 	}
 
 	private onPropertyChangedInsideInspector(property: string, value: any, obj: PIXI.DisplayObject) {
-		if (obj && property in obj) obj[property] = value;
+		if (!(obj && property in obj)) return;
+		obj[property] = value;
+		obj.updateTransform();
+		this.selection.redraw();
 	}
 
 	private createTouchArea(game: Phaser.Game): Phaser.Graphics {

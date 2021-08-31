@@ -1,8 +1,10 @@
+import { Data, DataOrigin } from 'data';
 import { PropertyInspectionData } from 'ui/properties-editors';
 import './property-editor.scss';
 
 export abstract class PropertyEditor<T> extends HTMLElement {
 	protected prop: PropertyInspectionData;
+	protected changedOnEditor = false;
 
 	protected static randomId() { return (Math.floor(Math.random() * 1000000)).toString(16); }
 
@@ -39,5 +41,22 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 
 	protected abstract createInnerContent(value: T, fieldId: string, prop: PropertyInspectionData): HTMLElement;
 
-	public abstract updateContent(value: T): void;
+	public updateContent(value: T) {
+		this.changedOnEditor = true;
+		this.doUpdateContent(value);
+	}
+
+	/**
+	 * Actually updates the value coming from the editor
+	 * @param value The value set on editor
+	 */
+	public abstract doUpdateContent(value: T): void;
+
+
+	protected onValueChanged(e: Event) {
+		if (this.changedOnEditor) this.changedOnEditor = false;
+		else Data.propertyChanged(this.prop.name, this.getInternalValue(e), DataOrigin.INSPECTOR);
+	}
+
+	public abstract getInternalValue(e: Event): T;
 }

@@ -21,6 +21,7 @@ Rotation:
 
 Properties view:
 	[x] properties panel
+	[x] two-way binding
 	[ ] default properties editor for built in types
 		[x] string
 		[x] boolean
@@ -28,11 +29,10 @@ Properties view:
 		[ ] object
 		[ ] array
 	[ ] custom properties editor for PIXI/Phaser common types
-		[ ] Point
+		[x] Point
 		[ ] Rectangle
 		[ ] Matrix
 	[ ] optimization: shold I create a object pool for PropertyEditors?
-	[ ] two-way binding
 
 General Features:
 	[x] editor layout
