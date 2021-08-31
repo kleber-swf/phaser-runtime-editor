@@ -8,33 +8,33 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 		this.classList.add('property-editor');
 	}
 
-	public setContent(prop: PropertyInspectionData, value: T) {
-		const propId = `${prop.name}-${PropertyEditor.randomId()}`;
-		const title = this.createLabel(propId, prop);
-		const content = this.createContent(value, propId, prop);
+	public setContent(prop: PropertyInspectionData, value: T, fieldId?: string) {
+		fieldId = fieldId ?? `${prop.name}-${PropertyEditor.randomId()}`;
+		const title = this.createLabel(fieldId, prop);
+		const content = this.createContent(value, fieldId, prop);
 		this.appendChild(title);
 		this.appendChild(content);
 	}
 
-	protected createLabel(propertyId: string, prop: PropertyInspectionData): HTMLElement {
+	protected createLabel(fieldId: string, prop: PropertyInspectionData): HTMLElement {
 		const label = document.createElement('label');
 		label.classList.add('property-title');
 		label.append(prop.name);
-		label.setAttribute('for', propertyId);
+		label.setAttribute('for', fieldId);
 		return label;
 	}
 
-	protected createContent(value: T, propertyId: string, prop: PropertyInspectionData) {
+	protected createContent(value: T, fieldId: string, prop: PropertyInspectionData) {
 		const propContent = document.createElement('div');
 		propContent.classList.add('property-content');
 
-		const innerContent = this.createInnerContent(value, propertyId, prop);
+		const innerContent = this.createInnerContent(value, fieldId, prop);
 		propContent.append(innerContent);
 
 		return propContent;
 	}
 
-	protected abstract createInnerContent(value: T, propertyId: string, prop: PropertyInspectionData): HTMLElement;
+	protected abstract createInnerContent(value: T, fieldId: string, prop: PropertyInspectionData): HTMLElement;
 
 	public abstract updateContent(value: T): void;
 }

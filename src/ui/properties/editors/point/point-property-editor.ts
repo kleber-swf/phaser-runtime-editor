@@ -12,20 +12,18 @@ export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 		this.classList.add('has-children');
 	}
 
-	protected createInnerContent(value: PIXI.Point, propertyId: string) {
+	protected createInnerContent(value: PIXI.Point, fieldId: string) {
 		value = value ?? new PIXI.Point(0, 0);
 
 		const parent = document.createElement('div');
 		this.appendChild(parent);
 
 		const xinput = this.xinput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;
-		xinput.setContent({ name: 'x', typeHint: 'number' }, value.x);
-		xinput.id = propertyId;
+		xinput.setContent({ name: 'x', typeHint: 'number' }, value.x, fieldId);
 		parent.appendChild(xinput);
 
 		const yinput = this.yinput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;
 		yinput.setContent({ name: 'y', typeHint: 'number' }, value.y);
-		yinput.id = propertyId;
 		parent.appendChild(yinput);
 
 		return parent;

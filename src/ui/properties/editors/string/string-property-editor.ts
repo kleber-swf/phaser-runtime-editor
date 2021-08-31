@@ -5,9 +5,9 @@ export class StringPropertyEditor extends PropertyEditor<string> {
 	public static readonly tagName: string = 'phed-string-property-editor';
 	private input: HTMLElement;
 
-	protected createInnerContent(value: string, propertyId: string, prop: PropertyInspectionData) {
+	protected createInnerContent(value: string, fieldId: string, prop: PropertyInspectionData) {
 		const input = this.input = document.createElement('input');
-		input.id = propertyId;
+		input.id = fieldId;
 		input.setAttribute('type', 'text');
 		input.setAttribute('value', value ?? '');
 		if (prop.data) Object.keys(prop.data).forEach(p => input.setAttribute(p, prop.data[p]));
