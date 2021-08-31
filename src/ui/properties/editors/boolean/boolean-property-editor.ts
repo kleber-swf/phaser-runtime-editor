@@ -25,7 +25,6 @@ export class BooleanPropertyEditor extends PropertyEditor<boolean> {
 		this._internalValue = this.input.checked;
 		return this._internalValue;
 	}
-
 }
 
 customElements.define(BooleanPropertyEditor.tagName, BooleanPropertyEditor);

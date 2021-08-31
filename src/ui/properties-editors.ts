@@ -30,7 +30,7 @@ class PropertiesEditorsClass {
 	public readonly inspectableProperties: PropertyInspectionData[] = [
 		{ name: 'name', typeHint: 'string' },
 		{ name: 'position', typeHint: 'point' },
-		{ name: 'scale', typeHint: 'point' },
+		{ name: 'scale', typeHint: 'point', data: { step: 0.1 } },
 		{ name: 'pivot', typeHint: 'point' },
 		{ name: 'anchor', typeHint: 'point' },
 		{ name: 'alpha', typeHint: 'number', data: { min: 0, max: 1, step: 0.1 } },

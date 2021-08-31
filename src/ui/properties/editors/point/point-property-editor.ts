@@ -1,3 +1,4 @@
+import { PropertyInspectionData } from 'ui/properties-editors';
 import { NumberPropertyEditor } from '../number/number-property-editor';
 import { PropertyEditor } from '../property-editor';
 
@@ -13,16 +14,16 @@ export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 		this.classList.add('has-children');
 	}
 
-	protected createInnerContent(fieldId: string, value: PIXI.Point) {
+	protected createInnerContent(fieldId: string, value: PIXI.Point, prop: PropertyInspectionData) {
 		const parent = document.createElement('div');
 		this.appendChild(parent);
 
 		const xinput = this.xinput = document.createElement(NumberPropertyEditor.tagName,) as NumberPropertyEditor;
-		xinput.setContent({ name: 'x', typeHint: 'number' }, value.x, fieldId);
+		xinput.setContent({ name: 'x', typeHint: 'number', data: prop.data }, value.x, fieldId);
 		parent.appendChild(xinput);
 
 		const yinput = this.yinput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;
-		yinput.setContent({ name: 'y', typeHint: 'number' }, value.y);
+		yinput.setContent({ name: 'y', typeHint: 'number', data: prop.data }, value.y);
 		parent.appendChild(yinput);
 
 		return parent;
