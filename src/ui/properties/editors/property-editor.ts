@@ -2,6 +2,8 @@ import { PropertyInspectionData } from 'ui/properties-editors';
 import './property-editor.scss';
 
 export abstract class PropertyEditor<T> extends HTMLElement {
+	protected prop: PropertyInspectionData;
+
 	protected static randomId() { return (Math.floor(Math.random() * 1000000)).toString(16); }
 
 	public connectedCallback() {
@@ -10,6 +12,7 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 
 	public setContent(prop: PropertyInspectionData, value: T, fieldId?: string) {
 		fieldId = fieldId ?? `${prop.name}-${PropertyEditor.randomId()}`;
+		this.prop = prop;
 		const title = this.createLabel(fieldId, prop);
 		const content = this.createContent(value, fieldId, prop);
 		this.appendChild(title);
