@@ -6,6 +6,8 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 	protected prop: PropertyInspectionData;
 	protected changedOnEditor = false;
 
+	protected _internalValue: T;
+
 	protected static randomId() { return (Math.floor(Math.random() * 1000000)).toString(16); }
 
 	public connectedCallback() {
@@ -17,6 +19,10 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 		this.prop = prop;
 		const title = this.createLabel(fieldId, prop);
 		const content = this.createContent(value, fieldId, prop);
+
+		this.setInternalValue(value);
+		this.onchange = this.onValueChanged.bind(this);
+
 		this.appendChild(title);
 		this.appendChild(content);
 	}
@@ -33,30 +39,29 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 		const propContent = document.createElement('div');
 		propContent.classList.add('property-content');
 
-		const innerContent = this.createInnerContent(value, fieldId, prop);
+		const innerContent = this.createInnerContent(fieldId, value, prop);
 		propContent.append(innerContent);
 
 		return propContent;
 	}
 
-	protected abstract createInnerContent(value: T, fieldId: string, prop: PropertyInspectionData): HTMLElement;
+	protected abstract createInnerContent(fieldId: string, value: T, prop: PropertyInspectionData): HTMLElement;
 
 	public updateContent(value: T) {
 		this.changedOnEditor = true;
-		this.doUpdateContent(value);
+		this.setInternalValue(value);
 	}
-
-	/**
-	 * Actually updates the value coming from the editor
-	 * @param value The value set on editor
-	 */
-	public abstract doUpdateContent(value: T): void;
 
 
 	protected onValueChanged(e: Event) {
 		if (this.changedOnEditor) this.changedOnEditor = false;
-		else Data.propertyChanged(this.prop.name, this.getInternalValue(e), DataOrigin.INSPECTOR);
+		else {
+			this.updateInternalValue(e);
+			Data.propertyChanged(this.prop.name, this.getInternalValue(), DataOrigin.INSPECTOR);
+		}
 	}
 
-	public abstract getInternalValue(e: Event): T;
+	public getInternalValue(): T { return this._internalValue; }
+	public abstract setInternalValue(value: T): void;
+	public abstract updateInternalValue(e: Event): void;
 }

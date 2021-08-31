@@ -13,37 +13,34 @@ export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 		this.classList.add('has-children');
 	}
 
-	protected createInnerContent(value: PIXI.Point, fieldId: string) {
-		value = value ?? new PIXI.Point(0, 0);
-		this.internalValue.set(value.x, value.y);
-
+	protected createInnerContent(fieldId: string, value: PIXI.Point) {
 		const parent = document.createElement('div');
 		this.appendChild(parent);
 
 		const xinput = this.xinput = document.createElement(NumberPropertyEditor.tagName,) as NumberPropertyEditor;
 		xinput.setContent({ name: 'x', typeHint: 'number' }, value.x, fieldId);
-		xinput.onchange = null;//this.onValueChanged.bind(this);
 		parent.appendChild(xinput);
-		
+
 		const yinput = this.yinput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;
 		yinput.setContent({ name: 'y', typeHint: 'number' }, value.y);
-		yinput.onchange = null;//this.onValueChanged.bind(this);
 		parent.appendChild(yinput);
-
-		this.onchange = this.onValueChanged.bind(this);
 
 		return parent;
 	}
 
-	public doUpdateContent(value: PIXI.Point) {
-		this.xinput.doUpdateContent(value.x);
-		this.yinput.doUpdateContent(value.y);
+	public getInternalValue() { return this.internalValue.clone(); }
+
+	public setInternalValue(value: PIXI.Point) {
+		this.xinput.setInternalValue(value.x);
+		this.yinput.setInternalValue(value.y);
 		this.internalValue.set(value.x, value.y);
 	}
 
-	public getInternalValue() {
+	public updateInternalValue(): PIXI.Point {
+		this.xinput.updateInternalValue();
+		this.yinput.updateInternalValue();
 		this.internalValue.set(this.xinput.getInternalValue(), this.yinput.getInternalValue());
-		return this.internalValue.clone();
+		return this._internalValue;
 	}
 }
 

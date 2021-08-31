@@ -38,7 +38,6 @@ export class PropertiesPanel extends Widget {
 
 	public selectObject(obj: PIXI.DisplayObject) {
 		// TODO what happen with the instances? Are they garbage collected?
-		console.log('here');
 		const emptyContent = this.content.cloneNode(false);
 		this.replaceChild(emptyContent, this.content);
 		this.content = emptyContent as HTMLElement;

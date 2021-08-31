@@ -1,5 +1,6 @@
 Selection:
 	[x] natural parent selection
+	[ ] skip invisible objects
 	
 Translation:
 	[x] translation
@@ -34,6 +35,13 @@ Properties view:
 		[ ] Matrix
 	[ ] optimization: shold I create a object pool for PropertyEditors?
 
+Object Tree:
+	[ ] panel
+	[ ] show complete object tree
+	[ ] selecting an object into the scene should select it in the tree
+	[ ] selecting an object into the true should select it in the scene
+	[ ] expand / collapse sub-trees
+
 General Features:
 	[x] editor layout
 	[ ] undo / redo
@@ -58,7 +66,10 @@ Advanced Scaling:
 Advanced Rotation:
 	[ ] snapping (45°)
 
-Adcanved Features:
+Advanced Object Tree:
+	[ ] expand / collapse all with alt key
+
+Advanced Features:
 	[ ] copy selected properties to clipboard
 	[ ] show grid
 	[ ] help: keyboard shorcuts

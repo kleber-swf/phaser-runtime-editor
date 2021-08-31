@@ -6,28 +6,24 @@ export class NumberPropertyEditor extends PropertyEditor<number> {
 
 	private input: HTMLInputElement;
 
-	protected createInnerContent(value: number, fieldId: string, prop: PropertyInspectionData) {
-		value = value === null || isNaN(value) ? 0 : value;
+	protected createInnerContent(fieldId: string, _value: number, prop: PropertyInspectionData) {
 		const input = this.input = document.createElement('input');
 		input.id = fieldId;
-
 		input.setAttribute('type', 'number');
-		this.input.value = value.toString();
-		this.onchange = this.onValueChanged.bind(this);
-
 		if (prop.data) Object.keys(prop.data).forEach(p => input.setAttribute(p, prop.data[p]));
-
 		return input;
 	}
 
-	public doUpdateContent(value: number) {
+	public setInternalValue(value: number) {
 		value = value === null || isNaN(value) ? 0 : value;
+		this._internalValue = value;
 		this.input.value = value.toString();
 	}
 
-	public getInternalValue() {
+	public updateInternalValue(): number {
 		const value = parseFloat(this.input.value);
-		return isNaN(value) ? 0 : value;
+		this._internalValue = isNaN(value) ? 0 : value;
+		return this._internalValue;
 	}
 }
 
