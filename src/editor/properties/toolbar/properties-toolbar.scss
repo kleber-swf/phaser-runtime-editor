@@ -3,6 +3,10 @@
 phred-properties-toolbar {
 	width: 250px;
 	box-shadow: -4px 0px 4px $shadow-color;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: stretch;
 	z-index: 2;
 }
 

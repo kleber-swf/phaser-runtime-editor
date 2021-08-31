@@ -3,6 +3,7 @@ import { PropertiesToolbar } from './properties/toolbar/properties-toolbar';
 import { Widget } from './widget/widget';
 
 import './editor.scss';
+import { ObjectTreeToolbar } from './object-tree/toolbar/object-tree-toolbar';
 
 export class Editor extends Widget {
 	public static readonly tagName: string = 'phred-editor';
@@ -11,24 +12,13 @@ export class Editor extends Widget {
 	private actions: ActionsToolbar;
 	private gameContainer: HTMLElement;
 	private properties: PropertiesToolbar;
-
-	public get game() { return this._game; }
-
-	public set game(game: Phaser.Game) {
-		if (game) {
-			const el = game.canvas.parentElement;
-			el.classList.add('phred-game');
-			this.gameContainer.appendChild(el);
-		} else if (this._game) {
-			const el = this._game.canvas.parentElement;
-			el.classList.remove('phred-game');
-			this.gameContainer.removeChild(el);
-		}
-		this._game = game;
-	}
+	private objectTree: ObjectTreeToolbar;
 
 	public connectedCallback() {
 		super.connectedCallback();
+
+		this.objectTree = document.createElement(ObjectTreeToolbar.tagName) as ObjectTreeToolbar;
+		this.appendChild(this.objectTree);
 
 		const content = document.createElement('div');
 		content.classList.add('phred-content');
@@ -45,8 +35,23 @@ export class Editor extends Widget {
 		this.appendChild(this.properties);
 	}
 
+	public setup(game: Phaser.Game, root: PIXI.DisplayObject | Phaser.Stage) {
+		if (game) {
+			const el = game.canvas.parentElement;
+			el.classList.add('phred-game');
+			this.gameContainer.appendChild(el);
+		} else if (this._game) {
+			const el = this._game.canvas.parentElement;
+			el.classList.remove('phred-game');
+			this.gameContainer.removeChild(el);
+		}
+		this._game = game;
+		this.objectTree.setContent(root);
+	}
+
 	public selectObject(obj: PIXI.DisplayObject) {
 		this.properties.selectObject(obj);
+		this.objectTree.selectObject(obj);
 	}
 }
 

@@ -8,15 +8,22 @@ export class Plugin extends Phaser.Plugin {
 	public constructor(game: Phaser.Game, group?: Phaser.Group | Phaser.Stage) {
 		super(game, game.plugins);
 
-		const stage = document.createElement(Editor.tagName) as Editor;
-		document.body.appendChild(stage);
+		const editor = document.createElement(Editor.tagName) as Editor;
+		document.body.appendChild(editor);
 
 		group = group ?? game.world;
 
 		new SceneEditor(game, group, game.stage);
-		stage.game = game;
 
-		Data.onSelectedObjectChanged.add(stage.selectObject, stage);
+		Data.onSelectedObjectChanged.add(editor.selectObject, editor);
+
+		const update = this.update;
+
+		this.update = () => {
+			if (group.children.length === 0) return;
+			this.update = update;
+			editor.setup(game, group);
+		}
 	}
 
 	public postUpdate() {

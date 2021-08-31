@@ -1,9 +1,11 @@
 @import 'colors';
 
 phed-properties-panel {
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 	justify-content: stretch;
+	align-items: stretch;
 
 	.title {
 		font-size: 12px;
@@ -14,6 +16,7 @@ phed-properties-panel {
 	}
 
 	.content {
+		flex: 1;
 		padding: 12px 0px;
 		box-shadow: 0 2px 2px $shadow-color;
 	}
