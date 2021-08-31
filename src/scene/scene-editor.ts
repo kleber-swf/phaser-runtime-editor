@@ -1,13 +1,13 @@
 import { Data, DataOrigin } from 'data';
 import { DragUtil } from './drag.util';
-import { EditorModel } from './editor.model';
+import { SceneMovel } from './scene-model';
 import { Selection } from './selection/selection';
 
-export class EditorView extends Phaser.Group {
+export class SceneEditor extends Phaser.Group {
 	private readonly touchArea: Phaser.Graphics;
 	private readonly container: Phaser.Group | Phaser.Stage;
 	private readonly selection: Selection;
-	private readonly model: EditorModel;
+	private readonly model: SceneMovel;
 
 	/** Whether the mouse down has already selected an object */
 	private _hasSelected: boolean;
@@ -23,13 +23,13 @@ export class EditorView extends Phaser.Group {
 
 	constructor(game: Phaser.Game, container: Phaser.Group | Phaser.Stage, parent: Phaser.Group | Phaser.Stage) {
 		super(game, parent);
-		this.name = '__editor';
+		this.name = '__scene_editor';
 
 		this.__skip = true;
 		game.stage.__skip = true;
 		game.world.__skip = true;
 
-		this.model = new EditorModel();
+		this.model = new SceneMovel();
 		this.container = container;
 
 		this.touchArea = this.createTouchArea(game);

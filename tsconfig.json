@@ -15,7 +15,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"baseUrl": "src",
 		"paths": {
-			"editor/*": ["editor/*"],
+			"scene/*": ["scene/*"],
 			"ui/*": ["ui/*"],
 		}
 	},

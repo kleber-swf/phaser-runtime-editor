@@ -44,6 +44,7 @@ Object Tree:
 
 General Features:
 	[x] editor layout
+	[ ] hide panels
 	[ ] undo / redo
 	[ ] hide gizmos
 	[ ] toggle enabled

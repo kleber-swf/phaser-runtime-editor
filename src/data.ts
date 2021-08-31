@@ -1,5 +1,5 @@
 export enum DataOrigin {
-	EDITOR = 0,
+	SCENE = 0,
 	INSPECTOR = 1,
 };
 
@@ -19,7 +19,7 @@ class DataClass {
 	}
 
 	private readonly onPropertyChanged: Record<DataOrigin, PropertyChangedListener> = {
-		[DataOrigin.EDITOR]: null,
+		[DataOrigin.SCENE]: null,
 		[DataOrigin.INSPECTOR]: null,
 	};
 
