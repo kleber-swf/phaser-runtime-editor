@@ -3,11 +3,12 @@ import { ANCHOR_COLOR, ANCHOR_STROKE, BORDER_COLOR, BORDER_STROKE, PIVOT_COLOR, 
 import { ScaleHandler } from './scale/scale.handler';
 
 export class Selection extends Phaser.Group {
-	private _obj: PIXI.DisplayObject = null;
-	public get hasObject() { return !!this._obj; }
+	private _selectedObject: PIXI.DisplayObject = null;
+	public get hasObject() { return !!this._selectedObject; }
 
 	private readonly view: Phaser.Graphics;
 	private readonly scaleHandler: ScaleHandler;
+	private _hasScheduledChanges = false;
 
 	constructor(game: Phaser.Game) {
 		super(game);
@@ -24,7 +25,7 @@ export class Selection extends Phaser.Group {
 	}
 
 	public select(obj: PIXI.DisplayObject) {
-		this._obj = obj;
+		this._selectedObject = obj;
 		this.view.clear();
 		this.scaleHandler.selectedObject = obj;
 		if (this.visible = !!obj) this.redraw();
@@ -32,16 +33,16 @@ export class Selection extends Phaser.Group {
 
 	private redraw() {
 		this.view.clear();
-		if (!this._obj) return;
-		const bounds = this._obj.getBounds();
+		if (!this._selectedObject) return;
+		const bounds = this._selectedObject.getBounds();
 		this.drawBorder(bounds);
 		this.drawPivot(this.scaleHandler.scaling
 			? this.scaleHandler.scaler.originalPivot
-			: this._obj.pivot);
-		this.drawAnchor(this._obj.anchor, bounds);
+			: this._selectedObject.pivot);
+		this.drawAnchor(this._selectedObject.anchor, bounds);
 		this.scaleHandler.redraw(bounds);
 		this.position.set(bounds.x, bounds.y);
-		this.rotation = this._obj.rotation;
+		this.rotation = this._selectedObject.rotation;
 	}
 
 	private drawBorder(bounds: PIXI.Rectangle) {
@@ -81,15 +82,21 @@ export class Selection extends Phaser.Group {
 	public move(deltaX: number, deltaY: number) {
 		let pos: PIXI.Point = this.position;
 		this.position.set(pos.x + deltaX, pos.y + deltaY);
-		pos = this._obj.position;
-		this._obj.position.set(pos.x + deltaX, pos.y + deltaY);
-
-		// TODO schedule all changes to the next update
-		Data.propertyChanged('position', pos, EDITOR);
+		pos = this._selectedObject.position;
+		this._selectedObject.position.set(pos.x + deltaX, pos.y + deltaY);
+		this._hasScheduledChanges = true;
 	}
+
 
 	public update() {
 		super.update();
-		if (this.scaleHandler.handle()) this.redraw();
+		if (this.scaleHandler.handle()) {
+			this.redraw();
+			this._hasScheduledChanges = true;
+		}
+		if (!this._hasScheduledChanges) return;
+		Data.propertyChanged('position', this._selectedObject.position, EDITOR);
+		Data.propertyChanged('scale', this._selectedObject.scale, EDITOR);
+		this._hasScheduledChanges = false;
 	}
 }
