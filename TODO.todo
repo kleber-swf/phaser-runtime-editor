@@ -46,6 +46,7 @@ BASIC:
 		[ ] undo / redo
 		[ ] hide gizmos
 		[ ] toggle enabled
+		[ ] status bar
 
 ======================================================
 
@@ -72,9 +73,18 @@ ADVANCED:
 		[ ] custom property editors for PIXI/Phaser common types
 			[ ] Rectangle
 			[ ] Matrix
-		[ ] custom property editors for special fields
-			[ ] key
-			[ ] frame
+			[ ] color
+			[ ] enumerators
+		[ ] custom property editors for specific Phaser/PIXI types
+			[ ] PIXI.Sprite / Phaser.Sprite / Phaser.Image
+				[ ] key
+				[ ] frame
+				[ ] etc
+			[ ] Phaser.Graphics
+				[ ] fillAlpha
+				[ ] fillColor
+				[ ] etc
+			[ ] show them separated from the basic properties
 		[ ] optimization: shold I create a object pool for PropertyEditors?
 
 	Tree:
