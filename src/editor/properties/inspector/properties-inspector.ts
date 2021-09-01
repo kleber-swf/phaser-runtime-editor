@@ -2,10 +2,10 @@ import { Data, DataOrigin } from 'data/data';
 import { PropertiesEditors, PropertyInspectionData } from 'editor/properties-editors';
 import { Widget } from 'editor/widget/widget';
 import { PropertyEditor } from '../editors/property-editor';
-import './properties-panel.scss';
+import './properties-inspector.scss';
 
-export class PropertiesPanel extends Widget {
-	public static readonly tagName: string = 'phed-properties-panel';
+export class PropertiesInspector extends Widget {
+	public static readonly tagName: string = 'phed-properties-inspector';
 	private editors: Record<string, PropertyEditor<any>> = {};
 
 	private content: HTMLElement;
@@ -62,4 +62,4 @@ export class PropertiesPanel extends Widget {
 
 }
 
-customElements.define(PropertiesPanel.tagName, PropertiesPanel);
+customElements.define(PropertiesInspector.tagName, PropertiesInspector);

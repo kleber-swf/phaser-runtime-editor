@@ -1,9 +1,8 @@
 import { ActionsToolbar } from './actions/actions-toolbar';
-import { PropertiesToolbar } from './properties/toolbar/properties-toolbar';
+import './editor.scss';
+import { Panel } from './panel/panel';
 import { Widget } from './widget/widget';
 
-import './editor.scss';
-import { ObjectTreeToolbar } from './object-tree/toolbar/object-tree-toolbar';
 
 export class Editor extends Widget {
 	public static readonly tagName: string = 'phred-editor';
@@ -11,8 +10,8 @@ export class Editor extends Widget {
 	private _game: Phaser.Game;
 	private actions: ActionsToolbar;
 	private gameContainer: HTMLElement;
-	private properties: PropertiesToolbar;
-	private objectTree: ObjectTreeToolbar;
+	private leftPanel: Panel;
+	private rightPanel: Panel;
 
 	public connectedCallback() {
 		super.connectedCallback();
@@ -22,8 +21,9 @@ export class Editor extends Widget {
 		script.crossOrigin = 'anonymous';
 		document.head.appendChild(script);
 
-		this.objectTree = document.createElement(ObjectTreeToolbar.tagName) as ObjectTreeToolbar;
-		this.appendChild(this.objectTree);
+		this.leftPanel = document.createElement(Panel.tagName) as Panel;
+		this.leftPanel.classList.add('left', 'small');
+		this.appendChild(this.leftPanel);
 
 		const content = document.createElement('div');
 		content.classList.add('phred-content');
@@ -36,8 +36,9 @@ export class Editor extends Widget {
 		this.gameContainer.classList.add('phred-game-container');
 		content.appendChild(this.gameContainer);
 
-		this.properties = document.createElement(PropertiesToolbar.tagName) as PropertiesToolbar;
-		this.appendChild(this.properties);
+		this.rightPanel = document.createElement(Panel.tagName) as Panel;
+		this.rightPanel.classList.add('right', 'large');
+		this.appendChild(this.rightPanel);
 	}
 
 	public setup(game: Phaser.Game, root: PIXI.DisplayObject | Phaser.Stage) {
@@ -51,12 +52,12 @@ export class Editor extends Widget {
 			this.gameContainer.removeChild(el);
 		}
 		this._game = game;
-		this.objectTree.setContent(root);
+		// this.objectTree.setContent(root);
 	}
 
 	public selectObject(obj: PIXI.DisplayObject) {
-		this.properties.selectObject(obj);
-		this.objectTree.selectObject(obj);
+		// this.properties.selectObject(obj);
+		// this.objectTree.selectObject(obj);
 	}
 }
 
