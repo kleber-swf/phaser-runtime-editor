@@ -42,7 +42,7 @@ BASIC:
 		[x] invisible elements should be grayed out
 		[x] expand / collapse sub-trees
 			[x] automatic expand when selecting
-			[ ] expand / collapse all with alt key
+			[x] expand / collapse all with alt key
 
 	General Features:
 		[x] editor layout

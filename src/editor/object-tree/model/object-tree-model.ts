@@ -20,7 +20,6 @@ export class ObjectTreeModel {
 	public create(root: PIXI.DisplayObjectContainer | Phaser.Stage) {
 		this.objectMap = {};
 		this.createNode(root, this.objectMap, null, 0);
-		console.log(this.objectMap);
 	}
 
 	private createNode(child: PIXI.DisplayObject, map: Record<number, ObjectMapItemModel>, parent: ObjectMapItemModel, level: number) {

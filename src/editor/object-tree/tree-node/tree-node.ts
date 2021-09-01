@@ -11,7 +11,7 @@ export class TreeNode extends HTMLElement {
 	private label: HTMLElement;
 	private collapseIcon: HTMLElement;
 	public onNodeSelect: (node: TreeNode) => void;
-	public onCollapseStateChanged: (node: TreeNode, collapsed: boolean) => void;
+	public onCollapseStateChanged: (node: TreeNode, collapsed: boolean, all: boolean) => void;
 
 	public updateTitle(type: PhaserObjectType, value: string) {
 		if (this.obj) this.label.textContent = value?.length > 0 ? value : type.name;
@@ -60,11 +60,11 @@ export class TreeNode extends HTMLElement {
 	// TODO we could put the ObjectMapItemModel
 	private _isCollapsed = false;
 
-	public onCollapseIconClick(e: Event) {
+	public onCollapseIconClick(e: MouseEvent) {
 		if (this._isCollapsed) this.expand();
 		else this.collapse();
 		e.stopImmediatePropagation();
-		if (this.onCollapseStateChanged) this.onCollapseStateChanged(this, this._isCollapsed);
+		if (this.onCollapseStateChanged) this.onCollapseStateChanged(this, this._isCollapsed, e.altKey);
 	}
 
 	public collapse() {

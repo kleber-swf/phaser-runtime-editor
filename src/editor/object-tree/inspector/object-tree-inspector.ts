@@ -58,10 +58,21 @@ export class ObjectTreeInspector extends Inspector {
 		Data.selectObject(node.obj, DataOrigin.INSPECTOR);
 	}
 
-	private onNodeCollapseStateChanged(node: TreeNode, collapsed: boolean) {
-		console.log(node, collapsed);
+	private onNodeCollapseStateChanged(node: TreeNode, collapsed: boolean, all: boolean) {
 		const m = this.model.getById(node.obj.__instanceId);
+		this.changeCollapseState(m, collapsed, all);
+	}
+
+	private changeCollapseState(m: ObjectMapItemModel, collapsed: boolean, all: boolean) {
 		m.collapsed = collapsed;
+		if (!(all && m.node.obj.children?.length)) return;
+		m.node.obj.children.forEach(child => {
+			if (child.__skip) return;
+			const n = this.model.getById(child.__instanceId);
+			if (collapsed) n.node.collapse();
+			else n.node.expand();
+			this.changeCollapseState(n, collapsed, true);
+		});
 	}
 
 	private _lastSelectedModel: ObjectMapItemModel;
@@ -72,17 +83,17 @@ export class ObjectTreeInspector extends Inspector {
 		if (!obj) return;
 		this._lastSelectedModel = this.model.getById(obj.__instanceId);
 		this._lastSelectedModel.node.select();
-		this.expandHierarchy(this._lastSelectedModel);
+		this.expandParents(this._lastSelectedModel);
 	}
 
-	private expandHierarchy(model: ObjectMapItemModel) {
+	private expandParents(model: ObjectMapItemModel) {
 		if (model.collapsed && !model.isLeaf) {
 			model.collapsed = false;
 			model.node.expand();
 		}
 
 		if (model.parent)
-			this.expandHierarchy(model.parent);
+			this.expandParents(model.parent);
 	}
 }
 
