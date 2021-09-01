@@ -30,9 +30,9 @@ export class TreeNode extends HTMLElement {
 		return container;
 	}
 
-	public select() {
+	public select(e?: Event) {
 		this.classList.add('selected');
-		if (this.onNodeSelect) this.onNodeSelect(this);
+		if (e && this.onNodeSelect) this.onNodeSelect(this);
 	}
 
 	public clearSelection() { this.classList.remove('selected'); }

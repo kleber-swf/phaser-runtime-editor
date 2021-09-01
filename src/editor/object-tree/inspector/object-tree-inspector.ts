@@ -47,7 +47,11 @@ export class ObjectTreeInspector extends Inspector {
 	private _lastSelectedModel: ObjectMapItemModel;
 
 	public selectObject(obj: PIXI.DisplayObject) {
-		console.log(obj);
+		this._lastSelectedModel?.node.clearSelection();
+		this._lastSelectedModel = null;
+		if (!obj) return;
+		this._lastSelectedModel = this.model.getById(obj.__instanceId);
+		this._lastSelectedModel.node.select();
 	}
 }
 
