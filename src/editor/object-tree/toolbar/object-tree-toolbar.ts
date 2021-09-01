@@ -6,7 +6,6 @@ export class ObjectTreeToolbar extends HTMLElement {
 	public static readonly tagName: string = 'phed-object-tree-toolbar';
 
 	public setContent(root: PIXI.DisplayObject | Phaser.Stage) {
-		console.log(root);
 		const content = document.createElement('div');
 		content.classList.add('content');
 		this.createItem(root, content, 0);

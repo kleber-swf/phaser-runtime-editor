@@ -1,6 +1,7 @@
 import { ActionsToolbar } from './actions/actions-toolbar';
 import './editor.scss';
 import { Panel } from './panel/panel';
+import { PropertiesInspector } from './properties/inspector/properties-inspector';
 import { Widget } from './widget/widget';
 
 
@@ -10,8 +11,7 @@ export class Editor extends Widget {
 	private _game: Phaser.Game;
 	private actions: ActionsToolbar;
 	private gameContainer: HTMLElement;
-	private leftPanel: Panel;
-	private rightPanel: Panel;
+	private panels: Panel[] = [];
 
 	public connectedCallback() {
 		super.connectedCallback();
@@ -21,13 +21,12 @@ export class Editor extends Widget {
 		script.crossOrigin = 'anonymous';
 		document.head.appendChild(script);
 
-		this.leftPanel = document.createElement(Panel.tagName) as Panel;
-		this.leftPanel.classList.add('left', 'small');
-		this.appendChild(this.leftPanel);
+		const leftPanel = this.appendChild(document.createElement(Panel.tagName) as Panel);
+		leftPanel.classList.add('left', 'small');
+		this.panels.push(leftPanel);
 
-		const content = document.createElement('div');
+		const content = this.appendChild(document.createElement('div'));
 		content.classList.add('phred-content');
-		this.appendChild(content);
 
 		this.actions = document.createElement(ActionsToolbar.tagName) as ActionsToolbar;
 		content.appendChild(this.actions);
@@ -36,12 +35,15 @@ export class Editor extends Widget {
 		this.gameContainer.classList.add('phred-game-container');
 		content.appendChild(this.gameContainer);
 
-		this.rightPanel = document.createElement(Panel.tagName) as Panel;
-		this.rightPanel.classList.add('right', 'large');
-		this.appendChild(this.rightPanel);
+		const rightPanel = this.appendChild(document.createElement(Panel.tagName) as Panel);
+		rightPanel.classList.add('right', 'large');
+		this.panels.push(rightPanel);
+
+		const props = document.createElement(PropertiesInspector.tagName) as PropertiesInspector;
+		rightPanel.addInspector(props);
 	}
 
-	public setup(game: Phaser.Game, root: PIXI.DisplayObject | Phaser.Stage) {
+	public setup(game: Phaser.Game, group: PIXI.DisplayObjectContainer | Phaser.Stage) {
 		if (game) {
 			const el = game.canvas.parentElement;
 			el.classList.add('phred-game');
@@ -52,12 +54,10 @@ export class Editor extends Widget {
 			this.gameContainer.removeChild(el);
 		}
 		this._game = game;
-		// this.objectTree.setContent(root);
 	}
 
 	public selectObject(obj: PIXI.DisplayObject) {
-		// this.properties.selectObject(obj);
-		// this.objectTree.selectObject(obj);
+		this.panels.forEach(panel => panel.selectObject(obj));
 	}
 }
 

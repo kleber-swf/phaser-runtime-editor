@@ -1,27 +1,15 @@
 import { Data, DataOrigin } from 'data/data';
+import { Inspector } from 'editor/inspector/inspector';
 import { PropertiesEditors, PropertyInspectionData } from 'editor/properties-editors';
-import { Widget } from 'editor/widget/widget';
 import { PropertyEditor } from '../editors/property-editor';
-import './properties-inspector.scss';
 
-export class PropertiesInspector extends Widget {
+export class PropertiesInspector extends Inspector {
 	public static readonly tagName: string = 'phed-properties-inspector';
 	private editors: Record<string, PropertyEditor<any>> = {};
 
-	private content: HTMLElement;
-
 	public connectedCallback() {
 		super.connectedCallback();
-
-		const title = document.createElement('div');
-		title.classList.add('title');
-		this.appendChild(title);
-		title.append('PROPERTIES');
-
-		const content = this.content = document.createElement('div');
-		content.classList.add('content');
-		this.appendChild(content);
-
+		this.title = 'Properties';
 		Data.setPropertyChangedListener(DataOrigin.SCENE, this.onPropertyChangedInsideEditor.bind(this));
 	}
 
@@ -58,8 +46,6 @@ export class PropertiesInspector extends Widget {
 				this.editors[prop.name] = editor;
 			});
 	}
-
-
 }
 
 customElements.define(PropertiesInspector.tagName, PropertiesInspector);
