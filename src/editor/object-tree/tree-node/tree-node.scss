@@ -18,19 +18,35 @@ phed-tree-node {
 		}
 	}
 
+	&.collapsed {
+		.node-children {
+			display: none;
+		}
+	}
+
 	.node-head {
+		height: 26px;
 		display: flex;
 		align-items: center;
 		justify-content: stretch;
 		padding: 0;
 
+		.fas {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
 		.collapse-icon {
-			padding: 6px 6px 6px 10px;
+			width: 26px;
+			height: 26px;
 			margin-right: 2px;
 		}
 
 		.node-icon {
 			display: inline-block;
+			width: 16px;
+			height: 16px;
 			margin: 0 6px 0 0;
 		}
 
