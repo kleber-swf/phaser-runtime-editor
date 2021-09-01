@@ -40,9 +40,9 @@ BASIC:
 		[x] selecting an object into the true should select it in the scene
 		[x] renaming objects in the inspector should rename them in the tree
 		[x] invisible elements should be grayed out
-		[ ] expand / collapse sub-trees
-			[ ] automatic expand when selecting
-		[ ] update tree content
+		[x] expand / collapse sub-trees
+			[x] automatic expand when selecting
+			[ ] expand / collapse all with alt key
 
 	General Features:
 		[x] editor layout
@@ -93,8 +93,10 @@ ADVANCED:
 		[ ] optimization: shold I create a object pool for PropertyEditors?
 
 	Object Tree:
-		[ ] expand / collapse all with alt key
-		[ ] auto update tree
+		[ ] move objects in the tree
+		[ ] update tree content
+			[ ] update with a button
+			[ ] update automatically
 
 	General Features:
 		[ ] copy selected properties to clipboard

@@ -3,10 +3,13 @@ import { IdUtil } from 'util/id.util';
 import { TreeNode } from '../tree-node/tree-node';
 
 export interface ObjectMapItemModel {
-	target: PIXI.DisplayObject;
+	obj: PIXI.DisplayObject;
 	type: PhaserObjectType;
 	level: number;
+	collapsed: boolean;
+	isLeaf: boolean;
 	node?: TreeNode;
+	parent: ObjectMapItemModel;
 }
 
 export class ObjectTreeModel {
@@ -16,19 +19,26 @@ export class ObjectTreeModel {
 
 	public create(root: PIXI.DisplayObjectContainer | Phaser.Stage) {
 		this.objectMap = {};
-		this.createNode(root, this.objectMap, 0);
+		this.createNode(root, this.objectMap, null, 0);
+		console.log(this.objectMap);
 	}
 
-	private createNode(parent: PIXI.DisplayObject, map: Record<number, ObjectMapItemModel>, level: number) {
-		const type = PhaserData.getType(parent.type);
-		parent.__instanceId = IdUtil.genIntId();
-		parent.__type = type.name;
-		map[parent.__instanceId] = { target: parent, type, level };
+	private createNode(child: PIXI.DisplayObject, map: Record<number, ObjectMapItemModel>, parent: ObjectMapItemModel, level: number) {
+		const type = PhaserData.getType(child.type);
+		child.__instanceId = IdUtil.genIntId();
+		child.__type = type.name;
+		const isLeaf = !(child.children && child.children.length > 0);
+		const node = map[child.__instanceId] = {
+			obj: child,
+			collapsed: false,
+			type, level,
+			isLeaf, parent,
+		};
 
-		if (!parent.children?.length) return;
+		if (isLeaf) return;
 
 		level += 1;
-		for (let i = 0, n = parent.children.length; i < n; i++)
-			this.createNode(parent.children[i], map, level);
+		for (let i = 0, n = child.children.length; i < n; i++)
+			this.createNode(child.children[i], map, node, level);
 	}
 }

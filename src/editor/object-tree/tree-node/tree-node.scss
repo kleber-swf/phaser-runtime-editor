@@ -19,7 +19,10 @@ phed-tree-node {
 	}
 
 	&.collapsed {
-		.node-children {
+		& > .node-head > .collapse-icon {
+			transform: rotate(-90deg);
+		}
+		& > .node-children {
 			display: none;
 		}
 	}
@@ -41,6 +44,7 @@ phed-tree-node {
 			width: 26px;
 			height: 26px;
 			margin-right: 2px;
+			transition: transform 0.2s;
 		}
 
 		.node-icon {
@@ -59,5 +63,6 @@ phed-tree-node {
 	.node-children {
 		margin-left: 16px;
 		margin-bottom: 4px;
+		overflow: hidden;
 	}
 }

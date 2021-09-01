@@ -40,6 +40,7 @@ export class ObjectTreeInspector extends Inspector {
 		const node = parent.appendChild(document.createElement(TreeNode.tagName)) as TreeNode;
 		node.classList.add(`level-${m.level}`);
 		node.onNodeSelect = this.onNodeSelected.bind(this);
+		node.onCollapseStateChanged = this.onNodeCollapseStateChanged.bind(this);
 		node.setContent(obj, m.type);
 
 		m.node = node;
@@ -57,6 +58,12 @@ export class ObjectTreeInspector extends Inspector {
 		Data.selectObject(node.obj, DataOrigin.INSPECTOR);
 	}
 
+	private onNodeCollapseStateChanged(node: TreeNode, collapsed: boolean) {
+		console.log(node, collapsed);
+		const m = this.model.getById(node.obj.__instanceId);
+		m.collapsed = collapsed;
+	}
+
 	private _lastSelectedModel: ObjectMapItemModel;
 
 	public selectObject(obj: PIXI.DisplayObject) {
@@ -65,6 +72,17 @@ export class ObjectTreeInspector extends Inspector {
 		if (!obj) return;
 		this._lastSelectedModel = this.model.getById(obj.__instanceId);
 		this._lastSelectedModel.node.select();
+		this.expandHierarchy(this._lastSelectedModel);
+	}
+
+	private expandHierarchy(model: ObjectMapItemModel) {
+		if (model.collapsed && !model.isLeaf) {
+			model.collapsed = false;
+			model.node.expand();
+		}
+
+		if (model.parent)
+			this.expandHierarchy(model.parent);
 	}
 }
 

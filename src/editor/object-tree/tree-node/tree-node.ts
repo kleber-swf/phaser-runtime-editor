@@ -4,9 +4,6 @@ import './tree-node.scss';
 const SELECTED_CLASS = 'selected';
 const COLLAPSED_CLASS = 'collapsed';
 
-const COLLAPSED_ICON_CLASS = 'fa-caret-right';
-const EXPANDED_ICON_CLASS = 'fa-caret-down';
-
 export class TreeNode extends HTMLElement {
 	public static readonly tagName: string = 'phed-tree-node';
 
@@ -14,6 +11,7 @@ export class TreeNode extends HTMLElement {
 	private label: HTMLElement;
 	private collapseIcon: HTMLElement;
 	public onNodeSelect: (node: TreeNode) => void;
+	public onCollapseStateChanged: (node: TreeNode, collapsed: boolean) => void;
 
 	public updateTitle(type: PhaserObjectType, value: string) {
 		if (this.obj) this.label.textContent = value?.length > 0 ? value : type.name;
@@ -34,7 +32,7 @@ export class TreeNode extends HTMLElement {
 		this.collapseIcon = head.appendChild(document.createElement('i'));
 		this.collapseIcon.classList.add('fas', 'collapse-icon');
 		if (obj.children?.length) {
-			this.collapseIcon.classList.add(EXPANDED_ICON_CLASS);
+			this.collapseIcon.classList.add('fa-caret-down');
 			this.collapseIcon.onclick = this.onCollapseIconClick.bind(this);
 		}
 
@@ -59,28 +57,25 @@ export class TreeNode extends HTMLElement {
 	public select() { this.classList.add(SELECTED_CLASS); }
 	public clearSelection() { this.classList.remove(SELECTED_CLASS); }
 
+	// TODO we could put the ObjectMapItemModel
 	private _isCollapsed = false;
 
 	public onCollapseIconClick(e: Event) {
 		if (this._isCollapsed) this.expand();
 		else this.collapse();
 		e.stopImmediatePropagation();
+		if (this.onCollapseStateChanged) this.onCollapseStateChanged(this, this._isCollapsed);
 	}
 
 	public collapse() {
 		this._isCollapsed = true;
 		this.classList.add(COLLAPSED_CLASS);
-		this.collapseIcon.classList.remove(EXPANDED_ICON_CLASS);
-		this.collapseIcon.classList.add(COLLAPSED_ICON_CLASS);
 	}
 
 	public expand() {
 		this._isCollapsed = false;
 		this.classList.remove(COLLAPSED_CLASS);
-		this.collapseIcon.classList.remove(COLLAPSED_ICON_CLASS);
-		this.collapseIcon.classList.add(EXPANDED_ICON_CLASS);
 	}
-
 }
 
 customElements.define(TreeNode.tagName, TreeNode);

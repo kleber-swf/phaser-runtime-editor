@@ -1,7 +1,7 @@
 import { Data, DataOrigin } from 'data/data';
+import { DragUtil } from '../util/drag.util';
 import { SceneMovel } from './scene-model';
 import { Selection } from './selection/selection';
-import { DragUtil } from '../util/drag.util';
 
 export class SceneEditor extends Phaser.Group {
 	private readonly touchArea: Phaser.Graphics;
@@ -48,7 +48,7 @@ export class SceneEditor extends Phaser.Group {
 		this.selection.redraw();
 	}
 
-	private onObjectSelectedInsideInspector(obj: PIXI.DisplayObject) { this.selectObject(obj, true); }
+	private onObjectSelectedInsideInspector(obj: PIXI.DisplayObject) { this.selectObject(obj, false); }
 
 	private createTouchArea(game: Phaser.Game): Phaser.Graphics {
 		const area = new Phaser.Graphics(game);
@@ -88,13 +88,13 @@ export class SceneEditor extends Phaser.Group {
 		this.getObjectsUnderPoint(pointer.x, pointer.y, this.container.children, objects);
 
 		const obj = this.model.setSelectionTree(objects);
-		this.selectObject(obj);
+		this.selectObject(obj, true);
 		return obj !== null;
 	}
 
-	private selectObject(obj: PIXI.DisplayObject, silent = false) {
+	private selectObject(obj: PIXI.DisplayObject, dispatch: boolean) {
 		this.selection.select(obj);
-		if (!silent) Data.selectObject(obj, DataOrigin.SCENE);
+		if (dispatch) Data.selectObject(obj, DataOrigin.SCENE);
 	}
 
 	private getObjectsUnderPoint(x: number, y: number, children: PIXI.DisplayObject[], objects: PIXI.DisplayObject[]) {
