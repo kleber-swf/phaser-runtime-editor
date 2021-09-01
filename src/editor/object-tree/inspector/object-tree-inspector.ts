@@ -11,7 +11,8 @@ export class ObjectTreeInspector extends Inspector {
 	}
 
 	public setContent(root: PIXI.DisplayObject | Phaser.Stage) {
-		this.createItem(root, this.content, 0);
+		for (let i = 0, n = root.children.length; i < n; i++)
+			this.createItem(root.children[i], this.content, 0);
 	}
 
 	private createItem(obj: PIXI.DisplayObject, parent: HTMLElement, level: number) {

@@ -18,7 +18,8 @@
 
 	.content {
 		flex: 1;
-		box-shadow: 0 2px 2px $shadow-color;
 		color: $unfocused-text-color;
+		padding: 0;
+		overflow: auto;
 	}
 }

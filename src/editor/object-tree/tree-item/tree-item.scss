@@ -1,17 +1,20 @@
 @import 'colors';
 
 phed-tree-item {
-	display: inline-block;
+	display: block;
 
 	.item-head {
-		display: block;
+		display: flex;
 		padding: 6px 0;
+
 		.item-icon {
 			display: inline-block;
 			margin: 0 6px 0 0;
 		}
-		.item-name{
+
+		.item-name {
 			display: inline-block;
+			white-space: nowrap;
 		}
 	}
 
