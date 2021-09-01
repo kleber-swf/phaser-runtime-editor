@@ -33,14 +33,14 @@ export class ObjectTreeInspector extends Inspector {
 	}
 
 	private createNode(obj: PIXI.DisplayObject, parent: HTMLElement, model: ObjectTreeModel) {
+		if (obj.__skip) return;
 		const m = model.getById(obj.__instanceId);
 		if (!m) throw new Error(`Model not found for ${obj.__instanceId}`);
 
-		const node = document.createElement(TreeNode.tagName) as TreeNode;
+		const node = parent.appendChild(document.createElement(TreeNode.tagName)) as TreeNode;
 		node.classList.add(`level-${m.level}`);
 		node.onNodeSelect = this.onNodeSelected.bind(this);
 		node.setContent(obj, m.type);
-		parent.appendChild(node);
 
 		m.node = node;
 
