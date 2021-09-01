@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+@import 'colors';
+
+* {
+	font-family: 'Lato', sans-serif;
+}
+
+html,
+body {
+	display: flex;
+	align-items: stretch;
+	justify-content: stretch;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background-color: #1b1b1b;
+	overflow: hidden;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: transparent;
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: $primary-color;
+}

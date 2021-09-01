@@ -1,6 +1,9 @@
 declare namespace PIXI {
 	interface DisplayObject {
+		__instanceId?: number;
+		__type?: string;
 		__skip?: boolean;
+		type?: number;
 		name?: string;
 		anchor?: Point;
 		getBounds?(): Rectangle;

@@ -1,6 +1,6 @@
 const game = new Phaser.Game({
 	width: 1920,
-	height: 1600,
+	height: 2000,
 	renderer: Phaser.AUTO,
 	parent: 'game',
 	scaleMode: Phaser.ScaleManager.SHOW_ALL,
@@ -20,6 +20,7 @@ let _colorIndex = 0;
 
 function preload() {
 	game.load.image('mushroom', 'assets/sprites/mushroom2.png');
+	game.load.image('phaser', 'assets/sprites/phaser1.png');
 }
 
 function create() {
@@ -127,6 +128,9 @@ function create() {
 	child.scale.set(-1, -1);
 
 
+	child = game.add.sprite(1180, 925, 'phaser');
+	child.scale.set(2, 2);
+
 	// game.add.text(0, 0, 'this text scrolls\nwith the background', { font: '32px Arial', fill: '#f26c4f', align: 'center' });
 
 	// logo1 = game.add.sprite(0, 0, 'phaser');
@@ -155,7 +159,7 @@ function el(x, y, w, h, parent, name) {
 	const color = COLORS[_colorIndex];
 	const g = game.add.graphics(x, y)
 		.lineStyle(1, color, 1)
-		.beginFill(color, 0.1)
+		.beginFill(color, 0.2)
 		.drawRect(0, 0, w, h)
 		.endFill();
 	parent.addChild(g);

@@ -1,12 +1,13 @@
-import { DragUtil } from './drag.util';
-import { EditorModel } from './editor.model';
+import { Data, DataOrigin } from 'data/data';
+import { DragUtil } from '../util/drag.util';
+import { SceneMovel } from './scene-model';
 import { Selection } from './selection/selection';
 
-export class EditorView extends Phaser.Group {
+export class SceneEditor extends Phaser.Group {
 	private readonly touchArea: Phaser.Graphics;
 	private readonly container: Phaser.Group | Phaser.Stage;
 	private readonly selection: Selection;
-	private readonly model: EditorModel;
+	private readonly model: SceneMovel;
 
 	/** Whether the mouse down has already selected an object */
 	private _hasSelected: boolean;
@@ -22,13 +23,13 @@ export class EditorView extends Phaser.Group {
 
 	constructor(game: Phaser.Game, container: Phaser.Group | Phaser.Stage, parent: Phaser.Group | Phaser.Stage) {
 		super(game, parent);
-		this.name = '__editor';
+		this.name = '__scene_editor';
 
 		this.__skip = true;
 		game.stage.__skip = true;
 		game.world.__skip = true;
 
-		this.model = new EditorModel();
+		this.model = new SceneMovel();
 		this.container = container;
 
 		this.touchArea = this.createTouchArea(game);
@@ -36,7 +37,18 @@ export class EditorView extends Phaser.Group {
 
 		this.selection = new Selection(game);
 		this.addChild(this.selection);
+		Data.addPropertyChangedListener(DataOrigin.INSPECTOR, this.onPropertyChangedInsideInspector.bind(this));
+		Data.addObjectSelectionChangedListener(DataOrigin.INSPECTOR, this.onObjectSelectedInsideInspector.bind(this));
 	}
+
+	private onPropertyChangedInsideInspector(property: string, value: any, obj: PIXI.DisplayObject) {
+		if (!(obj && property in obj)) return;
+		obj[property] = value;
+		obj.updateTransform();
+		this.selection.redraw();
+	}
+
+	private onObjectSelectedInsideInspector(obj: PIXI.DisplayObject) { this.selectObject(obj, false); }
 
 	private createTouchArea(game: Phaser.Game): Phaser.Graphics {
 		const area = new Phaser.Graphics(game);
@@ -75,9 +87,14 @@ export class EditorView extends Phaser.Group {
 		const objects: PIXI.DisplayObject[] = [];
 		this.getObjectsUnderPoint(pointer.x, pointer.y, this.container.children, objects);
 
-		const selection = this.model.setSelectionTree(objects);
-		this.selection.setSelection(selection);
-		return selection !== null;
+		const obj = this.model.setSelectionTree(objects);
+		this.selectObject(obj, true);
+		return obj !== null;
+	}
+
+	private selectObject(obj: PIXI.DisplayObject, dispatch: boolean) {
+		this.selection.select(obj);
+		if (dispatch) Data.selectObject(obj, DataOrigin.SCENE);
 	}
 
 	private getObjectsUnderPoint(x: number, y: number, children: PIXI.DisplayObject[], objects: PIXI.DisplayObject[]) {

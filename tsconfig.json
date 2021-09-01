@@ -12,7 +12,12 @@
 		"experimentalDecorators": true,
 		"resolveJsonModule": true,
 		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true
+		"forceConsistentCasingInFileNames": true,
+		"baseUrl": "src",
+		"paths": {
+			"scene/*": ["scene/*"],
+			"editor/*": ["editor/*"],
+		}
 	},
 	"include": ["src"],
 	"exclude": ["node_modules"]
