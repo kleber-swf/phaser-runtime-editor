@@ -19,9 +19,8 @@ export class PropertiesInspector extends Inspector {
 	}
 
 	private createPropertyEditor(prop: PropertyInspectionData, value: any, tagName: string) {
-		const editor = document.createElement(tagName) as PropertyEditor<any>;
+		const editor = this.content.appendChild(document.createElement(tagName)) as PropertyEditor<any>;
 		editor.setContent(prop, value);
-		this.content.appendChild(editor);
 		return editor;
 	}
 

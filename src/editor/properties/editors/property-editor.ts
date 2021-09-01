@@ -17,19 +17,14 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 		fieldId = fieldId ?? `${prop.name}-${IdUtil.genHexId()}`;
 		this.prop = prop;
 
-		const titleCol = document.createElement('div');
+		const titleCol = this.appendChild(document.createElement('div'));
 		titleCol.classList.add('property-title', prop.name);
+		titleCol.appendChild(this.createLabel(fieldId, prop));
 
-		const title = this.createLabel(fieldId, prop);
-		titleCol.appendChild(title);
-
-		const contentCol = this.createContent(value, fieldId, prop);
+		this.appendChild(this.createContent(value, fieldId, prop));
 
 		this.setInternalValue(value);
 		this.onchange = this.onValueChanged.bind(this);
-
-		this.appendChild(titleCol);
-		this.appendChild(contentCol);
 	}
 
 	protected createLabel(fieldId: string, prop: PropertyInspectionData): HTMLElement {
