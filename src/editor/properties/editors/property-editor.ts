@@ -1,5 +1,6 @@
 import { Data, DataOrigin } from 'data/data';
 import { PropertyInspectionData } from 'editor/properties-editors';
+import { IdUtil } from 'util/id.util';
 import './property-editor.scss';
 
 export abstract class PropertyEditor<T> extends HTMLElement {
@@ -8,14 +9,12 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 
 	protected _internalValue: T;
 
-	protected static randomId() { return (Math.floor(Math.random() * 1000000)).toString(16); }
-
 	public connectedCallback() {
 		this.classList.add('property-editor');
 	}
 
 	public setContent(prop: PropertyInspectionData, value: T, fieldId?: string) {
-		fieldId = fieldId ?? `${prop.name}-${PropertyEditor.randomId()}`;
+		fieldId = fieldId ?? `${prop.name}-${IdUtil.genHexId()}`;
 		this.prop = prop;
 
 		const titleCol = document.createElement('div');
