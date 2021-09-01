@@ -8,7 +8,7 @@ export class TreeItem extends HTMLElement {
 		const head = document.createElement('div');
 		head.classList.add('item-head');
 		this.appendChild(head);
-		
+
 		const type = PhaserData.getType(obj.type);
 		const icon = document.createElement('i');
 		icon.classList.add('fas', 'item-icon', type.icon);
@@ -16,7 +16,7 @@ export class TreeItem extends HTMLElement {
 
 		const label = document.createElement('div');
 		label.classList.add('item-name');
-		label.textContent = type.name;
+		label.textContent = obj.name && obj.name.length > 0 ? obj.name : type.name;
 		head.appendChild(label);
 	}
 
