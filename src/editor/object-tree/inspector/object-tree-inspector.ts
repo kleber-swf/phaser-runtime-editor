@@ -41,7 +41,7 @@ export class ObjectTreeInspector extends Inspector {
 		node.classList.add(`level-${m.level}`);
 		node.onNodeSelect = this.onNodeSelected.bind(this);
 		node.onCollapseStateChanged = this.onNodeCollapseStateChanged.bind(this);
-		node.setContent(obj, m.type);
+		node.setContent(m);
 
 		m.node = node;
 
@@ -53,20 +53,21 @@ export class ObjectTreeInspector extends Inspector {
 	}
 
 	private onNodeSelected(node: TreeNode) {
+		if (node?.model === this._lastSelectedModel) return;
 		if (this._lastSelectedModel) this._lastSelectedModel.node.clearSelection();
-		this._lastSelectedModel = this.model.getById(node.obj.__instanceId);
-		Data.selectObject(node.obj, DataOrigin.INSPECTOR);
+		this._lastSelectedModel = node.model;
+		Data.selectObject(node.model.obj, DataOrigin.INSPECTOR);
 	}
 
 	private onNodeCollapseStateChanged(node: TreeNode, collapsed: boolean, all: boolean) {
-		const m = this.model.getById(node.obj.__instanceId);
+		const m = node.model;
 		this.changeCollapseState(m, collapsed, all);
 	}
 
-	private changeCollapseState(m: ObjectMapItemModel, collapsed: boolean, all: boolean) {
-		m.collapsed = collapsed;
-		if (!(all && m.node.obj.children?.length)) return;
-		m.node.obj.children.forEach(child => {
+	private changeCollapseState(model: ObjectMapItemModel, collapsed: boolean, all: boolean) {
+		model.collapsed = collapsed;
+		if (!(all && model.obj.children?.length)) return;
+		model.obj.children.forEach(child => {
 			if (child.__skip) return;
 			const n = this.model.getById(child.__instanceId);
 			if (collapsed) n.node.collapse();
@@ -83,7 +84,7 @@ export class ObjectTreeInspector extends Inspector {
 		if (!obj) return;
 		this._lastSelectedModel = this.model.getById(obj.__instanceId);
 		this._lastSelectedModel.node.select();
-		this.expandParents(this._lastSelectedModel);
+		this.expandParents(this._lastSelectedModel.parent);
 	}
 
 	private expandParents(model: ObjectMapItemModel) {
