@@ -49,6 +49,7 @@ BASIC:
 		[ ] hide gizmos
 		[ ] toggle enabled
 		[ ] status bar
+		[ ] show reference
 
 ======================================================
 
@@ -98,3 +99,7 @@ ADVANCED:
 		[ ] show grid
 		[ ] help: keyboard shorcuts
 		[ ] toolbar: tool selector
+
+	Plugins Support:
+		[ ] add plugin
+		[ ] plugin triggers

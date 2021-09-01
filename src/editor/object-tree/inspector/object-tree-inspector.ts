@@ -1,5 +1,5 @@
 import { Inspector } from 'editor/inspector/inspector';
-import { TreeItem } from '../tree-item/tree-item';
+import { TreeNode } from '../tree-node/tree-node';
 import './object-tree-inspector.scss';
 
 export class ObjectTreeInspector extends Inspector {
@@ -16,7 +16,7 @@ export class ObjectTreeInspector extends Inspector {
 	}
 
 	private createItem(obj: PIXI.DisplayObject, parent: HTMLElement, level: number) {
-		const item = document.createElement(TreeItem.tagName) as TreeItem;
+		const item = document.createElement(TreeNode.tagName) as TreeNode;
 		item.classList.add(`level-${level}`);
 		item.setContent(obj);
 		parent.appendChild(item);
@@ -35,26 +35,3 @@ export class ObjectTreeInspector extends Inspector {
 }
 
 customElements.define(ObjectTreeInspector.tagName, ObjectTreeInspector);
-
-
-// export interface ObjectTreeItemModel{
-// 	type: string;
-// 	name: string;
-// 	children?: ObjectTreeItemModel[];
-// }
-
-// export class ObjectTreeModel {
-// 	private _items: ObjectTreeItemModel = {
-
-// 	};
-
-// 	public create(obj: PIXI.DisplayObject) {
-// 		const items = this._items;
-// 		items.length = 0;
-// 		this.createItems(obj, items);
-// 	}
-
-// 	private createItems(obj: PIXI.DisplayObject, items: string[]) {
-// 		items.add(obj.)
-// 	}
-// }
