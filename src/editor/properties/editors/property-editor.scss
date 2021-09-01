@@ -23,7 +23,7 @@ $property-foreground: $on-background-color;
 
 		label {
 			font-size: 14px;
-			color: rgba($on-background-color, 0.6);
+			color: $unfocused-text-color;
 			text-overflow: ellipsis;
 			overflow: hidden;
 			display: inline-block;
@@ -57,7 +57,7 @@ $property-foreground: $on-background-color;
 			outline: none !important;
 
 			&:not([readonly]):focus {
-				border-color: rgba($on-background-color, 0.5);
+				border-color: $disabled-text-color;
 			}
 		}
 	}

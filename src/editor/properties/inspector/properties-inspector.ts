@@ -2,6 +2,7 @@ import { Data, DataOrigin } from 'data/data';
 import { Inspector } from 'editor/inspector/inspector';
 import { PropertiesEditors, PropertyInspectionData } from 'editor/properties-editors';
 import { PropertyEditor } from '../editors/property-editor';
+import './properties-inspector.scss';
 
 export class PropertiesInspector extends Inspector {
 	public static readonly tagName: string = 'phed-properties-inspector';

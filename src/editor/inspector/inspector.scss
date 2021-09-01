@@ -10,7 +10,7 @@
 	.title {
 		font-size: 12px;
 		font-weight: bold;
-		color: rgba($on-background-color, 0.5);
+		color: $unfocused-text-color;
 		background-color: rgba(black, 0.2);
 		padding: 6px 8px;
 		text-transform: uppercase;
@@ -18,7 +18,7 @@
 
 	.content {
 		flex: 1;
-		padding: 12px 0px;
 		box-shadow: 0 2px 2px $shadow-color;
+		color: $unfocused-text-color;
 	}
 }

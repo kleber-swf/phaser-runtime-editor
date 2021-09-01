@@ -1,5 +1,6 @@
 import { ActionsToolbar } from './actions/actions-toolbar';
 import './editor.scss';
+import { ObjectTreeInspector } from './object-tree/inspector/object-tree-inspector';
 import { Panel } from './panel/panel';
 import { PropertiesInspector } from './properties/inspector/properties-inspector';
 import { Widget } from './widget/widget';
@@ -39,7 +40,12 @@ export class Editor extends Widget {
 		rightPanel.classList.add('right', 'large');
 		this.panels.push(rightPanel);
 
+		const tree = document.createElement(ObjectTreeInspector.tagName) as ObjectTreeInspector;
+		tree.id = 'phed-object-tree';
+		leftPanel.addInspector(tree);
+
 		const props = document.createElement(PropertiesInspector.tagName) as PropertiesInspector;
+		props.id = 'phred-properties-panel';
 		rightPanel.addInspector(props);
 	}
 
@@ -54,6 +60,8 @@ export class Editor extends Widget {
 			this.gameContainer.removeChild(el);
 		}
 		this._game = game;
+		(document.querySelector('#phed-object-tree') as ObjectTreeInspector)
+			.setContent(group);
 	}
 
 	public selectObject(obj: PIXI.DisplayObject) {

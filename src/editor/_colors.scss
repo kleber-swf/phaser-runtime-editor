@@ -1,7 +1,11 @@
-$primary-color: #2980B9;
-$on-primary-color: #F2F2F2;
+$primary-color: #2980b9;
+$on-primary-color: #f2f2f2;
 
 $background-color: #232323;
-$on-background-color: #F2F2F2;
+$on-background-color: #f2f2f2;
 
 $shadow-color: rgba(#111, 0.6);
+
+$focused-text-color: $on-background-color;
+$unfocused-text-color: darken($on-background-color, 20%);
+$disabled-text-color: rgba($on-background-color, 0.5);

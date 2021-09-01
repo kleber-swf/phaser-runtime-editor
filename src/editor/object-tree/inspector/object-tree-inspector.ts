@@ -1,15 +1,17 @@
-import { Data } from 'data/data';
+import { Inspector } from 'editor/inspector/inspector';
 import { TreeItem } from '../tree-item/tree-item';
-import './object-tree-toolbar.scss';
+import './object-tree-inspector.scss';
 
-export class ObjectTreeToolbar extends HTMLElement {
-	public static readonly tagName: string = 'phed-object-tree-toolbar';
+export class ObjectTreeInspector extends Inspector {
+	public static readonly tagName: string = 'phed-object-tree-inspector';
+
+	public connectedCallback() {
+		super.connectedCallback();
+		this.title = 'Objects';
+	}
 
 	public setContent(root: PIXI.DisplayObject | Phaser.Stage) {
-		const content = document.createElement('div');
-		content.classList.add('content');
-		this.createItem(root, content, 0);
-		this.appendChild(content);
+		this.createItem(root, this.content, 0);
 	}
 
 	private createItem(obj: PIXI.DisplayObject, parent: HTMLElement, level: number) {
@@ -17,7 +19,7 @@ export class ObjectTreeToolbar extends HTMLElement {
 		item.classList.add(`level-${level}`);
 		item.setContent(obj);
 		parent.appendChild(item);
-		
+
 		if (!('children' in obj)) return;
 		level = level + 1;
 		for (let i = 0, n = obj.children.length; i < n; i++) {
@@ -31,7 +33,7 @@ export class ObjectTreeToolbar extends HTMLElement {
 	}
 }
 
-customElements.define(ObjectTreeToolbar.tagName, ObjectTreeToolbar);
+customElements.define(ObjectTreeInspector.tagName, ObjectTreeInspector);
 
 
 // export interface ObjectTreeItemModel{
