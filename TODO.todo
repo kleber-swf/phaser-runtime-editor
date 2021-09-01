@@ -34,11 +34,13 @@ BASIC:
 		[x] look for basic properties to inspect
 
 	Object Tree:
-		[ ] panel
-		[ ] show complete object tree
+		[x] panel
+		[x] show complete object tree
 		[ ] selecting an object into the scene should select it in the tree
 		[ ] selecting an object into the true should select it in the scene
 		[ ] expand / collapse sub-trees
+			[ ] automatic expand when selecting
+		[ ] update tree content
 
 	General Features:
 		[x] editor layout
@@ -87,8 +89,9 @@ ADVANCED:
 			[ ] show them separated from the basic properties
 		[ ] optimization: shold I create a object pool for PropertyEditors?
 
-	Tree:
+	Object Tree:
 		[ ] expand / collapse all with alt key
+		[ ] auto update tree
 
 	General Features:
 		[ ] copy selected properties to clipboard

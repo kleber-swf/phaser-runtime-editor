@@ -5,6 +5,8 @@ phed-tree-item {
 
 	.item-head {
 		display: flex;
+		align-items: center;
+		justify-content: stretch;
 		padding: 6px 0;
 
 		.item-icon {
@@ -15,6 +17,7 @@ phed-tree-item {
 		.item-name {
 			display: inline-block;
 			white-space: nowrap;
+			flex: 1;
 		}
 	}
 
