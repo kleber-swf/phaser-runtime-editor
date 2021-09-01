@@ -28,6 +28,7 @@ class PropertiesEditorsClass {
 	};
 
 	public readonly inspectableProperties: PropertyInspectionData[] = [
+		{ name: '__type', typeHint: 'string', data: { readonly: true } },
 		{ name: 'name', typeHint: 'string' },
 		{ name: 'position', typeHint: 'point' },
 		{ name: 'scale', typeHint: 'point', data: { step: 0.1 } },

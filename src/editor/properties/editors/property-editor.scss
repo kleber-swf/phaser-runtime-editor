@@ -1,7 +1,7 @@
 @import 'colors';
 
 $property-input-background: rgba(white, 0.05);
-$property-foreground: $on-background-color;
+$property-foreground: $on-background;
 
 .property-editor {
 	display: flex;

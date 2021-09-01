@@ -1,5 +1,6 @@
+import { Data } from 'data/data';
 import { Inspector } from 'editor/inspector/inspector';
-import { ObjectTreeModel } from '../model/object-tree-model';
+import { ObjectMapItemModel, ObjectTreeModel } from '../model/object-tree-model';
 import { TreeNode } from '../tree-node/tree-node';
 import './object-tree-inspector.scss';
 
@@ -18,15 +19,16 @@ export class ObjectTreeInspector extends Inspector {
 			this.createNode(root.children[i], this.content, this.model);
 	}
 
-	private createNode(obj: PIXI.DisplayObject, parent: HTMLElement, model:ObjectTreeModel) {
+	private createNode(obj: PIXI.DisplayObject, parent: HTMLElement, model: ObjectTreeModel) {
 		const m = model.getById(obj.__instanceId);
 		if (!m) throw new Error(`Model not found for ${obj.__instanceId}`);
 
 		const node = document.createElement(TreeNode.tagName) as TreeNode;
 		node.classList.add(`level-${m.level}`);
-		node.setContent(obj);
+		node.onNodeSelect = this.onNodeSelected.bind(this);
+		node.setContent(obj, m.type);
 		parent.appendChild(node);
-		
+
 		m.node = node;
 
 		if (!('children' in obj)) return;
@@ -35,6 +37,14 @@ export class ObjectTreeInspector extends Inspector {
 			this.createNode(obj.children[i], container, model);
 		}
 	}
+
+	private onNodeSelected(node: TreeNode) {
+		if (this._lastSelectedModel) this._lastSelectedModel.node.clearSelection();
+		this._lastSelectedModel = this.model.getById(node.obj.__instanceId);
+		Data.selectObject(node.obj);
+	}
+
+	private _lastSelectedModel: ObjectMapItemModel;
 
 	public selectObject(obj: PIXI.DisplayObject) {
 		console.log(obj);
