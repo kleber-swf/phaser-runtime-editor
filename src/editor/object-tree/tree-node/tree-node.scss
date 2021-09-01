@@ -22,7 +22,12 @@ phed-tree-node {
 		display: flex;
 		align-items: center;
 		justify-content: stretch;
-		padding: 6px 4px;
+		padding: 0;
+
+		.collapse-icon {
+			padding: 6px 6px 6px 10px;
+			margin-right: 2px;
+		}
 
 		.node-icon {
 			display: inline-block;
@@ -36,6 +41,7 @@ phed-tree-node {
 	}
 
 	.node-children {
-		margin-left: 20px;
+		margin-left: 16px;
+		margin-bottom: 4px;
 	}
 }

@@ -3,10 +3,10 @@ import './tree-node.scss';
 
 export class TreeNode extends HTMLElement {
 	public static readonly tagName: string = 'phed-tree-node';
-	public obj: PIXI.DisplayObject;
-	public onNodeSelect: (node: TreeNode) => void;
 
+	public obj: PIXI.DisplayObject;
 	private label: HTMLElement;
+	public onNodeSelect: (node: TreeNode) => void;
 
 	public updateTitle(type: PhaserObjectType, value: string) {
 		if (this.obj) this.label.textContent = value?.length > 0 ? value : type.name;
@@ -20,26 +20,25 @@ export class TreeNode extends HTMLElement {
 
 	public setContent(obj: PIXI.DisplayObject, type: PhaserObjectType) {
 		this.obj = obj;
-		const head = document.createElement('div');
+		const head = this.appendChild(document.createElement('div'));
 		head.classList.add('node-head');
 		head.onclick = this.select.bind(this);
-		this.appendChild(head);
 
-		const icon = document.createElement('i');
+		const collapseIcon = head.appendChild(document.createElement('i'));
+		collapseIcon.classList.add('fas', 'fa-caret-right', 'collapse-icon');
+
+		const icon = head.appendChild(document.createElement('i'));
 		icon.classList.add('fas', 'node-icon', type.icon);
-		head.appendChild(icon);
 
-		const label = this.label = document.createElement('div');
+		const label = head.appendChild(this.label = document.createElement('div'));
 		label.classList.add('node-name');
 		this.updateTitle(type, obj.name);
 		this.updateObjectVisibility(obj.visible);
-		head.appendChild(label);
 	}
 
 	public addChildrenContainer() {
-		const container = document.createElement('div');
+		const container = this.appendChild(document.createElement('div'));
 		container.classList.add('node-children');
-		this.appendChild(container);
 		return container;
 	}
 
