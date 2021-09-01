@@ -11,6 +11,12 @@ export class ObjectTreeInspector extends Inspector {
 	public connectedCallback() {
 		super.connectedCallback();
 		this.title = 'Objects';
+		Data.addPropertyChangedListener(DataOrigin.INSPECTOR, this.onPropertyChanged.bind(this));
+	}
+
+	private onPropertyChanged(property: string, value: string) {
+		if (!(property === 'name' && this._lastSelectedModel)) return;
+		this._lastSelectedModel.node.updateTitle(this._lastSelectedModel.type, value);
 	}
 
 	public setContent(root: PIXI.DisplayObjectContainer | Phaser.Stage) {

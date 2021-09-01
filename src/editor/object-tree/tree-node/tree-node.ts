@@ -1,10 +1,17 @@
-import { PhaserData, PhaserObjectType } from 'data/phaser-data';
+import { PhaserObjectType } from 'data/phaser-data';
 import './tree-node.scss';
 
 export class TreeNode extends HTMLElement {
 	public static readonly tagName: string = 'phed-tree-node';
 	public obj: PIXI.DisplayObject;
 	public onNodeSelect: (node: TreeNode) => void;
+
+	private label: HTMLElement;
+
+	public updateTitle(type: PhaserObjectType, value: string) {
+		if (!this.obj) return;
+		this.label.textContent = value?.length > 0 ? value : type.name;
+	}
 
 	public setContent(obj: PIXI.DisplayObject, type: PhaserObjectType) {
 		this.obj = obj;
@@ -17,9 +24,9 @@ export class TreeNode extends HTMLElement {
 		icon.classList.add('fas', 'node-icon', type.icon);
 		head.appendChild(icon);
 
-		const label = document.createElement('div');
+		const label = this.label = document.createElement('div');
 		label.classList.add('node-name');
-		label.textContent = obj.name && obj.name.length > 0 ? obj.name : type.name;
+		label.textContent = obj.name?.length > 0 ? obj.name : type.name;
 		head.appendChild(label);
 	}
 

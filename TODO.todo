@@ -36,8 +36,9 @@ BASIC:
 	Object Tree:
 		[x] panel
 		[x] show complete object tree
-		[ ] selecting an object into the scene should select it in the tree
-		[ ] selecting an object into the true should select it in the scene
+		[x] selecting an object into the scene should select it in the tree
+		[x] selecting an object into the true should select it in the scene
+		[x] renaming objects in the inspector should rename them in the tree
 		[ ] expand / collapse sub-trees
 			[ ] automatic expand when selecting
 		[ ] update tree content

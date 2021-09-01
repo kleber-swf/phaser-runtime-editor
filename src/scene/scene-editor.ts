@@ -37,7 +37,7 @@ export class SceneEditor extends Phaser.Group {
 
 		this.selection = new Selection(game);
 		this.addChild(this.selection);
-		Data.setPropertyChangedListener(DataOrigin.INSPECTOR, this.onPropertyChangedInsideInspector.bind(this));
+		Data.addPropertyChangedListener(DataOrigin.INSPECTOR, this.onPropertyChangedInsideInspector.bind(this));
 		Data.addObjectSelectionChangedListener(DataOrigin.INSPECTOR, this.onObjectSelectedInsideInspector.bind(this));
 	}
 

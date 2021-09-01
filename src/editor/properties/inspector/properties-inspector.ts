@@ -11,7 +11,7 @@ export class PropertiesInspector extends Inspector {
 	public connectedCallback() {
 		super.connectedCallback();
 		this.title = 'Properties';
-		Data.setPropertyChangedListener(DataOrigin.SCENE, this.onPropertyChangedInsideEditor.bind(this));
+		Data.addPropertyChangedListener(DataOrigin.SCENE, this.onPropertyChangedInsideEditor.bind(this));
 	}
 
 	private onPropertyChangedInsideEditor(property: string, value: any) {

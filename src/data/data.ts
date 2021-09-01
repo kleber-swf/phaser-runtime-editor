@@ -25,13 +25,13 @@ class DataClass {
 		this.onSelectedObjectChanged[from].dispatch(value, from);
 	}
 
-	private readonly onPropertyChanged: Record<DataOrigin, PropertyChangedListener> = {
-		[DataOrigin.SCENE]: null,
-		[DataOrigin.INSPECTOR]: null,
+	private readonly onPropertyChanged: Record<DataOrigin, Phaser.Signal> = {
+		[DataOrigin.SCENE]: new Phaser.Signal(),
+		[DataOrigin.INSPECTOR]: new Phaser.Signal(),
 	};
 
-	public setPropertyChangedListener(from: DataOrigin, listener: PropertyChangedListener) {
-		this.onPropertyChanged[from] = listener;
+	public addPropertyChangedListener(from: DataOrigin, listener: PropertyChangedListener) {
+		this.onPropertyChanged[from].add(listener);
 	}
 
 	public propertyChanged(property: string, value: any, from: DataOrigin) {
@@ -50,7 +50,7 @@ class DataClass {
 		this._scheduledEvents = {};
 		Object.keys(events).forEach(k => {
 			const e = events[k];
-			this.onPropertyChanged[e.from](k, e.value, this._selectedObject, e.from);
+			this.onPropertyChanged[e.from].dispatch(k, e.value, this._selectedObject, e.from);
 		});
 	}
 }
