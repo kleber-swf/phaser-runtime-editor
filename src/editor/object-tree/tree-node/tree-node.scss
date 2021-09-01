@@ -3,11 +3,18 @@
 phed-tree-node {
 	display: block;
 	cursor: pointer;
+	flex: 1;
 
 	&.selected {
 		& > .node-head {
 			background-color: $primary-color;
 			color: $on-primary;
+		}
+	}
+
+	&.object-invisible {
+		.node-name {
+			opacity: 0.5;
 		}
 	}
 
@@ -25,7 +32,6 @@ phed-tree-node {
 		.node-name {
 			display: inline-block;
 			white-space: nowrap;
-			flex: 1;
 		}
 	}
 

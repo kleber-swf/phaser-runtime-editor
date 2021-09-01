@@ -9,8 +9,13 @@ export class TreeNode extends HTMLElement {
 	private label: HTMLElement;
 
 	public updateTitle(type: PhaserObjectType, value: string) {
+		if (this.obj) this.label.textContent = value?.length > 0 ? value : type.name;
+	}
+
+	public updateObjectVisibility(value: boolean) {
 		if (!this.obj) return;
-		this.label.textContent = value?.length > 0 ? value : type.name;
+		if (value) this.classList.remove('object-invisible');
+		else this.classList.add('object-invisible');
 	}
 
 	public setContent(obj: PIXI.DisplayObject, type: PhaserObjectType) {
@@ -26,7 +31,8 @@ export class TreeNode extends HTMLElement {
 
 		const label = this.label = document.createElement('div');
 		label.classList.add('node-name');
-		label.textContent = obj.name?.length > 0 ? obj.name : type.name;
+		this.updateTitle(type, obj.name);
+		this.updateObjectVisibility(obj.visible);
 		head.appendChild(label);
 	}
 

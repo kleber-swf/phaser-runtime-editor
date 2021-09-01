@@ -39,6 +39,7 @@ BASIC:
 		[x] selecting an object into the scene should select it in the tree
 		[x] selecting an object into the true should select it in the scene
 		[x] renaming objects in the inspector should rename them in the tree
+		[x] invisible elements should be grayed out
 		[ ] expand / collapse sub-trees
 			[ ] automatic expand when selecting
 		[ ] update tree content
