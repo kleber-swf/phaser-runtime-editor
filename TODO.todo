@@ -2,7 +2,7 @@ BASIC:
 	Selection:
 		[x] natural parent selection
 		[x] global scale
-		[ ] skip invisible objects
+		[x] skip invisible objects
 		
 	Translation:
 		[x] translation
@@ -46,7 +46,6 @@ BASIC:
 
 	General Features:
 		[x] editor layout
-		[ ] hide panels
 		[ ] undo / redo
 		[ ] hide gizmos
 		[ ] toggle enabled
@@ -103,6 +102,7 @@ ADVANCED:
 		[ ] help: keyboard shorcuts
 		[ ] toolbar: tool selector
 		[ ] status bar
+		[ ] hide panels
 
 	Plugins Support:
 		[ ] add plugin
