@@ -38,6 +38,7 @@ export class SceneEditor extends Phaser.Group {
 		this.selection = new Selection(game);
 		this.addChild(this.selection);
 		Data.setPropertyChangedListener(DataOrigin.INSPECTOR, this.onPropertyChangedInsideInspector.bind(this));
+		Data.addObjectSelectionChangedListener(DataOrigin.INSPECTOR, this.onObjectSelectedInsideInspector.bind(this));
 	}
 
 	private onPropertyChangedInsideInspector(property: string, value: any, obj: PIXI.DisplayObject) {
@@ -46,6 +47,8 @@ export class SceneEditor extends Phaser.Group {
 		obj.updateTransform();
 		this.selection.redraw();
 	}
+
+	private onObjectSelectedInsideInspector(obj: PIXI.DisplayObject) { this.selectObject(obj, true); }
 
 	private createTouchArea(game: Phaser.Game): Phaser.Graphics {
 		const area = new Phaser.Graphics(game);
@@ -89,10 +92,9 @@ export class SceneEditor extends Phaser.Group {
 		return obj !== null;
 	}
 
-	private selectObject(obj: PIXI.DisplayObject) {
-		// TODO is this the only place the selected object can be changed?
+	private selectObject(obj: PIXI.DisplayObject, silent = false) {
 		this.selection.select(obj);
-		Data.selectObject(obj);
+		if (!silent) Data.selectObject(obj, DataOrigin.SCENE);
 	}
 
 	private getObjectsUnderPoint(x: number, y: number, children: PIXI.DisplayObject[], objects: PIXI.DisplayObject[]) {

@@ -1,4 +1,4 @@
-import { Data } from 'data/data';
+import { Data, DataOrigin } from 'data/data';
 import Phaser from 'phaser-ce';
 import { Editor } from './editor/editor';
 import './plugin.scss';
@@ -15,7 +15,8 @@ export class Plugin extends Phaser.Plugin {
 
 		new SceneEditor(game, group, game.stage);
 
-		Data.onSelectedObjectChanged.add(editor.selectObject, editor);
+		Data.addObjectSelectionChangedListener(DataOrigin.INSPECTOR, editor.selectObject.bind(editor));
+		Data.addObjectSelectionChangedListener(DataOrigin.SCENE, editor.selectObject.bind(editor));
 
 		const update = this.update;
 

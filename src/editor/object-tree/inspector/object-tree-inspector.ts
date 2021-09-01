@@ -1,4 +1,4 @@
-import { Data } from 'data/data';
+import { Data, DataOrigin } from 'data/data';
 import { Inspector } from 'editor/inspector/inspector';
 import { ObjectMapItemModel, ObjectTreeModel } from '../model/object-tree-model';
 import { TreeNode } from '../tree-node/tree-node';
@@ -41,7 +41,7 @@ export class ObjectTreeInspector extends Inspector {
 	private onNodeSelected(node: TreeNode) {
 		if (this._lastSelectedModel) this._lastSelectedModel.node.clearSelection();
 		this._lastSelectedModel = this.model.getById(node.obj.__instanceId);
-		Data.selectObject(node.obj);
+		Data.selectObject(node.obj, DataOrigin.INSPECTOR);
 	}
 
 	private _lastSelectedModel: ObjectMapItemModel;
