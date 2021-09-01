@@ -1,4 +1,4 @@
-import { Data } from 'data';
+import { Data } from 'data/data';
 import Phaser from 'phaser-ce';
 import { Editor } from './editor/editor';
 import './plugin.scss';

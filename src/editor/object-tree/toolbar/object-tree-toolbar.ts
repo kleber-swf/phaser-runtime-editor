@@ -1,3 +1,5 @@
+import { Data } from 'data/data';
+import { TreeItem } from '../tree-item/tree-item';
 import './object-tree-toolbar.scss';
 
 export class ObjectTreeToolbar extends HTMLElement {
@@ -12,15 +14,16 @@ export class ObjectTreeToolbar extends HTMLElement {
 	}
 
 	private createItem(obj: PIXI.DisplayObject, parent: HTMLElement, level: number) {
-		const item = document.createElement('div');
+		const item = document.createElement(TreeItem.tagName) as TreeItem;
 		item.classList.add(`level-${level}`);
-		item.textContent = 'xxx';
+		item.setContent(obj);
 		parent.appendChild(item);
-		console.log(obj.children.length);
+		
 		if (!('children' in obj)) return;
 		level = level + 1;
 		for (let i = 0, n = obj.children.length; i < n; i++) {
-			this.createItem(obj.children[i], item, level);
+			const container = item.addChildrenContainer();
+			this.createItem(obj.children[i], container, level);
 		}
 	}
 

@@ -1,4 +1,4 @@
-import { Data, DataOrigin } from 'data';
+import { Data, DataOrigin } from 'data/data';
 import { PropertyInspectionData } from 'editor/properties-editors';
 import './property-editor.scss';
 

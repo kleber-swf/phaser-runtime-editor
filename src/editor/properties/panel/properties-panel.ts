@@ -1,4 +1,4 @@
-import { Data, DataOrigin } from 'data';
+import { Data, DataOrigin } from 'data/data';
 import { PropertiesEditors, PropertyInspectionData } from 'editor/properties-editors';
 import { Widget } from 'editor/widget/widget';
 import { PropertyEditor } from '../editors/property-editor';

@@ -1,0 +1,22 @@
+@import 'colors';
+
+phed-tree-item {
+	display: inline-block;
+	color: $on-background-color;
+
+	.item-head {
+		display: block;
+		padding: 6px 0;
+		.item-icon {
+			display: inline-block;
+			margin: 0 6px 0 0;
+		}
+		.item-name{
+			display: inline-block;
+		}
+	}
+
+	.item-children {
+		margin-left: 20px;
+	}
+}

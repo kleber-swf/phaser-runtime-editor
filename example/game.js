@@ -20,6 +20,7 @@ let _colorIndex = 0;
 
 function preload() {
 	game.load.image('mushroom', 'assets/sprites/mushroom2.png');
+	game.load.image('phaser', 'assets/sprites/phaser1.png');
 }
 
 function create() {
@@ -126,6 +127,9 @@ function create() {
 	child = el(DIST * 3, 500, SIZE, SIZE, parent, 'child');
 	child.scale.set(-1, -1);
 
+
+	child = game.add.sprite(1180, 925, 'phaser');
+	child.scale.set(2, 2);
 
 	// game.add.text(0, 0, 'this text scrolls\nwith the background', { font: '32px Arial', fill: '#f26c4f', align: 'center' });
 

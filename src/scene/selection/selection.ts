@@ -1,5 +1,5 @@
-import { Data, DataOrigin } from 'data';
-import { PointUtil } from 'scene/util/math.util';
+import { Data, DataOrigin } from 'data/data';
+import { PointUtil } from 'util/math.util';
 import { ANCHOR_COLOR, ANCHOR_STROKE, BORDER_COLOR, BORDER_STROKE, PIVOT_COLOR, PIVOT_STROKE } from '../scene-colors';
 import { ScaleHandler } from './scale/scale.handler';
 

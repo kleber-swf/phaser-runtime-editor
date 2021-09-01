@@ -17,6 +17,11 @@ export class Editor extends Widget {
 	public connectedCallback() {
 		super.connectedCallback();
 
+		const script = document.createElement('script');
+		script.src = 'https://kit.fontawesome.com/7ba4e59e46.js';
+		script.crossOrigin = 'anonymous';
+		document.head.appendChild(script);
+
 		this.objectTree = document.createElement(ObjectTreeToolbar.tagName) as ObjectTreeToolbar;
 		this.appendChild(this.objectTree);
 

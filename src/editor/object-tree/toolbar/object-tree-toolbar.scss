@@ -4,6 +4,16 @@ phed-object-tree-toolbar {
 	width: 200px;
 	box-shadow: -4px 0px 4px $shadow-color;
 	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	justify-content: stretch;
+	align-items: stretch;
+
+	.content {
+		display: flex;
+		flex-direction: column;
+		justify-content: stretch;
+	}
 }
 
 @media (min-width: 1600px) {

@@ -1,4 +1,4 @@
-import { Data, DataOrigin } from 'data';
+import { Data, DataOrigin } from 'data/data';
 import { ScaleGizmo } from './scale.gizmo';
 import { Scaler } from './scaler';
 
