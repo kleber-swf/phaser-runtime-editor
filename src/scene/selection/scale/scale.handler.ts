@@ -1,4 +1,5 @@
 import { Data, DataOrigin } from 'data/data';
+import { History } from 'data/history';
 import { ScaleGizmo } from './scale.gizmo';
 import { Scaler } from './scaler';
 
@@ -54,6 +55,15 @@ export class ScaleHandler extends Phaser.Group {
 	}
 
 	private startScaling(gizmos: ScaleGizmo) {
+		const obj = Data.selectedObject;
+		History.holdEntry({
+			obj,
+			properties: {
+				scale: obj.scale.clone(),
+				position: obj.position.clone(),
+			},
+		});
+
 		this.scaler.startScaling(this.selectedObject, gizmos.factorH, gizmos.factorV);
 		this._scaling = true;
 	}
@@ -61,6 +71,7 @@ export class ScaleHandler extends Phaser.Group {
 	private stopScaling() {
 		this._scaling = false;
 		this.scaler.stopScaling();
+		History.commit();
 	}
 
 	public handle() {
