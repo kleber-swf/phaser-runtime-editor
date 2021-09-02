@@ -1,4 +1,5 @@
 import { Data, DataOrigin } from 'data/data';
+import { History, HistoryEntry } from 'data/history';
 import { DragUtil } from '../util/drag.util';
 import { SceneMovel } from './scene-model';
 import { Selection } from './selection/selection';
@@ -37,8 +38,10 @@ export class SceneEditor extends Phaser.Group {
 
 		this.selection = new Selection(game);
 		this.addChild(this.selection);
+
 		Data.addPropertyChangedListener(DataOrigin.INSPECTOR, this.onPropertyChangedInsideInspector.bind(this));
 		Data.addObjectSelectionChangedListener(DataOrigin.INSPECTOR, this.onObjectSelectedInsideInspector.bind(this));
+		History.onHistoryWalk.add(this.onHistory, this);
 	}
 
 	private onPropertyChangedInsideInspector(property: string, value: any, obj: PIXI.DisplayObject) {
@@ -49,6 +52,10 @@ export class SceneEditor extends Phaser.Group {
 	}
 
 	private onObjectSelectedInsideInspector(obj: PIXI.DisplayObject) { this.selectObject(obj, false); }
+
+	private onHistory(entry: HistoryEntry) {
+		this.selection.select(entry.obj);
+	}
 
 	private createTouchArea(game: Phaser.Game): Phaser.Graphics {
 		const area = new Phaser.Graphics(game);
@@ -71,13 +78,25 @@ export class SceneEditor extends Phaser.Group {
 		this._hasSelected = !this.selection.getBounds().contains(pointer.x, pointer.y)
 			&& this.trySelectOver(pointer);
 		this._lastPos.set(pointer.x, pointer.y);
+
+		const obj = Data.selectedObject
+		if (!obj) return;
+
+		History.holdEntry({
+			obj: Data.selectedObject,
+			properties: { x: obj.x, y: obj.y },
+		});
 	}
 
 	private onInputUp(_: any, pointer: Phaser.Pointer) {
 		this._isInputDown = false;
 		const wasDragging = this._isDragging;
 		this._isDragging = false;
-		if (wasDragging) return;
+		if (wasDragging) {
+			History.commit();
+			return;
+		}
+		History.cancel();
 		if (this._hasSelected) return;
 		this.trySelectOver(pointer);
 		this._hasSelected = false;

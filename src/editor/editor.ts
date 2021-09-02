@@ -5,7 +5,6 @@ import { Panel } from './panel/panel';
 import { PropertiesInspector } from './properties/inspector/properties-inspector';
 import { Widget } from './widget/widget';
 
-
 export class Editor extends Widget {
 	public static readonly tagName: string = 'phred-editor';
 
