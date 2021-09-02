@@ -1,3 +1,4 @@
+import { Data, DataOrigin } from 'data/data';
 import { ActionsToolbar } from './actions/actions-toolbar';
 import './editor.scss';
 import { ObjectTreeInspector } from './object-tree/inspector/object-tree-inspector';
@@ -15,6 +16,8 @@ export class Editor extends Widget {
 
 	public connectedCallback() {
 		super.connectedCallback();
+
+		Data.onSelectedObjectChanged.add(this.selectObject, this);
 
 		const script = document.createElement('script');
 		script.src = 'https://kit.fontawesome.com/7ba4e59e46.js';
@@ -63,7 +66,7 @@ export class Editor extends Widget {
 			.setContent(group);
 	}
 
-	public selectObject(obj: PIXI.DisplayObject) {
+	public selectObject(_: DataOrigin, obj: PIXI.DisplayObject) {
 		this.panels.forEach(panel => panel.selectObject(obj));
 	}
 }

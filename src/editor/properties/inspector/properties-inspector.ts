@@ -11,11 +11,12 @@ export class PropertiesInspector extends Inspector {
 	public connectedCallback() {
 		super.connectedCallback();
 		this.title = 'Properties';
-		Data.addPropertyChangedListener(DataOrigin.SCENE, this.onPropertyChangedInsideEditor.bind(this));
+		Data.onPropertyChanged.add(this.onPropertyChanged, this);
 	}
 
-	private onPropertyChangedInsideEditor(property: string, value: any) {
-		this.editors[property]?.updateContent(value);
+	private onPropertyChanged(origin: DataOrigin, property: string, value: any) {
+		if (origin !== DataOrigin.INSPECTOR)
+			this.editors[property]?.updateContent(value);
 	}
 
 	private createPropertyEditor(prop: PropertyInspectionData, value: any, tagName: string) {

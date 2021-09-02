@@ -39,22 +39,26 @@ export class SceneEditor extends Phaser.Group {
 		this.selection = new Selection(game);
 		this.addChild(this.selection);
 
-		Data.addPropertyChangedListener(DataOrigin.INSPECTOR, this.onPropertyChangedInsideInspector.bind(this));
-		Data.addObjectSelectionChangedListener(DataOrigin.INSPECTOR, this.onObjectSelectedInsideInspector.bind(this));
+		Data.onPropertyChanged.add(this.onPropertyChanged.bind(this));
+		Data.onSelectedObjectChanged.add(this.onObjectSelected.bind(this));
 		History.onHistoryWalk.add(this.onHistory, this);
 	}
 
-	private onPropertyChangedInsideInspector(property: string, value: any, obj: PIXI.DisplayObject) {
-		if (!(obj && property in obj)) return;
+	private onPropertyChanged(origin: DataOrigin, property: string, value: any, obj: PIXI.DisplayObject) {
+		if (origin === DataOrigin.SCENE || !(obj && property in obj)) return;
 		obj[property] = value;
 		obj.updateTransform();
 		this.selection.redraw();
 	}
 
-	private onObjectSelectedInsideInspector(obj: PIXI.DisplayObject) { this.selectObject(obj, false); }
+	private onObjectSelected(origin: DataOrigin, obj: PIXI.DisplayObject) {
+		if (origin !== DataOrigin.SCENE)
+			this.selectObject(obj, false);
+	}
 
 	private onHistory(entry: HistoryEntry) {
-		this.selection.select(entry.obj);
+		// this.selectObject(entry.obj, true);
+
 	}
 
 	private createTouchArea(game: Phaser.Game): Phaser.Graphics {
@@ -84,7 +88,7 @@ export class SceneEditor extends Phaser.Group {
 
 		History.holdEntry({
 			obj: Data.selectedObject,
-			properties: { x: obj.x, y: obj.y },
+			properties: { position: obj.position.clone() },
 		});
 	}
 
