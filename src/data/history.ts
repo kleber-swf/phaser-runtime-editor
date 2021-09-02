@@ -1,3 +1,5 @@
+import { Data, DataOrigin } from './data';
+
 export interface HistoryEntry {
 	obj: PIXI.DisplayObject;
 	properties: { [id: string]: any };
@@ -26,8 +28,14 @@ class HistoryClass {
 	public undo() {
 		if (this.entries.length === 0) return;
 		const entry = this.entries.pop();
+		Data.selectObject(entry.obj, DataOrigin.HISTORY);
+
 		Object.keys(entry.properties)
-			.forEach(k => entry.obj[k] = entry.properties[k]);
+			.forEach(k => {
+				entry.obj[k] = entry.properties[k];
+				Data.propertyChanged(k, entry.properties[k], DataOrigin.HISTORY);
+			});
+
 		entry.obj.updateTransform();
 		this.onHistoryWalk.dispatch(entry);
 	}
