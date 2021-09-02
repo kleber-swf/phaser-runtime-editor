@@ -1,3 +1,5 @@
+import { Data } from 'data/data';
+import { History } from 'data/history';
 import { PropertyInspectionData } from 'editor/properties-editors';
 import { NumberPropertyEditor } from '../number/number-property-editor';
 import { PropertyEditor } from '../property-editor';
@@ -21,15 +23,22 @@ export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 
 		const xinput = this.xinput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;
 		xinput.setContent({ name: 'x', typeHint: 'number', data: prop.data }, value.x, fieldId);
-		xinput.onchange = this.onValueChanged.bind(this);
+		xinput.onchange = this.onInputChanged.bind(this);
 		parent.appendChild(xinput);
 
 		const yinput = this.yinput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;
 		yinput.setContent({ name: 'y', typeHint: 'number', data: prop.data }, value.y);
-		yinput.onchange = this.onValueChanged.bind(this);
+		yinput.onchange = this.onInputChanged.bind(this);
 		parent.appendChild(yinput);
 
 		return parent;
+	}
+
+	protected onInputChanged(e: Event) { this.onValueChanged(e, true); }
+
+	protected onValueChanged(e: Event, save?: boolean) {
+		if (save) this.savePreviousValue();
+		super.onValueChanged(e, false);
 	}
 
 	public getInternalValue() { return this.internalValue.clone(); }

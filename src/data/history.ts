@@ -14,7 +14,11 @@ class HistoryClass {
 	// TODO change this name please
 	public readonly onHistoryWalk = new Phaser.Signal();
 
-	public holdEntry(entry: HistoryEntry) { this.holdingEntry = entry; }
+	public holdEntry(entry: HistoryEntry) {
+		this.holdingEntry = entry;
+		return this;
+	}
+
 	public cancel() { this.holdingEntry = null; }
 
 	public commit() {

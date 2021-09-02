@@ -14,8 +14,6 @@ export class BooleanPropertyEditor extends PropertyEditor<boolean> {
 		return input;
 	}
 
-	public getInternalValue() { return this.input.checked; }
-
 	public setInternalValue(value: boolean) {
 		this.input.checked = value;
 		this._internalValue = value;

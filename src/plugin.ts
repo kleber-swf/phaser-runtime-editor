@@ -22,9 +22,12 @@ export class Plugin extends Phaser.Plugin {
 			editor.setup(game, group);
 		}
 
-		document.onkeypress = (e: KeyboardEvent) => {
-			if (e.ctrlKey && e.key === 'z')
+		document.onkeydown = (e: KeyboardEvent) => {
+			if (e.ctrlKey && e.key === 'z') {
 				History.undo();
+				e.stopImmediatePropagation();
+				return;
+			}
 		}
 	}
 
