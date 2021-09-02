@@ -1,15 +1,15 @@
-interface Action {
+export interface Action {
 	label: string;
+	icon?: string;
 	command: () => void;
 	shortcut: string;
 }
 
 class ActionsClass {
 	private readonly actionMap: Record<string, Action> = {};
+	public getActions() { return Object.values(this.actionMap); }
 
-	constructor() {
-		document.onkeydown = this.onKeyDown.bind(this);
-	}
+	constructor() { document.onkeydown = this.onKeyDown.bind(this); }
 
 	public add(...actions: Action[]) {
 		actions.forEach(action => {

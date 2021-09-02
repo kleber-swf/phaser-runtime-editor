@@ -11,15 +11,12 @@ export class Plugin extends Phaser.Plugin {
 		super(game, game.plugins);
 		group = group ?? game.world;
 
+		Actions.add({ label: 'undo', icon: 'fa-undo-alt', shortcut: 'ctrl+z', command: History.undo.bind(History) });
+
 		const editor = document.createElement(Editor.tagName) as Editor;
 		document.body.appendChild(editor);
 
 		new SceneEditor(game, group, game.stage);
-		Actions.add({
-			label: 'Undo',
-			shortcut: 'ctrl+z',
-			command: History.undo.bind(History)
-		});
 
 		const update = this.update;
 		this.update = () => {
