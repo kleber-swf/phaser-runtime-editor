@@ -16,6 +16,8 @@ class HistoryClass {
 
 	public holdEntry(entry: HistoryEntry) {
 		this.holdingEntry = entry;
+		Object.keys(entry.properties).forEach(k =>
+			entry.properties[k] = JSON.stringify(entry.properties[k]));
 		return this;
 	}
 
@@ -32,15 +34,28 @@ class HistoryClass {
 	public undo() {
 		if (this.entries.length === 0) return;
 		const entry = this.entries.pop();
+		this.apply(entry);
+	}
+
+	private apply(entry: HistoryEntry) {
 		Data.selectObject(entry.obj, DataOrigin.HISTORY);
 
+		const obj = entry.obj;
+		// TODO make this recursive (if necessary)
+		// TODO add support to arrays (if necessary)
 		Object.keys(entry.properties)
-			.forEach(k => {
-				entry.obj[k] = entry.properties[k];
-				Data.propertyChanged(k, entry.properties[k], DataOrigin.HISTORY);
+			.forEach(pk => {
+				const prop = JSON.parse(entry.properties[pk]);
+				if (typeof prop === 'object') {
+					Object.keys(prop).forEach(k => {
+						obj[pk][k] = prop[k];
+					});
+				} else
+					obj[pk] = prop;
+				Data.propertyChanged(pk, obj[pk], DataOrigin.HISTORY);
 			});
 
-		entry.obj.updateTransform();
+		obj.updateTransform();
 		this.onHistoryWalk.dispatch(entry);
 	}
 }
