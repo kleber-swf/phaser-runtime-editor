@@ -22,16 +22,16 @@ class DataClass {
 	}
 
 	/**
-	 * @param from {DataOrigin}
-	 * @param obj {PIXI.DisplayObject}
+	 * @param {DataOrigin} from
+	 * @param {PIXI.DisplayObject} obj
 	 */
 	public readonly onSelectedObjectChanged = new Phaser.Signal();
 
 	/**
-	 * @param from {DataOrigin}
-	 * @param property {string}
-	 * @param value {any}
-	 * @param obj {PIXI.DisplayObject}
+	 * @param {DataOrigin} from
+	 * @param {string} property
+	 * @param {any} value
+	 * @param {PIXI.DisplayObject} obj
 	 */
 	public readonly onPropertyChanged = new Phaser.Signal();
 
