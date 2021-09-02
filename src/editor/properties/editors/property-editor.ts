@@ -1,11 +1,12 @@
 import { Data, DataOrigin } from 'data/data';
+import { History } from 'data/history';
 import { PropertyInspectionData } from 'editor/properties-editors';
 import { IdUtil } from 'util/id.util';
 import './property-editor.scss';
 
 export abstract class PropertyEditor<T> extends HTMLElement {
 	protected prop: PropertyInspectionData;
-	protected changedOnEditor = false;
+	public changedOutsideInspector = false;
 
 	protected _internalValue: T;
 
@@ -46,21 +47,31 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 
 	protected abstract createInnerContent(fieldId: string, value: T, prop: PropertyInspectionData): HTMLElement;
 
-	public updateContent(value: T) {
-		this.changedOnEditor = true;
+	public propertyChangedOutsideInspector(value: T) {
+		this.changedOutsideInspector = true;
 		this.setInternalValue(value);
 	}
 
-
-	protected onValueChanged(e: Event) {
-		if (this.changedOnEditor) this.changedOnEditor = false;
-		else {
-			this.updateInternalValue(e);
-			Data.propertyChanged(this.prop.name, this.getInternalValue(), DataOrigin.INSPECTOR);
+	protected onValueChanged(e: Event, save = true) {
+		if (this.changedOutsideInspector) {
+			this.changedOutsideInspector = false;
+			return;
 		}
+		if (save) this.savePreviousValue();
+		this.updateInternalValue(e);
+		Data.propertyChanged(this.prop.name, this.getInternalValue(), DataOrigin.INSPECTOR);
 	}
 
 	public getInternalValue(): T { return this._internalValue; }
 	public abstract setInternalValue(value: T): void;
 	public abstract updateInternalValue(e: Event): void;
+
+	public savePreviousValue() {
+		History.holdEntry({
+			obj: Data.selectedObject,
+			properties: {
+				[this.prop.name]: this.getInternalValue()
+			}
+		}).commit();
+	}
 }

@@ -2,7 +2,7 @@ BASIC:
 	Selection:
 		[x] natural parent selection
 		[x] global scale
-		[ ] skip invisible objects
+		[x] skip invisible objects
 		
 	Translation:
 		[x] translation
@@ -17,10 +17,6 @@ BASIC:
 		[x] scale handler
 		[x] cursors
 		[x] larger area
-
-	Rotation:
-		[ ] gizmos
-		[ ] rotation handler
 
 	Properties View:
 		[x] properties panel
@@ -46,11 +42,11 @@ BASIC:
 
 	General Features:
 		[x] editor layout
-		[ ] hide panels
-		[ ] undo / redo
+		[x] undo
 		[ ] hide gizmos
 		[ ] toggle enabled
 		[ ] show reference
+		[ ] test inside a real game
 
 ======================================================
 
@@ -68,6 +64,8 @@ ADVANCED:
 		[ ] snapping (0.1x)
 
 	Rotation:
+		[ ] gizmos
+		[ ] rotation handler
 		[ ] snapping (45°)
 
 	Properties View:
@@ -103,6 +101,8 @@ ADVANCED:
 		[ ] help: keyboard shorcuts
 		[ ] toolbar: tool selector
 		[ ] status bar
+		[ ] hide panels
+		[ ] redo
 
 	Plugins Support:
 		[ ] add plugin

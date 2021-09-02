@@ -1,37 +1,18 @@
 export enum DataOrigin {
+	HISTORY = 0,
 	SCENE = 1,
 	INSPECTOR = 2,
 };
 
-export type PropertyChangedListener = (property: string, value: any, obj?: PIXI.DisplayObject, from?: DataOrigin) => void;
-
 class DataClass {
 	private _selectedObject: PIXI.DisplayObject;
-
-	private readonly onSelectedObjectChanged: Record<DataOrigin, Phaser.Signal> = {
-		[DataOrigin.SCENE]: new Phaser.Signal(),
-		[DataOrigin.INSPECTOR]: new Phaser.Signal(),
-	}
-
-	public addObjectSelectionChangedListener(from: DataOrigin, listener: (obj: PIXI.DisplayObject) => void) {
-		this.onSelectedObjectChanged[from].add(listener);
-	}
 
 	public get selectedObject() { return this._selectedObject; }
 
 	public selectObject(value: PIXI.DisplayObject, from: DataOrigin) {
 		if (value === this._selectedObject) return;
 		this._selectedObject = value;
-		this.onSelectedObjectChanged[from].dispatch(value, from);
-	}
-
-	private readonly onPropertyChanged: Record<DataOrigin, Phaser.Signal> = {
-		[DataOrigin.SCENE]: new Phaser.Signal(),
-		[DataOrigin.INSPECTOR]: new Phaser.Signal(),
-	};
-
-	public addPropertyChangedListener(from: DataOrigin, listener: PropertyChangedListener) {
-		this.onPropertyChanged[from].add(listener);
+		this.onSelectedObjectChanged.dispatch(from, value);
 	}
 
 	public propertyChanged(property: string, value: any, from: DataOrigin) {
@@ -39,6 +20,20 @@ class DataClass {
 		this._scheduledEvents[property] = { value, from };
 		this._hasScheduledEvents = true;
 	}
+
+	/**
+	 * @param from {DataOrigin}
+	 * @param obj {PIXI.DisplayObject}
+	 */
+	public readonly onSelectedObjectChanged = new Phaser.Signal();
+
+	/**
+	 * @param from {DataOrigin}
+	 * @param property {string}
+	 * @param value {any}
+	 * @param obj {PIXI.DisplayObject}
+	 */
+	public readonly onPropertyChanged = new Phaser.Signal();
 
 	private _hasScheduledEvents = false;
 	private _scheduledEvents: { [id: string]: { value: any, from: DataOrigin } } = {};
@@ -50,7 +45,7 @@ class DataClass {
 		this._scheduledEvents = {};
 		Object.keys(events).forEach(k => {
 			const e = events[k];
-			this.onPropertyChanged[e.from].dispatch(k, e.value, this._selectedObject, e.from);
+			this.onPropertyChanged.dispatch(e.from, k, e.value, this._selectedObject);
 		});
 	}
 }

@@ -1,4 +1,5 @@
 import { Data, DataOrigin } from 'data/data';
+import { History, HistoryEntry } from 'data/history';
 import { DragUtil } from '../util/drag.util';
 import { SceneMovel } from './scene-model';
 import { Selection } from './selection/selection';
@@ -37,18 +38,28 @@ export class SceneEditor extends Phaser.Group {
 
 		this.selection = new Selection(game);
 		this.addChild(this.selection);
-		Data.addPropertyChangedListener(DataOrigin.INSPECTOR, this.onPropertyChangedInsideInspector.bind(this));
-		Data.addObjectSelectionChangedListener(DataOrigin.INSPECTOR, this.onObjectSelectedInsideInspector.bind(this));
+
+		Data.onPropertyChanged.add(this.onPropertyChanged.bind(this));
+		Data.onSelectedObjectChanged.add(this.onObjectSelected.bind(this));
+		History.onHistoryWalk.add(this.onHistory, this);
 	}
 
-	private onPropertyChangedInsideInspector(property: string, value: any, obj: PIXI.DisplayObject) {
-		if (!(obj && property in obj)) return;
+	private onPropertyChanged(origin: DataOrigin, property: string, value: any, obj: PIXI.DisplayObject) {
+		if (origin === DataOrigin.SCENE || !(obj && property in obj)) return;
 		obj[property] = value;
 		obj.updateTransform();
 		this.selection.redraw();
 	}
 
-	private onObjectSelectedInsideInspector(obj: PIXI.DisplayObject) { this.selectObject(obj, false); }
+	private onObjectSelected(origin: DataOrigin, obj: PIXI.DisplayObject) {
+		if (origin !== DataOrigin.SCENE)
+			this.selectObject(obj, false);
+	}
+
+	private onHistory(entry: HistoryEntry) {
+		// this.selectObject(entry.obj, true);
+
+	}
 
 	private createTouchArea(game: Phaser.Game): Phaser.Graphics {
 		const area = new Phaser.Graphics(game);
@@ -71,13 +82,25 @@ export class SceneEditor extends Phaser.Group {
 		this._hasSelected = !this.selection.getBounds().contains(pointer.x, pointer.y)
 			&& this.trySelectOver(pointer);
 		this._lastPos.set(pointer.x, pointer.y);
+
+		const obj = Data.selectedObject
+		if (!obj) return;
+
+		History.holdEntry({
+			obj: Data.selectedObject,
+			properties: { position: obj.position.clone() },
+		});
 	}
 
 	private onInputUp(_: any, pointer: Phaser.Pointer) {
 		this._isInputDown = false;
 		const wasDragging = this._isDragging;
 		this._isDragging = false;
-		if (wasDragging) return;
+		if (wasDragging) {
+			History.commit();
+			return;
+		}
+		History.cancel();
 		if (this._hasSelected) return;
 		this.trySelectOver(pointer);
 		this._hasSelected = false;
@@ -100,7 +123,7 @@ export class SceneEditor extends Phaser.Group {
 	private getObjectsUnderPoint(x: number, y: number, children: PIXI.DisplayObject[], objects: PIXI.DisplayObject[]) {
 		for (let i = children.length - 1; i >= 0; i--) {
 			const child = children[i];
-			if (child.__skip || !('getBounds' in child)) continue;
+			if (!child.visible || child.__skip || !('getBounds' in child)) continue;
 			const bounds: PIXI.Rectangle = child.getBounds();
 			if ('children' in child) this.getObjectsUnderPoint(x, y, child.children, objects);
 			if (bounds.contains(x, y)) objects.push(child);

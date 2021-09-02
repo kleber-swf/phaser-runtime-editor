@@ -11,10 +11,10 @@ export class ObjectTreeInspector extends Inspector {
 	public connectedCallback() {
 		super.connectedCallback();
 		this.title = 'Objects';
-		Data.addPropertyChangedListener(DataOrigin.INSPECTOR, this.onPropertyChanged.bind(this));
+		Data.onPropertyChanged.add(this.onPropertyChanged, this);
 	}
 
-	private onPropertyChanged(property: string, value: any) {
+	private onPropertyChanged(_: DataOrigin, property: string, value: any) {
 		if (!this._lastSelectedModel) return;
 		if (property === 'name') {
 			this._lastSelectedModel.node.updateTitle(this._lastSelectedModel.type, value);

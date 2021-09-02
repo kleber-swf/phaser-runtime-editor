@@ -58,7 +58,6 @@ export class TreeNode extends HTMLElement {
 	public clearSelection() { this.classList.remove(SELECTED_CLASS); }
 
 	public onCollapseIconClick(e: MouseEvent) {
-		console.log('collapse icon click')
 		if (this.model.collapsed) this.expand();
 		else this.collapse();
 		e.stopImmediatePropagation();
