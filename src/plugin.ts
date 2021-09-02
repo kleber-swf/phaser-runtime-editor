@@ -1,3 +1,4 @@
+import { Actions } from 'data/actions';
 import { Data } from 'data/data';
 import { History } from 'data/history';
 import Phaser from 'phaser-ce';
@@ -14,20 +15,17 @@ export class Plugin extends Phaser.Plugin {
 		document.body.appendChild(editor);
 
 		new SceneEditor(game, group, game.stage);
+		Actions.add({
+			label: 'Undo',
+			shortcut: 'ctrl+z',
+			command: History.undo.bind(History)
+		});
 
 		const update = this.update;
 		this.update = () => {
 			if (group.children.length === 0) return;
 			this.update = update;
 			editor.setup(game, group);
-		}
-
-		document.onkeydown = (e: KeyboardEvent) => {
-			if (e.ctrlKey && e.key === 'z') {
-				History.undo();
-				e.stopImmediatePropagation();
-				return;
-			}
 		}
 	}
 
