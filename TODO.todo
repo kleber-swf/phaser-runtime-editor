@@ -42,11 +42,15 @@ BASIC:
 
 	General Features:
 		[x] editor layout
+		[ ] test inside a real game
+		
+	Actions:
+		[ ] actions handler
 		[x] undo
-		[ ] hide gizmos
+		[ ] toggle grid
+		[ ] toggle gizmos
 		[ ] toggle enabled
 		[ ] show reference
-		[ ] test inside a real game
 
 ======================================================
 
