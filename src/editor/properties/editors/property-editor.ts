@@ -30,7 +30,7 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 
 	protected createLabel(fieldId: string, prop: PropertyInspectionData): HTMLElement {
 		const label = document.createElement('label');
-		label.append(prop.name);
+		label.append(prop.label ?? prop.name);
 		label.setAttribute('for', fieldId);
 		return label;
 	}
