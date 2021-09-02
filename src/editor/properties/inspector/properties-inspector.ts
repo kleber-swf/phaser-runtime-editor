@@ -16,7 +16,7 @@ export class PropertiesInspector extends Inspector {
 
 	private onPropertyChanged(origin: DataOrigin, property: string, value: any) {
 		if (origin !== DataOrigin.INSPECTOR)
-			this.editors[property]?.updateContent(value);
+			this.editors[property]?.propertyChangedOutsideInspector(value);
 	}
 
 	private createPropertyEditor(prop: PropertyInspectionData, value: any, tagName: string) {

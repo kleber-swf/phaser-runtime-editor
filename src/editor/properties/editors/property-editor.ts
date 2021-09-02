@@ -5,7 +5,7 @@ import './property-editor.scss';
 
 export abstract class PropertyEditor<T> extends HTMLElement {
 	protected prop: PropertyInspectionData;
-	protected changedOnEditor = false;
+	public changedOutsideInspector = false;
 
 	protected _internalValue: T;
 
@@ -46,14 +46,13 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 
 	protected abstract createInnerContent(fieldId: string, value: T, prop: PropertyInspectionData): HTMLElement;
 
-	public updateContent(value: T) {
-		this.changedOnEditor = true;
+	public propertyChangedOutsideInspector(value: T) {
+		this.changedOutsideInspector = true;
 		this.setInternalValue(value);
 	}
 
-
 	protected onValueChanged(e: Event) {
-		if (this.changedOnEditor) this.changedOnEditor = false;
+		if (this.changedOutsideInspector) this.changedOutsideInspector = false;
 		else {
 			this.updateInternalValue(e);
 			Data.propertyChanged(this.prop.name, this.getInternalValue(), DataOrigin.INSPECTOR);
