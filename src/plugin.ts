@@ -14,16 +14,18 @@ export class Plugin extends Phaser.Plugin {
 
 		const scene = new SceneEditor(game, group, game.stage);
 		this.setupActions(scene);
-
+		
 		const editor = document.createElement(Editor.tagName) as Editor;
 		document.body.appendChild(editor);
-
+		
 		const update = this.update;
 		this.update = () => {
 			if (group.children.length === 0) return;
 			this.update = update;
 			editor.setup(game, group);
 		}
+		
+		Actions.setContainer('#phred-game-container');
 	}
 
 	private setupActions(scene: SceneEditor) {
@@ -85,9 +87,9 @@ export class Plugin extends Phaser.Plugin {
 			},
 			{
 				id: 'TOGGLE_GIZMOS',
-				label: 'gizmos',
-				icon: 'fa-vector-square',
 				toggle: true,
+				hold: true,
+				shortcut: 'shift+Shift',
 				command: () => Preferences.gizmos = !Preferences.gizmos,
 				state: () => Preferences.gizmos,
 			},
