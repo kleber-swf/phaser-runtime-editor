@@ -3,6 +3,7 @@ import { Data } from 'data/data';
 import { History } from 'data/history';
 import { Preferences } from 'data/preferences';
 import Phaser from 'phaser-ce';
+import { Editor } from './editor';
 import { EditorView } from './editor-view/editor-view';
 import './plugin.scss';
 import { SceneView } from './scene-view/scene-view';
@@ -12,24 +13,26 @@ export class Plugin extends Phaser.Plugin {
 		super(game, game.plugins);
 		group = group ?? game.world;
 
+		Editor.init();
+
 		const scene = new SceneView(game, group, game.stage);
 		this.setupActions(scene);
 
-		const editor = document.createElement(EditorView.tagName) as EditorView;
-		document.body.appendChild(editor);
+		const editorView = document.createElement(EditorView.tagName) as EditorView;
+		document.body.appendChild(editorView);
 
 		const update = this.update;
 		this.update = () => {
 			if (group.children.length === 0) return;
 			this.update = update;
-			editor.setup(game, group);
+			editorView.setup(game, group);
 		}
 
-		Actions.setContainer('#phred-game-container');
+		Editor.actions.setContainer('#phred-game-container');
 	}
 
 	private setupActions(scene: SceneView) {
-		Actions.add(
+		Editor.actions.add(
 			{
 				id: 'UNDO',
 				label: 'undo',

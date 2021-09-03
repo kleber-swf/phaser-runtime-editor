@@ -9,7 +9,7 @@ export interface Action {
 	state?: () => any;
 }
 
-class ActionsClass {
+export class Actions {
 	private readonly actions: Record<string, Action> = {};
 	private readonly actionMap: Record<string, Action> = {};
 
@@ -55,5 +55,3 @@ class ActionsClass {
 		this._holdingToggleAction = null;
 	}
 }
-
-export const Actions = new ActionsClass();
