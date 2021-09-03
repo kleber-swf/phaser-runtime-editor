@@ -1,9 +1,8 @@
-import { Actions } from 'data/actions';
 import { Data } from 'data/data';
 import { History } from 'data/history';
 import { Preferences } from 'data/preferences';
 import Phaser from 'phaser-ce';
-import { Editor } from './editor';
+import { Editor } from './core/editor';
 import { EditorView } from './editor-view/editor-view';
 import './plugin.scss';
 import { SceneView } from './scene-view/scene-view';

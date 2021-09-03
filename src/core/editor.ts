@@ -1,4 +1,4 @@
-import { Actions } from 'data/actions';
+import { Actions } from './actions';
 
 class EditorClass {
 	public actions: Actions;
