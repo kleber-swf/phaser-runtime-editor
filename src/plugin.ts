@@ -1,3 +1,7 @@
+import { BooleanPropertyEditor } from 'editor-view/properties/editors/boolean/boolean-property-editor';
+import { NumberPropertyEditor } from 'editor-view/properties/editors/number/number-property-editor';
+import { PointPropertyEditor } from 'editor-view/properties/editors/point/point-property-editor';
+import { StringPropertyEditor } from 'editor-view/properties/editors/string/string-property-editor';
 import Phaser from 'phaser-ce';
 import { Editor } from './core/editor';
 import { EditorView } from './editor-view/editor-view';
@@ -13,6 +17,7 @@ export class Plugin extends Phaser.Plugin {
 
 		const scene = new SceneView(game, group, game.stage);
 		this.setupActions(scene);
+		this.setupInspectorData();
 
 		const editorView = document.createElement(EditorView.tagName) as EditorView;
 		document.body.appendChild(editorView);
@@ -25,6 +30,33 @@ export class Plugin extends Phaser.Plugin {
 		}
 
 		Editor.actions.setContainer('#phred-game-container');
+	}
+
+	private setupInspectorData() {
+		Editor.inspectorData.addEditors({
+			// basic types
+			string: StringPropertyEditor.tagName,
+			number: NumberPropertyEditor.tagName,
+			boolean: BooleanPropertyEditor.tagName,
+
+			// PIXI/Phaser types
+			point: PointPropertyEditor.tagName,
+
+			// default
+			default: StringPropertyEditor.tagName,
+		});
+
+		Editor.inspectorData.addInspectableProperties([
+			{ name: '__type', label: 'type', typeHint: 'string', data: { readonly: true } },
+			{ name: 'name', typeHint: 'string' },
+			{ name: 'position', typeHint: 'point' },
+			{ name: 'scale', typeHint: 'point', data: { step: 0.1 } },
+			{ name: 'pivot', typeHint: 'point' },
+			{ name: 'anchor', typeHint: 'point', data: { step: 0.1 } },
+			{ name: 'alpha', typeHint: 'number', data: { min: 0, max: 1, step: 0.1 } },
+			{ name: 'visible', typeHint: 'boolean' },
+			{ name: 'angle', typeHint: 'number', data: { readonly: true } },
+		]);
 	}
 
 	private setupActions(scene: SceneView) {

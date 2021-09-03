@@ -1,8 +1,3 @@
-import { BooleanPropertyEditor } from '../editor-view/properties/editors/boolean/boolean-property-editor';
-import { NumberPropertyEditor } from '../editor-view/properties/editors/number/number-property-editor';
-import { PointPropertyEditor } from '../editor-view/properties/editors/point/point-property-editor';
-import { StringPropertyEditor } from '../editor-view/properties/editors/string/string-property-editor';
-
 export type InspectableTypes = 'string' | 'number' | 'boolean' | 'point' | 'default';
 
 export interface InspectorPropertyModel {
@@ -13,30 +8,22 @@ export interface InspectorPropertyModel {
 }
 
 export class InspectorData {
-	private readonly editors: Record<InspectableTypes, string> = {
-		// basic types
-		string: StringPropertyEditor.tagName,
-		number: NumberPropertyEditor.tagName,
-		boolean: BooleanPropertyEditor.tagName,
+	private readonly editors: Partial<Record<InspectableTypes, string>> = {};
 
-		// PIXI/Phaser types
-		point: PointPropertyEditor.tagName,
+	public addEditors(editors: Partial<Record<InspectableTypes, string>>) {
+		Object.keys(editors).forEach(e => this.editors[e] = editors[e]);
+	}
 
-		// default
-		default: StringPropertyEditor.tagName,
-	};
+	public readonly inspectableProperties: InspectorPropertyModel[] = [];
 
-	public readonly inspectableProperties: InspectorPropertyModel[] = [
-		{ name: '__type', label: 'type', typeHint: 'string', data: { readonly: true } },
-		{ name: 'name', typeHint: 'string' },
-		{ name: 'position', typeHint: 'point' },
-		{ name: 'scale', typeHint: 'point', data: { step: 0.1 } },
-		{ name: 'pivot', typeHint: 'point' },
-		{ name: 'anchor', typeHint: 'point', data: { step: 0.1 } },
-		{ name: 'alpha', typeHint: 'number', data: { min: 0, max: 1, step: 0.1 } },
-		{ name: 'visible', typeHint: 'boolean' },
-		{ name: 'angle', typeHint: 'number', data: { readonly: true } },
-	];
+	public addInspectableProperties(properties: InspectorPropertyModel[]) {
+		const iproperties = this.inspectableProperties;
+		properties.forEach(prop => {
+			const i = iproperties.findIndex(e => e.name === prop.name);
+			if (i < 0) iproperties.push(prop);
+			else iproperties.splice(i, 1, prop);
+		});
+	}
 
 	public findEditorFor(value: any, data: InspectorPropertyModel) {
 		// TODO what abount null / undefined values?
