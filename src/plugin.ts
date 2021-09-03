@@ -5,7 +5,7 @@ import { Preferences } from 'data/preferences';
 import Phaser from 'phaser-ce';
 import { EditorView } from './editor-view/editor-view';
 import './plugin.scss';
-import { SceneView } from './scene/scene-view';
+import { SceneView } from './scene-view/scene-view';
 
 export class Plugin extends Phaser.Plugin {
 	public constructor(game: Phaser.Game, group?: Phaser.Group | Phaser.Stage) {
