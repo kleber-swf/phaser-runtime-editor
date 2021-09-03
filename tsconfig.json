@@ -15,8 +15,11 @@
 		"forceConsistentCasingInFileNames": true,
 		"baseUrl": "src",
 		"paths": {
-			"scene/*": ["scene/*"],
-			"editor/*": ["editor/*"],
+			"core/*": ["core/*"],
+			"data/*": ["data/*"],
+			"scene-view/*": ["scene-view/*"],
+			"editor-view/*": ["editor-view/*"],
+			"util/*": ["util/*"]
 		}
 	},
 	"include": ["src"],

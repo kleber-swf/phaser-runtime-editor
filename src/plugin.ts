@@ -1,41 +1,73 @@
-import { Actions } from 'data/actions';
-import { Data } from 'data/data';
-import { History } from 'data/history';
-import { Preferences } from 'data/preferences';
+import { BooleanPropertyEditor } from 'editor-view/properties/editors/boolean/boolean-property-editor';
+import { NumberPropertyEditor } from 'editor-view/properties/editors/number/number-property-editor';
+import { PointPropertyEditor } from 'editor-view/properties/editors/point/point-property-editor';
+import { StringPropertyEditor } from 'editor-view/properties/editors/string/string-property-editor';
 import Phaser from 'phaser-ce';
-import { Editor } from './editor/editor';
+import { Editor } from './core/editor';
+import { EditorView } from './editor-view/editor-view';
 import './plugin.scss';
-import { SceneEditor } from './scene/scene-editor';
+import { SceneView } from './scene-view/scene-view';
 
 export class Plugin extends Phaser.Plugin {
 	public constructor(game: Phaser.Game, group?: Phaser.Group | Phaser.Stage) {
 		super(game, game.plugins);
 		group = group ?? game.world;
 
-		const scene = new SceneEditor(game, group, game.stage);
+		Editor.init();
+
+		const scene = new SceneView(game, group, game.stage);
 		this.setupActions(scene);
-		
-		const editor = document.createElement(Editor.tagName) as Editor;
-		document.body.appendChild(editor);
-		
+		this.setupInspectorData();
+
+		const editorView = document.createElement(EditorView.tagName) as EditorView;
+		document.body.appendChild(editorView);
+
 		const update = this.update;
 		this.update = () => {
 			if (group.children.length === 0) return;
 			this.update = update;
-			editor.setup(game, group);
+			editorView.setup(game, group);
 		}
-		
-		Actions.setContainer('#phred-game-container');
+
+		Editor.actions.setContainer('#phred-game-container');
 	}
 
-	private setupActions(scene: SceneEditor) {
-		Actions.add(
+	private setupInspectorData() {
+		Editor.inspectorData.addEditors({
+			// basic types
+			string: StringPropertyEditor.tagName,
+			number: NumberPropertyEditor.tagName,
+			boolean: BooleanPropertyEditor.tagName,
+
+			// PIXI/Phaser types
+			point: PointPropertyEditor.tagName,
+
+			// default
+			default: StringPropertyEditor.tagName,
+		});
+
+		Editor.inspectorData.addInspectableProperties([
+			{ name: '__type', label: 'type', typeHint: 'string', data: { readonly: true } },
+			{ name: 'name', typeHint: 'string' },
+			{ name: 'position', typeHint: 'point' },
+			{ name: 'scale', typeHint: 'point', data: { step: 0.1 } },
+			{ name: 'pivot', typeHint: 'point' },
+			{ name: 'anchor', typeHint: 'point', data: { step: 0.1 } },
+			{ name: 'alpha', typeHint: 'number', data: { min: 0, max: 1, step: 0.1 } },
+			{ name: 'visible', typeHint: 'boolean' },
+			{ name: 'angle', typeHint: 'number', data: { readonly: true } },
+		]);
+	}
+
+	private setupActions(scene: SceneView) {
+		const { history, prefs } = Editor;
+		Editor.actions.add(
 			{
 				id: 'UNDO',
 				label: 'undo',
 				icon: 'fa-undo-alt',
 				shortcut: 'ctrl+z',
-				command: History.undo.bind(History)
+				command: history.undo.bind(history)
 			},
 			{
 				id: 'MOVE_UP_1',
@@ -82,21 +114,21 @@ export class Plugin extends Phaser.Plugin {
 				label: 'snap',
 				icon: 'fa-compress',
 				toggle: true,
-				command: () => Preferences.snap = !Preferences.snap,
-				state: () => Preferences.snap,
+				command: () => prefs.snap = !prefs.snap,
+				state: () => prefs.snap,
 			},
 			{
 				id: 'TOGGLE_GIZMOS',
 				toggle: true,
 				hold: true,
 				shortcut: 'shift+Shift',
-				command: () => Preferences.gizmos = !Preferences.gizmos,
-				state: () => Preferences.gizmos,
+				command: () => prefs.gizmos = !prefs.gizmos,
+				state: () => prefs.gizmos,
 			},
 		);
 	}
 
 	public postUpdate() {
-		Data.dispatchScheduledEvents();
+		Editor.data.dispatchScheduledEvents();
 	}
 }
