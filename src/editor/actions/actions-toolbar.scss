@@ -3,4 +3,7 @@ phred-actions-toolbar {
 	min-height: 42px;
 	box-shadow: 0px 4px 4px rgba(20, 20, 20, 0.5);
 	z-index: 1;
+	display: flex;
+	padding: 5px 12px;
+	justify-content: stretch ;
 }

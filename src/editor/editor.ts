@@ -35,6 +35,7 @@ export class Editor extends Widget {
 		content.appendChild(this.actions);
 
 		this.gameContainer = document.createElement('div');
+		this.gameContainer.id = 'phred-game-container';
 		this.gameContainer.classList.add('phred-game-container');
 		content.appendChild(this.gameContainer);
 

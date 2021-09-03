@@ -1,5 +1,7 @@
+import { Actions } from 'data/actions';
 import { Data } from 'data/data';
 import { History } from 'data/history';
+import { Preferences } from 'data/preferences';
 import Phaser from 'phaser-ce';
 import { Editor } from './editor/editor';
 import './plugin.scss';
@@ -10,25 +12,88 @@ export class Plugin extends Phaser.Plugin {
 		super(game, game.plugins);
 		group = group ?? game.world;
 
+		const scene = new SceneEditor(game, group, game.stage);
+		this.setupActions(scene);
+		
 		const editor = document.createElement(Editor.tagName) as Editor;
 		document.body.appendChild(editor);
-
-		new SceneEditor(game, group, game.stage);
-
+		
 		const update = this.update;
 		this.update = () => {
 			if (group.children.length === 0) return;
 			this.update = update;
 			editor.setup(game, group);
 		}
+		
+		Actions.setContainer('#phred-game-container');
+	}
 
-		document.onkeydown = (e: KeyboardEvent) => {
-			if (e.ctrlKey && e.key === 'z') {
-				History.undo();
-				e.stopImmediatePropagation();
-				return;
-			}
-		}
+	private setupActions(scene: SceneEditor) {
+		Actions.add(
+			{
+				id: 'UNDO',
+				label: 'undo',
+				icon: 'fa-undo-alt',
+				shortcut: 'ctrl+z',
+				command: History.undo.bind(History)
+			},
+			{
+				id: 'MOVE_UP_1',
+				shortcut: 'ArrowUp',
+				command: () => scene.moveSelectedObject(0, -1)
+			},
+			{
+				id: 'MOVE_DOWN_1',
+				shortcut: 'ArrowDown',
+				command: () => scene.moveSelectedObject(0, 1)
+			},
+			{
+				id: 'MOVE_LEFT_1',
+				shortcut: 'ArrowLeft',
+				command: () => scene.moveSelectedObject(-1, 0)
+			},
+			{
+				id: 'MOVE_RIGHT_1',
+				shortcut: 'ArrowRight',
+				command: () => scene.moveSelectedObject(1, 0)
+			},
+			{
+				id: 'MOVE_UP_10',
+				shortcut: 'shift+ArrowUp',
+				command: () => scene.moveSelectedObject(0, -10)
+			},
+			{
+				id: 'MOVE_DOWN_10',
+				shortcut: 'shift+ArrowDown',
+				command: () => scene.moveSelectedObject(0, 10)
+			},
+			{
+				id: 'MOVE_LEFT_10',
+				shortcut: 'shift+ArrowLeft',
+				command: () => scene.moveSelectedObject(-10, 0)
+			},
+			{
+				id: 'MOVE_RIGHT_10',
+				shortcut: 'shift+ArrowRight',
+				command: () => scene.moveSelectedObject(10, 0)
+			},
+			{
+				id: 'TOGGLE_SNAP',
+				label: 'snap',
+				icon: 'fa-compress',
+				toggle: true,
+				command: () => Preferences.snap = !Preferences.snap,
+				state: () => Preferences.snap,
+			},
+			{
+				id: 'TOGGLE_GIZMOS',
+				toggle: true,
+				hold: true,
+				shortcut: 'shift+Shift',
+				command: () => Preferences.gizmos = !Preferences.gizmos,
+				state: () => Preferences.gizmos,
+			},
+		);
 	}
 
 	public postUpdate() {
