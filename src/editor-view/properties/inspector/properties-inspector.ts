@@ -1,6 +1,6 @@
 import { Data, DataOrigin } from 'data/data';
-import { Inspector } from 'editor/inspector/inspector';
-import { PropertiesEditors, PropertyInspectionData } from 'editor/properties-editors';
+import { Inspector } from 'editor-view/inspector/inspector';
+import { PropertiesEditors, PropertyInspectionData } from 'editor-view/properties-editors';
 import { PropertyEditor } from '../editors/property-editor';
 import './properties-inspector.scss';
 

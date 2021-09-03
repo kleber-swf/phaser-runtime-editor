@@ -1,4 +1,4 @@
-import { PropertyInspectionData } from 'editor/properties-editors';
+import { PropertyInspectionData } from 'editor-view/properties-editors';
 import { PropertyEditor } from '../property-editor';
 
 export class BooleanPropertyEditor extends PropertyEditor<boolean> {

@@ -1,13 +1,13 @@
 import { Data, DataOrigin } from 'data/data';
 import { ActionsToolbar } from './actions/actions-toolbar';
-import './editor.scss';
+import './editor-view.scss';
 import { ObjectTreeInspector } from './object-tree/inspector/object-tree-inspector';
 import { Panel } from './panel/panel';
 import { PropertiesInspector } from './properties/inspector/properties-inspector';
 import { Widget } from './widget/widget';
 
-export class Editor extends Widget {
-	public static readonly tagName: string = 'phred-editor';
+export class EditorView extends Widget {
+	public static readonly tagName: string = 'phred-editor-view';
 
 	private _game: Phaser.Game;
 	private actions: ActionsToolbar;
@@ -72,4 +72,4 @@ export class Editor extends Widget {
 	}
 }
 
-customElements.define(Editor.tagName, Editor);
+customElements.define(EditorView.tagName, EditorView);

@@ -1,5 +1,5 @@
 import { Data, DataOrigin } from 'data/data';
-import { Inspector } from 'editor/inspector/inspector';
+import { Inspector } from 'editor-view/inspector/inspector';
 import { ObjectMapItemModel, ObjectTreeModel } from '../model/object-tree-model';
 import { TreeNode } from '../tree-node/tree-node';
 import './object-tree-inspector.scss';

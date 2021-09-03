@@ -1,5 +1,5 @@
 import { Actions } from 'data/actions';
-import { Widget } from 'editor/widget/widget';
+import { Widget } from 'editor-view/widget/widget';
 import './actions-toolbar.scss';
 import { ActionButton } from './button/action-button';
 

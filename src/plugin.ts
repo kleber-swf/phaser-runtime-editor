@@ -3,7 +3,7 @@ import { Data } from 'data/data';
 import { History } from 'data/history';
 import { Preferences } from 'data/preferences';
 import Phaser from 'phaser-ce';
-import { Editor } from './editor/editor';
+import { EditorView } from './editor-view/editor-view';
 import './plugin.scss';
 import { SceneView } from './scene/scene-view';
 
@@ -15,7 +15,7 @@ export class Plugin extends Phaser.Plugin {
 		const scene = new SceneView(game, group, game.stage);
 		this.setupActions(scene);
 
-		const editor = document.createElement(Editor.tagName) as Editor;
+		const editor = document.createElement(EditorView.tagName) as EditorView;
 		document.body.appendChild(editor);
 
 		const update = this.update;

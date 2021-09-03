@@ -13,11 +13,7 @@
 		"resolveJsonModule": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
-		"baseUrl": "src",
-		"paths": {
-			"scene/*": ["scene/*"],
-			"editor/*": ["editor/*"],
-		}
+		"baseUrl": "src"
 	},
 	"include": ["src"],
 	"exclude": ["node_modules"]

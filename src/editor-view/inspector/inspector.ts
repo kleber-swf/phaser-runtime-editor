@@ -1,4 +1,4 @@
-import { Widget } from 'editor/widget/widget';
+import { Widget } from 'editor-view/widget/widget';
 import './inspector.scss';
 
 export abstract class Inspector extends Widget {

@@ -1,6 +1,6 @@
 import { Data, DataOrigin } from 'data/data';
 import { History } from 'data/history';
-import { PropertyInspectionData } from 'editor/properties-editors';
+import { PropertyInspectionData } from 'editor-view/properties-editors';
 import { IdUtil } from 'util/id.util';
 import './property-editor.scss';
 

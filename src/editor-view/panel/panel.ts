@@ -1,5 +1,5 @@
-import { Inspector } from 'editor/inspector/inspector';
-import { Widget } from 'editor/widget/widget';
+import { Inspector } from 'editor-view/inspector/inspector';
+import { Widget } from 'editor-view/widget/widget';
 import './panel.scss';
 
 export class Panel extends Widget {
