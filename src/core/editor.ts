@@ -1,6 +1,7 @@
 import { EditorData } from 'data/editor-data';
 import { InspectorData } from 'data/inspector-data';
 import { PhaserMeta } from 'data/phaser-meta';
+import { ReferenceImage } from 'scene-view/reference-image';
 import { ActionHandler } from './action-handler';
 import { History } from './history';
 import { Preferences } from './preferences';
@@ -13,6 +14,8 @@ class EditorClass {
 	public actions: ActionHandler;
 	public history: History;
 	public prefs: Preferences;
+
+	public referenceImage?: ReferenceImage;
 
 	public init() {
 		this.data = new EditorData();

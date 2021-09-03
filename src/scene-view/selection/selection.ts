@@ -25,8 +25,8 @@ export class Selection extends Phaser.Group {
 
 		const prefs = Editor.prefs;
 		prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
-		this.alpha = prefs.gizmos ? 1 : 0;
-		this.moveFn = prefs.snap ? this.snapMove : this.freeMove;
+		this.onPreferencesChanged('gizmos', prefs.gizmos);
+		this.onPreferencesChanged('snap', prefs.snap);
 
 		this.select(null);
 	}

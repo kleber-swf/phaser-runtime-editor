@@ -4,6 +4,7 @@ import { NumberPropertyEditor } from 'editor-view/properties/editors/number/numb
 import { PointPropertyEditor } from 'editor-view/properties/editors/point/point-property-editor';
 import { StringPropertyEditor } from 'editor-view/properties/editors/string/string-property-editor';
 import Phaser from 'phaser-ce';
+import { ReferenceImage } from 'scene-view/reference-image';
 import { Editor } from './core/editor';
 import { EditorView } from './editor-view/editor-view';
 import './plugin.scss';
@@ -131,7 +132,16 @@ export class Plugin extends Phaser.Plugin {
 	}
 
 	public setupRefImage(refImage: Phaser.Image) {
-
+		if (!refImage) return;
+		Editor.referenceImage = new ReferenceImage(this.game, refImage);
+		Editor.actions.add({
+			id: Actions.TOGGLE_REF_IMAGE,
+			label: 'reference',
+			icon: 'fa-image',
+			toggle: true,
+			state: () => Editor.prefs.referenceImage,
+			command: () => Editor.prefs.referenceImage = !Editor.prefs.referenceImage,
+		});
 	}
 
 	public postUpdate() {
