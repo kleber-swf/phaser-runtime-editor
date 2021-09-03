@@ -2,8 +2,10 @@ export interface Action {
 	id: string;
 	label?: string;
 	icon?: string;
-	command: () => void;
 	shortcut?: string;
+	toggle?: boolean;
+	command: () => void;
+	state?: () => any;
 }
 
 class ActionsClass {
@@ -17,9 +19,11 @@ class ActionsClass {
 
 	public add(...actions: Action[]) {
 		actions.forEach(action => {
-			if (action.shortcut in this.actions)
-				throw new Error(`There is already an action with shortcut ${action.shortcut}: ${this.actions[action.shortcut].label}`);
-			this.actions[action.shortcut] = action;
+			if (action.shortcut) {
+				if (action.shortcut in this.actions)
+					throw new Error(`There is already an action with shortcut ${action.shortcut}: ${this.actions[action.shortcut].label}`);
+				this.actions[action.shortcut] = action;
+			}
 			this.actionMap[action.id] = action;
 		});
 	}
