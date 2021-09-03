@@ -1,3 +1,4 @@
+import { Actions } from 'actions';
 import { BooleanPropertyEditor } from 'editor-view/properties/editors/boolean/boolean-property-editor';
 import { NumberPropertyEditor } from 'editor-view/properties/editors/number/number-property-editor';
 import { PointPropertyEditor } from 'editor-view/properties/editors/point/point-property-editor';
@@ -9,15 +10,16 @@ import './plugin.scss';
 import { SceneView } from './scene-view/scene-view';
 
 export class Plugin extends Phaser.Plugin {
-	public constructor(game: Phaser.Game, group?: Phaser.Group | Phaser.Stage) {
+	public constructor(game: Phaser.Game, group?: Phaser.Group | Phaser.Stage, refImage?: Phaser.Image) {
 		super(game, game.plugins);
 		group = group ?? game.world;
 
 		Editor.init();
+		this.setupInspectorData();
 
 		const scene = new SceneView(game, group, game.stage);
 		this.setupActions(scene);
-		this.setupInspectorData();
+		if (refImage) this.setupRefImage(refImage);
 
 		const editorView = document.createElement(EditorView.tagName) as EditorView;
 		document.body.appendChild(editorView);
@@ -63,54 +65,54 @@ export class Plugin extends Phaser.Plugin {
 		const { history, prefs } = Editor;
 		Editor.actions.add(
 			{
-				id: 'UNDO',
+				id: Actions.UNDO,
 				label: 'undo',
 				icon: 'fa-undo-alt',
 				shortcut: 'ctrl+z',
 				command: history.undo.bind(history)
 			},
 			{
-				id: 'MOVE_UP_1',
+				id: Actions.MOVE_UP_1,
 				shortcut: 'ArrowUp',
 				command: () => scene.moveSelectedObject(0, -1)
 			},
 			{
-				id: 'MOVE_DOWN_1',
+				id: Actions.MOVE_DOWN_1,
 				shortcut: 'ArrowDown',
 				command: () => scene.moveSelectedObject(0, 1)
 			},
 			{
-				id: 'MOVE_LEFT_1',
+				id: Actions.MOVE_LEFT_1,
 				shortcut: 'ArrowLeft',
 				command: () => scene.moveSelectedObject(-1, 0)
 			},
 			{
-				id: 'MOVE_RIGHT_1',
+				id: Actions.MOVE_RIGHT_1,
 				shortcut: 'ArrowRight',
 				command: () => scene.moveSelectedObject(1, 0)
 			},
 			{
-				id: 'MOVE_UP_10',
+				id: Actions.MOVE_UP_10,
 				shortcut: 'shift+ArrowUp',
 				command: () => scene.moveSelectedObject(0, -10)
 			},
 			{
-				id: 'MOVE_DOWN_10',
+				id: Actions.MOVE_DOWN_10,
 				shortcut: 'shift+ArrowDown',
 				command: () => scene.moveSelectedObject(0, 10)
 			},
 			{
-				id: 'MOVE_LEFT_10',
+				id: Actions.MOVE_LEFT_10,
 				shortcut: 'shift+ArrowLeft',
 				command: () => scene.moveSelectedObject(-10, 0)
 			},
 			{
-				id: 'MOVE_RIGHT_10',
+				id: Actions.MOVE_RIGHT_10,
 				shortcut: 'shift+ArrowRight',
 				command: () => scene.moveSelectedObject(10, 0)
 			},
 			{
-				id: 'TOGGLE_SNAP',
+				id: Actions.TOGGLE_SNAP,
 				label: 'snap',
 				icon: 'fa-compress',
 				toggle: true,
@@ -118,7 +120,7 @@ export class Plugin extends Phaser.Plugin {
 				state: () => prefs.snap,
 			},
 			{
-				id: 'TOGGLE_GIZMOS',
+				id: Actions.TOGGLE_GIZMOS,
 				toggle: true,
 				hold: true,
 				shortcut: 'shift+Shift',
@@ -126,6 +128,10 @@ export class Plugin extends Phaser.Plugin {
 				state: () => prefs.gizmos,
 			},
 		);
+	}
+
+	public setupRefImage(refImage: Phaser.Image) {
+
 	}
 
 	public postUpdate() {

@@ -52,7 +52,7 @@ BASIC:
 		[ ] show reference
 
 	Refactors:
-		[ ] create a centralized class for all the singletons
+		[x] create a centralized class for all the singletons
 
 ======================================================
 
