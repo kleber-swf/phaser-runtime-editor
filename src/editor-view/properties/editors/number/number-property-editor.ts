@@ -1,4 +1,4 @@
-import { PropertyInspectionData } from 'editor-view/properties-editors';
+import { InspectorPropertyModel } from 'data/inspector-data';
 import { PropertyEditor } from '../property-editor';
 
 export class NumberPropertyEditor extends PropertyEditor<number> {
@@ -6,7 +6,7 @@ export class NumberPropertyEditor extends PropertyEditor<number> {
 
 	private input: HTMLInputElement;
 
-	protected createInnerContent(fieldId: string, _value: number, prop: PropertyInspectionData) {
+	protected createInnerContent(fieldId: string, _value: number, prop: InspectorPropertyModel) {
 		const input = this.input = document.createElement('input');
 		input.id = fieldId;
 		input.setAttribute('type', 'number');

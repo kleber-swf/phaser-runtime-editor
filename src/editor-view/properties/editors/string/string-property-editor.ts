@@ -1,11 +1,11 @@
-import { PropertyInspectionData } from 'editor-view/properties-editors';
+import { InspectorPropertyModel } from 'data/inspector-data';
 import { PropertyEditor } from '../property-editor';
 
 export class StringPropertyEditor extends PropertyEditor<string> {
 	public static readonly tagName: string = 'phed-string-property-editor';
 	private input: HTMLInputElement;
 
-	protected createInnerContent(fieldId: string, _value: string, prop: PropertyInspectionData) {
+	protected createInnerContent(fieldId: string, _value: string, prop: InspectorPropertyModel) {
 		const input = this.input = document.createElement('input');
 		input.id = fieldId;
 		input.setAttribute('type', 'text');

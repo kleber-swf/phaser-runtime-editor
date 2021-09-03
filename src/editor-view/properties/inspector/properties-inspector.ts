@@ -1,7 +1,7 @@
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
+import { InspectorPropertyModel } from 'data/inspector-data';
 import { Inspector } from 'editor-view/inspector/inspector';
-import { PropertiesEditors, PropertyInspectionData } from 'editor-view/properties-editors';
 import { PropertyEditor } from '../editors/property-editor';
 import './properties-inspector.scss';
 
@@ -20,7 +20,7 @@ export class PropertiesInspector extends Inspector {
 			this.editors[property]?.propertyChangedOutsideInspector(value);
 	}
 
-	private createPropertyEditor(prop: PropertyInspectionData, value: any, tagName: string) {
+	private createPropertyEditor(prop: InspectorPropertyModel, value: any, tagName: string) {
 		const editor = this.content.appendChild(document.createElement(tagName)) as PropertyEditor<any>;
 		editor.setContent(prop, value);
 		return editor;
@@ -40,10 +40,10 @@ export class PropertiesInspector extends Inspector {
 
 		this.content.style.visibility = 'visible';
 
-		PropertiesEditors.inspectableProperties
+		Editor.inspectorData.inspectableProperties
 			.forEach(prop => {
 				if (!(prop.name in obj)) return;
-				const elementId = PropertiesEditors.findEditorFor(obj[prop.name], prop);
+				const elementId = Editor.inspectorData.findEditorFor(obj[prop.name], prop);
 				const editor = this.createPropertyEditor(prop, obj[prop.name], elementId);
 				this.editors[prop.name] = editor;
 			});

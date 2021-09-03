@@ -1,20 +1,18 @@
-import { BooleanPropertyEditor } from './properties/editors/boolean/boolean-property-editor';
-import { NumberPropertyEditor } from './properties/editors/number/number-property-editor';
-import { PointPropertyEditor } from './properties/editors/point/point-property-editor';
-import { StringPropertyEditor } from './properties/editors/string/string-property-editor';
+import { BooleanPropertyEditor } from '../editor-view/properties/editors/boolean/boolean-property-editor';
+import { NumberPropertyEditor } from '../editor-view/properties/editors/number/number-property-editor';
+import { PointPropertyEditor } from '../editor-view/properties/editors/point/point-property-editor';
+import { StringPropertyEditor } from '../editor-view/properties/editors/string/string-property-editor';
 
 export type InspectableTypes = 'string' | 'number' | 'boolean' | 'point' | 'default';
 
-export interface PropertyInspectionData {
+export interface InspectorPropertyModel {
 	name: string;
 	typeHint: InspectableTypes;
 	data?: any;
 	label?: string;
 }
 
-
-// TODO this name is awful. Please find a better one
-class PropertiesEditorsClass {
+export class InspectorData {
 	private readonly editors: Record<InspectableTypes, string> = {
 		// basic types
 		string: StringPropertyEditor.tagName,
@@ -28,7 +26,7 @@ class PropertiesEditorsClass {
 		default: StringPropertyEditor.tagName,
 	};
 
-	public readonly inspectableProperties: PropertyInspectionData[] = [
+	public readonly inspectableProperties: InspectorPropertyModel[] = [
 		{ name: '__type', label: 'type', typeHint: 'string', data: { readonly: true } },
 		{ name: 'name', typeHint: 'string' },
 		{ name: 'position', typeHint: 'point' },
@@ -40,7 +38,7 @@ class PropertiesEditorsClass {
 		{ name: 'angle', typeHint: 'number', data: { readonly: true } },
 	];
 
-	public findEditorFor(value: any, data: PropertyInspectionData) {
+	public findEditorFor(value: any, data: InspectorPropertyModel) {
 		// TODO what abount null / undefined values?
 
 		const editors = this.editors;
@@ -62,5 +60,3 @@ class PropertiesEditorsClass {
 		return editors.default;
 	}
 }
-
-export const PropertiesEditors = new PropertiesEditorsClass();

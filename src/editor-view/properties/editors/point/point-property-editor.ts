@@ -1,8 +1,7 @@
-import { PropertyInspectionData } from 'editor-view/properties-editors';
+import { InspectorPropertyModel } from 'data/inspector-data';
 import { NumberPropertyEditor } from '../number/number-property-editor';
 import { PropertyEditor } from '../property-editor';
 import './point-property-editor.scss';
-
 
 export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 	public static readonly tagName: string = 'phed-point-property-editor';
@@ -16,7 +15,7 @@ export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 		this.classList.add('has-children');
 	}
 
-	protected createInnerContent(fieldId: string, value: PIXI.Point, prop: PropertyInspectionData) {
+	protected createInnerContent(fieldId: string, value: PIXI.Point, prop: InspectorPropertyModel) {
 		const parent = this.appendChild(document.createElement('div'));
 
 		const xinput = this.xinput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;

@@ -1,11 +1,11 @@
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
-import { PropertyInspectionData } from 'editor-view/properties-editors';
+import { InspectorPropertyModel } from 'data/inspector-data';
 import { IdUtil } from 'util/id.util';
 import './property-editor.scss';
 
 export abstract class PropertyEditor<T> extends HTMLElement {
-	protected prop: PropertyInspectionData;
+	protected prop: InspectorPropertyModel;
 	public changedOutsideInspector = false;
 
 	protected _internalValue: T;
@@ -14,7 +14,7 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 		this.classList.add('property-editor');
 	}
 
-	public setContent(prop: PropertyInspectionData, value: T, fieldId?: string) {
+	public setContent(prop: InspectorPropertyModel, value: T, fieldId?: string) {
 		fieldId = fieldId ?? `${prop.name}-${IdUtil.genHexId()}`;
 		this.prop = prop;
 
@@ -28,14 +28,14 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 		this.onchange = this.onValueChanged.bind(this);
 	}
 
-	protected createLabel(fieldId: string, prop: PropertyInspectionData): HTMLElement {
+	protected createLabel(fieldId: string, prop: InspectorPropertyModel): HTMLElement {
 		const label = document.createElement('label');
 		label.append(prop.label ?? prop.name);
 		label.setAttribute('for', fieldId);
 		return label;
 	}
 
-	protected createContent(value: T, fieldId: string, prop: PropertyInspectionData) {
+	protected createContent(value: T, fieldId: string, prop: InspectorPropertyModel) {
 		const propContent = document.createElement('div');
 		propContent.classList.add('property-content', prop.name);
 
@@ -45,7 +45,7 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 		return propContent;
 	}
 
-	protected abstract createInnerContent(fieldId: string, value: T, prop: PropertyInspectionData): HTMLElement;
+	protected abstract createInnerContent(fieldId: string, value: T, prop: InspectorPropertyModel): HTMLElement;
 
 	public propertyChangedOutsideInspector(value: T) {
 		this.changedOutsideInspector = true;

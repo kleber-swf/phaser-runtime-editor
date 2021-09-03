@@ -1,4 +1,4 @@
-import { PropertyInspectionData } from 'editor-view/properties-editors';
+import { InspectorPropertyModel } from 'data/inspector-data';
 import { PropertyEditor } from '../property-editor';
 
 export class BooleanPropertyEditor extends PropertyEditor<boolean> {
@@ -6,7 +6,7 @@ export class BooleanPropertyEditor extends PropertyEditor<boolean> {
 
 	private input: HTMLInputElement;
 
-	protected createInnerContent(fieldId: string, _value: boolean, prop: PropertyInspectionData) {
+	protected createInnerContent(fieldId: string, _value: boolean, prop: InspectorPropertyModel) {
 		const input = this.input = document.createElement('input');
 		input.id = fieldId;
 		input.setAttribute('type', 'checkbox');
