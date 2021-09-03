@@ -83,6 +83,14 @@ export class Plugin extends Phaser.Plugin {
 				command: () => Preferences.snap = !Preferences.snap,
 				state: () => Preferences.snap,
 			},
+			{
+				id: 'TOGGLE_GIZMOS',
+				label: 'gizmos',
+				icon: 'fa-vector-square',
+				toggle: true,
+				command: () => Preferences.gizmos = !Preferences.gizmos,
+				state: () => Preferences.gizmos,
+			},
 		);
 	}
 

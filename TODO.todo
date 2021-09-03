@@ -47,7 +47,7 @@ BASIC:
 	Actions:
 		[x] actions handler
 		[x] undo
-		[ ] toggle gizmos
+		[x] toggle gizmos
 		[ ] toggle enabled
 		[ ] show reference
 

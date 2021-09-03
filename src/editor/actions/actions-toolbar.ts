@@ -9,6 +9,7 @@ export class ActionsToolbar extends Widget {
 	public connectedCallback() {
 		super.connectedCallback();
 		this.createButton('TOGGLE_SNAP');
+		this.createButton('TOGGLE_GIZMOS');
 		this.createButton('UNDO');
 	}
 

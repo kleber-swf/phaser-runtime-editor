@@ -1,5 +1,5 @@
 import { Data, DataOrigin } from 'data/data';
-import { Preferences } from 'data/preferences';
+import { PreferenceKey, Preferences } from 'data/preferences';
 import { PointUtil } from 'util/math.util';
 import { ANCHOR_COLOR, ANCHOR_STROKE, BORDER_COLOR, BORDER_STROKE, PIVOT_COLOR, PIVOT_STROKE } from '../scene-colors';
 import { ScaleHandler } from './scale/scale.handler';
@@ -22,7 +22,22 @@ export class Selection extends Phaser.Group {
 		this.scaleHandler = new ScaleHandler(game);
 		this.addChild(this.scaleHandler);
 
+		Preferences.onPreferenceChanged.add(this.onPreferencesChanged, this);
+		this.alpha = Preferences.gizmos ? 1 : 0;
+		this.moveFn = Preferences.snap ? this.snapMove : this.freeMove;
+
 		this.select(null);
+	}
+
+	private onPreferencesChanged(key: PreferenceKey, value: any) {
+		if (key === 'gizmos') {
+			this.alpha = value ? 1 : 0;
+			return;
+		}
+		if (key === 'snap') {
+			this.moveFn = value ? this.snapMove : this.freeMove;
+			return;
+		}
 	}
 
 	public select(obj: PIXI.DisplayObject) {
@@ -81,22 +96,25 @@ export class Selection extends Phaser.Group {
 	}
 
 	public move(deltaX: number, deltaY: number) {
-		let pos: PIXI.Point = this.position;
-
+		const pos = this._selectedObject.position;
 		const scale = this._selectedObject.parent?.worldScale ?? PointUtil.one;
-		pos = this._selectedObject.position;
-		if (Preferences.snap) {
-			this._selectedObject.position.set(
-				Math.round(pos.x + deltaX / scale.x),
-				Math.round(pos.y + deltaY / scale.y));
-		} else {
-			this._selectedObject.position.set(
-				pos.x + deltaX / scale.x,
-				pos.y + deltaY / scale.y);
-		}
-
+		this.moveFn(pos, scale, deltaX, deltaY);
 		this.redraw();
 		Data.propertyChanged('position', pos, DataOrigin.SCENE);
+	}
+
+	private moveFn: (pos: PIXI.Point, scale: PIXI.Point, deltaX: number, deltaY: number) => void;
+
+	private freeMove(pos: PIXI.Point, scale: PIXI.Point, deltaX: number, deltaY: number) {
+		this._selectedObject.position.set(
+			pos.x + deltaX / scale.x,
+			pos.y + deltaY / scale.y);
+	}
+
+	private snapMove(pos: PIXI.Point, scale: PIXI.Point, deltaX: number, deltaY: number) {
+		this._selectedObject.position.set(
+			Math.round(pos.x + deltaX / scale.x),
+			Math.round(pos.y + deltaY / scale.y));
 	}
 
 
