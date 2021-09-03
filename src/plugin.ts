@@ -89,7 +89,7 @@ export class Plugin extends Phaser.Plugin {
 				id: 'TOGGLE_GIZMOS',
 				toggle: true,
 				hold: true,
-				shortcut: 'shift+Shift',
+				shortcut: 'alt+Alt',
 				command: () => Preferences.gizmos = !Preferences.gizmos,
 				state: () => Preferences.gizmos,
 			},
