@@ -1,4 +1,3 @@
-import { Data } from 'data/data';
 import Phaser from 'phaser-ce';
 import { Editor } from './core/editor';
 import { EditorView } from './editor-view/editor-view';
@@ -98,6 +97,6 @@ export class Plugin extends Phaser.Plugin {
 	}
 
 	public postUpdate() {
-		Data.dispatchScheduledEvents();
+		Editor.data.dispatchScheduledEvents();
 	}
 }

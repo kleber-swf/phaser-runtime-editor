@@ -1,4 +1,5 @@
-import { Data, DataOrigin } from 'data/data';
+import { Editor } from 'core/editor';
+import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
 import { ObjectMapItemModel, ObjectTreeModel } from '../model/object-tree-model';
 import { TreeNode } from '../tree-node/tree-node';
@@ -11,7 +12,7 @@ export class ObjectTreeInspector extends Inspector {
 	public connectedCallback() {
 		super.connectedCallback();
 		this.title = 'Objects';
-		Data.onPropertyChanged.add(this.onPropertyChanged, this);
+		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 	}
 
 	private onPropertyChanged(_: DataOrigin, property: string, value: any) {
@@ -56,7 +57,7 @@ export class ObjectTreeInspector extends Inspector {
 		if (node?.model === this._lastSelectedModel) return;
 		if (this._lastSelectedModel) this._lastSelectedModel.node.clearSelection();
 		this._lastSelectedModel = node.model;
-		Data.selectObject(node.model.obj, DataOrigin.INSPECTOR);
+		Editor.data.selectObject(node.model.obj, DataOrigin.INSPECTOR);
 	}
 
 	private onNodeCollapseStateChanged(node: TreeNode, collapsed: boolean, all: boolean) {

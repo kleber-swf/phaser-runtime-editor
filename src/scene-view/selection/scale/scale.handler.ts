@@ -1,5 +1,5 @@
 import { Editor } from 'core/editor';
-import { Data, DataOrigin } from 'data/data';
+import { DataOrigin } from 'data/editor-data';
 import { ScaleGizmo } from './scale.gizmo';
 import { Scaler } from './scaler';
 
@@ -55,7 +55,7 @@ export class ScaleHandler extends Phaser.Group {
 	}
 
 	private startScaling(gizmos: ScaleGizmo) {
-		const obj = Data.selectedObject;
+		const obj = Editor.data.selectedObject;
 		Editor.history.prepare(obj, {
 			scale: obj.scale.clone(),
 			position: obj.position.clone(),
@@ -77,8 +77,8 @@ export class ScaleHandler extends Phaser.Group {
 		this.scaler.scaleToPoint(pointer.x, pointer.y);
 
 		const pos = this.scaler.getObjectStopPosition();
-		Data.propertyChanged('scale', this.selectedObject.scale, DataOrigin.SCENE);
-		Data.propertyChanged('position', pos, DataOrigin.SCENE);
+		Editor.data.propertyChanged('scale', this.selectedObject.scale, DataOrigin.SCENE);
+		Editor.data.propertyChanged('position', pos, DataOrigin.SCENE);
 
 		return true;
 	}

@@ -1,6 +1,6 @@
-import { Data, DataOrigin } from 'data/data';
-import { PreferenceKey } from 'core/preferences';
 import { Editor } from 'core/editor';
+import { PreferenceKey } from 'core/preferences';
+import { DataOrigin } from 'data/editor-data';
 import { PointUtil } from 'util/math.util';
 import { ANCHOR_COLOR, ANCHOR_STROKE, BORDER_COLOR, BORDER_STROKE, PIVOT_COLOR, PIVOT_STROKE } from '../scene-colors';
 import { ScaleHandler } from './scale/scale.handler';
@@ -102,7 +102,7 @@ export class Selection extends Phaser.Group {
 		const scale = this._selectedObject.parent?.worldScale ?? PointUtil.one;
 		this.moveFn(pos, scale, deltaX, deltaY);
 		this.redraw();
-		Data.propertyChanged('position', pos, DataOrigin.SCENE);
+		Editor.data.propertyChanged('position', pos, DataOrigin.SCENE);
 	}
 
 	private moveFn: (pos: PIXI.Point, scale: PIXI.Point, deltaX: number, deltaY: number) => void;

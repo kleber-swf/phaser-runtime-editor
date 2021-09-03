@@ -1,5 +1,5 @@
-import { Data, DataOrigin } from 'data/data';
 import { Editor } from 'core/editor';
+import { DataOrigin } from 'data/editor-data';
 import { PropertyInspectionData } from 'editor-view/properties-editors';
 import { IdUtil } from 'util/id.util';
 import './property-editor.scss';
@@ -59,7 +59,7 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 		}
 		if (save) this.savePreviousValue();
 		this.updateInternalValue(e);
-		Data.propertyChanged(this.prop.name, this.getInternalValue(), DataOrigin.INSPECTOR);
+		Editor.data.propertyChanged(this.prop.name, this.getInternalValue(), DataOrigin.INSPECTOR);
 	}
 
 	public getInternalValue(): T { return this._internalValue; }
@@ -67,7 +67,7 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 	public abstract updateInternalValue(e: Event): void;
 
 	public savePreviousValue() {
-		Editor.history.prepare(Data.selectedObject, {
+		Editor.history.prepare(Editor.data.selectedObject, {
 			[this.prop.name]: this.getInternalValue()
 		}).commit();
 	}

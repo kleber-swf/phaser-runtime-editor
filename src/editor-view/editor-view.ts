@@ -1,4 +1,5 @@
-import { Data, DataOrigin } from 'data/data';
+import { Editor } from 'core/editor';
+import { DataOrigin } from 'data/editor-data';
 import { ActionsToolbar } from './actions/actions-toolbar';
 import './editor-view.scss';
 import { ObjectTreeInspector } from './object-tree/inspector/object-tree-inspector';
@@ -17,7 +18,7 @@ export class EditorView extends Widget {
 	public connectedCallback() {
 		super.connectedCallback();
 
-		Data.onSelectedObjectChanged.add(this.selectObject, this);
+		Editor.data.onSelectedObjectChanged.add(this.selectObject, this);
 
 		const script = document.createElement('script');
 		script.src = 'https://kit.fontawesome.com/7ba4e59e46.js';

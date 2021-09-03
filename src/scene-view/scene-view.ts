@@ -1,5 +1,5 @@
 import { Editor } from 'core/editor';
-import { Data, DataOrigin } from 'data/data';
+import { DataOrigin } from 'data/editor-data';
 import { DragUtil } from '../util/drag.util';
 import { SceneModel } from './scene-model';
 import { Selection } from './selection/selection';
@@ -39,8 +39,8 @@ export class SceneView extends Phaser.Group {
 		this.selection = new Selection(game);
 		this.addChild(this.selection);
 
-		Data.onPropertyChanged.add(this.onPropertyChanged.bind(this));
-		Data.onSelectedObjectChanged.add(this.onObjectSelected.bind(this));
+		Editor.data.onPropertyChanged.add(this.onPropertyChanged.bind(this));
+		Editor.data.onSelectedObjectChanged.add(this.onObjectSelected.bind(this));
 	}
 
 	private onPropertyChanged(origin: DataOrigin, property: string, value: any, obj: PIXI.DisplayObject) {
@@ -77,10 +77,10 @@ export class SceneView extends Phaser.Group {
 			&& this.trySelectOver(pointer);
 		this._lastPos.set(pointer.x, pointer.y);
 
-		const obj = Data.selectedObject
+		const obj = Editor.data.selectedObject
 		if (!obj) return;
 
-		Editor.history.prepare(Data.selectedObject, { position: obj.position.clone() });
+		Editor.history.prepare(Editor.data.selectedObject, { position: obj.position.clone() });
 	}
 
 	private onInputUp(_: any, pointer: Phaser.Pointer) {
@@ -108,7 +108,7 @@ export class SceneView extends Phaser.Group {
 
 	private selectObject(obj: PIXI.DisplayObject, dispatch: boolean) {
 		this.selection.select(obj);
-		if (dispatch) Data.selectObject(obj, DataOrigin.SCENE);
+		if (dispatch) Editor.data.selectObject(obj, DataOrigin.SCENE);
 	}
 
 	private getObjectsUnderPoint(x: number, y: number, children: PIXI.DisplayObject[], objects: PIXI.DisplayObject[]) {
@@ -122,13 +122,13 @@ export class SceneView extends Phaser.Group {
 	}
 
 	public moveSelectedObject(deltaX: number, deltaY: number) {
-		const obj = Data.selectedObject;
+		const obj = Editor.data.selectedObject;
 		if (!obj) return;
 		Editor.history.prepare(obj, { position: obj.position.clone() }).commit();
 		obj.position.set(obj.position.x + deltaX, obj.position.y + deltaY);
 		obj.updateTransform();
 		this.selection.redraw();
-		Data.propertyChanged('position', obj.position.clone(), DataOrigin.SCENE);
+		Editor.data.propertyChanged('position', obj.position.clone(), DataOrigin.SCENE);
 	}
 
 	public update() {

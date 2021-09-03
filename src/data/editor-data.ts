@@ -4,7 +4,7 @@ export enum DataOrigin {
 	INSPECTOR = 2,
 };
 
-class DataClass {
+export class EditorData {
 	private _selectedObject: PIXI.DisplayObject;
 
 	public get selectedObject() { return this._selectedObject; }
@@ -49,5 +49,3 @@ class DataClass {
 		});
 	}
 }
-
-export const Data = new DataClass();

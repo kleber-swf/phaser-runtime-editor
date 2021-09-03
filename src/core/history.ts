@@ -1,4 +1,4 @@
-import { Data, DataOrigin } from '../data/data';
+import { DataOrigin, EditorData } from '../data/editor-data';
 
 export interface HistoryEntry {
 	obj: PIXI.DisplayObject;
@@ -13,6 +13,8 @@ export class History {
 
 	// TODO change this name please
 	public readonly onHistoryWalk = new Phaser.Signal();
+
+	constructor(private readonly data: EditorData) { }
 
 	public prepare(obj: PIXI.DisplayObject, properties: { [id: string]: any }) {
 		const entry = this.holdingEntry = { obj, properties };
@@ -38,7 +40,7 @@ export class History {
 	}
 
 	private apply(entry: HistoryEntry) {
-		Data.selectObject(entry.obj, DataOrigin.HISTORY);
+		this.data.selectObject(entry.obj, DataOrigin.HISTORY);
 
 		const obj = entry.obj;
 		// TODO make this recursive (if necessary)
@@ -52,7 +54,7 @@ export class History {
 					});
 				} else
 					obj[pk] = prop;
-				Data.propertyChanged(pk, obj[pk], DataOrigin.HISTORY);
+				this.data.propertyChanged(pk, obj[pk], DataOrigin.HISTORY);
 			});
 
 		obj.updateTransform();

@@ -1,4 +1,5 @@
-import { Data, DataOrigin } from 'data/data';
+import { Editor } from 'core/editor';
+import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
 import { PropertiesEditors, PropertyInspectionData } from 'editor-view/properties-editors';
 import { PropertyEditor } from '../editors/property-editor';
@@ -11,7 +12,7 @@ export class PropertiesInspector extends Inspector {
 	public connectedCallback() {
 		super.connectedCallback();
 		this.title = 'Properties';
-		Data.onPropertyChanged.add(this.onPropertyChanged, this);
+		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 	}
 
 	private onPropertyChanged(origin: DataOrigin, property: string, value: any) {
