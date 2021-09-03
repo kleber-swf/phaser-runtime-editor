@@ -1,5 +1,3 @@
-import { Data } from 'data/data';
-import { History } from 'data/history';
 import { PropertyInspectionData } from 'editor/properties-editors';
 import { NumberPropertyEditor } from '../number/number-property-editor';
 import { PropertyEditor } from '../property-editor';

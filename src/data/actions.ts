@@ -1,27 +1,35 @@
 export interface Action {
-	label: string;
+	id: string;
+	label?: string;
 	icon?: string;
 	command: () => void;
-	shortcut: string;
+	shortcut?: string;
 }
 
 class ActionsClass {
+	private readonly actions: Record<string, Action> = {};
 	private readonly actionMap: Record<string, Action> = {};
-	public getActions() { return Object.values(this.actionMap); }
+
+	public getActions() { return Object.values(this.actions); }
+	public getAction(id: string) { return id in this.actionMap ? this.actionMap[id] : null; }
 
 	constructor() { document.onkeydown = this.onKeyDown.bind(this); }
 
 	public add(...actions: Action[]) {
 		actions.forEach(action => {
-			if (action.shortcut in this.actionMap)
-				throw new Error(`There is already an action with shortcut ${action.shortcut}: ${this.actionMap[action.shortcut].label}`);
-			this.actionMap[action.shortcut] = action;
+			if (action.shortcut in this.actions)
+				throw new Error(`There is already an action with shortcut ${action.shortcut}: ${this.actions[action.shortcut].label}`);
+			this.actions[action.shortcut] = action;
+			this.actionMap[action.id] = action;
 		});
 	}
 
 	private onKeyDown(e: KeyboardEvent) {
-		const k = (e.ctrlKey ? 'ctrl+' : '') + e.key;
-		if (k in this.actionMap) this.actionMap[k].command();
+		const k = (e.ctrlKey ? 'ctrl+' : '') + (e.shiftKey ? 'shift+' : '') + e.key;
+		if (k in this.actions) {
+			this.actions[k].command();
+			e.preventDefault();
+		}
 	}
 }
 

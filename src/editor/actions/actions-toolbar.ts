@@ -1,6 +1,6 @@
+import { Actions } from 'data/actions';
 import { Widget } from 'editor/widget/widget';
-import './actions-toolbar.scss'
-import { Actions } from 'data/actions'
+import './actions-toolbar.scss';
 import { ActionButton } from './button/action-button';
 
 export class ActionsToolbar extends Widget {
@@ -8,12 +8,13 @@ export class ActionsToolbar extends Widget {
 
 	public connectedCallback() {
 		super.connectedCallback();
+		this.createButton('UNDO');
+	}
 
-		Actions.getActions().forEach(action => {
-			const btn = document.createElement(ActionButton.tagName) as ActionButton;
-			btn.setAction(action);
-			this.appendChild(btn);
-		})
+	private createButton(actionId: string) {
+		const btn = document.createElement(ActionButton.tagName) as ActionButton;
+		btn.setAction(Actions.getAction(actionId));
+		this.appendChild(btn);
 	}
 }
 

@@ -11,12 +11,11 @@ export class Plugin extends Phaser.Plugin {
 		super(game, game.plugins);
 		group = group ?? game.world;
 
-		Actions.add({ label: 'undo', icon: 'fa-undo-alt', shortcut: 'ctrl+z', command: History.undo.bind(History) });
+		const scene = new SceneEditor(game, group, game.stage);
+		this.setupActions(scene);
 
 		const editor = document.createElement(Editor.tagName) as Editor;
 		document.body.appendChild(editor);
-
-		new SceneEditor(game, group, game.stage);
 
 		const update = this.update;
 		this.update = () => {
@@ -24,6 +23,21 @@ export class Plugin extends Phaser.Plugin {
 			this.update = update;
 			editor.setup(game, group);
 		}
+	}
+
+	private setupActions(scene: SceneEditor) {
+		Actions.add(
+			{ id: 'UNDO', label: 'undo', icon: 'fa-undo-alt', shortcut: 'ctrl+z', command: History.undo.bind(History) },
+			{ id: 'MOVE_UP_1', shortcut: 'ArrowUp', command: () => scene.moveSelectedObject(0, -1) },
+			{ id: 'MOVE_DOWN_1', shortcut: 'ArrowDown', command: () => scene.moveSelectedObject(0, 1) },
+			{ id: 'MOVE_LEFT_1', shortcut: 'ArrowLeft', command: () => scene.moveSelectedObject(-1, 0) },
+			{ id: 'MOVE_RIGHT_1', shortcut: 'ArrowRight', command: () => scene.moveSelectedObject(1, 0) },
+			{ id: 'MOVE_UP_10', shortcut: 'shift+ArrowUp', command: () => scene.moveSelectedObject(0, -10) },
+			{ id: 'MOVE_DOWN_10', shortcut: 'shift+ArrowDown', command: () => scene.moveSelectedObject(0, 10) },
+			{ id: 'MOVE_LEFT_10', shortcut: 'shift+ArrowLeft', command: () => scene.moveSelectedObject(-10, 0) },
+			{ id: 'MOVE_RIGHT_10', shortcut: 'shift+ArrowRight', command: () => scene.moveSelectedObject(10, 0) },
+		);
+
 	}
 
 	public postUpdate() {
