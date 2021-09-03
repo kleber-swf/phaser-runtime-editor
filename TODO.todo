@@ -45,7 +45,7 @@ BASIC:
 		[ ] test inside a real game
 		
 	Actions:
-		[ ] actions handler
+		[x] actions handler
 		[x] undo
 		[ ] toggle grid
 		[ ] toggle gizmos
@@ -57,9 +57,9 @@ BASIC:
 ADVANCED:
 	Translation:
 		[ ] snapping (10px)
-		[ ] keyboard shortcuts
-			[ ] use arrows to move 1px
-			[ ] use shift+arrows to move 10px
+		[x] keyboard shortcuts
+			[x] use arrows to move 1px
+			[x] use shift+arrows to move 10px
 
 	Scaling:
 		[ ] proportional scaling
