@@ -1,4 +1,5 @@
-import { PhaserData, PhaserObjectType } from 'data/phaser-data';
+import { Editor } from 'core/editor';
+import { PhaserObjectType } from 'data/phaser-meta';
 import { IdUtil } from 'util/id.util';
 import { TreeNode } from '../tree-node/tree-node';
 
@@ -23,7 +24,7 @@ export class ObjectTreeModel {
 	}
 
 	private createNode(child: PIXI.DisplayObject, map: Record<number, ObjectMapItemModel>, parent: ObjectMapItemModel, level: number) {
-		const type = PhaserData.getType(child.type);
+		const type = Editor.meta.getType(child.type);
 		child.__instanceId = IdUtil.genIntId();
 		child.__type = type.name;
 		const isLeaf = !(child.children && child.children.length > 0);

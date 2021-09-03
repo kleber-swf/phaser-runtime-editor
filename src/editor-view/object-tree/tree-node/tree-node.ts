@@ -1,4 +1,4 @@
-import { PhaserObjectType } from 'data/phaser-data';
+import { PhaserObjectType } from 'data/phaser-meta';
 import { ObjectMapItemModel } from '../model/object-tree-model';
 import './tree-node.scss';
 
