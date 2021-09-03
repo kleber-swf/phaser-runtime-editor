@@ -56,12 +56,9 @@ export class ScaleHandler extends Phaser.Group {
 
 	private startScaling(gizmos: ScaleGizmo) {
 		const obj = Data.selectedObject;
-		History.holdEntry({
-			obj,
-			properties: {
-				scale: obj.scale.clone(),
-				position: obj.position.clone(),
-			},
+		History.prepare(obj, {
+			scale: obj.scale.clone(),
+			position: obj.position.clone(),
 		});
 
 		this.scaler.startScaling(this.selectedObject, gizmos.factorH, gizmos.factorV);

@@ -1,4 +1,4 @@
-export class SceneMovel {
+export class SceneModel {
 	private _lastSelectionTree: PIXI.DisplayObject[];
 	private _lastSelectionTreeIndex = -1;
 

@@ -14,8 +14,8 @@ class HistoryClass {
 	// TODO change this name please
 	public readonly onHistoryWalk = new Phaser.Signal();
 
-	public holdEntry(entry: HistoryEntry) {
-		this.holdingEntry = entry;
+	public prepare(obj: PIXI.DisplayObject, properties: { [id: string]: any }) {
+		const entry = this.holdingEntry = { obj, properties };
 		Object.keys(entry.properties).forEach(k =>
 			entry.properties[k] = JSON.stringify(entry.properties[k]));
 		return this;

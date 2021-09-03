@@ -67,11 +67,8 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 	public abstract updateInternalValue(e: Event): void;
 
 	public savePreviousValue() {
-		History.holdEntry({
-			obj: Data.selectedObject,
-			properties: {
-				[this.prop.name]: this.getInternalValue()
-			}
+		History.prepare(Data.selectedObject, {
+			[this.prop.name]: this.getInternalValue()
 		}).commit();
 	}
 }

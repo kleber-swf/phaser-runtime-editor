@@ -5,30 +5,30 @@ import { Preferences } from 'data/preferences';
 import Phaser from 'phaser-ce';
 import { Editor } from './editor/editor';
 import './plugin.scss';
-import { SceneEditor } from './scene/scene-editor';
+import { SceneView } from './scene/scene-view';
 
 export class Plugin extends Phaser.Plugin {
 	public constructor(game: Phaser.Game, group?: Phaser.Group | Phaser.Stage) {
 		super(game, game.plugins);
 		group = group ?? game.world;
 
-		const scene = new SceneEditor(game, group, game.stage);
+		const scene = new SceneView(game, group, game.stage);
 		this.setupActions(scene);
-		
+
 		const editor = document.createElement(Editor.tagName) as Editor;
 		document.body.appendChild(editor);
-		
+
 		const update = this.update;
 		this.update = () => {
 			if (group.children.length === 0) return;
 			this.update = update;
 			editor.setup(game, group);
 		}
-		
+
 		Actions.setContainer('#phred-game-container');
 	}
 
-	private setupActions(scene: SceneEditor) {
+	private setupActions(scene: SceneView) {
 		Actions.add(
 			{
 				id: 'UNDO',

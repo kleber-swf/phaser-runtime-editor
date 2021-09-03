@@ -1,14 +1,14 @@
 import { Data, DataOrigin } from 'data/data';
-import { History, HistoryEntry } from 'data/history';
+import { History } from 'data/history';
 import { DragUtil } from '../util/drag.util';
-import { SceneMovel } from './scene-model';
+import { SceneModel } from './scene-model';
 import { Selection } from './selection/selection';
 
-export class SceneEditor extends Phaser.Group {
+export class SceneView extends Phaser.Group {
 	private readonly touchArea: Phaser.Graphics;
 	private readonly container: Phaser.Group | Phaser.Stage;
 	private readonly selection: Selection;
-	private readonly model: SceneMovel;
+	private readonly model: SceneModel;
 
 	/** Whether the mouse down has already selected an object */
 	private _hasSelected: boolean;
@@ -30,7 +30,7 @@ export class SceneEditor extends Phaser.Group {
 		game.stage.__skip = true;
 		game.world.__skip = true;
 
-		this.model = new SceneMovel();
+		this.model = new SceneModel();
 		this.container = container;
 
 		this.touchArea = this.createTouchArea(game);
@@ -80,10 +80,7 @@ export class SceneEditor extends Phaser.Group {
 		const obj = Data.selectedObject
 		if (!obj) return;
 
-		History.holdEntry({
-			obj: Data.selectedObject,
-			properties: { position: obj.position.clone() },
-		});
+		History.prepare(Data.selectedObject, { position: obj.position.clone() });
 	}
 
 	private onInputUp(_: any, pointer: Phaser.Pointer) {
@@ -127,7 +124,7 @@ export class SceneEditor extends Phaser.Group {
 	public moveSelectedObject(deltaX: number, deltaY: number) {
 		const obj = Data.selectedObject;
 		if (!obj) return;
-		History.holdEntry({ obj, properties: { position: obj.position.clone() } }).commit();
+		History.prepare(obj, { position: obj.position.clone() }).commit();
 		obj.position.set(obj.position.x + deltaX, obj.position.y + deltaY);
 		obj.updateTransform();
 		this.selection.redraw();
