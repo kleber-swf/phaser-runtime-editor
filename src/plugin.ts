@@ -1,5 +1,4 @@
 import { Data } from 'data/data';
-import { History } from 'data/history';
 import { Preferences } from 'data/preferences';
 import Phaser from 'phaser-ce';
 import { Editor } from './core/editor';
@@ -37,7 +36,7 @@ export class Plugin extends Phaser.Plugin {
 				label: 'undo',
 				icon: 'fa-undo-alt',
 				shortcut: 'ctrl+z',
-				command: History.undo.bind(History)
+				command: Editor.history.undo.bind(Editor.history)
 			},
 			{
 				id: 'MOVE_UP_1',

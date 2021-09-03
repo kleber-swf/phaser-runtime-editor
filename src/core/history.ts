@@ -1,4 +1,4 @@
-import { Data, DataOrigin } from './data';
+import { Data, DataOrigin } from '../data/data';
 
 export interface HistoryEntry {
 	obj: PIXI.DisplayObject;
@@ -7,7 +7,7 @@ export interface HistoryEntry {
 
 const HISTORY_LIMIT = 100;
 
-class HistoryClass {
+export class History {
 	private readonly entries: HistoryEntry[] = [];
 	private holdingEntry: HistoryEntry;
 
@@ -59,5 +59,3 @@ class HistoryClass {
 		this.onHistoryWalk.dispatch(entry);
 	}
 }
-
-export const History = new HistoryClass();

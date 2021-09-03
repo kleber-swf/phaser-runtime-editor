@@ -1,5 +1,5 @@
 import { Data, DataOrigin } from 'data/data';
-import { History } from 'data/history';
+import { Editor } from 'core/editor';
 import { PropertyInspectionData } from 'editor-view/properties-editors';
 import { IdUtil } from 'util/id.util';
 import './property-editor.scss';
@@ -67,7 +67,7 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 	public abstract updateInternalValue(e: Event): void;
 
 	public savePreviousValue() {
-		History.prepare(Data.selectedObject, {
+		Editor.history.prepare(Data.selectedObject, {
 			[this.prop.name]: this.getInternalValue()
 		}).commit();
 	}

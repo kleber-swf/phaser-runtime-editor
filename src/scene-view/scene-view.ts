@@ -1,5 +1,5 @@
+import { Editor } from 'core/editor';
 import { Data, DataOrigin } from 'data/data';
-import { History } from 'data/history';
 import { DragUtil } from '../util/drag.util';
 import { SceneModel } from './scene-model';
 import { Selection } from './selection/selection';
@@ -80,7 +80,7 @@ export class SceneView extends Phaser.Group {
 		const obj = Data.selectedObject
 		if (!obj) return;
 
-		History.prepare(Data.selectedObject, { position: obj.position.clone() });
+		Editor.history.prepare(Data.selectedObject, { position: obj.position.clone() });
 	}
 
 	private onInputUp(_: any, pointer: Phaser.Pointer) {
@@ -88,10 +88,10 @@ export class SceneView extends Phaser.Group {
 		const wasDragging = this._isDragging;
 		this._isDragging = false;
 		if (wasDragging) {
-			History.commit();
+			Editor.history.commit();
 			return;
 		}
-		History.cancel();
+		Editor.history.cancel();
 		if (this._hasSelected) return;
 		this.trySelectOver(pointer);
 		this._hasSelected = false;
@@ -124,7 +124,7 @@ export class SceneView extends Phaser.Group {
 	public moveSelectedObject(deltaX: number, deltaY: number) {
 		const obj = Data.selectedObject;
 		if (!obj) return;
-		History.prepare(obj, { position: obj.position.clone() }).commit();
+		Editor.history.prepare(obj, { position: obj.position.clone() }).commit();
 		obj.position.set(obj.position.x + deltaX, obj.position.y + deltaY);
 		obj.updateTransform();
 		this.selection.redraw();
