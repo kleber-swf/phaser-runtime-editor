@@ -55,7 +55,7 @@ BASIC:
 
 ADVANCED:
 	Translation:
-		[ ] snapping (10px)
+		[x] snapping (1px)
 		[x] keyboard shortcuts
 			[x] use arrows to move 1px
 			[x] use shift+arrows to move 10px
@@ -102,7 +102,6 @@ ADVANCED:
 		[ ] copy selected properties to clipboard
 		[ ] show grid
 		[ ] help: keyboard shorcuts
-		[ ] toolbar: tool selector
 		[ ] status bar
 		[ ] hide panels
 		[ ] redo
