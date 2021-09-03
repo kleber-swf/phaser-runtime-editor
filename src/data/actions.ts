@@ -38,7 +38,6 @@ class ActionsClass {
 
 	private onKeyDown(e: KeyboardEvent) {
 		const k = (e.ctrlKey ? 'ctrl+' : '')
-			+ (e.altKey ? 'alt+' : '')
 			+ (e.shiftKey ? 'shift+' : '')
 			+ e.key;
 		if (k in this.actions) {
