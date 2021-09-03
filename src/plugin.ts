@@ -1,5 +1,4 @@
 import { Data } from 'data/data';
-import { Preferences } from 'data/preferences';
 import Phaser from 'phaser-ce';
 import { Editor } from './core/editor';
 import { EditorView } from './editor-view/editor-view';
@@ -30,13 +29,14 @@ export class Plugin extends Phaser.Plugin {
 	}
 
 	private setupActions(scene: SceneView) {
+		const { history, prefs } = Editor;
 		Editor.actions.add(
 			{
 				id: 'UNDO',
 				label: 'undo',
 				icon: 'fa-undo-alt',
 				shortcut: 'ctrl+z',
-				command: Editor.history.undo.bind(Editor.history)
+				command: history.undo.bind(history)
 			},
 			{
 				id: 'MOVE_UP_1',
@@ -83,16 +83,16 @@ export class Plugin extends Phaser.Plugin {
 				label: 'snap',
 				icon: 'fa-compress',
 				toggle: true,
-				command: () => Preferences.snap = !Preferences.snap,
-				state: () => Preferences.snap,
+				command: () => prefs.snap = !prefs.snap,
+				state: () => prefs.snap,
 			},
 			{
 				id: 'TOGGLE_GIZMOS',
 				toggle: true,
 				hold: true,
 				shortcut: 'shift+Shift',
-				command: () => Preferences.gizmos = !Preferences.gizmos,
-				state: () => Preferences.gizmos,
+				command: () => prefs.gizmos = !prefs.gizmos,
+				state: () => prefs.gizmos,
 			},
 		);
 	}

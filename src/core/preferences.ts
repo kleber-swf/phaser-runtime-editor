@@ -1,6 +1,6 @@
-export type PreferenceKey = keyof PreferencesClass;
+export type PreferenceKey = keyof Preferences;
 
-class PreferencesClass {
+export class Preferences {
 	private _snap = false;
 
 	public get snap() { return this._snap; }
@@ -25,5 +25,3 @@ class PreferencesClass {
 		this.onPreferenceChanged.dispatch(field, value);
 	}
 }
-
-export const Preferences = new PreferencesClass();

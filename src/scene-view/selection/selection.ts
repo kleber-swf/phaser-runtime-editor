@@ -1,5 +1,6 @@
 import { Data, DataOrigin } from 'data/data';
-import { PreferenceKey, Preferences } from 'data/preferences';
+import { PreferenceKey } from 'core/preferences';
+import { Editor } from 'core/editor';
 import { PointUtil } from 'util/math.util';
 import { ANCHOR_COLOR, ANCHOR_STROKE, BORDER_COLOR, BORDER_STROKE, PIVOT_COLOR, PIVOT_STROKE } from '../scene-colors';
 import { ScaleHandler } from './scale/scale.handler';
@@ -22,9 +23,10 @@ export class Selection extends Phaser.Group {
 		this.scaleHandler = new ScaleHandler(game);
 		this.addChild(this.scaleHandler);
 
-		Preferences.onPreferenceChanged.add(this.onPreferencesChanged, this);
-		this.alpha = Preferences.gizmos ? 1 : 0;
-		this.moveFn = Preferences.snap ? this.snapMove : this.freeMove;
+		const prefs = Editor.prefs;
+		prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
+		this.alpha = prefs.gizmos ? 1 : 0;
+		this.moveFn = prefs.snap ? this.snapMove : this.freeMove;
 
 		this.select(null);
 	}
