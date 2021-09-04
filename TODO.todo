@@ -28,7 +28,7 @@ BASIC:
 		[x] custom property editors for PIXI/Phaser common types
 			[x] Point
 		[x] look for basic properties to inspect
-		[ ] copy property value
+		[x] copy property value to clipboard
 
 	Object Tree:
 		[x] panel
@@ -50,9 +50,9 @@ BASIC:
 		[x] undo
 		[x] toggle gizmos
 		[ ] toggle enabled
-		[ ] reference image
-			[ ] toggle ref image
-			[ ] set alpha
+		[x] reference image
+			[x] toggle ref image
+			[x] set alpha
 
 	Refactors:
 		[x] create a centralized class for all the singletons

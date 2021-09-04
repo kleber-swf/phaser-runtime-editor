@@ -17,14 +17,15 @@ export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 
 	protected createInnerContent(fieldId: string, value: PIXI.Point, prop: InspectorPropertyModel) {
 		const parent = this.appendChild(document.createElement('div'));
+		parent.classList.add('vertical-content')
 
 		const xinput = this.xinput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;
-		xinput.setContent({ name: 'x', typeHint: 'number', data: prop.data }, value.x, fieldId);
+		xinput.setContent({ name: 'x', typeHint: 'number', data: prop.data }, value.x, false, fieldId);
 		xinput.onchange = this.onInputChanged.bind(this);
 		parent.appendChild(xinput);
 
 		const yinput = this.yinput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;
-		yinput.setContent({ name: 'y', typeHint: 'number', data: prop.data }, value.y);
+		yinput.setContent({ name: 'y', typeHint: 'number', data: prop.data }, value.y, false);
 		yinput.onchange = this.onInputChanged.bind(this);
 		parent.appendChild(yinput);
 
@@ -51,6 +52,12 @@ export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 		this.yinput.updateInternalValue();
 		this.internalValue.set(this.xinput.getInternalValue(), this.yinput.getInternalValue());
 		return this._internalValue;
+	}
+
+	protected copyToClipboard() {
+		const value = this.getInternalValue();
+		navigator.clipboard
+			.writeText(`"${this.prop.name}": ${JSON.stringify({ x: value.x, y: value.y })}`);
 	}
 }
 

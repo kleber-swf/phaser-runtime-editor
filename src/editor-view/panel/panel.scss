@@ -8,11 +8,17 @@ phred-panel {
 	z-index: 2;
 
 	&.large {
-		width: 250px;
+		width: 300px;
+		@media (max-width: 1600px) {
+			width: 250px;
+		}
 	}
 
 	&.small {
-		width: 200px;
+		width: 250px;
+		@media (max-width: 1600px) {
+			width: 200px;
+		}
 	}
 
 	&.left {
@@ -21,17 +27,5 @@ phred-panel {
 
 	&.right {
 		box-shadow: -4px 0px 4px $shadow-color;
-	}
-}
-
-@media (min-width: 1600px) {
-	phred-panel {
-		&.large {
-			width: 400px;
-		}
-
-		&.small {
-			width: 250px;
-		}
 	}
 }

@@ -14,7 +14,7 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 		this.classList.add('property-editor');
 	}
 
-	public setContent(prop: InspectorPropertyModel, value: T, fieldId?: string) {
+	public setContent(prop: InspectorPropertyModel, value: T, hasCopyButton: boolean, fieldId?: string) {
 		fieldId = fieldId ?? `${prop.name}-${IdUtil.genHexId()}`;
 		this.prop = prop;
 
@@ -26,6 +26,7 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 
 		this.setInternalValue(value);
 		this.onchange = this.onValueChanged.bind(this);
+		if (hasCopyButton) this.createCopyButton();
 	}
 
 	protected createLabel(fieldId: string, prop: InspectorPropertyModel): HTMLElement {
@@ -46,6 +47,20 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 	}
 
 	protected abstract createInnerContent(fieldId: string, value: T, prop: InspectorPropertyModel): HTMLElement;
+
+	protected createCopyButton() {
+		const btn = this.appendChild(document.createElement('div'));
+		btn.classList.add('copy-button');
+		btn.onclick = this.copyToClipboard.bind(this);
+
+		btn.appendChild(document.createElement('i'))
+			.classList.add('fas', 'fa-clone');
+	}
+
+	protected copyToClipboard() {
+		navigator.clipboard
+			.writeText(`"${this.prop.name}": ${JSON.stringify(this.getInternalValue())}`);
+	}
 
 	public propertyChangedOutsideInspector(value: T) {
 		this.changedOutsideInspector = true;

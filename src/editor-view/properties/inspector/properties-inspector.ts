@@ -22,7 +22,7 @@ export class PropertiesInspector extends Inspector {
 
 	private createPropertyEditor(prop: InspectorPropertyModel, value: any, tagName: string) {
 		const editor = this.content.appendChild(document.createElement(tagName)) as PropertyEditor<any>;
-		editor.setContent(prop, value);
+		editor.setContent(prop, value, true);
 		return editor;
 	}
 

@@ -35,4 +35,33 @@
 		padding: 1px 4px 1px 0;
 		display: flex;
 	}
+
+	.copy-button {
+		width: 20px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0.5;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		&:active {
+			margin-top: 1px;
+		}
+
+		i {
+			font-size: 10px;
+		}
+	}
+
+	.vertical-content {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: stretch;
+		margin: 0;
+		flex: 1;
+	}
 }
