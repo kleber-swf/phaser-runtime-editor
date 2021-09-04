@@ -3,6 +3,7 @@ import { Editor } from 'core/editor';
 import './actions-toolbar.scss';
 import { ActionButton } from './button/action-button';
 import { Actions } from 'actions';
+import { ReferenceImagePanel } from './reference-image/reference-image-panel';
 
 export class ActionsToolbar extends Widget {
 	public static readonly tagName: string = 'phred-actions-toolbar';
@@ -11,7 +12,12 @@ export class ActionsToolbar extends Widget {
 		super.connectedCallback();
 		this.createButton(Actions.TOGGLE_SNAP);
 		this.createButton(Actions.UNDO);
-		this.createButton(Actions.TOGGLE_REF_IMAGE);
+		this.createSeparator();
+		this.createSpacer();
+
+		if (!Editor.referenceImage) return;
+		this.createSeparator();
+		this.appendChild(document.createElement(ReferenceImagePanel.tagName));
 	}
 
 	private createButton(actionId: string) {
@@ -20,6 +26,16 @@ export class ActionsToolbar extends Widget {
 		const btn = document.createElement(ActionButton.tagName) as ActionButton;
 		btn.setAction(action);
 		this.appendChild(btn);
+	}
+
+	private createSeparator() {
+		this.appendChild(document.createElement('div'))
+			.classList.add('separator');
+	}
+
+	private createSpacer() {
+		this.appendChild(document.createElement('div'))
+			.classList.add('spacer');
 	}
 }
 

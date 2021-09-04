@@ -9,7 +9,7 @@ export class ReferenceImage extends Phaser.Group {
 		this.__skip = true;
 		this.addChild(image);
 		this.image = image;
-		image.alpha = 0.3;
+		this.alpha = 0.3;
 		image.blendMode = PIXI.blendModes.DARKEN;
 		Editor.prefs.onPreferenceChanged.add(this.onPreferenceChanged, this);
 		this.onPreferenceChanged('referenceImage', Editor.prefs.referenceImage);

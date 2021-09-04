@@ -19,7 +19,7 @@ export class Preferences {
 		this.notifyListeners('gizmos', value);
 	}
 
-	private _referenceImage = true;
+	private _referenceImage = false;
 
 	public get referenceImage() { return this._referenceImage; }
 
