@@ -1,3 +1,5 @@
+@import 'colors';
+
 phred-actions-toolbar {
 	height: 42px;
 	min-height: 42px;
@@ -5,5 +7,15 @@ phred-actions-toolbar {
 	z-index: 1;
 	display: flex;
 	padding: 5px 12px;
-	justify-content: stretch ;
+	justify-content: stretch;
+
+	.separator {
+		display: inline-block;
+		border-left: 1px solid rgba(darken($on-background, 40%), 0.3);
+		margin: 2px 8px;
+	}
+
+	.spacer {
+		flex: 1 0 auto;
+	}
 }

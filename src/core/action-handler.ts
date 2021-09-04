@@ -9,7 +9,7 @@ export interface Action {
 	state?: () => any;
 }
 
-export class Actions {
+export class ActionHandler {
 	private readonly actions: Record<string, Action> = {};
 	private readonly actionMap: Record<string, Action> = {};
 

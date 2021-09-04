@@ -1,8 +1,5 @@
 @import 'colors';
 
-$property-input-background: rgba(white, 0.05);
-$property-foreground: $on-background;
-
 .property-editor {
 	display: flex;
 	flex-direction: row;
@@ -11,7 +8,7 @@ $property-foreground: $on-background;
 	&.has-children {
 		padding: 8px 0;
 
-		&>.property-content{
+		& > .property-content {
 			padding-right: 0;
 		}
 	}
@@ -34,31 +31,8 @@ $property-foreground: $on-background;
 
 	.property-content {
 		flex: 1;
-		color: $property-foreground;
+		color: $input-foreground;
 		padding: 1px 4px 1px 0;
 		display: flex;
-
-		input {
-			font-size: 14px;
-			color: $property-foreground;
-			padding: 2px 4px;
-			transition: all 0.1s;
-
-			&[readonly] {
-				color: rgba($property-foreground, 0.5);
-			}
-		}
-
-		input[type='text'],
-		input[type='number'] {
-			width: 100%;
-			background-color: $property-input-background;
-			border: 1px solid transparent;
-			outline: none !important;
-
-			&:not([readonly]):focus {
-				border-color: $disabled-text-color;
-			}
-		}
 	}
 }

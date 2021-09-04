@@ -12,3 +12,6 @@ $unfocused-text-color: darken($on-background, 20%);
 $disabled-text-color: rgba($on-background, 0.5);
 
 $button-text-color: darken($on-background, 40%);
+
+$input-background: rgba(white, 0.05);
+$input-foreground: $on-background;

@@ -19,6 +19,15 @@ export class Preferences {
 		this.notifyListeners('gizmos', value);
 	}
 
+	private _referenceImage = false;
+
+	public get referenceImage() { return this._referenceImage; }
+
+	public set referenceImage(value: boolean) {
+		this._referenceImage = value;
+		this.notifyListeners('referenceImage', value);
+	}
+
 	public readonly onPreferenceChanged = new Phaser.Signal();
 
 	private notifyListeners(field: PreferenceKey, value: any) {

@@ -21,10 +21,12 @@ let _colorIndex = 0;
 function preload() {
 	game.load.image('mushroom', 'assets/sprites/mushroom2.png');
 	game.load.image('phaser', 'assets/sprites/phaser1.png');
+	game.load.image('ref', 'assets/sprites/ref.png');
 }
 
 function create() {
-	game.plugins.add(new PhaserRuntimeEditor.Plugin(game, game.world));
+	const refImage = new Phaser.Image(game, 0, 0, 'ref');
+	game.plugins.add(new PhaserRuntimeEditor.Plugin(game, game.world, refImage));
 
 	//  Modify the world and camera bounds
 	// game.world.setBounds(-1000, -1000, 2000, 2000);
@@ -81,31 +83,31 @@ function create() {
 
 	// 0   0
 	let child = el(DIST * 0, DIST * 0, SIZE, SIZE, parent, 'child-a0-p0');
-	
+
 	// 0   .5
 	child = el(DIST * 1, DIST * 0, SIZE, SIZE, parent, 'child-a0-p.5');
 	child.pivot.set(0.5 * SIZE, 0.5 * SIZE);
-	
+
 	// 0   1
 	child = el(DIST * 2, DIST * 0, SIZE, SIZE, parent, 'child-a0-p1');
 	child.pivot.set(SIZE, SIZE);
-	
-	
+
+
 	// .5  0
 	child = el(DIST * 0, DIST * 1, SIZE, SIZE, parent, 'child-a.5-p0');
 	child.anchor.set(0.5, 0.5);
-	
+
 	// .5  .5
 	child = el(DIST * 1, DIST * 1, SIZE, SIZE, parent, 'child-a.5-p.5');
 	child.anchor.set(0.5, 0.5);
 	child.pivot.set(0.5 * SIZE, 0.5 * SIZE);
-	
+
 	// .5  1
 	child = el(DIST * 2, DIST * 1, SIZE, SIZE, parent, 'child-a.5-p1');
 	child.anchor.set(0.5, 0.5);
 	child.pivot.set(SIZE, SIZE);
-	
-	
+
+
 	// 1   0
 	child = el(DIST * 0, DIST * 2, SIZE, SIZE, parent, 'child-a1-p0');
 	child.anchor.set(1, 1);
