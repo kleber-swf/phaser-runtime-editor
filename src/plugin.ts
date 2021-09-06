@@ -1,7 +1,6 @@
 import { DisabledUI } from 'disabled/disabled-ui';
 import { EditorWindow } from 'editor.window';
 import Phaser from 'phaser-ce';
-import './plugin.scss';
 
 export class Plugin extends Phaser.Plugin {
 	private readonly disabledUI: DisabledUI;
