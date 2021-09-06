@@ -1,5 +1,8 @@
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
+import autoprefixer from 'autoprefixer';
+import postcss from 'postcss';
+import scss from 'rollup-plugin-scss';
 import { terser } from 'rollup-plugin-terser';
 
 const pkg = require('../package.json');
@@ -13,6 +16,11 @@ export default [
 		],
 		treeshake: false,
 		plugins: [
+			scss({
+				processor: () => postcss([autoprefixer()]),
+				output: 'dist/phaser-runtime-editor-styles.css',
+				outputStyle: 'compressed'
+			}),
 			commonjs(),
 			typescript({
 				tsconfig: './tsconfig.json',
