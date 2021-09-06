@@ -10,6 +10,8 @@ import { SceneView } from 'scene-view/scene-view';
 import { Plugin } from './plugin';
 
 export class EditorWindow {
+	public onhide: () => void;
+
 	public show(plugin: Plugin, group?: Container, refImage?: PIXI.Sprite) {
 		const game = plugin.game;
 		group = group ?? game.world;
@@ -35,6 +37,10 @@ export class EditorWindow {
 		}
 
 		Editor.actions.setContainer('#phred-game-container');
+	}
+
+	private hide() {
+
 	}
 
 	private setupInspectorData() {
@@ -129,6 +135,14 @@ export class EditorWindow {
 				shortcut: 'shift+Shift',
 				command: () => prefs.gizmos = !prefs.gizmos,
 				state: () => prefs.gizmos,
+			},
+			{
+				id: Actions.TOGGLE_ENABLED,
+				label: 'edit',
+				icon: 'fa-edit',
+				toggle: true,
+				command: this.hide.bind(this),
+				state: () => true,
 			},
 		);
 	}

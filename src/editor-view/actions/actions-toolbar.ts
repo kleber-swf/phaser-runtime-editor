@@ -10,6 +10,7 @@ export class ActionsToolbar extends Widget {
 
 	public connectedCallback() {
 		super.connectedCallback();
+		this.createButton(Actions.TOGGLE_ENABLED);
 		this.createButton(Actions.TOGGLE_SNAP);
 		this.createButton(Actions.UNDO);
 		this.createSeparator();

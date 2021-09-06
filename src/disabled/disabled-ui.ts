@@ -10,8 +10,7 @@ export class DisabledUI {
 		btn.classList.add('button', 'edit-button');
 		this.button = btn;
 
-		const label = btn.appendChild(document.createElement('span'));
-		label.classList.add('label');
-		label.textContent = 'EDIT';
+		btn.appendChild(document.createElement('i'))
+			.classList.add('fas', 'fa-edit');
 	}
 }
