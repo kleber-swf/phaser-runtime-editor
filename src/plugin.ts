@@ -10,7 +10,7 @@ export class Plugin extends Phaser.Plugin {
 		super(game, game.plugins);
 		this.insertHead();
 
-		this.editorWindow = new EditorWindow();
+		this.editorWindow = new EditorWindow(this);
 		this.disabledUI = new DisabledUI();
 		this.disabledUI.onclick = this.enableEditor.bind(this);
 	}
@@ -37,7 +37,7 @@ export class Plugin extends Phaser.Plugin {
 	}
 
 	private enableEditor() {
-		this.editorWindow.show(this);
+		this.editorWindow.show();
 	}
 }
 

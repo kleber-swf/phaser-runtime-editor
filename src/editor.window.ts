@@ -7,12 +7,24 @@ import { PointPropertyEditor } from 'editor-view/properties/editors/point/point-
 import { StringPropertyEditor } from 'editor-view/properties/editors/string/string-property-editor';
 import { ReferenceImage } from 'scene-view/reference-image';
 import { SceneView } from 'scene-view/scene-view';
-import { Plugin } from './plugin';
 
 export class EditorWindow {
+	private plugin: Phaser.Plugin;
+	private _initialized = false;
 	public onhide: () => void;
 
-	public show(plugin: Plugin, group?: Container, refImage?: PIXI.Sprite) {
+	constructor(plugin: Phaser.Plugin) { this.plugin = plugin; }
+
+	public show(group?: Container, refImage?: PIXI.Sprite) {
+		if (!this._initialized) {
+			this.init(group, refImage);
+			return;
+		}
+		// TODO just re-enable everything
+	}
+
+	private init(group?: Container, refImage?: PIXI.Sprite) {
+		const plugin = this.plugin;
 		const game = plugin.game;
 		group = group ?? game.world;
 
@@ -40,7 +52,8 @@ export class EditorWindow {
 	}
 
 	private hide() {
-
+		// TODO disable everything
+		if (this.onhide) this.onhide();
 	}
 
 	private setupInspectorData() {
