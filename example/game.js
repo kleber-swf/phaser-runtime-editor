@@ -26,7 +26,7 @@ function preload() {
 
 function create() {
 	const refImage = new Phaser.Image(game, 0, 0, 'ref');
-	game.plugins.add(new PhaserRuntimeEditor.Plugin(game, game.world, refImage));
+	game.plugins.add(new Phaser.Plugin.RuntimeEditor(game, game.world, refImage));
 
 	//  Modify the world and camera bounds
 	// game.world.setBounds(-1000, -1000, 2000, 2000);

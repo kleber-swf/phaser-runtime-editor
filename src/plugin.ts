@@ -148,3 +148,5 @@ export class Plugin extends Phaser.Plugin {
 		Editor.data.dispatchScheduledEvents();
 	}
 }
+
+(Phaser.Plugin as any).RuntimeEditor = Plugin;
