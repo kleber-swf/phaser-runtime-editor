@@ -8,10 +8,32 @@ export class Plugin extends Phaser.Plugin {
 
 	public constructor(game: Phaser.Game) {
 		super(game, game.plugins);
+		this.insertHead();
 
 		this.editorWindow = new EditorWindow();
 		this.disabledUI = new DisabledUI();
 		this.disabledUI.onclick = this.enableEditor.bind(this);
+	}
+
+	private insertHead() {
+		const head = document.head;
+		const script = document.createElement('script');
+		script.src = 'https://kit.fontawesome.com/7ba4e59e46.js';
+		script.crossOrigin = 'anonymous';
+		head.appendChild(script);
+
+		let link = head.appendChild(document.createElement('link'));
+		link.rel = 'preconnect';
+		link.href = 'https://fonts.googleapis.com';
+
+		link = head.appendChild(document.createElement('link'));
+		link.rel = 'preconnect';
+		link.href = 'https://fonts.gstatic.com';
+		link.crossOrigin = 'true';
+
+		link = head.appendChild(document.createElement('link'));
+		link.rel = 'stylesheet';
+		link.href = 'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap';
 	}
 
 	private enableEditor() {

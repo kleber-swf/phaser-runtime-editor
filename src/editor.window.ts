@@ -5,7 +5,7 @@ import { BooleanPropertyEditor } from 'editor-view/properties/editors/boolean/bo
 import { NumberPropertyEditor } from 'editor-view/properties/editors/number/number-property-editor';
 import { PointPropertyEditor } from 'editor-view/properties/editors/point/point-property-editor';
 import { StringPropertyEditor } from 'editor-view/properties/editors/string/string-property-editor';
-import { ReferenceImage } from 'index';
+import { ReferenceImage } from 'scene-view/reference-image';
 import { SceneView } from 'scene-view/scene-view';
 import { Plugin } from './plugin';
 

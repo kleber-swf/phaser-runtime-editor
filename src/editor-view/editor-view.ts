@@ -20,11 +20,6 @@ export class EditorView extends Widget {
 
 		Editor.data.onSelectedObjectChanged.add(this.selectObject, this);
 
-		const script = document.createElement('script');
-		script.src = 'https://kit.fontawesome.com/7ba4e59e46.js';
-		script.crossOrigin = 'anonymous';
-		document.head.appendChild(script);
-
 		const leftPanel = this.appendChild(document.createElement(Panel.tagName) as Panel);
 		leftPanel.classList.add('left', 'small');
 		this.panels.push(leftPanel);
