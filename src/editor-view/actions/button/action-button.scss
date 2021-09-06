@@ -1,14 +1,9 @@
 @import 'colors';
 
-phed-action-button {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
+phed-action-button.button {
 	min-width: 35px;
-	border-radius: 4px;
-	color: $button-text-color;
-	cursor: pointer;
-	margin: 0 4px;
+	padding: 0;
+	box-shadow: none;
 
 	&:hover {
 		background-color: $primary-color;
@@ -24,12 +19,5 @@ phed-action-button {
 	&.selected {
 		background-color: lighten($primary-color, 10%);
 		color: $on-primary;
-	}
-
-	.label {
-		font-size: 12px;
-		font-weight: bold;
-		padding: 0 8px;
-		text-transform: uppercase;
 	}
 }

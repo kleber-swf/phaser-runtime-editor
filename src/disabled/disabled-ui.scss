@@ -1,0 +1,15 @@
+@import 'colors';
+
+.edit-button {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 4px;
+	font-size: 10px;
+	padding: 4px 6px;
+	opacity: 0.4;
+
+	&:hover {
+		opacity: 1;
+	}
+}
