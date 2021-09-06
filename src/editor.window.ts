@@ -10,7 +10,7 @@ import { SceneView } from 'scene-view/scene-view';
 import { Plugin } from './plugin';
 
 export class EditorWindow {
-	constructor(plugin: Plugin, group?: Container, refImage?: PIXI.Sprite) {
+	public show(plugin: Plugin, group?: Container, refImage?: PIXI.Sprite) {
 		const game = plugin.game;
 		group = group ?? game.world;
 
@@ -24,6 +24,7 @@ export class EditorWindow {
 		const editorView = document.createElement(EditorView.tagName) as EditorView;
 		document.body.appendChild(editorView);
 
+		// TODO remove this when the object tree updates itself
 		const update = plugin.update.bind(plugin);
 		plugin.update = () => {
 			if (group.children.length === 0) return;

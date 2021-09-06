@@ -1,15 +1,41 @@
 @import 'colors';
 
 .edit-button {
+	font-family: sans-serif;
 	position: absolute;
 	top: 0;
 	left: 0;
 	margin: 4px;
-	font-size: 10px;
-	padding: 4px 6px;
+	font-size: 9px;
+	padding: 5px 8px;
 	opacity: 0.4;
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px;
+	cursor: pointer;
+	background-color: $background-color;
+	color: $button-text-color;
+	box-shadow: 0 1px 1px $shadow-color;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	transition: all 0.1s;
 
 	&:hover {
 		opacity: 1;
+	}
+
+	&:active {
+		background-color: lighten($background-color, 10%);
+		color: $on-primary;
+	}
+
+	.label {
+		text-transform: uppercase;
+		font-size: 12px;
+		font-weight: bold;
 	}
 }

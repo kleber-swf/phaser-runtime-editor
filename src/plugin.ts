@@ -9,8 +9,13 @@ export class Plugin extends Phaser.Plugin {
 	public constructor(game: Phaser.Game) {
 		super(game, game.plugins);
 
-		// this.disabledUI = new DisabledUI();
-		this.editorWindow = new EditorWindow(this);
+		this.editorWindow = new EditorWindow();
+		this.disabledUI = new DisabledUI();
+		this.disabledUI.onclick = this.enableEditor.bind(this);
+	}
+
+	private enableEditor() {
+		this.editorWindow.show(this);
 	}
 }
 
