@@ -6,7 +6,7 @@ import { Selection } from './selection/selection';
 
 export class SceneView extends Phaser.Group {
 	private readonly touchArea: Phaser.Graphics;
-	private readonly container: Phaser.Group | Phaser.Stage;
+	private readonly container: Container;
 	private readonly selection: Selection;
 	private readonly model: SceneModel;
 
@@ -22,7 +22,7 @@ export class SceneView extends Phaser.Group {
 	/** Whether the input down event happened here */
 	private _isInputDown = false;
 
-	constructor(game: Phaser.Game, container: Phaser.Group | Phaser.Stage, parent: Phaser.Group | Phaser.Stage) {
+	constructor(game: Phaser.Game, container: Container, parent: Phaser.Stage) {
 		super(game, parent);
 		this.name = '__scene_editor';
 

@@ -53,7 +53,7 @@ export class EditorView extends Widget {
 		rightPanel.addInspector(props);
 	}
 
-	public setup(game: Phaser.Game, group: PIXI.DisplayObjectContainer | Phaser.Stage) {
+	public setup(game: Phaser.Game, group: Container) {
 		if (game) {
 			const el = game.canvas.parentElement;
 			el.classList.add('phred-game');

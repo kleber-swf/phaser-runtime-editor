@@ -10,3 +10,5 @@ declare namespace PIXI {
 		children?: DisplayObject[];
 	}
 }
+
+declare type Container = PIXI.DisplayObjectContainer | Phaser.Stage;

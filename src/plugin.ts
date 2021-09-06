@@ -11,7 +11,7 @@ import './plugin.scss';
 import { SceneView } from './scene-view/scene-view';
 
 export class Plugin extends Phaser.Plugin {
-	public constructor(game: Phaser.Game, group?: Phaser.Group | Phaser.Stage, refImage?: Phaser.Image) {
+	public constructor(game: Phaser.Game, group?: Container, refImage?: PIXI.Sprite) {
 		super(game, game.plugins);
 		group = group ?? game.world;
 
@@ -131,7 +131,7 @@ export class Plugin extends Phaser.Plugin {
 		);
 	}
 
-	public setupRefImage(refImage: Phaser.Image) {
+	public setupRefImage(refImage: PIXI.Sprite) {
 		if (!refImage) return;
 		Editor.referenceImage = new ReferenceImage(this.game, refImage);
 		Editor.actions.add({
