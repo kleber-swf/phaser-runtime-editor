@@ -39,6 +39,7 @@ export class ActionHandler {
 	private onKeyDown(e: KeyboardEvent) {
 		const k = (e.ctrlKey ? 'ctrl+' : '')
 			+ (e.shiftKey ? 'shift+' : '')
+			+ (e.altKey ? 'alt+' : '')
 			+ e.key;
 		if (k in this.actions) {
 			const action = this.actions[k];

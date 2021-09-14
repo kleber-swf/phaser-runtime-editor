@@ -1,5 +1,5 @@
 export enum DataOrigin {
-	HISTORY = 0,
+	ACTION = 0,
 	SCENE = 1,
 	INSPECTOR = 2,
 };

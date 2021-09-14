@@ -6,8 +6,13 @@ export class Plugin extends Phaser.Plugin {
 	private readonly disabledUI: DisabledUI;
 	private readonly editorWindow: EditorWindow;
 
-	public constructor(game: Phaser.Game) {
+	private root: Container;
+	private refImage?: PIXI.Sprite;
+
+	public constructor(game: Phaser.Game, root?: Container, refImage?: PIXI.Sprite) {
 		super(game, game.plugins);
+		this.root = root;
+		this.refImage = refImage
 		this.insertHead();
 
 		this.editorWindow = new EditorWindow(this);
@@ -37,7 +42,7 @@ export class Plugin extends Phaser.Plugin {
 	}
 
 	private enableEditor() {
-		this.editorWindow.show();
+		this.editorWindow.show(this.root, this.refImage);
 	}
 }
 

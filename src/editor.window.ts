@@ -1,5 +1,6 @@
 import { Actions } from 'actions';
 import { Editor } from 'core/editor';
+import { DataOrigin } from 'data/editor-data';
 import { EditorView } from 'editor-view/editor-view';
 import { BooleanPropertyEditor } from 'editor-view/properties/editors/boolean/boolean-property-editor';
 import { NumberPropertyEditor } from 'editor-view/properties/editors/number/number-property-editor';
@@ -15,23 +16,23 @@ export class EditorWindow {
 
 	constructor(plugin: Phaser.Plugin) { this.plugin = plugin; }
 
-	public show(group?: Container, refImage?: PIXI.Sprite) {
+	public show(root?: Container, refImage?: PIXI.Sprite) {
 		if (!this._initialized) {
-			this.init(group, refImage);
+			this.init(root, refImage);
 			return;
 		}
 		// TODO just re-enable everything
 	}
 
-	private init(group?: Container, refImage?: PIXI.Sprite) {
+	private init(root?: Container, refImage?: PIXI.Sprite) {
 		const plugin = this.plugin;
 		const game = plugin.game;
-		group = group ?? game.world;
+		root = root ?? game.world;
 
 		Editor.init();
 		this.setupInspectorData();
 
-		const scene = new SceneView(game, group, game.stage);
+		const scene = new SceneView(game, root, game.stage);
 		this.setupActions(scene);
 		if (refImage) this.setupRefImage(game, refImage);
 
@@ -41,9 +42,9 @@ export class EditorWindow {
 		// TODO remove this when the object tree updates itself
 		const update = plugin.update.bind(plugin);
 		plugin.update = () => {
-			if (group.children.length === 0) return;
+			if (root.children.length === 0) return;
 			plugin.update = update;
-			editorView.setup(game, group);
+			editorView.setup(game, root);
 			plugin.hasPostUpdate = true;
 			plugin['postUpdate'] = () => Editor.data.dispatchScheduledEvents();
 		}
@@ -156,6 +157,21 @@ export class EditorWindow {
 				toggle: true,
 				command: this.hide.bind(this),
 				state: () => true,
+			},
+			{
+				id: Actions.PRINT_OBJECT,
+				label: 'print',
+				icon: 'fa-terminal',
+				shortcut: 'ctrl+alt+p',
+				command: () => {
+					if (Editor.data.selectedObject)
+						console.info(Editor.data.selectedObject);
+				}
+			},
+			{
+				id: Actions.DESELECT,
+				shortcut: 'Escape',
+				command: () => Editor.data.selectObject(null, DataOrigin.ACTION)
 			},
 		);
 	}

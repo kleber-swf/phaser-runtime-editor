@@ -6,6 +6,7 @@ phred-panel {
 	align-items: stretch;
 	justify-content: stretch;
 	z-index: 2;
+	overflow: auto;
 
 	&.large {
 		width: 300px;

@@ -12,4 +12,6 @@ export class Actions {
 	public static readonly TOGGLE_GIZMOS = 'TOGGLE_GIZMOS';
 	public static readonly TOGGLE_REF_IMAGE = 'TOGGLE_REF_IMAGE';
 	public static readonly TOGGLE_ENABLED = 'TOGGLE_ENABLED';
+	public static readonly PRINT_OBJECT = 'PRINT_OBJECT';
+	public static readonly DESELECT = 'DESELECT';
 }

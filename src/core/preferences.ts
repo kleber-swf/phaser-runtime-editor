@@ -1,7 +1,7 @@
 export type PreferenceKey = keyof Preferences;
 
 export class Preferences {
-	private _snap = false;
+	private _snap = true;
 
 	public get snap() { return this._snap; }
 
