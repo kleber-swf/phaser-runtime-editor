@@ -52,8 +52,9 @@ export class EditorWindow {
 		this.setupInspectorData();
 
 		const scene = this.scene = new SceneView(this.game);
-		// this.setupActions(scene);
-		// if (refImage) this.setupRefImage(game, refImage);
+		this.setupActions(scene);
+		
+		if (this.refImage) this.setupRefImage(this.refImage);
 
 		// const editorView = document.createElement(EditorView.tagName) as EditorView;
 		// document.body.appendChild(editorView);
@@ -196,9 +197,8 @@ export class EditorWindow {
 		);
 	}
 
-	public setupRefImage(game: Phaser.Game, refImage: PIXI.Sprite) {
-		if (!refImage) return;
-		Editor.referenceImage = new ReferenceImage(game, refImage);
+	private setupRefImage(refImage: PIXI.Sprite) {
+		Editor.referenceImage = new ReferenceImage(this.game, refImage);
 		Editor.actions.add({
 			id: Actions.TOGGLE_REF_IMAGE,
 			label: 'reference',
