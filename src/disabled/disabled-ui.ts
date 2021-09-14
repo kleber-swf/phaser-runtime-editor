@@ -2,6 +2,9 @@ import './disabled-ui.scss';
 
 export class DisabledUI {
 	private readonly button: HTMLElement;
+
+	private _enabled = false;
+
 	public get onclick() { return this.button.onclick; }
 	public set onclick(value: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null) { this.button.onclick = value; }
 
@@ -14,13 +17,15 @@ export class DisabledUI {
 			.classList.add('fas', 'fa-edit');
 	}
 
-	public show() {
-		if (!this.button.parentElement)
-			document.body.appendChild(this.button);
+	public enable() {
+		if (this._enabled) return;
+		this._enabled = true;
+		document.body.appendChild(this.button);
 	}
 
-	public hide() {
-		if (this.button.parentElement)
-			document.body.removeChild(this.button);
+	public disable() {
+		if (!this._enabled) return;
+		this._enabled = false;
+		document.body.removeChild(this.button);
 	}
 }

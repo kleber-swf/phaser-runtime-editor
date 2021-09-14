@@ -4,7 +4,7 @@ import './panel.scss';
 
 export class Panel extends Widget {
 	public static readonly tagName: string = 'phred-panel';
-	private readonly inspectors: Inspector[] = [];	// TODO depend on an interface or abstract class here
+	private readonly inspectors: Inspector[] = [];
 
 	public addInspector(inspector: Inspector) {
 		this.appendChild(inspector);
@@ -13,6 +13,10 @@ export class Panel extends Widget {
 
 	public selectObject(obj: PIXI.DisplayObject) {
 		this.inspectors.forEach(p => p.selectObject(obj));
+	}
+
+	public init(game: Phaser.Game, root: Container) {
+		this.inspectors.forEach(inspector => inspector.setup(game, root));
 	}
 }
 

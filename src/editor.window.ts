@@ -5,7 +5,7 @@ import { BooleanPropertyEditor } from 'editor-view/properties/editors/boolean/bo
 import { NumberPropertyEditor } from 'editor-view/properties/editors/number/number-property-editor';
 import { PointPropertyEditor } from 'editor-view/properties/editors/point/point-property-editor';
 import { StringPropertyEditor } from 'editor-view/properties/editors/string/string-property-editor';
-import { DisabledUI } from 'index';
+import { DisabledUI, EditorView } from 'index';
 import { ReferenceImage } from 'scene-view/reference-image';
 import { SceneView } from 'scene-view/scene-view';
 
@@ -13,7 +13,9 @@ export class EditorWindow {
 	// private plugin: Phaser.Plugin;
 	private _initialized = false;
 	private disabledUI: DisabledUI;
-	private scene: SceneView;
+
+	private sceneView: SceneView;
+	private editorView: EditorView;
 
 	private readonly game: Phaser.Game;
 	private readonly root: Container;
@@ -31,15 +33,16 @@ export class EditorWindow {
 	}
 
 	public start() {
-		this.disabledUI.show();
+		this.disabledUI.enable();
 	}
 
 	public show() {
-		this.disabledUI.hide();
+		this.disabledUI.disable();
 		if (!this._initialized) this.init();
 
 		// TODO just enable everything
-		this.scene.enable(this.root, this.game.stage);
+		this.sceneView.enable(this.root, this.game.stage);
+		this.editorView.enable(this.game, this.root);
 	}
 
 	private init() {
@@ -51,13 +54,12 @@ export class EditorWindow {
 		Editor.init();
 		this.setupInspectorData();
 
-		const scene = this.scene = new SceneView(this.game);
+		const scene = this.sceneView = new SceneView(this.game);
 		this.setupActions(scene);
-		
+
 		if (this.refImage) this.setupRefImage(this.refImage);
 
-		// const editorView = document.createElement(EditorView.tagName) as EditorView;
-		// document.body.appendChild(editorView);
+		const editorView = this.editorView = document.createElement(EditorView.tagName) as EditorView;
 
 		// // TODO remove this when the object tree updates itself
 		// const update = plugin.update.bind(plugin);
@@ -73,8 +75,11 @@ export class EditorWindow {
 	}
 
 	private hide() {
-		this.disabledUI.show();
 		// TODO disable everything
+		this.sceneView.disable();
+		this.editorView.disable();
+
+		this.disabledUI.enable();
 		if (this.onhide) this.onhide();
 	}
 

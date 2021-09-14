@@ -10,16 +10,29 @@ import { Widget } from './widget/widget';
 export class EditorView extends Widget {
 	public static readonly tagName: string = 'phred-editor-view';
 
-	private _game: Phaser.Game;
 	private actions: ActionsToolbar;
 	private gameContainer: HTMLElement;
 	private panels: Panel[] = [];
 
-	public connectedCallback() {
-		super.connectedCallback();
+	private _initialized = false;
+	private _enabled = false;
 
+	private init(game: Phaser.Game, root: Container) {
+		this._initialized = true;
 		Editor.data.onSelectedObjectChanged.add(this.selectObject, this);
+		
+		this.createElements();
+		
+		// append element to game container
+		const el = game.canvas.parentElement;
+		el.classList.add('phred-game');
+		this.gameContainer.appendChild(el);
+		
+		// initialize panels
+		this.panels.forEach(panel => panel.init(game, root));
+	}
 
+	private createElements() {
 		const leftPanel = this.appendChild(document.createElement(Panel.tagName) as Panel);
 		leftPanel.classList.add('left', 'small');
 		this.panels.push(leftPanel);
@@ -48,19 +61,17 @@ export class EditorView extends Widget {
 		rightPanel.addInspector(props);
 	}
 
-	public setup(game: Phaser.Game, group: Container) {
-		if (game) {
-			const el = game.canvas.parentElement;
-			el.classList.add('phred-game');
-			this.gameContainer.appendChild(el);
-		} else if (this._game) {
-			const el = this._game.canvas.parentElement;
-			el.classList.remove('phred-game');
-			this.gameContainer.removeChild(el);
-		}
-		this._game = game;
-		(document.querySelector('#phed-object-tree') as ObjectTreeInspector)
-			.setContent(group);
+	public enable(game: Phaser.Game, root: Container) {
+		if (this._enabled) return;
+		this._enabled = true;
+		if (!this._initialized) this.init(game, root);
+		document.body.appendChild(this);
+	}
+
+	public disable() {
+		if (!this._enabled) return;
+		this._enabled = false;
+		this.parentElement.removeChild(this);
 	}
 
 	public selectObject(_: DataOrigin, obj: PIXI.DisplayObject) {

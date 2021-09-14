@@ -9,25 +9,14 @@ export class ObjectTreeInspector extends Inspector {
 	public static readonly tagName: string = 'phed-object-tree-inspector';
 	private readonly model: ObjectTreeModel = new ObjectTreeModel();
 
-	public connectedCallback() {
-		super.connectedCallback();
+	public setup(game: Phaser.Game, root: Container) {
+		super.setup(game, root);
 		this.title = 'Objects';
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
+		this.setRoot(root);
 	}
 
-	private onPropertyChanged(_: DataOrigin, property: string, value: any) {
-		if (!this._lastSelectedModel) return;
-		if (property === 'name') {
-			this._lastSelectedModel.node.updateTitle(this._lastSelectedModel.type, value);
-			return;
-		}
-		if (property === 'visible') {
-			this._lastSelectedModel.node.updateObjectVisibility(value);
-			return;
-		}
-	}
-
-	public setContent(root: PIXI.DisplayObjectContainer | Phaser.Stage) {
+	private setRoot(root: PIXI.DisplayObjectContainer | Phaser.Stage) {
 		this.model.create(root);
 		for (let i = 0, n = root.children.length; i < n; i++)
 			this.createNode(root.children[i], this.content, this.model);
@@ -50,6 +39,18 @@ export class ObjectTreeInspector extends Inspector {
 		for (let i = 0, n = obj.children.length; i < n; i++) {
 			const container = node.addChildrenContainer();
 			this.createNode(obj.children[i], container, model);
+		}
+	}
+
+	private onPropertyChanged(_: DataOrigin, property: string, value: any) {
+		if (!this._lastSelectedModel) return;
+		if (property === 'name') {
+			this._lastSelectedModel.node.updateTitle(this._lastSelectedModel.type, value);
+			return;
+		}
+		if (property === 'visible') {
+			this._lastSelectedModel.node.updateObjectVisibility(value);
+			return;
 		}
 	}
 

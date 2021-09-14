@@ -9,13 +9,12 @@ export abstract class Inspector extends Widget {
 	protected content: HTMLElement;
 	protected selectedObject: PIXI.DisplayObject;
 
-	public connectedCallback() {
-		super.connectedCallback();
+	public setup(_game: Phaser.Game, _root: Container) {
 		this.classList.add('phred-inspector');
-		
+	
 		this.titleElement = this.appendChild(document.createElement('div'));
 		this.titleElement.classList.add('title');
-
+	
 		this.content = this.appendChild(document.createElement('div'));
 		this.content.classList.add('content');
 	}

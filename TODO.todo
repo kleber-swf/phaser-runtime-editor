@@ -49,7 +49,7 @@ BASIC:
 
 	General Features:
 		[x] editor layout
-		[ ] test inside a real game
+		[x] test inside a real game
 		
 	Actions:
 		[x] actions handler
