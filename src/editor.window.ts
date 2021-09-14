@@ -1,58 +1,78 @@
 import { Actions } from 'actions';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
-import { EditorView } from 'editor-view/editor-view';
 import { BooleanPropertyEditor } from 'editor-view/properties/editors/boolean/boolean-property-editor';
 import { NumberPropertyEditor } from 'editor-view/properties/editors/number/number-property-editor';
 import { PointPropertyEditor } from 'editor-view/properties/editors/point/point-property-editor';
 import { StringPropertyEditor } from 'editor-view/properties/editors/string/string-property-editor';
+import { DisabledUI } from 'index';
 import { ReferenceImage } from 'scene-view/reference-image';
 import { SceneView } from 'scene-view/scene-view';
 
 export class EditorWindow {
-	private plugin: Phaser.Plugin;
+	// private plugin: Phaser.Plugin;
 	private _initialized = false;
+	private disabledUI: DisabledUI;
+	private scene: SceneView;
+
+	private readonly game: Phaser.Game;
+	private readonly root: Container;
+	private readonly refImage?: PIXI.Sprite;
+
 	public onhide: () => void;
 
-	constructor(plugin: Phaser.Plugin) { this.plugin = plugin; }
+	constructor(game: Phaser.Game, root: Container, refImage?: PIXI.Sprite) {
+		this.game = game;
+		this.root = root ?? game.world;
+		this.refImage = refImage;
 
-	public show(root?: Container, refImage?: PIXI.Sprite) {
-		if (!this._initialized) {
-			this.init(root, refImage);
-			return;
-		}
-		// TODO just re-enable everything
+		this.disabledUI = new DisabledUI();
+		this.disabledUI.onclick = this.show.bind(this);
 	}
 
-	private init(root?: Container, refImage?: PIXI.Sprite) {
-		const plugin = this.plugin;
-		const game = plugin.game;
-		root = root ?? game.world;
+	public start() {
+		this.disabledUI.show();
+	}
+
+	public show() {
+		this.disabledUI.hide();
+		if (!this._initialized) this.init();
+
+		// TODO just enable everything
+		this.scene.enable(this.root, this.game.stage);
+	}
+
+	private init() {
+		this._initialized = true;
+		// const plugin = this.plugin;
+		// const game = plugin.game;
+		// root = root ?? game.world;
 
 		Editor.init();
 		this.setupInspectorData();
 
-		const scene = new SceneView(game, root, game.stage);
-		this.setupActions(scene);
-		if (refImage) this.setupRefImage(game, refImage);
+		const scene = this.scene = new SceneView(this.game);
+		// this.setupActions(scene);
+		// if (refImage) this.setupRefImage(game, refImage);
 
-		const editorView = document.createElement(EditorView.tagName) as EditorView;
-		document.body.appendChild(editorView);
+		// const editorView = document.createElement(EditorView.tagName) as EditorView;
+		// document.body.appendChild(editorView);
 
-		// TODO remove this when the object tree updates itself
-		const update = plugin.update.bind(plugin);
-		plugin.update = () => {
-			if (root.children.length === 0) return;
-			plugin.update = update;
-			editorView.setup(game, root);
-			plugin.hasPostUpdate = true;
-			plugin['postUpdate'] = () => Editor.data.dispatchScheduledEvents();
-		}
+		// // TODO remove this when the object tree updates itself
+		// const update = plugin.update.bind(plugin);
+		// plugin.update = () => {
+		// 	if (root.children.length === 0) return;
+		// 	plugin.update = update;
+		// 	editorView.setup(game, root);
+		// 	plugin.hasPostUpdate = true;
+		// 	plugin['postUpdate'] = () => Editor.data.dispatchScheduledEvents();
+		// }
 
-		Editor.actions.setContainer('#phred-game-container');
+		// Editor.actions.setContainer('#phred-game-container');
 	}
 
 	private hide() {
+		this.disabledUI.show();
 		// TODO disable everything
 		if (this.onhide) this.onhide();
 	}

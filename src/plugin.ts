@@ -3,7 +3,6 @@ import { EditorWindow } from 'editor.window';
 import Phaser from 'phaser-ce';
 
 export class Plugin extends Phaser.Plugin {
-	private readonly disabledUI: DisabledUI;
 	private readonly editorWindow: EditorWindow;
 
 	private root: Container;
@@ -15,9 +14,8 @@ export class Plugin extends Phaser.Plugin {
 		this.refImage = refImage
 		this.insertHead();
 
-		this.editorWindow = new EditorWindow(this);
-		this.disabledUI = new DisabledUI();
-		this.disabledUI.onclick = this.enableEditor.bind(this);
+		this.editorWindow = new EditorWindow(game, root, refImage);
+		this.editorWindow.start();
 	}
 
 	private insertHead() {
@@ -39,10 +37,6 @@ export class Plugin extends Phaser.Plugin {
 		link = head.appendChild(document.createElement('link'));
 		link.rel = 'stylesheet';
 		link.href = 'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap';
-	}
-
-	private enableEditor() {
-		this.editorWindow.show(this.root, this.refImage);
 	}
 }
 

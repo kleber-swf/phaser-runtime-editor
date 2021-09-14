@@ -6,9 +6,11 @@ import { Selection } from './selection/selection';
 
 export class SceneView extends Phaser.Group {
 	private readonly touchArea: Phaser.Graphics;
-	private readonly container: Container;
 	private readonly selection: Selection;
 	private readonly model: SceneModel;
+
+	/** The container that will have the edition */
+	private root: Container;
 
 	/** Whether the mouse down has already selected an object */
 	private _hasSelected: boolean;
@@ -22,8 +24,8 @@ export class SceneView extends Phaser.Group {
 	/** Whether the input down event happened here */
 	private _isInputDown = false;
 
-	constructor(game: Phaser.Game, container: Container, parent: Phaser.Stage) {
-		super(game, parent);
+	constructor(game: Phaser.Game) {
+		super(game, null);
 		this.name = '__scene_editor';
 
 		this.__skip = true;
@@ -31,7 +33,6 @@ export class SceneView extends Phaser.Group {
 		game.world.__skip = true;
 
 		this.model = new SceneModel();
-		this.container = container;
 
 		this.touchArea = this.createTouchArea(game);
 		this.redrawTouchArea();
@@ -41,6 +42,15 @@ export class SceneView extends Phaser.Group {
 
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged.bind(this));
 		Editor.data.onSelectedObjectChanged.add(this.onObjectSelected.bind(this));
+	}
+
+	public enable(root: Container, parent: Phaser.Stage) {
+		this.root = root;
+		if (this.parent !== parent) parent.addChild(this);
+	}
+
+	public disable() {
+		if (this.parent) this.parent.removeChild(this);
 	}
 
 	private onPropertyChanged(origin: DataOrigin, property: string, value: any, obj: PIXI.DisplayObject) {
@@ -99,7 +109,7 @@ export class SceneView extends Phaser.Group {
 
 	private trySelectOver(pointer: Phaser.Pointer) {
 		const objects: PIXI.DisplayObject[] = [];
-		this.getObjectsUnderPoint(pointer.x, pointer.y, this.container.children, objects);
+		this.getObjectsUnderPoint(pointer.x, pointer.y, this.root.children, objects);
 
 		const obj = this.model.setSelectionTree(objects);
 		this.selectObject(obj, true);
