@@ -5,44 +5,73 @@ export interface Action {
 	shortcut?: string;
 	toggle?: boolean;
 	hold?: boolean;
+	on?: string;
 	command: () => void;
 	state?: () => any;
 }
 
 export class ActionHandler {
-	private readonly actions: Record<string, Action> = {};
-	private readonly actionMap: Record<string, Action> = {};
+	private readonly actions: Record<string, Record<string, Action>> = {};
+	private readonly actionById: Record<string, Action> = {};
+	private containers: Record<string, HTMLElement> = {};
 
 	private _holdingToggleAction: Action;
 
 	public getActions() { return Object.values(this.actions); }
-	public getAction(id: string) { return id in this.actionMap ? this.actionMap[id] : null; }
+	public getAction(id: string) { return id in this.actionById ? this.actionById[id] : null; }
 
-	public setContainer(containerId: string) {
-		const container = document.querySelector(containerId) as HTMLElement;
-		container.tabIndex = 0;
-		container.onkeydown = this.onKeyDown.bind(this);
-		container.onkeyup = this.onKeyUp.bind(this);
+	public addContainer(id: string, container: HTMLElement) {
+		// if (this._container) return;
+		// const container = document.querySelector(containerId) as HTMLElement;
+		// if (!container) {
+		// 	console.warn(`Could not find container with id ${containerId}`);
+		// 	return;
+		// }
+		// this._container = container;
+		// container.tabIndex = 0;
+		this.containers[id] = container;
+		// container.onkeydown = this.onKeyDown.bind(this);
+		// container.onkeyup = this.onKeyUp.bind(this);
+	}
+
+	public enable() {
+		Object.keys(this.containers).forEach(cid => {
+			const container = this.containers[cid];
+			container.onkeydown = (e: KeyboardEvent) => this.onKeyDown(e, this.actions[cid]);
+			container.onkeyup = this.onKeyUp.bind(this);
+		});
+	}
+
+	public disable() {
+		Object.values(this.containers).forEach(container => {
+			container.onkeydown = null;
+			container.onkeyup = null;
+		});
 	}
 
 	public add(...actions: Action[]) {
 		actions.forEach(action => {
+			const cid = action.on || 'body';
+			if (!(cid in this.actions)) this.actions[cid] = {};
+			const container = this.actions[cid];
+
 			if (action.shortcut) {
-				if (action.shortcut in this.actions)
-					throw new Error(`There is already an action with shortcut ${action.shortcut}: ${this.actions[action.shortcut].label}`);
-				this.actions[action.shortcut] = action;
+				if (action.shortcut in container)
+					throw new Error(`There is already an action with shortcut ${action.shortcut}: ${container[action.shortcut].label}`);
+				container[action.shortcut] = action;
 			}
-			this.actionMap[action.id] = action;
+
+			this.actionById[action.id] = action;
 		});
 	}
 
-	private onKeyDown(e: KeyboardEvent) {
+	private onKeyDown(e: KeyboardEvent, actions: Record<string, Action>) {
 		const k = (e.ctrlKey ? 'ctrl+' : '')
 			+ (e.shiftKey ? 'shift+' : '')
 			+ (e.altKey ? 'alt+' : '')
 			+ e.key;
-		if (k in this.actions) {
-			const action = this.actions[k];
+		if (k in actions) {
+			const action = actions[k];
 			action.command();
 			if (action.toggle && action.hold)
 				this._holdingToggleAction = action;
