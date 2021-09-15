@@ -21,6 +21,7 @@ export class EditorWindow {
 	private readonly root: Container;
 	private readonly refImage?: PIXI.Sprite;
 
+	public onshow: () => void;
 	public onhide: () => void;
 
 	constructor(game: Phaser.Game, root: Container, refImage?: PIXI.Sprite) {
@@ -51,17 +52,7 @@ export class EditorWindow {
 		if (this.refImage) this.setupRefImage(this.refImage);
 
 		this.editorView = document.createElement(EditorView.tagName) as EditorView;
-
 		Editor.actions.addContainer('body', document.body);
-		// // TODO remove this when the object tree updates itself
-		// const update = plugin.update.bind(plugin);
-		// plugin.update = () => {
-		// 	if (root.children.length === 0) return;
-		// 	plugin.update = update;
-		// 	editorView.setup(game, root);
-		// 	plugin.hasPostUpdate = true;
-		// 	plugin['postUpdate'] = () => Editor.data.dispatchScheduledEvents();
-		// }
 	}
 
 	public show() {
@@ -71,6 +62,7 @@ export class EditorWindow {
 		this.sceneView.enable(this.root, this.game.stage);
 		this.editorView.enable(this.game, this.root);
 		Editor.actions.enable();
+		if (this.onshow) this.onshow();
 	}
 
 	private hide() {

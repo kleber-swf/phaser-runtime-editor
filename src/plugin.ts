@@ -1,5 +1,6 @@
 import { DisabledUI } from 'disabled/disabled-ui';
 import { EditorWindow } from 'editor.window';
+import { Editor } from 'index';
 import Phaser from 'phaser-ce';
 
 export class Plugin extends Phaser.Plugin {
@@ -15,6 +16,8 @@ export class Plugin extends Phaser.Plugin {
 		this.insertHead();
 
 		this.editorWindow = new EditorWindow(game, root, refImage);
+		this.editorWindow.onshow = this.onEditorShow.bind(this);
+		this.editorWindow.onhide = this.onEditorHide.bind(this);
 		this.editorWindow.start();
 	}
 
@@ -37,6 +40,20 @@ export class Plugin extends Phaser.Plugin {
 		link = head.appendChild(document.createElement('link'));
 		link.rel = 'stylesheet';
 		link.href = 'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap';
+	}
+
+	private onEditorShow() {
+		(this as any).postUpdate = this._postUpdate.bind(this);
+		this.hasPostUpdate = true;
+	}
+
+	private onEditorHide() {
+		this.hasPostUpdate = false;
+		(this as any).postUpdate = null;
+	}
+
+	private _postUpdate() {
+		Editor.data.dispatchScheduledEvents();
 	}
 }
 
