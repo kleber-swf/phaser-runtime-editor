@@ -62,6 +62,7 @@ BASIC:
 		[ ] global shortcuts
 			[ ] toggle gizmos
 			[ ] navigation (arrows)
+			[ ] undo
 		[ ] find another shortcut to toggle gizmos
 
 	Refactors:

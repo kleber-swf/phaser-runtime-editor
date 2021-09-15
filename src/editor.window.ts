@@ -36,15 +36,6 @@ export class EditorWindow {
 		this.disabledUI.enable();
 	}
 
-	public show() {
-		this.disabledUI.disable();
-		if (!this._initialized) this.init();
-
-		// TODO just enable everything
-		this.sceneView.enable(this.root, this.game.stage);
-		this.editorView.enable(this.game, this.root);
-	}
-
 	private init() {
 		this._initialized = true;
 		// const plugin = this.plugin;
@@ -59,8 +50,9 @@ export class EditorWindow {
 
 		if (this.refImage) this.setupRefImage(this.refImage);
 
-		const editorView = this.editorView = document.createElement(EditorView.tagName) as EditorView;
+		this.editorView = document.createElement(EditorView.tagName) as EditorView;
 
+		Editor.actions.addContainer('body', document.body);
 		// // TODO remove this when the object tree updates itself
 		// const update = plugin.update.bind(plugin);
 		// plugin.update = () => {
@@ -70,12 +62,19 @@ export class EditorWindow {
 		// 	plugin.hasPostUpdate = true;
 		// 	plugin['postUpdate'] = () => Editor.data.dispatchScheduledEvents();
 		// }
+	}
 
-		// Editor.actions.setContainer('#phred-game-container');
+	public show() {
+		this.disabledUI.disable();
+		if (!this._initialized) this.init();
+
+		this.sceneView.enable(this.root, this.game.stage);
+		this.editorView.enable(this.game, this.root);
+		Editor.actions.enable();
 	}
 
 	private hide() {
-		// TODO disable everything
+		Editor.actions.disable();
 		this.sceneView.disable();
 		this.editorView.disable();
 

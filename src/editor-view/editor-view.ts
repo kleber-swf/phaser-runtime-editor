@@ -17,17 +17,18 @@ export class EditorView extends Widget {
 	private _initialized = false;
 	private _enabled = false;
 
+	private game: Phaser.Game;
+	private gameParentElement: HTMLElement;
+
 	private init(game: Phaser.Game, root: Container) {
+		this.game = game;
 		this._initialized = true;
 		Editor.data.onSelectedObjectChanged.add(this.selectObject, this);
-		
+
 		this.createElements();
-		
-		// append element to game container
-		const el = game.canvas.parentElement;
-		el.classList.add('phred-game');
-		this.gameContainer.appendChild(el);
-		
+
+		Editor.actions.addContainer(EditorView.tagName, this);
+
 		// initialize panels
 		this.panels.forEach(panel => panel.init(game, root));
 	}
@@ -65,13 +66,30 @@ export class EditorView extends Widget {
 		if (this._enabled) return;
 		this._enabled = true;
 		if (!this._initialized) this.init(game, root);
+
+		this.addGameToContainer(game);
 		document.body.appendChild(this);
 	}
 
 	public disable() {
 		if (!this._enabled) return;
 		this._enabled = false;
+		this.returnGameToItsParent();
 		this.parentElement.removeChild(this);
+	}
+
+	private addGameToContainer(game: Phaser.Game) {
+		const el = game.canvas.parentElement;
+		this.gameParentElement = el.parentElement;
+		el.classList.add('phred-game');
+		this.gameContainer.appendChild(el);
+	}
+
+	private returnGameToItsParent() {
+		const el = this.game.canvas.parentElement;
+		el.classList.remove('phred-game');
+		this.gameParentElement.appendChild(el);
+		this.gameParentElement = null;
 	}
 
 	public selectObject(_: DataOrigin, obj: PIXI.DisplayObject) {
