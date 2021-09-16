@@ -1,8 +1,10 @@
 @import 'colors';
 
 phred-tree-node {
+	display: inline-block;
 	cursor: pointer;
 	flex: 1;
+	min-width: 100%;
 
 	&.selected {
 		& > .node-head {
@@ -56,12 +58,13 @@ phred-tree-node {
 		.node-name {
 			display: inline-block;
 			white-space: nowrap;
+			padding-right: 10px;
 		}
 	}
 
 	.node-children {
 		margin-left: 16px;
-		margin-bottom: 4px;
 		overflow: hidden;
+		display: flex;
 	}
 }
