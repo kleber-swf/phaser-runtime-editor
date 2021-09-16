@@ -21,17 +21,7 @@ export class ActionHandler {
 	public getAction(id: string) { return id in this.actionById ? this.actionById[id] : null; }
 
 	public addContainer(id: string, container: HTMLElement) {
-		// if (this._container) return;
-		// const container = document.querySelector(containerId) as HTMLElement;
-		// if (!container) {
-		// 	console.warn(`Could not find container with id ${containerId}`);
-		// 	return;
-		// }
-		// this._container = container;
-		// container.tabIndex = 0;
 		this.containers[id] = container;
-		// container.onkeydown = this.onKeyDown.bind(this);
-		// container.onkeyup = this.onKeyUp.bind(this);
 	}
 
 	public enable() {

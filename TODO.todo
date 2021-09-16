@@ -55,14 +55,14 @@ BASIC:
 		[x] actions handler
 		[x] undo
 		[x] toggle gizmos
-		[ ] toggle enabled
+		[x] toggle enabled
 		[x] reference image
 			[x] toggle ref image
 			[x] set alpha
-		[ ] global shortcuts
-			[ ] toggle gizmos
-			[ ] navigation (arrows)
-			[ ] undo
+		[x] global shortcuts
+			[x] toggle gizmos
+			[x] navigation (arrows)
+			[x] undo
 		[ ] find another shortcut to toggle gizmos
 
 	Refactors:

@@ -1,4 +1,3 @@
-import { DisabledUI } from 'disabled/disabled-ui';
 import { EditorWindow } from 'editor.window';
 import { Editor } from 'index';
 import Phaser from 'phaser-ce';

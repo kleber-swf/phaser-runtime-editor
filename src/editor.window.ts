@@ -10,7 +10,6 @@ import { ReferenceImage } from 'scene-view/reference-image';
 import { SceneView } from 'scene-view/scene-view';
 
 export class EditorWindow {
-	// private plugin: Phaser.Plugin;
 	private _initialized = false;
 	private disabledUI: DisabledUI;
 
@@ -39,9 +38,6 @@ export class EditorWindow {
 
 	private init() {
 		this._initialized = true;
-		// const plugin = this.plugin;
-		// const game = plugin.game;
-		// root = root ?? game.world;
 
 		Editor.init();
 		this.setupInspectorData();
