@@ -44,8 +44,8 @@ BASIC:
 			[x] automatic expand when selecting
 			[x] expand / collapse all with alt key
 		[x] vertical scroll
-		[ ] horizontal scroll
-		[ ] scroll to selection
+		[x] horizontal scroll
+		[x] scroll to selection
 
 	General Features:
 		[x] editor layout

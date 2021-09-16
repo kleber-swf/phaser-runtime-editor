@@ -107,10 +107,20 @@ function create() {
 	child.anchor.set(0.5, 0.5);
 	child.pivot.set(SIZE, SIZE);
 
+	for (let i = 0; i < 10; i++) {
+		const c = el(0, 0, SIZE, SIZE, child, 'child-a.5-p1');
+		child = c;
+	}
+
 
 	// 1   0
 	child = el(DIST * 0, DIST * 2, SIZE, SIZE, parent, 'child-a1-p0');
 	child.anchor.set(1, 1);
+
+	for (let i = 0; i < 10; i++) {
+		const c = el(0, 0, SIZE, SIZE, child, 'child-a.5-p1');
+		child = c;
+	}
 
 	// 1   .5
 	child = el(DIST * 1, DIST * 2, SIZE, SIZE, parent, 'child-a1-p.5');
