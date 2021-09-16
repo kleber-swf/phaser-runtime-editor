@@ -1,5 +1,5 @@
+import { Editor } from 'core/editor';
 import { EditorWindow } from 'editor.window';
-import { Editor } from 'index';
 import Phaser from 'phaser-ce';
 
 export class Plugin extends Phaser.Plugin {

@@ -1,12 +1,13 @@
 import { Actions } from 'actions';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
+import { DisabledUI } from 'disabled/disabled-ui';
+import { EditorView } from 'editor-view/editor-view';
 import { BooleanPropertyEditor } from 'editor-view/properties/editors/boolean/boolean-property-editor';
 import { NumberPropertyEditor } from 'editor-view/properties/editors/number/number-property-editor';
 import { PointPropertyEditor } from 'editor-view/properties/editors/point/point-property-editor';
 import { RectPropertyEditor } from 'editor-view/properties/editors/rect/rect-property-editor';
 import { StringPropertyEditor } from 'editor-view/properties/editors/string/string-property-editor';
-import { DisabledUI, EditorView } from 'index';
 import { ReferenceImage } from 'scene-view/reference-image';
 import { SceneView } from 'scene-view/scene-view';
 

@@ -35,7 +35,8 @@ export class EditorView extends Widget {
 
 	private createElements() {
 		const leftPanel = this.appendChild(document.createElement(Panel.tagName) as Panel);
-		leftPanel.classList.add('left', 'small');
+		leftPanel.setSide('left');
+		leftPanel.classList.add('small');
 		this.panels.push(leftPanel);
 
 		const content = this.appendChild(document.createElement('div'));
@@ -51,7 +52,8 @@ export class EditorView extends Widget {
 		content.appendChild(this.gameContainer);
 
 		const rightPanel = this.appendChild(document.createElement(Panel.tagName) as Panel);
-		rightPanel.classList.add('right', 'large');
+		rightPanel.setSide('right');
+		rightPanel.classList.add('large');
 		this.panels.push(rightPanel);
 
 		const tree = document.createElement(ObjectTreeInspector.tagName) as ObjectTreeInspector;

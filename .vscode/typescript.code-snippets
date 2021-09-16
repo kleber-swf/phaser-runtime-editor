@@ -7,6 +7,11 @@
 			"export class ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/} extends HTMLElement {",
 			"\tpublic static readonly tagName: string = 'phred-${TM_FILENAME_BASE}';",
 			"",
+			"\tpublic connectedCallback() {",
+			"\t\t$0",
+			"\t}",
+			"}",
+			"",
 			"customElements.define(${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/}.tagName, ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/});",
 			""
 		]

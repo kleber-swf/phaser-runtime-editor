@@ -1,4 +1,4 @@
-import { Action } from 'index';
+import { Action } from 'core/action-handler';
 import './action-button.scss';
 
 export class ActionButton extends HTMLElement {

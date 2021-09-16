@@ -1,5 +1,5 @@
 import { Editor } from 'core/editor';
-import { PreferenceKey } from 'index';
+import { PreferenceKey } from 'core/preferences';
 
 export class ReferenceImage extends Phaser.Group {
 	constructor(game: Phaser.Game, image: PIXI.Sprite) {
