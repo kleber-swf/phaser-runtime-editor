@@ -80,12 +80,12 @@ export class ObjectTreeInspector extends Inspector {
 
 	private _lastSelectedModel: ObjectMapItemModel;
 
-	public selectObject(obj: PIXI.DisplayObject) {
+	public selectObject(obj: PIXI.DisplayObject, from: DataOrigin) {
 		this._lastSelectedModel?.node.clearSelection();
 		this._lastSelectedModel = null;
 		if (!obj) return;
 		this._lastSelectedModel = this.model.getById(obj.__instanceId);
-		this._lastSelectedModel.node.select();
+		this._lastSelectedModel.node.select(from !== DataOrigin.INSPECTOR);
 		this.expandParents(this._lastSelectedModel.parent);
 	}
 

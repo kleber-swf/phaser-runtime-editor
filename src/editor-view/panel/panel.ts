@@ -1,5 +1,6 @@
 import { Inspector } from 'editor-view/inspector/inspector';
 import { Widget } from 'editor-view/widget/widget';
+import { DataOrigin } from 'index';
 import { PanelSide } from './panel-side';
 import './panel.scss';
 import { ResizeHandle } from './resize-handle/resize-handle';
@@ -20,15 +21,14 @@ export class Panel extends Widget {
 		this.inspectors.push(inspector);
 	}
 
-	public selectObject(obj: PIXI.DisplayObject) {
-		this.inspectors.forEach(p => p.selectObject(obj));
+	public selectObject(obj: PIXI.DisplayObject, from: DataOrigin) {
+		this.inspectors.forEach(p => p.selectObject(obj, from));
 	}
 
 	public init(game: Phaser.Game, root: Container) {
 		const handle = document.createElement(ResizeHandle.tagName) as ResizeHandle;
 		handle.init(this, this._side);
 		this.appendChild(handle);
-		
 		this.inspectors.forEach(inspector => inspector.init(game, root));
 	}
 

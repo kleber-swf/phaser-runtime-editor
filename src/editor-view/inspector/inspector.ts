@@ -1,4 +1,5 @@
 import { Widget } from 'editor-view/widget/widget';
+import { DataOrigin } from 'index';
 import './inspector.scss';
 
 export abstract class Inspector extends Widget {
@@ -22,5 +23,5 @@ export abstract class Inspector extends Widget {
 	public enable() { }
 	public disable() { }
 
-	public abstract selectObject(obj: PIXI.DisplayObject): void;
+	public abstract selectObject(obj: PIXI.DisplayObject, from: DataOrigin): void;
 }

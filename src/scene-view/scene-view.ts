@@ -40,6 +40,8 @@ export class SceneView extends Phaser.Group {
 		this.selection = new Selection(game);
 		this.addChild(this.selection);
 
+		game.scale.onSizeChange.add(() => this.selectObject(Editor.data.selectedObject, false));
+
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged.bind(this));
 		Editor.data.onSelectedObjectChanged.add(this.onObjectSelected.bind(this));
 	}

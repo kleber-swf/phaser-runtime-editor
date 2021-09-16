@@ -54,9 +54,9 @@ export class TreeNode extends HTMLElement {
 
 	private onClick() { if (this.onNodeSelect) this.onNodeSelect(this); }
 
-	public select() {
+	public select(focus: boolean) {
 		this.classList.add(SELECTED_CLASS);
-		this.collapseIcon.scrollIntoView();
+		if (focus) this.collapseIcon.scrollIntoView();
 	}
 
 	public clearSelection() { this.classList.remove(SELECTED_CLASS); }

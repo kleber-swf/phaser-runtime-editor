@@ -97,8 +97,8 @@ export class EditorView extends Widget {
 		this.gameParentElement = null;
 	}
 
-	public selectObject(_: DataOrigin, obj: PIXI.DisplayObject) {
-		this.panels.forEach(panel => panel.selectObject(obj));
+	public selectObject(from: DataOrigin, obj: PIXI.DisplayObject) {
+		this.panels.forEach(panel => panel.selectObject(obj, from));
 	}
 }
 
