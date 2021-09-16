@@ -8,8 +8,7 @@ import { ReferenceImagePanel } from './reference-image/reference-image-panel';
 export class ActionsToolbar extends Widget {
 	public static readonly tagName: string = 'phred-actions-toolbar';
 
-	public connectedCallback() {
-		super.connectedCallback();
+	public init() {
 		this.createButton(Actions.TOGGLE_ENABLED);
 		this.createSeparator();
 		this.createButton(Actions.TOGGLE_SNAP);
@@ -21,8 +20,14 @@ export class ActionsToolbar extends Widget {
 
 		if (!Editor.referenceImage) return;
 		this.createSeparator();
-		this.appendChild(document.createElement(ReferenceImagePanel.tagName));
+
+		const refImage = document.createElement(ReferenceImagePanel.tagName) as ReferenceImagePanel;
+		this.appendChild(refImage);
+		refImage.init();
 	}
+
+	public enable() { }
+	public disable() { }
 
 	private createButton(actionId: string) {
 		const action = Editor.actions.getAction(actionId);

@@ -43,6 +43,7 @@ export class EditorView extends Widget {
 
 		this.actions = document.createElement(ActionsToolbar.tagName) as ActionsToolbar;
 		content.appendChild(this.actions);
+		this.actions.init();
 
 		this.gameContainer = document.createElement('div');
 		this.gameContainer.id = 'phred-game-container';
@@ -67,6 +68,7 @@ export class EditorView extends Widget {
 		this._enabled = true;
 		if (!this._initialized) this.init(game, root);
 
+		this.panels.forEach(panel => panel.enable());
 		this.addGameToContainer(game);
 		document.body.appendChild(this);
 	}
@@ -75,6 +77,7 @@ export class EditorView extends Widget {
 		if (!this._enabled) return;
 		this._enabled = false;
 		this.returnGameToItsParent();
+		this.panels.forEach(panel => panel.enable());
 		this.parentElement.removeChild(this);
 	}
 

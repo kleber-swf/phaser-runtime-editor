@@ -16,7 +16,15 @@ export class Panel extends Widget {
 	}
 
 	public init(game: Phaser.Game, root: Container) {
-		this.inspectors.forEach(inspector => inspector.setup(game, root));
+		this.inspectors.forEach(inspector => inspector.init(game, root));
+	}
+
+	public enable() {
+		this.inspectors.forEach(inspector => inspector.enable());
+	}
+
+	public disable() {
+		this.inspectors.forEach(inspector => inspector.disable());
 	}
 }
 

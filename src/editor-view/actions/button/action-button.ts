@@ -5,11 +5,8 @@ export class ActionButton extends HTMLElement {
 	public static readonly tagName: string = 'phed-action-button';
 	private action: Action;
 
-	public connectedCallback() {
-		this.classList.add('button');
-	}
-
 	public setAction(action: Action) {
+		this.classList.add('button');
 		this.action = action;
 		if (action.icon) {
 			const icon = this.appendChild(document.createElement('i'));

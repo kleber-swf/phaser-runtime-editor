@@ -9,8 +9,8 @@ export class ObjectTreeInspector extends Inspector {
 	public static readonly tagName: string = 'phed-object-tree-inspector';
 	private readonly model: ObjectTreeModel = new ObjectTreeModel();
 
-	public setup(game: Phaser.Game, root: Container) {
-		super.setup(game, root);
+	public init(game: Phaser.Game, root: Container) {
+		super.init(game, root);
 		this.title = 'Objects';
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 		this.setRoot(root);
