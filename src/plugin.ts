@@ -4,14 +4,10 @@ import Phaser from 'phaser-ce';
 
 export class Plugin extends Phaser.Plugin {
 	private readonly editorWindow: EditorWindow;
-
-	private root: Container;
-	private refImage?: PIXI.Sprite;
+	private _disableVisibilityChangeMemento: boolean;
 
 	public constructor(game: Phaser.Game, root?: Container, refImage?: PIXI.Sprite) {
 		super(game, game.plugins);
-		this.root = root;
-		this.refImage = refImage
 		this.insertHead();
 
 		this.editorWindow = new EditorWindow(game, root, refImage);
@@ -43,11 +39,14 @@ export class Plugin extends Phaser.Plugin {
 
 	private onEditorShow() {
 		(this as any).postUpdate = this._postUpdate.bind(this);
+		this._disableVisibilityChangeMemento = this.game.stage.disableVisibilityChange;
+		this.game.stage.disableVisibilityChange = true;
 		this.hasPostUpdate = true;
 	}
 
 	private onEditorHide() {
 		this.hasPostUpdate = false;
+		this.game.stage.disableVisibilityChange = this._disableVisibilityChangeMemento;
 		(this as any).postUpdate = null;
 	}
 
