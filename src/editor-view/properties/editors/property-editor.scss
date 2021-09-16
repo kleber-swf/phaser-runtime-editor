@@ -47,8 +47,8 @@
 			opacity: 1;
 		}
 
-		&:active {
-			margin-top: 1px;
+		&:active > i {
+			transform: translateY(1px);
 		}
 
 		i {
