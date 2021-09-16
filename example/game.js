@@ -25,7 +25,7 @@ function preload() {
 
 function create() {
 	const refImage = new Phaser.Image(game, 0, 0, 'ref');
-	game.plugins.add(new Phaser.Plugin.RuntimeEditor(game, game.world, refImage));
+	const plugin = game.plugins.add(new Phaser.Plugin.RuntimeEditor(game, game.world, refImage));
 
 	const grid = new Phaser.Graphics(game);
 
@@ -46,7 +46,7 @@ function create() {
 	parent.position.set(100, 300)
 
 	// 0   0
-	let child = el(DIST * 0, DIST * 0, SIZE, SIZE, parent, 'child-a0-p0');
+	let child = el(DIST * 0, DIST * 0, SIZE, SIZE, parent, 'child-a0-p0 child-a0-p0 child-a0-p0 child-a0-p0');
 
 	// 0   .5
 	child = el(DIST * 1, DIST * 0, SIZE, SIZE, parent, 'child-a0-p.5');
@@ -117,6 +117,7 @@ function create() {
 	// 	.lineStyle(4, 0xFFFFFF, 1)
 	// 	.beginFill(0, 0)
 	// 	.drawRect(0, 0, game.width, game.height);
+	plugin.show();
 }
 
 function el(x, y, w, h, parent, name) {

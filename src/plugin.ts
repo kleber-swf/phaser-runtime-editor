@@ -37,6 +37,10 @@ export class Plugin extends Phaser.Plugin {
 		link.href = 'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap';
 	}
 
+	public show() {
+		this.editorWindow.show();
+	}
+
 	private onEditorShow() {
 		(this as any).postUpdate = this._postUpdate.bind(this);
 		this._disableVisibilityChangeMemento = this.game.stage.disableVisibilityChange;
