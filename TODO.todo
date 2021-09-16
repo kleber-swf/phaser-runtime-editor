@@ -44,10 +44,6 @@ BASIC:
 		[x] vertical scroll
 		[x] horizontal scroll
 		[x] scroll to selection
-
-	General Features:
-		[x] editor layout
-		[x] test inside a real game
 		
 	Actions:
 		[x] actions handler
@@ -62,6 +58,13 @@ BASIC:
 			[x] navigation (arrows)
 			[x] undo
 		[ ] find another shortcut schema
+
+	General Features:
+		[x] editor layout
+		[x] test inside a real game
+		[ ] config
+			[ ] getter for root container and ref image
+			[ ] onShow/onHide callbacks
 
 	Refactors:
 		[x] create a centralized class for all the singletons
@@ -106,6 +109,7 @@ ADVANCED:
 				[ ] fillAlpha
 				[ ] fillColor
 				[ ] etc
+			[ ] Phaser.BitmapFont
 			[ ] show them separated from the basic properties
 		[ ] optimization: shold I create a object pool for PropertyEditors?
 

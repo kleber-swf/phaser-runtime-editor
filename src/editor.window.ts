@@ -47,7 +47,7 @@ export class EditorWindow {
 		const scene = this.sceneView = new SceneView(this.game);
 		this.setupActions(scene);
 
-		if (this.refImage) this.setupRefImage(this.refImage);
+		if (this.refImage) this.setupRefImage(this.refImage, this.root);
 
 		this.editorView = document.createElement(EditorView.tagName) as EditorView;
 		Editor.actions.addContainer('body', document.body);
@@ -163,7 +163,15 @@ export class EditorWindow {
 				id: Actions.TOGGLE_GIZMOS,
 				toggle: true,
 				hold: true,
-				shortcut: 'shift+Shift',
+				shortcut: 'ctrl+shift+Shift',
+				command: () => prefs.gizmos = !prefs.gizmos,
+				state: () => prefs.gizmos,
+			},
+			{
+				id: Actions.TOGGLE_GIZMOS,
+				toggle: true,
+				hold: true,
+				shortcut: 'ctrl+shift+Control',
 				command: () => prefs.gizmos = !prefs.gizmos,
 				state: () => prefs.gizmos,
 			},
@@ -193,8 +201,8 @@ export class EditorWindow {
 		);
 	}
 
-	private setupRefImage(refImage: PIXI.Sprite) {
-		Editor.referenceImage = new ReferenceImage(this.game, refImage);
+	private setupRefImage(refImage: PIXI.Sprite, root: Container) {
+		Editor.referenceImage = new ReferenceImage(this.game, refImage, root);
 		Editor.actions.add({
 			id: Actions.TOGGLE_REF_IMAGE,
 			label: 'reference',

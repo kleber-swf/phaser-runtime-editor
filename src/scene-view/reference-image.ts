@@ -2,13 +2,16 @@ import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
 
 export class ReferenceImage extends Phaser.Group {
-	constructor(game: Phaser.Game, image: PIXI.Sprite) {
+	private _parent: PIXI.DisplayObjectContainer;
+
+	constructor(game: Phaser.Game, image: PIXI.Sprite, root: Container) {
 		super(game, null, '__ref_image');
 		this.__skip = true;
+		image.__skip = true;
 		this.addChild(image);
-		image.width = this.game.width;
-		image.height = this.game.height;
 		this.alpha = 0.3;
+
+		this._parent = root;
 
 		Editor.prefs.onPreferenceChanged.add(this.onPreferenceChanged, this);
 		this.onPreferenceChanged('referenceImage', Editor.prefs.referenceImage);
@@ -21,7 +24,7 @@ export class ReferenceImage extends Phaser.Group {
 	}
 
 	public show() {
-		if (!this.parent) this.game.stage.add(this);
+		if (!this.parent) this._parent.addChild(this);
 	}
 
 	public hide() {
