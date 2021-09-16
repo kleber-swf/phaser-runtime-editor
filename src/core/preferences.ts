@@ -19,6 +19,15 @@ export class Preferences {
 		this.notifyListeners('gizmos', value);
 	}
 
+	private _guides = false;
+
+	public get guides() { return this._guides; }
+
+	public set guides(value: boolean) {
+		this._guides = value;
+		this.notifyListeners('guides', value);
+	}
+
 	private _referenceImage = false;
 
 	public get referenceImage() { return this._referenceImage; }

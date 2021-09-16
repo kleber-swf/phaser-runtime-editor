@@ -7,6 +7,8 @@ import { ScaleHandler } from './scale/scale.handler';
 
 export class Selection extends Phaser.Group {
 	private _selectedObject: PIXI.DisplayObject = null;
+	private _showGuides = false;
+
 	public get hasObject() { return !!this._selectedObject; }
 
 	private readonly view: Phaser.Graphics;
@@ -27,19 +29,24 @@ export class Selection extends Phaser.Group {
 		prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
 		this.onPreferencesChanged('gizmos', prefs.gizmos);
 		this.onPreferencesChanged('snap', prefs.snap);
+		this.onPreferencesChanged('guides', prefs.guides);
 
 		this.select(null);
 	}
 
 	private onPreferencesChanged(key: PreferenceKey, value: any) {
-		if (key === 'gizmos') {
-			this.alpha = value ? 1 : 0;
-			return;
-		}
-		if (key === 'snap') {
-			this.moveFn = value ? this.snapMove : this.freeMove;
-			if (this._selectedObject) this.move(0, 0);
-			return;
+		switch (key) {
+			case 'gizmos':
+				this.alpha = value ? 1 : 0;
+				return;
+			case 'snap':
+				this.moveFn = value ? this.snapMove : this.freeMove;
+				if (this._selectedObject) this.move(0, 0);
+				return;
+			case 'guides':
+				this._showGuides = value === true;
+				if (this._selectedObject) this.move(0, 0);
+				return;
 		}
 	}
 
@@ -54,6 +61,7 @@ export class Selection extends Phaser.Group {
 		this.view.clear();
 		if (!this._selectedObject) return;
 		const bounds = this._selectedObject.getBounds();
+		if (this._showGuides) this.drawGuides(bounds);
 		this.drawBorder(bounds);
 		this.drawPivot(this.scaleHandler.scaling
 			? this.scaleHandler.scaler.originalPivot
@@ -62,6 +70,25 @@ export class Selection extends Phaser.Group {
 		this.scaleHandler.redraw(bounds);
 		this.position.set(bounds.x, bounds.y);
 		this.rotation = this._selectedObject.rotation;
+	}
+
+	private drawGuides(bounds: PIXI.Rectangle) {
+		const x = this.game.width * 2;
+		const y = this.game.height * 2;
+		this.view
+			.lineStyle(1, 0xFFFFFF, 0.8)
+			.moveTo(-x, 0)
+			.lineTo(x, 0)
+
+			.moveTo(-x, bounds.height)
+			.lineTo(x, bounds.height)
+
+			.moveTo(0, -y)
+			.lineTo(0, y)
+
+			.moveTo(bounds.width, -y)
+			.lineTo(bounds.width, y);
+
 	}
 
 	private drawBorder(bounds: PIXI.Rectangle) {

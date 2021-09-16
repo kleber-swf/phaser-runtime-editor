@@ -12,6 +12,8 @@ export class ActionsToolbar extends Widget {
 		this.createButton(Actions.TOGGLE_ENABLED);
 		this.createSeparator();
 		this.createButton(Actions.TOGGLE_SNAP);
+		this.createButton(Actions.TOGGLE_GUIDES);
+		this.createSeparator();
 		this.createButton(Actions.PRINT_OBJECT);
 		this.createSeparator();
 		this.createButton(Actions.UNDO);

@@ -10,6 +10,7 @@ export class Actions {
 	public static readonly MOVE_RIGHT_10 = 'MOVE_RIGHT_10';
 	public static readonly TOGGLE_SNAP = 'TOGGLE_SNAP';
 	public static readonly TOGGLE_GIZMOS = 'TOGGLE_GIZMOS';
+	public static readonly TOGGLE_GUIDES = 'TOGGLE_GUIDES';
 	public static readonly TOGGLE_REF_IMAGE = 'TOGGLE_REF_IMAGE';
 	public static readonly TOGGLE_ENABLED = 'TOGGLE_ENABLED';
 	public static readonly PRINT_OBJECT = 'PRINT_OBJECT';

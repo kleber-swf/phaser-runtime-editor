@@ -154,7 +154,7 @@ export class EditorWindow {
 			{
 				id: Actions.TOGGLE_SNAP,
 				label: 'snap',
-				icon: 'fa-compress',
+				icon: 'fa-border-all',
 				toggle: true,
 				command: () => prefs.snap = !prefs.snap,
 				state: () => prefs.snap,
@@ -174,6 +174,14 @@ export class EditorWindow {
 				shortcut: 'ctrl+shift+Control',
 				command: () => prefs.gizmos = !prefs.gizmos,
 				state: () => prefs.gizmos,
+			},
+			{
+				id: Actions.TOGGLE_GUIDES,
+				toggle: true,
+				label:'guides',
+				icon: 'fa-compress',
+				command: () => prefs.guides = !prefs.guides,
+				state: () => prefs.guides,
 			},
 			{
 				id: Actions.TOGGLE_ENABLED,

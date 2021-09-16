@@ -57,6 +57,7 @@ BASIC:
 			[x] toggle gizmos
 			[x] navigation (arrows)
 			[x] undo
+		[x] toggle guides
 		[ ] find another shortcut schema
 
 	General Features:
