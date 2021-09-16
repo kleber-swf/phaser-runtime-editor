@@ -27,6 +27,7 @@ export class ActionHandler {
 	public enable() {
 		Object.keys(this.containers).forEach(cid => {
 			const container = this.containers[cid];
+			if (!this.actions[cid]) return;
 			container.onkeydown = (e: KeyboardEvent) => this.onKeyDown(e, this.actions[cid]);
 			container.onkeyup = this.onKeyUp.bind(this);
 		});
