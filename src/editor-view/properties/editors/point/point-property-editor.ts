@@ -4,7 +4,7 @@ import { PropertyEditor } from '../property-editor';
 import './point-property-editor.scss';
 
 export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
-	public static readonly tagName: string = 'phed-point-property-editor';
+	public static readonly tagName: string = 'phred-point-property-editor';
 
 	private xinput: NumberPropertyEditor;
 	private yinput: NumberPropertyEditor;

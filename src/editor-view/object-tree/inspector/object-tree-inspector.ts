@@ -6,7 +6,7 @@ import { TreeNode } from '../tree-node/tree-node';
 import './object-tree-inspector.scss';
 
 export class ObjectTreeInspector extends Inspector {
-	public static readonly tagName: string = 'phed-object-tree-inspector';
+	public static readonly tagName: string = 'phred-object-tree-inspector';
 	private readonly model: ObjectTreeModel = new ObjectTreeModel();
 
 	public init(game: Phaser.Game, root: Container) {

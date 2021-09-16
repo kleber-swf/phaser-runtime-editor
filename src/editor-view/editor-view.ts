@@ -55,7 +55,7 @@ export class EditorView extends Widget {
 		this.panels.push(rightPanel);
 
 		const tree = document.createElement(ObjectTreeInspector.tagName) as ObjectTreeInspector;
-		tree.id = 'phed-object-tree';
+		tree.id = 'phred-object-tree';
 		leftPanel.addInspector(tree);
 
 		const props = document.createElement(PropertiesInspector.tagName) as PropertiesInspector;

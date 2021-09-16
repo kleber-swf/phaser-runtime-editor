@@ -2,7 +2,7 @@ import { InspectorPropertyModel } from 'data/inspector-data';
 import { PropertyEditor } from '../property-editor';
 
 export class NumberPropertyEditor extends PropertyEditor<number> {
-	public static readonly tagName: string = 'phed-number-property-editor';
+	public static readonly tagName: string = 'phred-number-property-editor';
 
 	private input: HTMLInputElement;
 

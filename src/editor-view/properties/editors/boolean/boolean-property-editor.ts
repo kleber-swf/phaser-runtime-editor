@@ -2,7 +2,7 @@ import { InspectorPropertyModel } from 'data/inspector-data';
 import { PropertyEditor } from '../property-editor';
 
 export class BooleanPropertyEditor extends PropertyEditor<boolean> {
-	public static readonly tagName: string = 'phed-boolean-property-editor';
+	public static readonly tagName: string = 'phred-boolean-property-editor';
 
 	private input: HTMLInputElement;
 

@@ -6,7 +6,7 @@ import { PropertyEditor } from '../editors/property-editor';
 import './properties-inspector.scss';
 
 export class PropertiesInspector extends Inspector {
-	public static readonly tagName: string = 'phed-properties-inspector';
+	public static readonly tagName: string = 'phred-properties-inspector';
 	private editors: Record<string, PropertyEditor<any>> = {};
 
 	public init(game: Phaser.Game, root: Container) {

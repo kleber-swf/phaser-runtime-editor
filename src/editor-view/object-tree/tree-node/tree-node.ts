@@ -6,7 +6,7 @@ const SELECTED_CLASS = 'selected';
 const COLLAPSED_CLASS = 'collapsed';
 
 export class TreeNode extends HTMLElement {
-	public static readonly tagName: string = 'phed-tree-node';
+	public static readonly tagName: string = 'phred-tree-node';
 
 	public model: ObjectMapItemModel;
 	private label: HTMLElement;

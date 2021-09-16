@@ -4,7 +4,7 @@ import { PropertyEditor } from '../property-editor';
 import './rect-property-editor.scss';
 
 export class RectPropertyEditor extends PropertyEditor<PIXI.Rectangle> {
-	public static readonly tagName: string = 'phed-rect-property-editor';
+	public static readonly tagName: string = 'phred-rect-property-editor';
 
 	private xinput: NumberPropertyEditor;
 	private yinput: NumberPropertyEditor;

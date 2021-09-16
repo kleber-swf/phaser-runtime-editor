@@ -5,7 +5,7 @@ import { ActionButton } from '../button/action-button';
 import './reference-image-panel.scss';
 
 export class ReferenceImagePanel extends HTMLElement {
-	public static readonly tagName: string = 'phed-reference-image-panel';
+	public static readonly tagName: string = 'phred-reference-image-panel';
 	private slider: HTMLInputElement;
 
 	public init() {

@@ -2,7 +2,7 @@ import { Action } from 'index';
 import './action-button.scss';
 
 export class ActionButton extends HTMLElement {
-	public static readonly tagName: string = 'phed-action-button';
+	public static readonly tagName: string = 'phred-action-button';
 	private action: Action;
 
 	public setAction(action: Action) {
