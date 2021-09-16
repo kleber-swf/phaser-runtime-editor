@@ -1,4 +1,4 @@
-export type InspectableTypes = 'string' | 'number' | 'boolean' | 'point' | 'default';
+export type InspectableTypes = 'string' | 'number' | 'boolean' | 'point' | 'rect' | 'default';
 
 export interface InspectorPropertyModel {
 	name: string;
@@ -25,25 +25,10 @@ export class InspectorData {
 		});
 	}
 
-	public findEditorFor(value: any, data: InspectorPropertyModel) {
+	public findEditorFor(data: InspectorPropertyModel) {
 		// TODO what abount null / undefined values?
-
-		const editors = this.editors;
-
-		// TODO this should never fail
-		// first, it tries to find based on the type hint
-		if (data.typeHint in editors) return editors[data.typeHint];
-
-
-		// next, it tries to find by its type
-		const type = typeof value;
-		if (type !== 'object' && type in editors)
-			return editors[type];
-
-		// next, since it's an object, it tries to find by its contructor name
-		const ctor = value.contructor?.name;
-		if (ctor && ctor in editors) return editors[ctor];
-
-		return editors.default;
+		return (data.typeHint in this.editors)
+			? this.editors[data.typeHint]
+			: this.editors.default;
 	}
 }

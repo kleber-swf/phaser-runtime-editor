@@ -41,12 +41,14 @@ export class PropertiesInspector extends Inspector {
 		this.content.style.visibility = 'visible';
 
 		Editor.inspectorData.inspectableProperties
-			.forEach(prop => {
-				if (!(prop.name in obj)) return;
-				const elementId = Editor.inspectorData.findEditorFor(obj[prop.name], prop);
-				const editor = this.createPropertyEditor(prop, obj[prop.name], elementId);
-				this.editors[prop.name] = editor;
-			});
+			.forEach(prop => this.createEditorForProperty(obj, prop));
+	}
+
+	private createEditorForProperty(obj: PIXI.DisplayObject, prop: InspectorPropertyModel) {
+		if (!(prop.name in obj)) return;
+		const elementId = Editor.inspectorData.findEditorFor(prop);
+		const editor = this.createPropertyEditor(prop, obj[prop.name], elementId);
+		this.editors[prop.name] = editor;
 	}
 }
 

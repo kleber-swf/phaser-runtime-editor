@@ -103,6 +103,7 @@ export class Selection extends Phaser.Group {
 		this.moveFn(pos, scale, deltaX, deltaY);
 		this.redraw();
 		Editor.data.propertyChanged('position', pos, DataOrigin.SCENE);
+		Editor.data.propertyChanged('_bounds', (this._selectedObject as any)._bounds, DataOrigin.SCENE);
 	}
 
 	private moveFn: (pos: PIXI.Point, scale: PIXI.Point, deltaX: number, deltaY: number) => void;

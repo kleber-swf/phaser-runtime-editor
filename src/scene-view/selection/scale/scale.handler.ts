@@ -79,6 +79,7 @@ export class ScaleHandler extends Phaser.Group {
 		const pos = this.scaler.getObjectStopPosition();
 		Editor.data.propertyChanged('scale', this.selectedObject.scale, DataOrigin.SCENE);
 		Editor.data.propertyChanged('position', pos, DataOrigin.SCENE);
+		Editor.data.propertyChanged('_bounds', (this.selectedObject as any)._bounds, DataOrigin.SCENE);
 
 		return true;
 	}

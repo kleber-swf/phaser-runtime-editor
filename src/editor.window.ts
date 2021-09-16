@@ -4,6 +4,7 @@ import { DataOrigin } from 'data/editor-data';
 import { BooleanPropertyEditor } from 'editor-view/properties/editors/boolean/boolean-property-editor';
 import { NumberPropertyEditor } from 'editor-view/properties/editors/number/number-property-editor';
 import { PointPropertyEditor } from 'editor-view/properties/editors/point/point-property-editor';
+import { RectPropertyEditor } from 'editor-view/properties/editors/rect/rect-property-editor';
 import { StringPropertyEditor } from 'editor-view/properties/editors/string/string-property-editor';
 import { DisabledUI, EditorView } from 'index';
 import { ReferenceImage } from 'scene-view/reference-image';
@@ -79,6 +80,7 @@ export class EditorWindow {
 
 			// PIXI/Phaser types
 			point: PointPropertyEditor.tagName,
+			rect: RectPropertyEditor.tagName,
 
 			// default
 			default: StringPropertyEditor.tagName,
@@ -94,6 +96,7 @@ export class EditorWindow {
 			{ name: 'alpha', typeHint: 'number', data: { min: 0, max: 1, step: 0.1 } },
 			{ name: 'visible', typeHint: 'boolean' },
 			{ name: 'angle', typeHint: 'number', data: { readonly: true } },
+			{ name: '_bounds', label: 'bounds', typeHint: 'rect', data: { readonly: true } },
 		]);
 	}
 

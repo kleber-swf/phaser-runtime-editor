@@ -139,6 +139,7 @@ export class SceneView extends Phaser.Group {
 		obj.updateTransform();
 		this.selection.redraw();
 		Editor.data.propertyChanged('position', obj.position.clone(), DataOrigin.SCENE);
+		Editor.data.propertyChanged('_bounds', (obj as any)._bounds, DataOrigin.SCENE);
 	}
 
 	public update() {

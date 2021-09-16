@@ -31,7 +31,7 @@ BASIC:
 			[x] Point
 		[x] look for basic properties to inspect
 		[x] copy property value to clipboard
-		[ ] bounds
+		[x] bounds
 
 	Object Tree:
 		[x] panel
