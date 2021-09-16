@@ -93,7 +93,7 @@ ADVANCED:
 			[ ] object
 			[ ] array
 		[ ] custom property editors for PIXI/Phaser common types
-			[ ] Rectangle
+			[x] Rectangle
 			[ ] Matrix
 			[ ] color
 			[ ] enumerators
@@ -118,14 +118,14 @@ ADVANCED:
 		[ ] ignore bitmap text letters
 
 	UI:
-		[ ] show panel scroll
+		[x] show panel scroll
 		[ ] hide panels
-		[ ] resize panels
+		[x] resize panels
 		[ ] status bar
 		[ ] ruler
 
 	General Features:
-		[ ] copy selected properties to clipboard
+		[x] copy selected properties to clipboard
 		[ ] show grid
 		[ ] help: keyboard shorcuts
 		[ ] redo
