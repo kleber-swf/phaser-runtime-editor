@@ -8,7 +8,7 @@ export class ReferenceImagePanel extends HTMLElement {
 	public static readonly tagName: string = 'phed-reference-image-panel';
 	private slider: HTMLInputElement;
 
-	public connectedCallback() {
+	public init() {
 		const btn = document.createElement(ActionButton.tagName) as ActionButton;
 		btn.setAction(Editor.actions.getAction(Actions.TOGGLE_REF_IMAGE));
 		this.appendChild(btn);

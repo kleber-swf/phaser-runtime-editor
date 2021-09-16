@@ -1,7 +1,7 @@
 const game = new Phaser.Game({
 	width: 1920,
 	height: 2000,
-	renderer: Phaser.AUTO,
+	renderer: Phaser.CANVAS,
 	parent: 'game',
 	scaleMode: Phaser.ScaleManager.SHOW_ALL,
 	state: { preload, create, update },

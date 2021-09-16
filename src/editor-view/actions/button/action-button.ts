@@ -6,6 +6,7 @@ export class ActionButton extends HTMLElement {
 	private action: Action;
 
 	public setAction(action: Action) {
+		this.classList.add('button');
 		this.action = action;
 		if (action.icon) {
 			const icon = this.appendChild(document.createElement('i'));

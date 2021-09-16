@@ -71,7 +71,6 @@ export class TreeNode extends HTMLElement {
 	}
 
 	public expand() {
-		console.trace('EXPAND');
 		this.model.collapsed = false;
 		this.classList.remove(COLLAPSED_CLASS);
 	}

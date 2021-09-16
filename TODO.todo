@@ -3,6 +3,8 @@ BASIC:
 		[x] natural parent selection
 		[x] global scale
 		[x] skip invisible objects
+		[ ] when coming from editor ui, do not change selection on click
+		[ ] check the bug with bounds when selecting
 		
 	Translation:
 		[x] translation
@@ -29,6 +31,7 @@ BASIC:
 			[x] Point
 		[x] look for basic properties to inspect
 		[x] copy property value to clipboard
+		[ ] bounds
 
 	Object Tree:
 		[x] panel
@@ -40,19 +43,27 @@ BASIC:
 		[x] expand / collapse sub-trees
 			[x] automatic expand when selecting
 			[x] expand / collapse all with alt key
+		[x] vertical scroll
+		[ ] horizontal scroll
+		[ ] scroll to selection
 
 	General Features:
 		[x] editor layout
-		[ ] test inside a real game
+		[x] test inside a real game
 		
 	Actions:
 		[x] actions handler
 		[x] undo
 		[x] toggle gizmos
-		[ ] toggle enabled
+		[x] toggle enabled
 		[x] reference image
 			[x] toggle ref image
 			[x] set alpha
+		[x] global shortcuts
+			[x] toggle gizmos
+			[x] navigation (arrows)
+			[x] undo
+		[ ] find another shortcut to toggle gizmos
 
 	Refactors:
 		[x] create a centralized class for all the singletons
@@ -62,6 +73,8 @@ BASIC:
 ADVANCED:
 	Translation:
 		[x] snapping (1px)
+			[ ] snap the current position on enabling snap
+		[ ] lock axis
 		[x] keyboard shortcuts
 			[x] use arrows to move 1px
 			[x] use shift+arrows to move 10px
@@ -103,14 +116,24 @@ ADVANCED:
 		[ ] update tree content
 			[ ] update with a button
 			[ ] update automatically
+		[ ] filter
+		[ ] ignore bitmap text letters
+
+	UI:
+		[ ] show panel scroll
+		[ ] hide panels
+		[ ] resize panels
+		[ ] status bar
+		[ ] ruler
 
 	General Features:
 		[ ] copy selected properties to clipboard
 		[ ] show grid
 		[ ] help: keyboard shorcuts
-		[ ] status bar
-		[ ] hide panels
 		[ ] redo
+		[ ] zoom
+		[x] print object
+		[ ] enabling/disabling actions
 
 	Plugins Support:
 		[ ] add plugin

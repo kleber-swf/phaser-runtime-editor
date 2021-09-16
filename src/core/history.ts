@@ -40,7 +40,7 @@ export class History {
 	}
 
 	private apply(entry: HistoryEntry) {
-		this.data.selectObject(entry.obj, DataOrigin.HISTORY);
+		this.data.selectObject(entry.obj, DataOrigin.ACTION);
 
 		const obj = entry.obj;
 		// TODO make this recursive (if necessary)
@@ -54,7 +54,7 @@ export class History {
 					});
 				} else
 					obj[pk] = prop;
-				this.data.propertyChanged(pk, obj[pk], DataOrigin.HISTORY);
+				this.data.propertyChanged(pk, obj[pk], DataOrigin.ACTION);
 			});
 
 		obj.updateTransform();

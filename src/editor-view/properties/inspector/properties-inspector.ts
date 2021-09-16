@@ -9,8 +9,8 @@ export class PropertiesInspector extends Inspector {
 	public static readonly tagName: string = 'phed-properties-inspector';
 	private editors: Record<string, PropertyEditor<any>> = {};
 
-	public connectedCallback() {
-		super.connectedCallback();
+	public init(game: Phaser.Game, root: Container) {
+		super.init(game, root);
 		this.title = 'Properties';
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 	}
