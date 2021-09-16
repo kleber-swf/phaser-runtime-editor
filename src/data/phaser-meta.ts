@@ -28,7 +28,7 @@ export class PhaserMeta {
 		Object.keys(objects).forEach(k => this.sceneObjects[k] = objects[k]);
 	}
 
-	private readonly defaultType: PhaserObjectType = { name: 'default', icon: 'fa-question' };
+	private readonly defaultType: PhaserObjectType = { name: 'Unknown', icon: 'fa-question' };
 
 	public getType(t: number) { return t in this.sceneObjects ? this.sceneObjects[t] : this.defaultType; }
 }

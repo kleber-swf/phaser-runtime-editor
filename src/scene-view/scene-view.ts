@@ -48,11 +48,15 @@ export class SceneView extends Phaser.Group {
 
 	public enable(root: Container, parent: Phaser.Stage) {
 		this.root = root;
-		if (this.parent !== parent) parent.addChild(this);
+		if (this.parent === parent) return;
+		parent.addChild(this);
+		this.touchArea.input.enabled = true;
 	}
 
 	public disable() {
-		if (this.parent) this.parent.removeChild(this);
+		if (!this.parent) return;
+		this.parent.removeChild(this);
+		this.touchArea.input.enabled = false;
 	}
 
 	private onPropertyChanged(origin: DataOrigin, property: string, value: any, obj: PIXI.DisplayObject) {

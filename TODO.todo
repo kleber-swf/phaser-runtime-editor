@@ -70,6 +70,11 @@ BASIC:
 	Refactors:
 		[x] create a centralized class for all the singletons
 
+	Adjustments:
+		[ ] size the handles according to the game scale
+		[ ] keep the same size of the titles inside the properties inspector
+		[ ] recreate tree on enable
+
 ======================================================
 
 ADVANCED:

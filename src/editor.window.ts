@@ -59,12 +59,12 @@ export class EditorWindow {
 
 		this.sceneView.enable(this.root, this.game.stage);
 		this.editorView.enable(this.game, this.root);
-		Editor.actions.enable();
+		Editor.enable();
 		if (this.onshow) this.onshow();
 	}
 
 	private hide() {
-		Editor.actions.disable();
+		Editor.disable();
 		this.sceneView.disable();
 		this.editorView.disable();
 
@@ -98,6 +98,8 @@ export class EditorWindow {
 			{ name: 'visible', typeHint: 'boolean' },
 			{ name: 'angle', typeHint: 'number', data: { readonly: true } },
 			{ name: '_bounds', label: 'bounds', typeHint: 'rect', data: { readonly: true } },
+			{ name: 'key', typeHint: 'string' },
+			{ name: 'frameName', label: 'frame', typeHint: 'string' }
 		]);
 	}
 
@@ -178,7 +180,7 @@ export class EditorWindow {
 			{
 				id: Actions.TOGGLE_GUIDES,
 				toggle: true,
-				label:'guides',
+				label: 'guides',
 				icon: 'fa-compress',
 				command: () => prefs.guides = !prefs.guides,
 				state: () => prefs.guides,

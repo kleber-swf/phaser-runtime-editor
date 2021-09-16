@@ -26,6 +26,15 @@ class EditorClass {
 		this.history = new History(this.data);
 		this.prefs = new Preferences();
 	}
+
+	public enable() {
+		this.actions.enable();
+	}
+
+	public disable() {
+		this.actions.enable();
+		if (this.referenceImage) this.prefs.referenceImage = false;
+	}
 }
 
 export const Editor = new EditorClass();
