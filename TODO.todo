@@ -3,8 +3,6 @@ BASIC:
 		[x] natural parent selection
 		[x] global scale
 		[x] skip invisible objects
-		[ ] when coming from editor ui, do not change selection on click
-		[ ] check the bug with bounds when selecting
 		
 	Translation:
 		[x] translation
@@ -63,7 +61,7 @@ BASIC:
 			[x] toggle gizmos
 			[x] navigation (arrows)
 			[x] undo
-		[ ] find another shortcut to toggle gizmos
+		[ ] find another shortcut schema
 
 	Refactors:
 		[x] create a centralized class for all the singletons
@@ -73,7 +71,7 @@ BASIC:
 ADVANCED:
 	Translation:
 		[x] snapping (1px)
-			[ ] snap the current position on enabling snap
+			[x] snap the current position when enabling it
 		[ ] lock axis
 		[x] keyboard shortcuts
 			[x] use arrows to move 1px
@@ -134,6 +132,7 @@ ADVANCED:
 		[ ] zoom
 		[x] print object
 		[ ] enabling/disabling actions
+		[ ] consider a standalone version
 
 	Plugins Support:
 		[ ] add plugin

@@ -27,41 +27,6 @@ function create() {
 	const refImage = new Phaser.Image(game, 0, 0, 'ref');
 	game.plugins.add(new Phaser.Plugin.RuntimeEditor(game, game.world, refImage));
 
-	//  Modify the world and camera bounds
-	// game.world.setBounds(-1000, -1000, 2000, 2000);
-
-	// for (var i = 0; i < 20; i++) {
-	// 	const x = game.world.randomX;
-	// 	const y = game.world.randomY;
-	// 	const s = Math.random() + 1;
-	// 	const sprite = game.add.sprite(x, y, 'mushroom');
-	// 	sprite.name = `m_${x}x${y}`;
-	// 	sprite.scale.set(s, s);
-	// 	const text = game.add.text(0, 0, `${x}x${y}`, {
-	// 		fill: '#ffffff',
-	// 		fontSize: 16,
-	// 		stroke: '#000',
-	// 		strokeThickness: 2,
-	// 	});
-	// 	text.name = `t_${x}x${y}`;
-	// 	sprite.addChild(text);
-	// }
-
-
-	// const child0 = el(20, 20, 1000, 900, game.world, 'child_0');
-
-	// const child00 = el(40, 40, 500, 500, child0, 'child_0-0');
-	// const child01 = el(300, 80, 500, 200, child0, 'child_0-1');
-	// const child02 = el(800, 500, 200, 200, child0, 'child_0-2');
-	// child02.pivot.set(100, 100);
-	// const child03 = el(700, 650, 200, 200, child0, 'child_0-3');
-	// child03.pivot.set(1, 1);
-	// child03.anchor.set(0.5, 0.5);
-
-	// const child000 = el(400, 400, 200, 200, child00, 'child_0-0-0');
-	// const child001 = el(20, 280, 200, 200, child00, 'child_0-0-1');
-	// const child010 = el(200, 20, 160, 160, child01, 'child_0-1-0');
-
 	const grid = new Phaser.Graphics(game);
 
 	grid.lineStyle(1, 0x777777, 0.1);
@@ -106,20 +71,9 @@ function create() {
 	child.anchor.set(0.5, 0.5);
 	child.pivot.set(SIZE, SIZE);
 
-	for (let i = 0; i < 10; i++) {
-		const c = el(0, 0, SIZE, SIZE, child, 'child-a.5-p1');
-		child = c;
-	}
-
-
 	// 1   0
 	child = el(DIST * 0, DIST * 2, SIZE, SIZE, parent, 'child-a1-p0');
 	child.anchor.set(1, 1);
-
-	for (let i = 0; i < 10; i++) {
-		const c = el(0, 0, SIZE, SIZE, child, 'child-a.5-p1');
-		child = c;
-	}
 
 	// 1   .5
 	child = el(DIST * 1, DIST * 2, SIZE, SIZE, parent, 'child-a1-p.5');

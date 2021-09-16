@@ -38,6 +38,7 @@ export class Selection extends Phaser.Group {
 		}
 		if (key === 'snap') {
 			this.moveFn = value ? this.snapMove : this.freeMove;
+			if (this._selectedObject) this.move(0, 0);
 			return;
 		}
 	}
