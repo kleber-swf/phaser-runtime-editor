@@ -10,21 +10,20 @@ phred-resize-handle {
 	background-color: transparent;
 
 	&:active {
-		// 	width: 20px;
 		&.left {
 			right: -($active-handle-margin + $handle-width/2);
 		}
 		&.right {
-			left: -10px;
+			left: -($active-handle-margin + $handle-width/2);
 		}
 
-		& > .line {
+		& > .thumb {
 			margin: 0 $active-handle-margin;
 		}
 	}
 
 	&:hover {
-		& > .line {
+		& > .thumb {
 			background-color: $primary-color;
 			transition: background-color 200ms 500ms;
 		}
@@ -38,7 +37,7 @@ phred-resize-handle {
 		left: -$handle-width/2;
 	}
 
-	& > .line {
+	& > .thumb {
 		width: $handle-width;
 		height: 100%;
 		background-color: transparent;

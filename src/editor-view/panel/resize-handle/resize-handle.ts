@@ -1,14 +1,17 @@
+import { Editor } from 'core/editor';
 import { PanelSide } from 'types';
 import './resize-handle.scss';
 
 export class ResizeHandle extends HTMLElement {
 	public static readonly tagName: string = 'phred-resize-handle';
 	private panel: HTMLElement;
+	private side: PanelSide;
 
 	public init(panel: HTMLElement, side: PanelSide) {
-		const line = document.createElement('div');
-		line.classList.add('line');
-		this.appendChild(line);
+		this.side = side;
+		const thumb = document.createElement('div');
+		thumb.classList.add('thumb');
+		this.appendChild(thumb);
 
 		this.panel = panel;
 		this.classList.add(side);
@@ -47,6 +50,7 @@ export class ResizeHandle extends HTMLElement {
 		e.preventDefault();
 		window.removeEventListener('mousemove', this._resize);
 		window.removeEventListener('mouseup', this._stopResize);
+		Editor.prefs.setPanelSize(this.side, this.panel.style.width);
 	}
 }
 

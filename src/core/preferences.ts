@@ -58,8 +58,12 @@ export class Preferences {
 	}
 
 
-	public setPanelSize(side: PanelSide, width: number) { this.save(`panel.${side}`, width); }
-	public getPanelSize(side: PanelSide): number { return this.load(`panel.${side}`, Number.NaN); }
+	public setPanelSize(side: PanelSide, width: string) { this.save(`panel.${side}`, width); }
+
+	public getPanelSize(side: PanelSide): string {
+		const result = this.load<string>(`panel.${side}`, '');
+		return result === '' ? undefined : result;
+	}
 
 
 	private notifyListeners(field: PreferenceKey, value: any) {

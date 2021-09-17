@@ -1,6 +1,7 @@
+import { Editor } from 'core/editor';
+import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
 import { Widget } from 'editor-view/widget/widget';
-import { DataOrigin } from 'index';
 import { PanelSide } from 'types';
 import './panel.scss';
 import { ResizeHandle } from './resize-handle/resize-handle';
@@ -8,11 +9,10 @@ import { ResizeHandle } from './resize-handle/resize-handle';
 export class Panel extends Widget {
 	public static readonly tagName: string = 'phred-panel';
 	private readonly inspectors: Inspector[] = [];
-
-	private _side: PanelSide;
+	private side: PanelSide;
 
 	public setSide(value: PanelSide) {
-		this._side = value;
+		this.side = value;
 		this.classList.add(value);
 	}
 
@@ -27,9 +27,10 @@ export class Panel extends Widget {
 
 	public init(game: Phaser.Game, root: Container) {
 		const handle = document.createElement(ResizeHandle.tagName) as ResizeHandle;
-		handle.init(this, this._side);
+		handle.init(this, this.side);
 		this.appendChild(handle);
 		this.inspectors.forEach(inspector => inspector.init(game, root));
+		this.style.width = Editor.prefs.getPanelSize(this.side);
 	}
 
 	public enable() {
