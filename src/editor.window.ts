@@ -205,8 +205,11 @@ export class EditorWindow {
 				icon: 'fa-terminal',
 				shortcut: 'ctrl+alt+p',
 				command: () => {
-					if (Editor.data.selectedObject)
+					if (Editor.data.selectedObject) {
 						console.info(Editor.data.selectedObject);
+						console.log(Editor.data.selectedObject.constructor.name);
+						console.log((Editor.data.selectedObject as any).prototype);
+					}
 				}
 			},
 			{

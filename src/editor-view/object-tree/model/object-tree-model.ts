@@ -24,9 +24,10 @@ export class ObjectTreeModel {
 	}
 
 	private createNode(child: PIXI.DisplayObject, map: Record<number, ObjectMapItemModel>, parent: ObjectMapItemModel, level: number) {
-		const type = Editor.meta.getType(child.type);
-		child.__instanceId = IdUtil.genIntId();
+		if (!child.__instanceId) child.__instanceId = IdUtil.genIntId();
+		const type = Editor.meta.getType(child);
 		child.__type = type.name;
+
 		const isLeaf = !(child.children && child.children.length > 0);
 		const node = map[child.__instanceId] = {
 			obj: child,

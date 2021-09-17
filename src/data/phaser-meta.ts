@@ -30,5 +30,11 @@ export class PhaserMeta {
 
 	private readonly defaultType: PhaserObjectType = { name: 'Unknown', icon: 'fa-question' };
 
-	public getType(t: number) { return t in this.sceneObjects ? this.sceneObjects[t] : this.defaultType; }
+	public getType(obj: PIXI.DisplayObject) {
+		const t = obj.type;
+		const type = t in this.sceneObjects ? this.sceneObjects[t] : this.defaultType;
+		const ctorName = obj.constructor.name;
+		const name = ctorName && ctorName.length > 0 ? ctorName : type.name;
+		return Object.assign({}, type, { name });
+	}
 }
