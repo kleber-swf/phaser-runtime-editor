@@ -50,7 +50,8 @@ export class Preferences {
 	public readonly onPreferenceChanged = new Phaser.Signal();
 
 
-	public constructor() {
+	public constructor(clean: boolean) {
+		if (clean) localStorage.clear();
 		this._snap = this.load('snap', true);
 		this._gizmos = this.load('gizmos', true);
 		this._guides = this.load('guides', false);

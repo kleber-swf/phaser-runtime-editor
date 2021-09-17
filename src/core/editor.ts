@@ -17,14 +17,14 @@ class EditorClass {
 
 	public referenceImage?: ReferenceImage;
 
-	public init() {
+	public init(clearPrefs: boolean) {
 		this.data = new EditorData();
 		this.inspectorData = new InspectorData();
 		this.meta = new PhaserMeta();
 
 		this.actions = new ActionHandler();
 		this.history = new History(this.data);
-		this.prefs = new Preferences();
+		this.prefs = new Preferences(clearPrefs);
 	}
 
 	public enable() {

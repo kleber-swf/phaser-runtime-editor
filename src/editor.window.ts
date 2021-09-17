@@ -21,14 +21,16 @@ export class EditorWindow {
 	private readonly game: Phaser.Game;
 	private readonly root: Container;
 	private readonly refImage?: PIXI.Sprite;
+	private readonly clearPrefs?: boolean;
 
 	public onshow: () => void;
 	public onhide: () => void;
 
-	constructor(game: Phaser.Game, root: Container, refImage?: PIXI.Sprite) {
+	constructor(game: Phaser.Game, root: Container, refImage?: PIXI.Sprite, clearPrefs?: boolean) {
 		this.game = game;
 		this.root = root ?? game.world;
 		this.refImage = refImage;
+		this.clearPrefs = clearPrefs;
 
 		this.disabledUI = new DisabledUI();
 		this.disabledUI.onclick = this.show.bind(this);
@@ -41,7 +43,7 @@ export class EditorWindow {
 	private init() {
 		this._initialized = true;
 
-		Editor.init();
+		Editor.init(this.clearPrefs);
 		this.setupInspectorData();
 
 		const scene = this.sceneView = new SceneView(this.game);

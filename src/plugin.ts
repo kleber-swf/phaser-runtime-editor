@@ -6,6 +6,7 @@ export interface PluginConfig {
 	root?: Container;
 	refImage?: PIXI.Sprite;
 	pauseGame?: boolean;
+	clearPrefs?: boolean;
 	onShow?: () => void;
 	onHide?: () => void;
 }
@@ -21,7 +22,7 @@ export class Plugin extends Phaser.Plugin {
 		this.insertHead();
 		if (!config) config = {};
 		this.config = config;
-		this.editorWindow = new EditorWindow(game, config.root, config.refImage);
+		this.editorWindow = new EditorWindow(game, config.root, config.refImage, config.clearPrefs);
 		this.editorWindow.onshow = this.onEditorShow.bind(this);
 		this.editorWindow.onhide = this.onEditorHide.bind(this);
 		this.editorWindow.start();
