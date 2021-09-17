@@ -21,24 +21,24 @@ export class PropertiesInspector extends Inspector {
 	}
 
 	private createPropertyEditor(prop: InspectorPropertyModel, value: any, tagName: string) {
-		const editor = this.content.appendChild(document.createElement(tagName)) as PropertyEditor<any>;
+		const editor = this.contentElement.appendChild(document.createElement(tagName)) as PropertyEditor<any>;
 		editor.setContent(prop, value, true);
 		return editor;
 	}
 
 	public selectObject(obj: PIXI.DisplayObject) {
 		// TODO what happen with the instances? Are they garbage collected?
-		const emptyContent = this.content.cloneNode(false);
-		this.replaceChild(emptyContent, this.content);
-		this.content = emptyContent as HTMLElement;
+		const emptyContent = this.contentElement.cloneNode(false);
+		this.replaceChild(emptyContent, this.contentElement);
+		this.contentElement = emptyContent as HTMLElement;
 		this.editors = {};
 
 		if (!obj) {
-			this.content.style.visibility = 'hidden';
+			this.contentElement.style.visibility = 'hidden';
 			return;
 		}
 
-		this.content.style.visibility = 'visible';
+		this.contentElement.style.visibility = 'visible';
 
 		Editor.inspectorData.inspectableProperties
 			.forEach(prop => this.createEditorForProperty(obj, prop));

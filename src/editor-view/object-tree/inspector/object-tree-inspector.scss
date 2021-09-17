@@ -1,5 +1,10 @@
 phred-object-tree-inspector.phred-inspector {
 	overflow: hidden;
+
+	.header {
+		justify-content: space-between;
+	}
+
 	.content {
 		margin: 6px;
 	}

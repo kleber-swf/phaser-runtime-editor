@@ -8,13 +8,19 @@
 	align-items: stretch;
 	overflow: hidden;
 
-	.title {
+	.header {
 		font-size: 12px;
 		font-weight: bold;
 		color: $unfocused-text-color;
 		background-color: rgba(black, 0.2);
-		padding: 6px 8px;
+		padding: 0 8px;
 		text-transform: uppercase;
+		display: flex;
+		align-items: center;
+
+		.title {
+			margin: 6px 0;
+		}
 	}
 
 	.content {

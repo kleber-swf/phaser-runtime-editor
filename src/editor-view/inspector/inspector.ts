@@ -3,21 +3,25 @@ import { DataOrigin } from 'index';
 import './inspector.scss';
 
 export abstract class Inspector extends Widget {
-	private titleElement: HTMLElement;
+	protected headerElement: HTMLElement;
+	protected titleElement: HTMLElement;
+
 	public get title() { return this.titleElement.textContent; }
 	public set title(value: string) { this.titleElement.textContent = value; }
 
-	protected content: HTMLElement;
+	protected contentElement: HTMLElement;
 	protected selectedObject: PIXI.DisplayObject;
 
 	public init(_game: Phaser.Game, _root: Container) {
 		this.classList.add('phred-inspector');
 
-		this.titleElement = this.appendChild(document.createElement('div'));
+		this.headerElement = this.appendChild(document.createElement('div'));
+		this.headerElement.classList.add('header');
+		this.titleElement = this.headerElement.appendChild(document.createElement('div'));
 		this.titleElement.classList.add('title');
 
-		this.content = this.appendChild(document.createElement('div'));
-		this.content.classList.add('content');
+		this.contentElement = this.appendChild(document.createElement('div'));
+		this.contentElement.classList.add('content');
 	}
 
 	public enable() { }
