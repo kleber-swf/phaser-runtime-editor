@@ -2,15 +2,26 @@ import { Editor } from 'core/editor';
 import { EditorWindow } from 'editor.window';
 import Phaser from 'phaser-ce';
 
+export interface PluginConfig {
+	root?: Container;
+	refImage?: PIXI.Sprite;
+	pauseGame?: boolean;
+	onShow?: () => void;
+	onHide?: () => void;
+}
+
 export class Plugin extends Phaser.Plugin {
 	private readonly editorWindow: EditorWindow;
 	private _disableVisibilityChangeMemento: boolean;
+	private config: PluginConfig;
+	private _gameSpeedMemento: number;
 
-	public constructor(game: Phaser.Game, root?: Container, refImage?: PIXI.Sprite) {
+	public constructor(game: Phaser.Game, config?: PluginConfig) {
 		super(game, game.plugins);
 		this.insertHead();
-
-		this.editorWindow = new EditorWindow(game, root, refImage);
+		if (!config) config = {};
+		this.config = config;
+		this.editorWindow = new EditorWindow(game, config.root, config.refImage);
 		this.editorWindow.onshow = this.onEditorShow.bind(this);
 		this.editorWindow.onhide = this.onEditorHide.bind(this);
 		this.editorWindow.start();
@@ -46,12 +57,17 @@ export class Plugin extends Phaser.Plugin {
 		this._disableVisibilityChangeMemento = this.game.stage.disableVisibilityChange;
 		this.game.stage.disableVisibilityChange = true;
 		this.hasPostUpdate = true;
+		this._gameSpeedMemento = this.game.time.slowMotion;
+		if (this.config.pauseGame) this.game.time.slowMotion = Number.POSITIVE_INFINITY
+		if (this.config.onShow) this.config.onShow();
 	}
 
 	private onEditorHide() {
 		this.hasPostUpdate = false;
 		this.game.stage.disableVisibilityChange = this._disableVisibilityChangeMemento;
 		(this as any).postUpdate = null;
+		this.game.time.slowMotion = this._gameSpeedMemento;
+		if (this.config.onHide) this.config.onHide();
 	}
 
 	private _postUpdate() {

@@ -65,10 +65,12 @@ BASIC:
 		[x] test inside a real game
 		[ ] config
 			[ ] getter for root container and ref image
-			[ ] onShow/onHide callbacks
+			[x] onShow/onHide callbacks
+		[ ] save editor state / preferences
 
 	Refactors:
 		[x] create a centralized class for all the singletons
+		[ ] try to use only DOM instead of drawing inside game canvas
 
 	Adjustments:
 		[ ] size the handles according to the game scale
