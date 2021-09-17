@@ -1,7 +1,7 @@
 import { Inspector } from 'editor-view/inspector/inspector';
 import { Widget } from 'editor-view/widget/widget';
 import { DataOrigin } from 'index';
-import { PanelSide } from './panel-side';
+import { PanelSide } from 'types';
 import './panel.scss';
 import { ResizeHandle } from './resize-handle/resize-handle';
 

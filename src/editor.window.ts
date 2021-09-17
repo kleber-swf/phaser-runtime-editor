@@ -163,6 +163,8 @@ export class EditorWindow {
 			},
 			{
 				id: Actions.TOGGLE_GIZMOS,
+				label: 'gizmos',
+				icon: 'fa-vector-square',
 				toggle: true,
 				hold: true,
 				shortcut: 'ctrl+shift+Shift',
@@ -171,6 +173,8 @@ export class EditorWindow {
 			},
 			{
 				id: Actions.TOGGLE_GIZMOS,
+				label: 'gizmos',
+				icon: 'fa-vector-square',
 				toggle: true,
 				hold: true,
 				shortcut: 'ctrl+shift+Control',

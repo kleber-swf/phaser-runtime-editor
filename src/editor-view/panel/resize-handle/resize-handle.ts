@@ -1,4 +1,4 @@
-import { PanelSide } from '../panel-side';
+import { PanelSide } from 'types';
 import './resize-handle.scss';
 
 export class ResizeHandle extends HTMLElement {

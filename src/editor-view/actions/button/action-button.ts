@@ -1,4 +1,6 @@
 import { Action } from 'core/action-handler';
+import { Editor } from 'core/editor';
+import { PreferenceKey } from 'core/preferences';
 import './action-button.scss';
 
 export class ActionButton extends HTMLElement {
@@ -23,6 +25,9 @@ export class ActionButton extends HTMLElement {
 		}
 		this.onclick = this.toggleSelected.bind(this);
 		this.updateState();
+		Editor.prefs.onPreferenceChanged.add((pref: PreferenceKey) => {
+			if (pref === 'gizmos') this.updateState();
+		});
 	}
 
 	private toggleSelected() {

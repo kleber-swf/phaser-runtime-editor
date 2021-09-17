@@ -13,6 +13,7 @@ export class ActionsToolbar extends Widget {
 		this.createSeparator();
 		this.createButton(Actions.TOGGLE_SNAP);
 		this.createButton(Actions.TOGGLE_GUIDES);
+		this.createButton(Actions.TOGGLE_GIZMOS);
 		this.createSeparator();
 		this.createButton(Actions.PRINT_OBJECT);
 		this.createSeparator();
