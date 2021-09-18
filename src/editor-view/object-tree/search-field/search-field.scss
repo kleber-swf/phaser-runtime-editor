@@ -1,15 +1,9 @@
 phred-search-field {
 	position: relative;
-	opacity: 0.3;
+	opacity: 0.8;
 	max-width: 160px;
-	transition: opacity 200ms;
 	margin-left: 12px;
 	box-sizing: border-box;
-
-	&:hover,
-	&:active {
-		opacity: 1;
-	}
 
 	&::before {
 		font-family: 'Font Awesome 5 Free';

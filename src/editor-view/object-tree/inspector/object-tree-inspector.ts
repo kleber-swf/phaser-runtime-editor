@@ -105,7 +105,7 @@ export class ObjectTreeInspector extends Inspector {
 	}
 
 	private filterContent(filter: string) {
-
+		this.model.filter(filter);
 	}
 }
 

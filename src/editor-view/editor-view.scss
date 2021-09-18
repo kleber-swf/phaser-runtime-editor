@@ -57,10 +57,10 @@ phred-editor-view {
 			width: 100%;
 			background-color: $input-background;
 			border: 1px solid transparent;
-			outline: none !important;
+			outline: none !important; 
 
 			&:not([readonly]):focus {
-				border-color: $disabled-text-color;
+				border-color: $focused-input-border;
 			}
 		}
 
