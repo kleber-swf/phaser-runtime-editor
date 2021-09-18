@@ -1,0 +1,45 @@
+phred-search-field {
+	position: relative;
+	opacity: 0.8;
+	max-width: 160px;
+	margin-left: 12px;
+	box-sizing: border-box;
+
+	&::before {
+		font-family: 'Font Awesome 5 Free';
+		font-size: 10px;
+		font-weight: 900;
+		content: '\f002';
+		display: inline-block;
+		position: absolute;
+		top: 4px;
+		left: 6px;
+	}
+
+	input[type='text'] {
+		box-sizing: border-box;
+		font-size: 14px;
+		padding: 0 16px 0 20px;
+		margin: 0;
+	}
+
+	.clear-button {
+		display: inline-block;
+		position: absolute;
+		right: 0;
+		width: 20px;
+		height: 20px;
+		cursor: pointer;
+		text-align: center;
+		vertical-align: middle;
+		padding-top: 2px;
+
+		&::after {
+			font-family: 'Font Awesome 5 Free';
+			font-size: 10px;
+			font-weight: 900;
+			content: '\f00d';
+			display: inline-block;
+		}
+	}
+}

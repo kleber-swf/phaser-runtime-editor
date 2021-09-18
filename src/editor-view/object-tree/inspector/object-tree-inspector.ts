@@ -2,6 +2,7 @@ import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
 import { ObjectMapItemModel, ObjectTreeModel } from '../model/object-tree-model';
+import { SearchField } from '../search-field/search-field';
 import { TreeNode } from '../tree-node/tree-node';
 import './object-tree-inspector.scss';
 
@@ -12,6 +13,10 @@ export class ObjectTreeInspector extends Inspector {
 	public init(game: Phaser.Game, root: Container) {
 		super.init(game, root);
 		this.title = 'Objects';
+
+		const el = this.headerElement.appendChild(document.createElement(SearchField.tagName)) as SearchField;
+		el.onValueChanged = this.filterContent.bind(this);
+
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 		this.setRoot(root);
 	}
@@ -19,7 +24,7 @@ export class ObjectTreeInspector extends Inspector {
 	private setRoot(root: PIXI.DisplayObjectContainer | Phaser.Stage) {
 		this.model.create(root);
 		for (let i = 0, n = root.children.length; i < n; i++)
-			this.createNode(root.children[i], this.content, this.model);
+			this.createNode(root.children[i], this.contentElement, this.model);
 	}
 
 	private createNode(obj: PIXI.DisplayObject, parent: HTMLElement, model: ObjectTreeModel) {
@@ -97,6 +102,12 @@ export class ObjectTreeInspector extends Inspector {
 
 		if (model.parent)
 			this.expandParents(model.parent);
+	}
+
+	private filterContent(filter: string) {
+		if (filter) this.classList.add('filtering');
+		else this.classList.remove('filtering');
+		this.model.filter(filter);
 	}
 }
 

@@ -28,6 +28,12 @@ phred-tree-node {
 		}
 	}
 
+	&.invisible {
+		& > .node-head {
+			display: none;
+		}
+	}
+
 	.node-head {
 		height: 26px;
 		display: flex;

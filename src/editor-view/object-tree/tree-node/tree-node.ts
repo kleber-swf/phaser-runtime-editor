@@ -18,6 +18,8 @@ export class TreeNode extends HTMLElement {
 		this.label.textContent = value?.length > 0 ? value : type.name;
 	}
 
+	public get title() { return this.label.textContent; }
+
 	public updateObjectVisibility(value: boolean) {
 		if (value) this.classList.remove('object-invisible');
 		else this.classList.add('object-invisible');
