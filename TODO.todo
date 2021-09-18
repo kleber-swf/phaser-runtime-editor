@@ -126,7 +126,7 @@ ADVANCED:
 		[ ] update tree content
 			[ ] update with a button
 			[ ] update automatically
-		[ ] filter
+		[x] filter
 		[ ] ignore bitmap text letters
 
 	UI:
