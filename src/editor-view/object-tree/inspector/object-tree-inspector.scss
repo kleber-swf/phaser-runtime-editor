@@ -5,6 +5,15 @@ phred-object-tree-inspector.phred-inspector {
 		justify-content: space-between;
 	}
 
+	&.filtering {
+		.content .node-children {
+			margin-left: 0;
+		}
+		.collapse-icon {
+			display: none;
+		}
+	}
+
 	.content {
 		margin: 6px;
 	}
