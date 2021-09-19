@@ -3,7 +3,6 @@ import { DataOrigin } from 'data/editor-data';
 import { InspectorPropertyModel } from 'data/inspector-data';
 import { Inspector } from 'editor-view/inspector/inspector';
 import { PropertyEditor } from '../editors/property-editor';
-import './properties-inspector.scss';
 
 export class PropertiesInspector extends Inspector {
 	public static readonly tagName: string = 'phred-properties-inspector';
@@ -26,6 +25,13 @@ export class PropertiesInspector extends Inspector {
 		return editor;
 	}
 
+	private createTitleElement(title: string) {
+		const header = this.contentElement.appendChild(document.createElement('h2'));
+		const el = header.appendChild(document.createElement('div'));
+		el.classList.add('title');
+		el.textContent = title;
+	}
+
 	public selectObject(obj: PIXI.DisplayObject) {
 		// TODO what happen with the instances? Are they garbage collected?
 		const emptyContent = this.contentElement.cloneNode(false);
@@ -43,12 +49,10 @@ export class PropertiesInspector extends Inspector {
 		const idata = Editor.inspectorData;
 		const propertyGroups = idata.getInspectorPropertiesForType(obj.__type)
 		propertyGroups.forEach(group => {
+			if (group.title) this.createTitleElement(group.title);
 			group.properties.forEach(prop =>
 				this.createEditorForProperty(obj, idata.getInspectableProperty(prop)))
 		})
-		// properties.forEach(prop => this.createEditorForProperty(obj, prop));
-
-		// Editor.inspectorData.inspectableProperties
 	}
 
 	private createEditorForProperty(obj: PIXI.DisplayObject, prop: InspectorPropertyModel) {

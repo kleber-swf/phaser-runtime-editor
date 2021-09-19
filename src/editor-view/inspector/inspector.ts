@@ -15,8 +15,7 @@ export abstract class Inspector extends Widget {
 	public init(_game: Phaser.Game, _root: Container) {
 		this.classList.add('phred-inspector');
 
-		this.headerElement = this.appendChild(document.createElement('div'));
-		this.headerElement.classList.add('header');
+		this.headerElement = this.appendChild(document.createElement('h1'));
 		this.titleElement = this.headerElement.appendChild(document.createElement('div'));
 		this.titleElement.classList.add('title');
 
