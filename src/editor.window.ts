@@ -11,6 +11,10 @@ import { StringPropertyEditor } from 'editor-view/properties/editors/string/stri
 import { ReferenceImage } from 'scene-view/reference-image';
 import { SceneView } from 'scene-view/scene-view';
 
+// TODO rename this class for God's sake
+// TODO split this class into two:
+// 	* one for data initialization
+//		* and another for the workflow
 export class EditorWindow {
 	private _initialized = false;
 	private disabledUI: DisabledUI;
@@ -101,7 +105,34 @@ export class EditorWindow {
 			{ name: 'angle', typeHint: 'number', data: { readonly: true } },
 			{ name: '_bounds', label: 'bounds', typeHint: 'rect', data: { readonly: true } },
 			{ name: 'key', typeHint: 'string' },
-			{ name: 'frameName', label: 'frame', typeHint: 'string' }
+			{ name: 'frameName', label: 'frame', typeHint: 'string' },
+			{ name: 'font', typeHint: 'string' },
+			{ name: 'fontSize', typeHint: 'number' },
+			{ name: 'fontStyle', typeHint: 'string' },
+			{ name: 'fontVariant', typeHint: 'string' },
+			{ name: 'fontWeight', typeHint: 'string' },
+		]);
+
+		const basicProperties = {
+			title: '', properties: [
+				'__type', 'name', 'position', 'scale', 'pivot', 'anchor',
+				'alpha', 'visible', 'angle', '_bounds'
+			]
+		};
+
+		Editor.inspectorData.addInspectorProperties('default', [basicProperties]);
+
+		Editor.inspectorData.addInspectorProperties('Phaser.Sprite', [
+			basicProperties,
+			{ title: 'Image', properties: ['key', 'frameName'] },
+		]);
+
+		Editor.inspectorData.addInspectorProperties('Phaser.Text', [
+			basicProperties,
+			{
+				title: 'Text',
+				properties: ['font', 'fontSize', 'fontStyle', 'fontVariant', 'fontWeight']
+			},
 		]);
 	}
 

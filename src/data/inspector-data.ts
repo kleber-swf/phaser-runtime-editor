@@ -7,6 +7,12 @@ export interface InspectorPropertyModel {
 	label?: string;
 }
 
+export interface ObjectInspectorModel {
+	title: string;
+	properties: string[];
+}
+
+
 export class InspectorData {
 	private readonly editors: Partial<Record<InspectableTypes, string>> = {};
 
@@ -14,21 +20,33 @@ export class InspectorData {
 		Object.keys(editors).forEach(e => this.editors[e] = editors[e]);
 	}
 
-	public readonly inspectableProperties: InspectorPropertyModel[] = [];
-
-	public addInspectableProperties(properties: InspectorPropertyModel[]) {
-		const iproperties = this.inspectableProperties;
-		properties.forEach(prop => {
-			const i = iproperties.findIndex(e => e.name === prop.name);
-			if (i < 0) iproperties.push(prop);
-			else iproperties.splice(i, 1, prop);
-		});
-	}
-
-	public findEditorFor(data: InspectorPropertyModel) {
-		// TODO what abount null / undefined values?
-		return (data.typeHint in this.editors)
+	public getEditorFor(data: InspectorPropertyModel) {
+		return data.typeHint in this.editors
 			? this.editors[data.typeHint]
 			: this.editors.default;
+	}
+
+	private readonly inspectableProperties: Record<string, InspectorPropertyModel> = {};
+
+	public addInspectableProperties(properties: InspectorPropertyModel[]) {
+		properties.forEach(prop => this.inspectableProperties[prop.name] = prop);
+	}
+
+	public getInspectableProperty(name: string) {
+		if (name in this.inspectableProperties)
+			return this.inspectableProperties[name];
+		throw `Could not find inspectable editor for property ${name}`;
+	}
+
+	private readonly inspectorProperties: Record<string, ObjectInspectorModel[]> = {};
+
+	public addInspectorProperties(type: string, inspectors: ObjectInspectorModel[]) {
+		this.inspectorProperties[type] = inspectors;
+	}
+
+	public getInspectorPropertiesForType(type: string) {
+		return type in this.inspectorProperties
+			? this.inspectorProperties[type]
+			: this.inspectorProperties.default;
 	}
 }

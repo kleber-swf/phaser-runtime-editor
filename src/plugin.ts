@@ -58,8 +58,11 @@ export class Plugin extends Phaser.Plugin {
 		this._disableVisibilityChangeMemento = this.game.stage.disableVisibilityChange;
 		this.game.stage.disableVisibilityChange = true;
 		this.hasPostUpdate = true;
+
 		this._gameSpeedMemento = this.game.time.slowMotion;
 		if (this.config.pauseGame) this.game.time.slowMotion = Number.POSITIVE_INFINITY
+		
+		this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		if (this.config.onShow) this.config.onShow();
 	}
 

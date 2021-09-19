@@ -3,7 +3,7 @@ const game = new Phaser.Game({
 	height: 2000,
 	renderer: Phaser.CANVAS,
 	parent: 'game',
-	scaleMode: Phaser.ScaleManager.SHOW_ALL,
+	scaleMode: Phaser.ScaleManager.USER_SCALE,
 	state: { preload, create, update },
 	backgroundColor: '#333',
 });
