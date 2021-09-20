@@ -80,7 +80,7 @@ export class EditorWindow {
 	}
 
 	private setupInspectorData() {
-		Editor.inspectorData.addEditors({
+		Editor.inspectorData.addTypeEditors({
 			// basic types
 			string: StringPropertyEditor.tagName,
 			text: TextPropertyEditor.tagName,
@@ -139,24 +139,24 @@ export class EditorWindow {
 			]
 		};
 
-		Editor.inspectorData.addInspectorProperties('default', [basicProperties]);
+		Editor.inspectorData.addObjectProperties('default', [basicProperties]);
 
-		Editor.inspectorData.addInspectorProperties('Phaser.Sprite', [
+		Editor.inspectorData.addObjectProperties('Phaser.Sprite', [
 			basicProperties,
 			{ title: 'Sprite', properties: ['key', 'frameName', 'blendMode', 'tint'] },
 		]);
 
-		Editor.inspectorData.addInspectorProperties('Phaser.Image', [
+		Editor.inspectorData.addObjectProperties('Phaser.Image', [
 			basicProperties,
 			{ title: 'Sprite', properties: ['key', 'frameName', 'blendMode', 'tint'] },
 		]);
 
-		Editor.inspectorData.addInspectorProperties('Phaser.Graphics', [
+		Editor.inspectorData.addObjectProperties('Phaser.Graphics', [
 			basicProperties,
 			{ title: 'Sprite', properties: ['blendMode', 'tint'] },
 		]);
 
-		Editor.inspectorData.addInspectorProperties('Phaser.Text', [
+		Editor.inspectorData.addObjectProperties('Phaser.Text', [
 			basicProperties,
 			{ title: 'Sprite', properties: ['blendMode', 'tint'] },
 			{
@@ -170,7 +170,7 @@ export class EditorWindow {
 			},
 		]);
 
-		Editor.inspectorData.addInspectorProperties('Phaser.BitmapText', [
+		Editor.inspectorData.addObjectProperties('Phaser.BitmapText', [
 			basicProperties,
 			{ title: 'Sprite', properties: ['tint'] },
 			{ title: 'Bitmap Text', properties: ['font', 'fontSize', 'align'] },
