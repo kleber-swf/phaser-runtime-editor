@@ -111,24 +111,25 @@ export class EditorWindow {
 			{ name: 'key', typeHint: 'string' },
 			{ name: 'frameName', label: 'frame', typeHint: 'string' },
 			{ name: 'blendMode', typeHint: 'number' },
-			{ name: 'tint', typeHint: 'number' },
+			{ name: 'tint', typeHint: 'number', data: { min: 0, max: 0xFFFFFF } },
 
 			// Text
 			{ name: 'text', typeHint: 'text', data: { rows: 3 } },
 			{ name: 'font', typeHint: 'string' },
-			{ name: 'fontSize', typeHint: 'number' },
+			{ name: 'fontSize', typeHint: 'number', data: { min: 0, step: 1 } },
 			{ name: 'fontStyle', typeHint: 'string' },
 			{ name: 'fontVariant', typeHint: 'string' },
 			{ name: 'fontWeight', typeHint: 'string' },
 			{ name: 'autoRound', typeHint: 'boolean' },
 			{ name: 'align', typeHint: 'string' },
 			{ name: 'wordWrap', typeHint: 'boolean' },
-			{ name: 'wordWrapWidth', typeHint: 'number' },
+			{ name: 'wordWrapWidth', typeHint: 'number', data: { min: 0, step: 1 } },
 			{ name: 'useAdvancedWordWrap', typeHint: 'boolean' },
 			{ name: 'padding', typeHint: 'point' },
 			// { name: 'textBounds', typeHint: 'rect' },  // TODO waiting for null checking on rect editor
 			{ name: 'boundsAlignH', typeHint: 'string' },
 			{ name: 'boundsAlignV', typeHint: 'string' },
+
 		]);
 
 		const basicProperties = {
@@ -145,6 +146,16 @@ export class EditorWindow {
 			{ title: 'Sprite', properties: ['key', 'frameName', 'blendMode', 'tint'] },
 		]);
 
+		Editor.inspectorData.addInspectorProperties('Phaser.Image', [
+			basicProperties,
+			{ title: 'Sprite', properties: ['key', 'frameName', 'blendMode', 'tint'] },
+		]);
+
+		Editor.inspectorData.addInspectorProperties('Phaser.Graphics', [
+			basicProperties,
+			{ title: 'Sprite', properties: ['blendMode', 'tint'] },
+		]);
+
 		Editor.inspectorData.addInspectorProperties('Phaser.Text', [
 			basicProperties,
 			{ title: 'Sprite', properties: ['blendMode', 'tint'] },
@@ -158,6 +169,13 @@ export class EditorWindow {
 					'padding', /*'textBounds', */'boundsAlignH', 'boundsAlignV']
 			},
 		]);
+
+		Editor.inspectorData.addInspectorProperties('Phaser.BitmapText', [
+			basicProperties,
+			{ title: 'Sprite', properties: ['tint'] },
+			{ title: 'Bitmap Text', properties: ['font', 'fontSize', 'align'] },
+		]);
+
 	}
 
 	private setupActions(scene: SceneView) {
