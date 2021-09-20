@@ -132,7 +132,7 @@ export class SceneView extends Phaser.Group {
 			const child = children[i];
 			if (!child.visible || child.__skip || !('getBounds' in child)) continue;
 			const bounds: PIXI.Rectangle = child.getBounds();
-			if ('children' in child) this.getObjectsUnderPoint(x, y, child.children, objects);
+			if (!child.__isLeaf) this.getObjectsUnderPoint(x, y, child.children, objects);
 			if (bounds.contains(x, y)) objects.push(child);
 		}
 	}

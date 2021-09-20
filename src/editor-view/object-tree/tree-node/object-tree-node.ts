@@ -1,18 +1,18 @@
 import { PhaserObjectType } from 'data/phaser-meta';
-import { ObjectMapItemModel } from '../model/object-tree-model';
-import './tree-node.scss';
+import { ObjectTreeNodeModel } from '../model/object-tree-model';
+import './object-tree-node.scss';
 
 const SELECTED_CLASS = 'selected';
 const COLLAPSED_CLASS = 'collapsed';
 
-export class TreeNode extends HTMLElement {
-	public static readonly tagName: string = 'phred-tree-node';
+export class ObjectTreeNode extends HTMLElement {
+	public static readonly tagName: string = 'phred-object-tree-node';
 
-	public model: ObjectMapItemModel;
+	public model: ObjectTreeNodeModel;
 	private label: HTMLElement;
 	private collapseIcon: HTMLElement;
-	public onNodeSelect: (node: TreeNode) => void;
-	public onCollapseStateChanged: (node: TreeNode, collapsed: boolean, all: boolean) => void;
+	public onNodeSelect: (node: ObjectTreeNode) => void;
+	public onCollapseStateChanged: (node: ObjectTreeNode, collapsed: boolean, all: boolean) => void;
 
 	public updateTitle(type: PhaserObjectType, value: string) {
 		this.label.textContent = value?.length > 0 ? value : type.name;
@@ -25,7 +25,7 @@ export class TreeNode extends HTMLElement {
 		else this.classList.add('object-invisible');
 	}
 
-	public setContent(model: ObjectMapItemModel) {
+	public setContent(model: ObjectTreeNodeModel) {
 		this.model = model;
 		const head = this.appendChild(document.createElement('div'));
 		head.classList.add('node-head');
@@ -33,7 +33,7 @@ export class TreeNode extends HTMLElement {
 
 		this.collapseIcon = head.appendChild(document.createElement('i'));
 		this.collapseIcon.classList.add('fas', 'collapse-icon');
-		if (model.obj.children?.length) {
+		if (!model.isLeaf) {
 			this.collapseIcon.classList.add('fa-caret-down');
 			this.collapseIcon.onclick = this.onCollapseIconClick.bind(this);
 		}
@@ -82,4 +82,4 @@ export class TreeNode extends HTMLElement {
 	}
 }
 
-customElements.define(TreeNode.tagName, TreeNode);
+customElements.define(ObjectTreeNode.tagName, ObjectTreeNode);

@@ -3,7 +3,7 @@ const game = new Phaser.Game({
 	height: 2000,
 	renderer: Phaser.CANVAS,
 	parent: 'game',
-	scaleMode: Phaser.ScaleManager.SHOW_ALL,
+	scaleMode: Phaser.ScaleManager.USER_SCALE,
 	state: { preload, create, update },
 	backgroundColor: '#333',
 });
@@ -21,6 +21,7 @@ function preload() {
 	game.load.image('mushroom', 'assets/sprites/mushroom2.png');
 	game.load.image('phaser', 'assets/sprites/phaser1.png');
 	game.load.image('ref', 'assets/sprites/ref.png');
+	game.load.bitmapFont('font', 'assets/fonts/nokia.png', 'assets/fonts/nokia.xml');
 }
 
 function create() {
@@ -95,6 +96,8 @@ function create() {
 
 	child = game.add.sprite(1180, 925, 'phaser');
 	child.scale.set(2, 2);
+
+	game.add.bitmapText(50, 50, 'font', 'This is a bitmap text', 30);
 
 	// game.add.text(0, 0, 'this text scrolls\nwith the background', { font: '32px Arial', fill: '#f26c4f', align: 'center' });
 

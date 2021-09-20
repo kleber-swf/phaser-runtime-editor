@@ -3,7 +3,6 @@ import { DataOrigin } from 'data/editor-data';
 import { InspectorPropertyModel } from 'data/inspector-data';
 import { Inspector } from 'editor-view/inspector/inspector';
 import { PropertyEditor } from '../editors/property-editor';
-import './properties-inspector.scss';
 
 export class PropertiesInspector extends Inspector {
 	public static readonly tagName: string = 'phred-properties-inspector';
@@ -26,6 +25,17 @@ export class PropertiesInspector extends Inspector {
 		return editor;
 	}
 
+	private createTitleElement(title: string) {
+		const header = this.contentElement.appendChild(document.createElement('h2'));
+		const el = header.appendChild(document.createElement('div'));
+		el.classList.add('title');
+		el.textContent = title;
+	}
+
+	private createDivider() {
+		this.contentElement.appendChild(document.createElement('hr'));
+	}
+
 	public selectObject(obj: PIXI.DisplayObject) {
 		// TODO what happen with the instances? Are they garbage collected?
 		const emptyContent = this.contentElement.cloneNode(false);
@@ -40,13 +50,22 @@ export class PropertiesInspector extends Inspector {
 
 		this.contentElement.style.visibility = 'visible';
 
-		Editor.inspectorData.inspectableProperties
-			.forEach(prop => this.createEditorForProperty(obj, prop));
+		const idata = Editor.inspectorData;
+		const propertyGroups = idata.getObjectPropertiesForType(obj.__type)
+		propertyGroups.forEach(group => {
+			if (group.title) this.createTitleElement(group.title);
+			group.properties.forEach(prop => {
+				if (prop !== 'divider')
+					this.createEditorForProperty(obj, idata.getInspectableProperty(prop));
+				else
+					this.createDivider();
+			});
+		})
 	}
 
 	private createEditorForProperty(obj: PIXI.DisplayObject, prop: InspectorPropertyModel) {
 		if (!(prop.name in obj)) return;
-		const elementId = Editor.inspectorData.findEditorFor(prop);
+		const elementId = Editor.inspectorData.getEditorForType(prop.typeHint);
 		const editor = this.createPropertyEditor(prop, obj[prop.name], elementId);
 		this.editors[prop.name] = editor;
 	}

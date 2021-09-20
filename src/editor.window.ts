@@ -8,9 +8,14 @@ import { NumberPropertyEditor } from 'editor-view/properties/editors/number/numb
 import { PointPropertyEditor } from 'editor-view/properties/editors/point/point-property-editor';
 import { RectPropertyEditor } from 'editor-view/properties/editors/rect/rect-property-editor';
 import { StringPropertyEditor } from 'editor-view/properties/editors/string/string-property-editor';
+import { TextPropertyEditor } from 'editor-view/properties/editors/string/text-property-editor';
 import { ReferenceImage } from 'scene-view/reference-image';
 import { SceneView } from 'scene-view/scene-view';
 
+// TODO rename this class for God's sake
+// TODO split this class into two:
+// 	* one for data initialization
+//		* and another for the workflow
 export class EditorWindow {
 	private _initialized = false;
 	private disabledUI: DisabledUI;
@@ -75,9 +80,10 @@ export class EditorWindow {
 	}
 
 	private setupInspectorData() {
-		Editor.inspectorData.addEditors({
+		Editor.inspectorData.addTypeEditors({
 			// basic types
 			string: StringPropertyEditor.tagName,
+			text: TextPropertyEditor.tagName,
 			number: NumberPropertyEditor.tagName,
 			boolean: BooleanPropertyEditor.tagName,
 
@@ -100,9 +106,76 @@ export class EditorWindow {
 			{ name: 'visible', typeHint: 'boolean' },
 			{ name: 'angle', typeHint: 'number', data: { readonly: true } },
 			{ name: '_bounds', label: 'bounds', typeHint: 'rect', data: { readonly: true } },
+
+			// Sprite
 			{ name: 'key', typeHint: 'string' },
-			{ name: 'frameName', label: 'frame', typeHint: 'string' }
+			{ name: 'frameName', label: 'frame', typeHint: 'string' },
+			{ name: 'blendMode', typeHint: 'number' },
+			{ name: 'tint', typeHint: 'number', data: { min: 0, max: 0xFFFFFF } },
+
+			// Text
+			{ name: 'text', typeHint: 'text', data: { rows: 3 } },
+			{ name: 'font', typeHint: 'string' },
+			{ name: 'fontSize', typeHint: 'number', data: { min: 0, step: 1 } },
+			{ name: 'fontStyle', typeHint: 'string' },
+			{ name: 'fontVariant', typeHint: 'string' },
+			{ name: 'fontWeight', typeHint: 'string' },
+			{ name: 'autoRound', typeHint: 'boolean' },
+			{ name: 'align', typeHint: 'string' },
+			{ name: 'wordWrap', typeHint: 'boolean' },
+			{ name: 'wordWrapWidth', typeHint: 'number', data: { min: 0, step: 1 } },
+			{ name: 'useAdvancedWordWrap', typeHint: 'boolean' },
+			{ name: 'padding', typeHint: 'point' },
+			// { name: 'textBounds', typeHint: 'rect' },  // TODO waiting for null checking on rect editor
+			{ name: 'boundsAlignH', typeHint: 'string' },
+			{ name: 'boundsAlignV', typeHint: 'string' },
+
 		]);
+
+		const basicProperties = {
+			title: '', properties: [
+				'__type', 'name', 'position', 'scale', 'pivot', 'anchor',
+				'alpha', 'visible', 'angle', '_bounds'
+			]
+		};
+
+		Editor.inspectorData.addObjectProperties('default', [basicProperties]);
+
+		Editor.inspectorData.addObjectProperties('Phaser.Sprite', [
+			basicProperties,
+			{ title: 'Sprite', properties: ['key', 'frameName', 'blendMode', 'tint'] },
+		]);
+
+		Editor.inspectorData.addObjectProperties('Phaser.Image', [
+			basicProperties,
+			{ title: 'Sprite', properties: ['key', 'frameName', 'blendMode', 'tint'] },
+		]);
+
+		Editor.inspectorData.addObjectProperties('Phaser.Graphics', [
+			basicProperties,
+			{ title: 'Sprite', properties: ['blendMode', 'tint'] },
+		]);
+
+		Editor.inspectorData.addObjectProperties('Phaser.Text', [
+			basicProperties,
+			{ title: 'Sprite', properties: ['blendMode', 'tint'] },
+			{
+				title: 'Text',
+				properties: [
+					'text', 'font', 'fontSize', 'fontStyle', 'fontVariant', 'fontWeight', 'autoRound',
+					'divider',
+					'align', 'wordWrap', 'wordWrapWidth', 'useAdvancedWordWrap',
+					'divider',
+					'padding', /*'textBounds', */'boundsAlignH', 'boundsAlignV']
+			},
+		]);
+
+		Editor.inspectorData.addObjectProperties('Phaser.BitmapText', [
+			basicProperties,
+			{ title: 'Sprite', properties: ['tint'] },
+			{ title: 'Bitmap Text', properties: ['font', 'fontSize', 'align'] },
+		]);
+
 	}
 
 	private setupActions(scene: SceneView) {
@@ -207,8 +280,6 @@ export class EditorWindow {
 				command: () => {
 					if (Editor.data.selectedObject) {
 						console.info(Editor.data.selectedObject);
-						console.log(Editor.data.selectedObject.constructor.name);
-						console.log((Editor.data.selectedObject as any).prototype);
 					}
 				}
 			},

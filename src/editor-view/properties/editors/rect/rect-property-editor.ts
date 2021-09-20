@@ -20,7 +20,7 @@ export class RectPropertyEditor extends PropertyEditor<PIXI.Rectangle> {
 
 	protected createInnerContent(fieldId: string, value: PIXI.Rectangle, prop: InspectorPropertyModel) {
 		const parent = this.appendChild(document.createElement('div'));
-		parent.classList.add('vertical-content')
+		parent.classList.add('vertical-content');
 
 		const xinput = this.xinput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;
 		xinput.setContent({ name: 'x', typeHint: 'number', data: prop.data }, value.x, false, fieldId);

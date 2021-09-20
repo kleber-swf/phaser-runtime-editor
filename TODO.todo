@@ -67,6 +67,11 @@ BASIC:
 			[ ] getter for root container and ref image
 			[x] onShow/onHide callbacks
 		[x] save editor state / preferences
+		[ ] inspectable types
+			[ ] integer
+			[ ] list of values
+			[ ] dynamic list of values (based on another property) (frame from key for example)
+		[ ] editor for null values
 
 	Refactors:
 		[x] create a centralized class for all the singletons
@@ -118,6 +123,8 @@ ADVANCED:
 				[ ] fillColor
 				[ ] etc
 			[ ] Phaser.BitmapFont
+			[ ] Array
+			[ ] Custom objects
 			[ ] show them separated from the basic properties
 		[ ] optimization: shold I create a object pool for PropertyEditors?
 
@@ -127,7 +134,7 @@ ADVANCED:
 			[ ] update with a button
 			[ ] update automatically
 		[x] filter
-		[ ] ignore bitmap text letters
+		[x] ignore bitmap text letters
 
 	UI:
 		[x] show panel scroll

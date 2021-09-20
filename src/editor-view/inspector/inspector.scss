@@ -1,5 +1,17 @@
 @import 'colors';
 
+@mixin inspector-title {
+	font-size: 12px;
+	font-weight: bold;
+	color: $unfocused-text-color;
+	padding: 6px 4px 6px 8px;
+	margin: 0 0 12px 0;
+	text-transform: uppercase;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
 .phred-inspector {
 	flex: 1;
 	display: flex;
@@ -8,19 +20,21 @@
 	align-items: stretch;
 	overflow: hidden;
 
-	.header {
-		font-size: 12px;
-		font-weight: bold;
-		color: $unfocused-text-color;
+	h1 {
+		@include inspector-title;
 		background-color: rgba(black, 0.2);
-		padding: 0 4px 0 8px;
-		text-transform: uppercase;
-		display: flex;
-		align-items: center;
+	}
 
-		.title {
-			margin: 6px 0;
-		}
+	h2 {
+		@include inspector-title;
+		background-color: transparent;
+		border-bottom: 2px solid #555;
+		margin-top: 12px;
+	}
+
+	hr {
+		border: 0;
+		border-bottom: 1px solid #333;
 	}
 
 	.content {

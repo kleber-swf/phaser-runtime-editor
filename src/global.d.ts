@@ -3,6 +3,7 @@ declare namespace PIXI {
 		__instanceId?: number;
 		__type?: string;
 		__skip?: boolean;
+		__isLeaf?: boolean;
 		type?: number;
 		name?: string;
 		anchor?: Point;

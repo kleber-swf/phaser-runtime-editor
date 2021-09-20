@@ -1,5 +1,12 @@
 @import 'colors';
 
+@mixin basic-input-properties {
+	font-size: 14px;
+	color: $input-foreground;
+	padding: 2px 4px;
+	transition: all 0.1s;
+}
+
 phred-editor-view {
 	flex: 1;
 	display: flex;
@@ -43,25 +50,10 @@ phred-editor-view {
 	$slider-background-color: rgba(white, 0.1);
 
 	input {
-		font-size: 14px;
-		color: $input-foreground;
-		padding: 2px 4px;
-		transition: all 0.1s;
+		@include basic-input-properties;
 
 		&[readonly] {
 			color: rgba($input-foreground, 0.5);
-		}
-
-		&[type='text'],
-		&[type='number'] {
-			width: 100%;
-			background-color: $input-background;
-			border: 1px solid transparent;
-			outline: none !important; 
-
-			&:not([readonly]):focus {
-				border-color: $focused-input-border;
-			}
 		}
 
 		// ------------- SLIDER ------------- //
@@ -155,6 +147,22 @@ phred-editor-view {
 				background: #a1d0ff;
 				cursor: pointer;
 			}
+		}
+	}
+
+	input[type='text'],
+	input[type='number'],
+	textarea {
+		@include basic-input-properties;
+
+		width: 100%;
+		background-color: $input-background;
+		border: 1px solid transparent;
+		outline: none !important;
+		resize: none;
+
+		&:not([readonly]):focus {
+			border-color: $focused-input-border;
 		}
 	}
 
