@@ -28,7 +28,7 @@ export class ActionHandler {
 		Object.keys(this.containers).forEach(cid => {
 			const container = this.containers[cid];
 			if (!this.actions[cid]) return;
-			container.onkeydown = (e: KeyboardEvent) => this.onKeyDown(e, this.actions[cid]);
+			container.onkeydown = (e: KeyboardEvent) => this.onKeyDown(e, this.actions[cid], container);
 			container.onkeyup = this.onKeyUp.bind(this);
 		});
 	}
@@ -56,7 +56,8 @@ export class ActionHandler {
 		});
 	}
 
-	private onKeyDown(e: KeyboardEvent, actions: Record<string, Action>) {
+	private onKeyDown(e: KeyboardEvent, actions: Record<string, Action>, container: HTMLElement) {
+		if (e.target !== container) return;
 		const k = (e.ctrlKey ? 'ctrl+' : '')
 			+ (e.shiftKey ? 'shift+' : '')
 			+ (e.altKey ? 'alt+' : '')
