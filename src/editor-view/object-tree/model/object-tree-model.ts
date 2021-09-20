@@ -1,7 +1,7 @@
 import { Editor } from 'core/editor';
 import { PhaserObjectType } from 'data/phaser-meta';
 import { IdUtil } from 'util/id.util';
-import { ObjectTreeNode } from '../tree-node/tree-object-node';
+import { ObjectTreeNode } from '../tree-node/object-tree-node';
 
 export interface ObjectTreeNodeModel {
 	obj: PIXI.DisplayObject;
@@ -23,12 +23,15 @@ export class ObjectTreeModel {
 		this.createNode(root, this.objectMap, null, 0);
 	}
 
+	// TODO __type and __isLeaf should be make elsewhere
 	private createNode(child: PIXI.DisplayObject, map: Record<number, ObjectTreeNodeModel>, parent: ObjectTreeNodeModel, level: number) {
 		if (!child.__instanceId) child.__instanceId = IdUtil.genIntId();
 		const type = Editor.meta.getType(child);
 		child.__type = type.name;
 
-		const isLeaf = !(child.children && child.children.length > 0);
+		const isLeaf = type.ignoreChildren || !(child.children && child.children.length > 0);
+		child.__isLeaf = isLeaf;
+
 		const node = map[child.__instanceId] = {
 			obj: child,
 			collapsed: false,

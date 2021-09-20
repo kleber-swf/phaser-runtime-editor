@@ -1,9 +1,9 @@
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
-import { ObjectTreeNodeModel, ObjectTreeModel } from '../model/object-tree-model';
+import { ObjectTreeModel, ObjectTreeNodeModel } from '../model/object-tree-model';
 import { SearchField } from '../search-field/search-field';
-import { ObjectTreeNode } from '../tree-node/tree-object-node';
+import { ObjectTreeNode } from '../tree-node/object-tree-node';
 import './object-tree-inspector.scss';
 
 export class ObjectTreeInspector extends Inspector {
@@ -40,7 +40,7 @@ export class ObjectTreeInspector extends Inspector {
 
 		m.node = node;
 
-		if (!('children' in obj)) return;
+		if (m.isLeaf) return;
 		for (let i = 0, n = obj.children.length; i < n; i++) {
 			const container = node.addChildrenContainer();
 			this.createNode(obj.children[i], container, model);

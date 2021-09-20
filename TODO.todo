@@ -123,6 +123,8 @@ ADVANCED:
 				[ ] fillColor
 				[ ] etc
 			[ ] Phaser.BitmapFont
+			[ ] Array
+			[ ] Custom objects
 			[ ] show them separated from the basic properties
 		[ ] optimization: shold I create a object pool for PropertyEditors?
 
@@ -132,7 +134,7 @@ ADVANCED:
 			[ ] update with a button
 			[ ] update automatically
 		[x] filter
-		[ ] ignore bitmap text letters
+		[x] ignore bitmap text letters
 
 	UI:
 		[x] show panel scroll

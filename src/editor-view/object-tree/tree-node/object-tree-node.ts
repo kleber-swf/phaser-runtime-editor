@@ -33,7 +33,7 @@ export class ObjectTreeNode extends HTMLElement {
 
 		this.collapseIcon = head.appendChild(document.createElement('i'));
 		this.collapseIcon.classList.add('fas', 'collapse-icon');
-		if (model.obj.children?.length) {
+		if (!model.isLeaf) {
 			this.collapseIcon.classList.add('fa-caret-down');
 			this.collapseIcon.onclick = this.onCollapseIconClick.bind(this);
 		}

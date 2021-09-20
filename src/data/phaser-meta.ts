@@ -1,11 +1,12 @@
 export interface PhaserObjectType {
 	name: string;
 	icon: string;
+	ignoreChildren?: boolean;
 }
 
 export class PhaserMeta {
 	private readonly sceneObjects: Record<string, PhaserObjectType> = {
-		[Phaser.BITMAPTEXT]: { name: 'Phaser.BitmapText', icon: 'fa-font' },
+		[Phaser.BITMAPTEXT]: { name: 'Phaser.BitmapText', icon: 'fa-font', ignoreChildren: true },
 		[Phaser.BUTTON]: { name: 'Phaser.Button', icon: '' },
 		[Phaser.GRAPHICS]: { name: 'Phaser.Graphics', icon: 'fa-square' },
 		[Phaser.GROUP]: { name: 'Phaser.Group', icon: 'fa-dice-d6' },
