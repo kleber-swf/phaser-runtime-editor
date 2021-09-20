@@ -8,6 +8,7 @@ import { NumberPropertyEditor } from 'editor-view/properties/editors/number/numb
 import { PointPropertyEditor } from 'editor-view/properties/editors/point/point-property-editor';
 import { RectPropertyEditor } from 'editor-view/properties/editors/rect/rect-property-editor';
 import { StringPropertyEditor } from 'editor-view/properties/editors/string/string-property-editor';
+import { TextPropertyEditor } from 'editor-view/properties/editors/string/text-property-editor';
 import { ReferenceImage } from 'scene-view/reference-image';
 import { SceneView } from 'scene-view/scene-view';
 
@@ -82,6 +83,7 @@ export class EditorWindow {
 		Editor.inspectorData.addEditors({
 			// basic types
 			string: StringPropertyEditor.tagName,
+			text: TextPropertyEditor.tagName,
 			number: NumberPropertyEditor.tagName,
 			boolean: BooleanPropertyEditor.tagName,
 
@@ -104,13 +106,29 @@ export class EditorWindow {
 			{ name: 'visible', typeHint: 'boolean' },
 			{ name: 'angle', typeHint: 'number', data: { readonly: true } },
 			{ name: '_bounds', label: 'bounds', typeHint: 'rect', data: { readonly: true } },
+
+			// Sprite
 			{ name: 'key', typeHint: 'string' },
 			{ name: 'frameName', label: 'frame', typeHint: 'string' },
+			{ name: 'blendMode', typeHint: 'number' },
+			{ name: 'tint', typeHint: 'number' },
+
+			// Text
+			{ name: 'text', typeHint: 'text', data: { rows: 3 } },
 			{ name: 'font', typeHint: 'string' },
 			{ name: 'fontSize', typeHint: 'number' },
 			{ name: 'fontStyle', typeHint: 'string' },
 			{ name: 'fontVariant', typeHint: 'string' },
 			{ name: 'fontWeight', typeHint: 'string' },
+			{ name: 'autoRound', typeHint: 'boolean' },
+			{ name: 'align', typeHint: 'string' },
+			{ name: 'wordWrap', typeHint: 'boolean' },
+			{ name: 'wordWrapWidth', typeHint: 'number' },
+			{ name: 'useAdvancedWordWrap', typeHint: 'boolean' },
+			{ name: 'padding', typeHint: 'point' },
+			// { name: 'textBounds', typeHint: 'rect' },  // TODO waiting for null checking on rect editor
+			{ name: 'boundsAlignH', typeHint: 'string' },
+			{ name: 'boundsAlignV', typeHint: 'string' },
 		]);
 
 		const basicProperties = {
@@ -124,14 +142,20 @@ export class EditorWindow {
 
 		Editor.inspectorData.addInspectorProperties('Phaser.Sprite', [
 			basicProperties,
-			{ title: 'Image', properties: ['key', 'frameName'] },
+			{ title: 'Sprite', properties: ['key', 'frameName', 'blendMode', 'tint'] },
 		]);
 
 		Editor.inspectorData.addInspectorProperties('Phaser.Text', [
 			basicProperties,
+			{ title: 'Sprite', properties: ['blendMode', 'tint'] },
 			{
 				title: 'Text',
-				properties: ['font', 'fontSize', 'fontStyle', 'fontVariant', 'fontWeight']
+				properties: [
+					'text', 'font', 'fontSize', 'fontStyle', 'fontVariant', 'fontWeight', 'autoRound',
+					'divider',
+					'align', 'wordWrap', 'wordWrapWidth', 'useAdvancedWordWrap',
+					'divider',
+					'padding', /*'textBounds', */'boundsAlignH', 'boundsAlignV']
 			},
 		]);
 	}
@@ -238,8 +262,6 @@ export class EditorWindow {
 				command: () => {
 					if (Editor.data.selectedObject) {
 						console.info(Editor.data.selectedObject);
-						console.log(Editor.data.selectedObject.constructor.name);
-						console.log((Editor.data.selectedObject as any).prototype);
 					}
 				}
 			},

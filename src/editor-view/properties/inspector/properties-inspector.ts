@@ -32,6 +32,10 @@ export class PropertiesInspector extends Inspector {
 		el.textContent = title;
 	}
 
+	private createDivider() {
+		this.contentElement.appendChild(document.createElement('hr'));
+	}
+
 	public selectObject(obj: PIXI.DisplayObject) {
 		// TODO what happen with the instances? Are they garbage collected?
 		const emptyContent = this.contentElement.cloneNode(false);
@@ -50,8 +54,12 @@ export class PropertiesInspector extends Inspector {
 		const propertyGroups = idata.getInspectorPropertiesForType(obj.__type)
 		propertyGroups.forEach(group => {
 			if (group.title) this.createTitleElement(group.title);
-			group.properties.forEach(prop =>
-				this.createEditorForProperty(obj, idata.getInspectableProperty(prop)))
+			group.properties.forEach(prop => {
+				if (prop !== 'divider')
+					this.createEditorForProperty(obj, idata.getInspectableProperty(prop));
+				else
+					this.createDivider();
+			});
 		})
 	}
 

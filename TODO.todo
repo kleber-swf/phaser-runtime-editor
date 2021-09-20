@@ -67,6 +67,11 @@ BASIC:
 			[ ] getter for root container and ref image
 			[x] onShow/onHide callbacks
 		[x] save editor state / preferences
+		[ ] inspectable types
+			[ ] integer
+			[ ] list of values
+			[ ] dynamic list of values (based on another property) (frame from key for example)
+		[ ] editor for null values
 
 	Refactors:
 		[x] create a centralized class for all the singletons
