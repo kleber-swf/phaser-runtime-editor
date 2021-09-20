@@ -1,9 +1,9 @@
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
-import { ObjectMapItemModel, ObjectTreeModel } from '../model/object-tree-model';
+import { ObjectTreeNodeModel, ObjectTreeModel } from '../model/object-tree-model';
 import { SearchField } from '../search-field/search-field';
-import { TreeNode } from '../tree-node/tree-node';
+import { ObjectTreeNode } from '../tree-node/tree-object-node';
 import './object-tree-inspector.scss';
 
 export class ObjectTreeInspector extends Inspector {
@@ -32,7 +32,7 @@ export class ObjectTreeInspector extends Inspector {
 		const m = model.getById(obj.__instanceId);
 		if (!m) throw new Error(`Model not found for ${obj.__instanceId}`);
 
-		const node = parent.appendChild(document.createElement(TreeNode.tagName)) as TreeNode;
+		const node = parent.appendChild(document.createElement(ObjectTreeNode.tagName)) as ObjectTreeNode;
 		node.classList.add(`level-${m.level}`);
 		node.onNodeSelect = this.onNodeSelected.bind(this);
 		node.onCollapseStateChanged = this.onNodeCollapseStateChanged.bind(this);
@@ -59,19 +59,19 @@ export class ObjectTreeInspector extends Inspector {
 		}
 	}
 
-	private onNodeSelected(node: TreeNode) {
+	private onNodeSelected(node: ObjectTreeNode) {
 		if (node?.model === this._lastSelectedModel) return;
 		if (this._lastSelectedModel) this._lastSelectedModel.node.clearSelection();
 		this._lastSelectedModel = node.model;
 		Editor.data.selectObject(node.model.obj, DataOrigin.INSPECTOR);
 	}
 
-	private onNodeCollapseStateChanged(node: TreeNode, collapsed: boolean, all: boolean) {
+	private onNodeCollapseStateChanged(node: ObjectTreeNode, collapsed: boolean, all: boolean) {
 		const m = node.model;
 		this.changeCollapseState(m, collapsed, all);
 	}
 
-	private changeCollapseState(model: ObjectMapItemModel, collapsed: boolean, all: boolean) {
+	private changeCollapseState(model: ObjectTreeNodeModel, collapsed: boolean, all: boolean) {
 		model.collapsed = collapsed;
 		if (!(all && model.obj.children?.length)) return;
 		model.obj.children.forEach(child => {
@@ -83,7 +83,7 @@ export class ObjectTreeInspector extends Inspector {
 		});
 	}
 
-	private _lastSelectedModel: ObjectMapItemModel;
+	private _lastSelectedModel: ObjectTreeNodeModel;
 
 	public selectObject(obj: PIXI.DisplayObject, from: DataOrigin) {
 		this._lastSelectedModel?.node.clearSelection();
@@ -94,7 +94,7 @@ export class ObjectTreeInspector extends Inspector {
 		this.expandParents(this._lastSelectedModel.parent);
 	}
 
-	private expandParents(model: ObjectMapItemModel) {
+	private expandParents(model: ObjectTreeNodeModel) {
 		if (model.collapsed && !model.isLeaf) {
 			model.collapsed = false;
 			model.node.expand();
