@@ -1,8 +1,8 @@
-import { Widget } from 'editor-view/widget/widget';
+import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
+import { Widget } from 'editor-view/widget/widget';
 import './actions-toolbar.scss';
 import { ActionButton } from './button/action-button';
-import { Actions } from 'actions';
 import { ReferenceImagePanel } from './reference-image/reference-image-panel';
 
 export class ActionsToolbar extends Widget {

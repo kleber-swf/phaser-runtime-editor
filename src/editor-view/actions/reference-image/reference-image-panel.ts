@@ -1,4 +1,4 @@
-import { Actions } from 'actions';
+import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
 import { ActionButton } from '../button/action-button';

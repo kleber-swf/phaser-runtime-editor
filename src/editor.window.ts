@@ -1,4 +1,4 @@
-import { Actions } from 'actions';
+import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { DisabledUI } from 'disabled/disabled-ui';
