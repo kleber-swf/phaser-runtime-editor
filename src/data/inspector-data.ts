@@ -1,4 +1,4 @@
-export type InspectableTypes = 'string' | 'number' | 'boolean' | 'point' | 'rect' | 'default';
+export type InspectableTypes = 'string' | 'text' | 'number' | 'boolean' | 'point' | 'rect' | 'default';
 
 export interface InspectorPropertyModel {
 	name: string;
