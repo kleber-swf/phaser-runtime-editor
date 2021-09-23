@@ -1,9 +1,8 @@
 import { InspectorPropertyModel } from 'data/inspector-data';
+import { ComponentTags } from 'component-tags';
 import { PropertyEditor } from '../property-editor';
 
 export class BooleanPropertyEditor extends PropertyEditor<boolean> {
-	public static readonly tagName: string = 'phred-boolean-property-editor';
-
 	private input: HTMLInputElement;
 
 	protected createInnerContent(fieldId: string, _value: boolean, prop: InspectorPropertyModel) {
@@ -25,4 +24,4 @@ export class BooleanPropertyEditor extends PropertyEditor<boolean> {
 	}
 }
 
-customElements.define(BooleanPropertyEditor.tagName, BooleanPropertyEditor);
+customElements.define(ComponentTags.BooleanPropertyEditor, BooleanPropertyEditor);

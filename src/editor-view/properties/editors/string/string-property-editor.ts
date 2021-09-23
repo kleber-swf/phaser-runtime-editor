@@ -1,8 +1,8 @@
 import { InspectorPropertyModel } from 'data/inspector-data';
+import { ComponentTags } from 'component-tags';
 import { PropertyEditor } from '../property-editor';
 
 export class StringPropertyEditor extends PropertyEditor<string> {
-	public static readonly tagName: string = 'phred-string-property-editor';
 	private input: HTMLInputElement;
 
 	protected createInnerContent(fieldId: string, _value: string, prop: InspectorPropertyModel) {
@@ -26,4 +26,4 @@ export class StringPropertyEditor extends PropertyEditor<string> {
 	}
 }
 
-customElements.define(StringPropertyEditor.tagName, StringPropertyEditor);
+customElements.define(ComponentTags.StringPropertyEditor, StringPropertyEditor);

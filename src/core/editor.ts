@@ -1,7 +1,6 @@
 import { EditorData } from 'data/editor-data';
 import { InspectorData } from 'data/inspector-data';
 import { PhaserMeta } from 'data/phaser-meta';
-import { ReferenceImage } from 'scene-view/reference-image';
 import { ActionHandler } from './action-handler';
 import { History } from './history';
 import { Preferences } from './preferences';
@@ -15,7 +14,7 @@ class EditorClass {
 	public history: History;
 	public prefs: Preferences;
 
-	public referenceImage?: ReferenceImage;
+	// public referenceImage?: ReferenceImage;
 
 	public init(clearPrefs: boolean) {
 		this.data = new EditorData();
@@ -33,7 +32,7 @@ class EditorClass {
 
 	public disable() {
 		this.actions.enable();
-		if (this.referenceImage) this.prefs.referenceImage = false;
+		// if (this.referenceImage) this.prefs.referenceImage = false;
 	}
 }
 

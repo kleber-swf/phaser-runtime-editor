@@ -1,11 +1,10 @@
 import { InspectorPropertyModel } from 'data/inspector-data';
+import { ComponentTags } from 'component-tags';
 import { NumberPropertyEditor } from '../number/number-property-editor';
 import { PropertyEditor } from '../property-editor';
 import './rect-property-editor.scss';
 
 export class RectPropertyEditor extends PropertyEditor<PIXI.Rectangle> {
-	public static readonly tagName: string = 'phred-rect-property-editor';
-
 	private xinput: NumberPropertyEditor;
 	private yinput: NumberPropertyEditor;
 	private winput: NumberPropertyEditor;
@@ -22,22 +21,22 @@ export class RectPropertyEditor extends PropertyEditor<PIXI.Rectangle> {
 		const parent = this.appendChild(document.createElement('div'));
 		parent.classList.add('vertical-content');
 
-		const xinput = this.xinput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;
+		const xinput = this.xinput = document.createElement(ComponentTags.NumberPropertyEditor) as NumberPropertyEditor;
 		xinput.setContent({ name: 'x', typeHint: 'number', data: prop.data }, value.x, false, fieldId);
 		xinput.onchange = this.onInputChanged.bind(this);
 		parent.appendChild(xinput);
 
-		const yinput = this.yinput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;
+		const yinput = this.yinput = document.createElement(ComponentTags.NumberPropertyEditor) as NumberPropertyEditor;
 		yinput.setContent({ name: 'y', typeHint: 'number', data: prop.data }, value.y, false);
 		yinput.onchange = this.onInputChanged.bind(this);
 		parent.appendChild(yinput);
 
-		const winput = this.winput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;
+		const winput = this.winput = document.createElement(ComponentTags.NumberPropertyEditor) as NumberPropertyEditor;
 		winput.setContent({ name: 'width', typeHint: 'number', data: prop.data }, value.width, false);
 		winput.onchange = this.onInputChanged.bind(this);
 		parent.appendChild(winput);
 
-		const hinput = this.hinput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;
+		const hinput = this.hinput = document.createElement(ComponentTags.NumberPropertyEditor) as NumberPropertyEditor;
 		hinput.setContent({ name: 'height', typeHint: 'number', data: prop.data }, value.height, false);
 		hinput.onchange = this.onInputChanged.bind(this);
 		parent.appendChild(hinput);
@@ -88,4 +87,4 @@ export class RectPropertyEditor extends PropertyEditor<PIXI.Rectangle> {
 	}
 }
 
-customElements.define(RectPropertyEditor.tagName, RectPropertyEditor);
+customElements.define(ComponentTags.RectPropertyEditor, RectPropertyEditor);

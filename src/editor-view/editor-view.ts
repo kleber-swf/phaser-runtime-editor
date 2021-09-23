@@ -1,3 +1,4 @@
+import { ComponentTags } from 'component-tags';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { ActionsToolbar } from './actions/actions-toolbar';
@@ -8,8 +9,6 @@ import { PropertiesInspector } from './properties/inspector/properties-inspector
 import { Widget } from './widget/widget';
 
 export class EditorView extends Widget {
-	public static readonly tagName: string = 'phred-editor-view';
-
 	private actions: ActionsToolbar;
 	private gameContainer: HTMLElement;
 	private panels: Panel[] = [];
@@ -27,14 +26,14 @@ export class EditorView extends Widget {
 
 		this.createElements();
 
-		Editor.actions.addContainer(EditorView.tagName, this);
+		Editor.actions.addContainer(ComponentTags.EditorView, this);
 
 		// initialize panels
 		this.panels.forEach(panel => panel.init(game, root));
 	}
 
 	private createElements() {
-		const leftPanel = this.appendChild(document.createElement(Panel.tagName) as Panel);
+		const leftPanel = this.appendChild(document.createElement(ComponentTags.Panel) as Panel);
 		leftPanel.setSide('left');
 		leftPanel.classList.add('small');
 		this.panels.push(leftPanel);
@@ -42,7 +41,7 @@ export class EditorView extends Widget {
 		const content = this.appendChild(document.createElement('div'));
 		content.classList.add('phred-content');
 
-		this.actions = document.createElement(ActionsToolbar.tagName) as ActionsToolbar;
+		this.actions = document.createElement(ComponentTags.ActionsToolbar) as ActionsToolbar;
 		content.appendChild(this.actions);
 		this.actions.init();
 
@@ -51,16 +50,16 @@ export class EditorView extends Widget {
 		this.gameContainer.classList.add('phred-game-container');
 		content.appendChild(this.gameContainer);
 
-		const rightPanel = this.appendChild(document.createElement(Panel.tagName) as Panel);
+		const rightPanel = this.appendChild(document.createElement(ComponentTags.Panel) as Panel);
 		rightPanel.setSide('right');
 		rightPanel.classList.add('large');
 		this.panels.push(rightPanel);
 
-		const tree = document.createElement(ObjectTreeInspector.tagName) as ObjectTreeInspector;
+		const tree = document.createElement(ComponentTags.ObjectTreeInspector) as ObjectTreeInspector;
 		tree.id = 'phred-object-tree';
 		leftPanel.addInspector(tree);
 
-		const props = document.createElement(PropertiesInspector.tagName) as PropertiesInspector;
+		const props = document.createElement(ComponentTags.PropertiesInspector) as PropertiesInspector;
 		props.id = 'phred-properties-panel';
 		rightPanel.addInspector(props);
 	}
@@ -102,4 +101,4 @@ export class EditorView extends Widget {
 	}
 }
 
-customElements.define(EditorView.tagName, EditorView);
+customElements.define(ComponentTags.EditorView, EditorView);

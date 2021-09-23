@@ -1,15 +1,10 @@
+import { ComponentTags } from 'component-tags';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { DisabledUI } from 'disabled/disabled-ui';
 import { EditorView } from 'editor-view/editor-view';
-import { BooleanPropertyEditor } from 'editor-view/properties/editors/boolean/boolean-property-editor';
-import { NumberPropertyEditor } from 'editor-view/properties/editors/number/number-property-editor';
-import { PointPropertyEditor } from 'editor-view/properties/editors/point/point-property-editor';
-import { RectPropertyEditor } from 'editor-view/properties/editors/rect/rect-property-editor';
-import { StringPropertyEditor } from 'editor-view/properties/editors/string/string-property-editor';
-import { TextPropertyEditor } from 'editor-view/properties/editors/string/text-property-editor';
-import { ReferenceImage } from 'scene-view/reference-image';
+import { PluginConfig } from 'plugin';
 import { SceneView } from 'scene-view/scene-view';
 
 // TODO rename this class for God's sake
@@ -24,48 +19,42 @@ export class EditorWindow {
 	private editorView: EditorView;
 
 	private readonly game: Phaser.Game;
-	private readonly root: Container;
-	private readonly refImage?: PIXI.Sprite;
-	private readonly clearPrefs?: boolean;
+	private readonly config: PluginConfig;
 
 	public onshow: () => void;
 	public onhide: () => void;
 
-	constructor(game: Phaser.Game, root: Container, refImage?: PIXI.Sprite, clearPrefs?: boolean) {
+	constructor(game: Phaser.Game, config: PluginConfig) {
 		this.game = game;
-		this.root = root ?? game.world;
-		this.refImage = refImage;
-		this.clearPrefs = clearPrefs;
+		this.config = config;
 
 		this.disabledUI = new DisabledUI();
 		this.disabledUI.onclick = this.show.bind(this);
 	}
 
-	public start() {
-		this.disabledUI.enable();
-	}
+	public start() { this.disabledUI.enable(); }
 
 	private init() {
 		this._initialized = true;
 
-		Editor.init(this.clearPrefs);
+		Editor.init(this.config.clearPrefs);
 		this.setupInspectorData();
 
-		const scene = this.sceneView = new SceneView(this.game);
-		this.setupActions(scene);
+		this.sceneView = new SceneView(this.game);
+		this.editorView = document.createElement(ComponentTags.EditorView) as EditorView;
 
-		if (this.refImage) this.setupRefImage(this.refImage, this.root);
+		// if (this.refImage) this.setupRefImage(this.refImage, this.root);
 
-		this.editorView = document.createElement(EditorView.tagName) as EditorView;
-		Editor.actions.addContainer('body', document.body);
+		// this.setupActions(scene);
+		// Editor.actions.addContainer('body', document.body);
 	}
 
 	public show() {
 		this.disabledUI.disable();
 		if (!this._initialized) this.init();
 
-		this.sceneView.enable(this.root, this.game.stage);
-		this.editorView.enable(this.game, this.root);
+		this.sceneView.enable(this.config.root, this.game.stage);
+		this.editorView.enable(this.game, this.config.root);
 		Editor.enable();
 		if (this.onshow) this.onshow();
 	}
@@ -82,17 +71,17 @@ export class EditorWindow {
 	private setupInspectorData() {
 		Editor.inspectorData.addTypeEditors({
 			// basic types
-			string: StringPropertyEditor.tagName,
-			text: TextPropertyEditor.tagName,
-			number: NumberPropertyEditor.tagName,
-			boolean: BooleanPropertyEditor.tagName,
+			string: ComponentTags.StringPropertyEditor,
+			text: ComponentTags.TextPropertyEditor,
+			number: ComponentTags.NumberPropertyEditor,
+			boolean: ComponentTags.BooleanPropertyEditor,
 
 			// PIXI/Phaser types
-			point: PointPropertyEditor.tagName,
-			rect: RectPropertyEditor.tagName,
+			point: ComponentTags.PointPropertyEditor,
+			rect: ComponentTags.RectPropertyEditor,
 
 			// default
-			default: StringPropertyEditor.tagName,
+			default: ComponentTags.StringPropertyEditor,
 		});
 
 		Editor.inspectorData.addInspectableProperties([
@@ -291,15 +280,15 @@ export class EditorWindow {
 		);
 	}
 
-	private setupRefImage(refImage: PIXI.Sprite, root: Container) {
-		Editor.referenceImage = new ReferenceImage(this.game, refImage, root);
-		Editor.actions.add({
-			id: Actions.TOGGLE_REF_IMAGE,
-			label: 'reference',
-			icon: 'fa-image',
-			toggle: true,
-			state: () => Editor.prefs.referenceImage,
-			command: () => Editor.prefs.referenceImage = !Editor.prefs.referenceImage,
-		});
-	}
+	// private setupRefImage(refImage: PIXI.Sprite, root: Container) {
+	// 	Editor.referenceImage = new ReferenceImage(this.game, refImage, root);
+	// 	Editor.actions.add({
+	// 		id: Actions.TOGGLE_REF_IMAGE,
+	// 		label: 'reference',
+	// 		icon: 'fa-image',
+	// 		toggle: true,
+	// 		state: () => Editor.prefs.referenceImage,
+	// 		command: () => Editor.prefs.referenceImage = !Editor.prefs.referenceImage,
+	// 	});
+	// }
 }

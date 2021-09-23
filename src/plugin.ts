@@ -21,8 +21,10 @@ export class Plugin extends Phaser.Plugin {
 		super(game, game.plugins);
 		this.insertHead();
 		if (!config) config = {};
+		config.root = config.root ?? game.world
 		this.config = config;
-		this.editorWindow = new EditorWindow(game, config.root, config.refImage, config.clearPrefs);
+
+		this.editorWindow = new EditorWindow(game, config);
 		this.editorWindow.onshow = this.onEditorShow.bind(this);
 		this.editorWindow.onhide = this.onEditorHide.bind(this);
 		this.editorWindow.start();

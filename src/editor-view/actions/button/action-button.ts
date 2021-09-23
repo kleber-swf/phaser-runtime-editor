@@ -1,10 +1,10 @@
 import { Action } from 'core/action-handler';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
+import { ComponentTags } from 'component-tags';
 import './action-button.scss';
 
 export class ActionButton extends HTMLElement {
-	public static readonly tagName: string = 'phred-action-button';
 	private action: Action;
 
 	public setAction(action: Action) {
@@ -41,4 +41,4 @@ export class ActionButton extends HTMLElement {
 	}
 }
 
-customElements.define(ActionButton.tagName, ActionButton);
+customElements.define(ComponentTags.ActionButton, ActionButton);
