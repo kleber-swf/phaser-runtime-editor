@@ -1,5 +1,5 @@
+import { DataOrigin } from 'data/editor-data';
 import { Widget } from 'editor-view/widget/widget';
-import { DataOrigin } from 'index';
 import './inspector.scss';
 
 export abstract class Inspector extends Widget {

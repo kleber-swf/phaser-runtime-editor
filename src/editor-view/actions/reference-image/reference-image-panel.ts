@@ -1,7 +1,7 @@
+import { ComponentTags } from 'component-tags';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
-import { ComponentTags } from 'component-tags';
 import { ActionButton } from '../button/action-button';
 import './reference-image-panel.scss';
 
@@ -22,12 +22,12 @@ export class ReferenceImagePanel extends HTMLElement {
 		this.appendChild(slider);
 
 		Editor.prefs.onPreferenceChanged.add(this.onPreferenceChanged, this);
-		this.onPreferenceChanged('referenceImage', Editor.prefs.referenceImage);
+		this.onPreferenceChanged('refImage', Editor.prefs.refImage);
 		// slider.value = Editor.referenceImage.alpha.toString();
 	}
 
 	private onPreferenceChanged(pref: PreferenceKey, value: any) {
-		if (pref !== 'referenceImage') return;
+		if (pref !== 'refImage') return;
 		if (value) this.slider.removeAttribute('disabled');
 		else this.slider.setAttribute('disabled', 'true');
 	}

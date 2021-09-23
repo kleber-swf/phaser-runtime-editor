@@ -1,4 +1,5 @@
 import { ComponentTags } from 'component-tags';
+import { Actions } from 'core/actions';
 import { EditorData } from 'data/editor-data';
 import { InspectorData } from 'data/inspector-data';
 import { PhaserMeta } from 'data/phaser-meta';
@@ -22,7 +23,7 @@ class EditorClass {
 		this.inspectorData = this.createInspectorData();
 		this.meta = new PhaserMeta();
 
-		this.actions = new ActionHandler();
+		this.actions = this.createActions();
 		this.history = new History(this.data);
 		this.prefs = new Preferences(clearPrefs);
 	}
@@ -128,6 +129,106 @@ class EditorClass {
 		return data;
 	}
 
+	private createActions() {
+		const actions = new ActionHandler();
+		actions.add(
+			{
+				id: Actions.TOGGLE_ENABLED,
+				label: 'edit',
+				icon: 'fa-edit',
+				toggle: true,
+				shortcuts: ['ctrl+F2']
+			},
+
+			{
+				id: Actions.TOGGLE_SNAP,
+				label: 'snap',
+				icon: 'fa-border-all',
+				toggle: true,
+			},
+			{
+				id: Actions.TOGGLE_GIZMOS,
+				label: 'gizmos',
+				icon: 'fa-vector-square',
+				toggle: true,
+				hold: true,
+				shortcuts: ['ctrl+shift+Shift', 'ctrl+shift+Control'],
+			},
+			{
+				id: Actions.TOGGLE_GUIDES,
+				toggle: true,
+				label: 'guides',
+				icon: 'fa-compress',
+			},
+			{
+				id: Actions.UNDO,
+				label: 'undo',
+				icon: 'fa-undo-alt',
+				shortcuts: ['ctrl+z'],
+			},
+
+			{
+				id: Actions.PRINT_OBJECT,
+				label: 'print',
+				icon: 'fa-terminal',
+				shortcuts: ['ctrl+alt+p'],
+			},
+			{
+				id: Actions.DESELECT,
+				shortcuts: ['Escape'],
+			},
+
+			{
+				id: Actions.MOVE_UP_1,
+				shortcuts: ['ArrowUp'],
+				// command: () => scene.moveSelectedObject(0, -1)
+			},
+			{
+				id: Actions.MOVE_DOWN_1,
+				shortcuts: ['ArrowDown'],
+				// command: () => scene.moveSelectedObject(0, 1)
+			},
+			{
+				id: Actions.MOVE_LEFT_1,
+				shortcuts: ['ArrowLeft'],
+				// command: () => scene.moveSelectedObject(-1, 0)
+			},
+			{
+				id: Actions.MOVE_RIGHT_1,
+				shortcuts: ['ArrowRight'],
+				// command: () => scene.moveSelectedObject(1, 0)
+			},
+			{
+				id: Actions.MOVE_UP_10,
+				shortcuts: ['shift+ArrowUp'],
+				// command: () => scene.moveSelectedObject(0, -10)
+			},
+			{
+				id: Actions.MOVE_DOWN_10,
+				shortcuts: ['shift+ArrowDown'],
+				// command: () => scene.moveSelectedObject(0, 10)
+			},
+			{
+				id: Actions.MOVE_LEFT_10,
+				shortcuts: ['shift+ArrowLeft'],
+				// command: () => scene.moveSelectedObject(-10, 0)
+			},
+			{
+				id: Actions.MOVE_RIGHT_10,
+				shortcuts: ['shift+ArrowRight'],
+				// command: () => scene.moveSelectedObject(10, 0)
+			},
+		);
+
+		return actions;
+	}
+
+	public setupInitialActions() {
+		const actions = this.actions;
+		this.prefs.setupActions(actions);
+		this.history.setupActions(actions);
+		this.data.setupActions(actions);
+	}
 
 	public enable() {
 		this.actions.enable();

@@ -2,11 +2,11 @@ export interface Action {
 	id: string;
 	label?: string;
 	icon?: string;
-	shortcut?: string;
+	shortcuts?: string[];
 	toggle?: boolean;
 	hold?: boolean;
 	on?: string;
-	command: () => void;
+	command?: () => void;
 	state?: () => any;
 }
 
@@ -20,9 +20,17 @@ export class ActionHandler {
 	public getActions() { return Object.values(this.actions); }
 	public getAction(id: string) { return id in this.actionById ? this.actionById[id] : null; }
 
-	public addContainer(id: string, container: HTMLElement) {
-		this.containers[id] = container;
+	public setActionCommand(id: string, command: () => void, state?: () => boolean) {
+		const action = this.getAction(id);
+		if (!action) {
+			console.warn(`Could not find action ${id}`);
+			return;
+		}
+		action.command = command;
+		action.state = state;
 	}
+
+	public addContainer(id: string, container: HTMLElement) { this.containers[id] = container; }
 
 	public enable() {
 		Object.keys(this.containers).forEach(cid => {
@@ -46,10 +54,12 @@ export class ActionHandler {
 			if (!(cid in this.actions)) this.actions[cid] = {};
 			const container = this.actions[cid];
 
-			if (action.shortcut) {
-				if (action.shortcut in container)
-					throw new Error(`There is already an action with shortcut ${action.shortcut}: ${container[action.shortcut].label}`);
-				container[action.shortcut] = action;
+			if (action.shortcuts) {
+				action.shortcuts.forEach(s => {
+					if (s in container)
+						throw new Error(`There is already an action with shortcut ${s}: ${container[s].label}`);
+					container[s] = action;
+				});
 			}
 
 			this.actionById[action.id] = action;
@@ -64,7 +74,7 @@ export class ActionHandler {
 			+ e.key;
 		if (k in actions) {
 			const action = actions[k];
-			action.command();
+			action.command?.();
 			if (action.toggle && action.hold)
 				this._holdingToggleAction = action;
 			e.preventDefault();
@@ -73,7 +83,7 @@ export class ActionHandler {
 
 	private onKeyUp() {
 		if (!this._holdingToggleAction) return;
-		this._holdingToggleAction.command();
+		this._holdingToggleAction.command?.();
 		this._holdingToggleAction = null;
 	}
 }

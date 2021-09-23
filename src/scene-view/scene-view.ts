@@ -1,3 +1,5 @@
+import { ActionHandler } from 'core/action-handler';
+import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { DragUtil } from '../util/drag.util';
@@ -44,6 +46,18 @@ export class SceneView extends Phaser.Group {
 
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged.bind(this));
 		Editor.data.onSelectedObjectChanged.add(this.onObjectSelected.bind(this));
+	}
+
+	public setupActions(actions: ActionHandler) {
+		actions.setActionCommand(Actions.MOVE_UP_1, () => this.moveSelectedObject(0, -1));
+		actions.setActionCommand(Actions.MOVE_DOWN_1, () => this.moveSelectedObject(0, 1));
+		actions.setActionCommand(Actions.MOVE_LEFT_1, () => this.moveSelectedObject(-1, 0));
+		actions.setActionCommand(Actions.MOVE_RIGHT_1, () => this.moveSelectedObject(1, 0));
+
+		actions.setActionCommand(Actions.MOVE_UP_10, () => this.moveSelectedObject(0, -10));
+		actions.setActionCommand(Actions.MOVE_DOWN_10, () => this.moveSelectedObject(0, 10));
+		actions.setActionCommand(Actions.MOVE_LEFT_10, () => this.moveSelectedObject(-10, 0));
+		actions.setActionCommand(Actions.MOVE_RIGHT_10, () => this.moveSelectedObject(10, 0));
 	}
 
 	public enable(root: Container, parent: Phaser.Stage) {

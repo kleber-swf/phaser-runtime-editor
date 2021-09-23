@@ -14,11 +14,11 @@ export class ReferenceImage extends Phaser.Group {
 		this._parent = root;
 
 		Editor.prefs.onPreferenceChanged.add(this.onPreferenceChanged, this);
-		this.onPreferenceChanged('referenceImage', Editor.prefs.referenceImage);
+		this.onPreferenceChanged('refImage', Editor.prefs.refImage);
 	}
 
 	private onPreferenceChanged(pref: PreferenceKey, value: any) {
-		if (pref !== 'referenceImage') return;
+		if (pref !== 'refImage') return;
 		if (value) this.show();
 		else this.hide();
 	}

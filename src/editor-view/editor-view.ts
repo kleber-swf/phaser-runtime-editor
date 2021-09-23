@@ -1,4 +1,5 @@
 import { ComponentTags } from 'component-tags';
+import { ActionHandler } from 'core/action-handler';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { ActionsToolbar } from './actions/actions-toolbar';
@@ -31,6 +32,8 @@ export class EditorView extends Widget {
 		// initialize panels
 		this.panels.forEach(panel => panel.init(game, root));
 	}
+
+	public setupActions(actions: ActionHandler) { }
 
 	private createElements() {
 		const leftPanel = this.appendChild(document.createElement(ComponentTags.Panel) as Panel);
