@@ -4,6 +4,7 @@ import { Editor } from 'core/editor';
 import { DisabledUI } from 'disabled/disabled-ui';
 import { EditorView } from 'editor-view/editor-view';
 import { PluginConfig } from 'plugin';
+import { ReferenceImage } from 'scene-view/reference-image';
 import { SceneView } from 'scene-view/scene-view';
 
 export class EditorStateHandler {
@@ -13,6 +14,7 @@ export class EditorStateHandler {
 
 	private sceneView: SceneView;
 	private editorView: EditorView;
+	private refImage: ReferenceImage;
 
 	private readonly game: Phaser.Game;
 	private readonly config: PluginConfig;
@@ -32,13 +34,12 @@ export class EditorStateHandler {
 
 	private init() {
 		this._initialized = true;
-		Editor.init(this.config.clearPrefs);
+		Editor.init(this.config);
 
 		this.sceneView = new SceneView(this.game);
 		this.editorView = document.createElement(ComponentTags.EditorView) as EditorView;
 
-		// if (this.refImage) this.setupRefImage(this.refImage, this.root);
-
+		this.refImage = new ReferenceImage(this.game, this.config.root);
 		this.setupInitialActions();
 	}
 
@@ -62,8 +63,10 @@ export class EditorStateHandler {
 		this.disabledUI.disable();
 		if (!this._initialized) this.init();
 
+		this.refImage.image = this.config.refImage;
 		this.sceneView.enable(this.config.root, this.game.stage);
-		this.editorView.enable(this.game, this.config.root);
+		this.editorView.enable(this.game, this.config);
+
 		Editor.enable();
 		if (this.onshow) this.onshow();
 	}

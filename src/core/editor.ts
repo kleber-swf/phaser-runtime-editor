@@ -3,6 +3,7 @@ import { Actions } from 'core/actions';
 import { EditorData } from 'data/editor-data';
 import { InspectorData } from 'data/inspector-data';
 import { PhaserMeta } from 'data/phaser-meta';
+import { PluginConfig } from 'plugin';
 import { ActionHandler } from './action-handler';
 import { History } from './history';
 import { Preferences } from './preferences';
@@ -16,16 +17,14 @@ class EditorClass {
 	public history: History;
 	public prefs: Preferences;
 
-	// public referenceImage?: ReferenceImage;
-
-	public init(clearPrefs: boolean) {
+	public init(config: PluginConfig) {
 		this.data = new EditorData();
 		this.inspectorData = this.createInspectorData();
 		this.meta = new PhaserMeta();
 
 		this.actions = this.createActions();
 		this.history = new History(this.data);
-		this.prefs = new Preferences(clearPrefs);
+		this.prefs = new Preferences(config.clearPrefs);
 	}
 
 	private createInspectorData() {
@@ -236,7 +235,6 @@ class EditorClass {
 
 	public disable() {
 		this.actions.enable();
-		// if (this.referenceImage) this.prefs.referenceImage = false;
 	}
 }
 

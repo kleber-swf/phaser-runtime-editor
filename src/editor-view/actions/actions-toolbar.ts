@@ -1,12 +1,15 @@
+import { ComponentTags } from 'component-tags';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { Widget } from 'editor-view/widget/widget';
-import { ComponentTags } from 'component-tags';
+import { PluginConfig } from 'plugin';
+import { ReferenceImage } from 'scene-view/reference-image';
 import './actions-toolbar.scss';
 import { ActionButton } from './button/action-button';
+import { ReferenceImagePanel } from './reference-image/reference-image-panel';
 
 export class ActionsToolbar extends Widget {
-	public init() {
+	public init(config: PluginConfig) {
 		this.createButton(Actions.TOGGLE_ENABLED);
 		this.createSeparator();
 		this.createButton(Actions.TOGGLE_SNAP);
@@ -18,13 +21,6 @@ export class ActionsToolbar extends Widget {
 		this.createButton(Actions.UNDO);
 		this.createSeparator();
 		this.createSpacer();
-
-		// if (!Editor.referenceImage) return;
-		// this.createSeparator();
-
-		// const refImage = document.createElement(ComponentTags.ReferenceImagePanel) as ReferenceImagePanel;
-		// this.appendChild(refImage);
-		// refImage.init();
 	}
 
 	public enable() { }
@@ -36,6 +32,12 @@ export class ActionsToolbar extends Widget {
 		const btn = document.createElement(ComponentTags.ActionButton) as ActionButton;
 		btn.setAction(action);
 		this.appendChild(btn);
+	}
+
+	public createRefImagePanel(image: ReferenceImage) {
+		const refImage = document.createElement(ComponentTags.ReferenceImagePanel) as ReferenceImagePanel;
+		this.appendChild(refImage);
+		refImage.init(image);
 	}
 
 	private createSeparator() {

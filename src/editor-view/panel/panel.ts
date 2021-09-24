@@ -6,6 +6,7 @@ import { ComponentTags } from 'component-tags';
 import { PanelSide } from 'types';
 import './panel.scss';
 import { ResizeHandle } from './resize-handle/resize-handle';
+import { PluginConfig } from 'plugin';
 
 export class Panel extends Widget {
 	private readonly inspectors: Inspector[] = [];
@@ -25,11 +26,11 @@ export class Panel extends Widget {
 		this.inspectors.forEach(p => p.selectObject(obj, from));
 	}
 
-	public init(game: Phaser.Game, root: Container) {
+	public init(game: Phaser.Game, config: PluginConfig) {
 		const handle = document.createElement(ComponentTags.ResizeHandle) as ResizeHandle;
 		handle.init(this, this.side);
 		this.appendChild(handle);
-		this.inspectors.forEach(inspector => inspector.init(game, root));
+		this.inspectors.forEach(inspector => inspector.init(game, config));
 		this.style.width = Editor.prefs.getPanelSize(this.side);
 	}
 

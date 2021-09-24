@@ -2,6 +2,7 @@ import { ComponentTags } from 'component-tags';
 import { ActionHandler } from 'core/action-handler';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
+import { PluginConfig } from 'plugin';
 import { ActionsToolbar } from './actions/actions-toolbar';
 import './editor-view.scss';
 import { ObjectTreeInspector } from './object-tree/inspector/object-tree-inspector';
@@ -10,32 +11,27 @@ import { PropertiesInspector } from './properties/inspector/properties-inspector
 import { Widget } from './widget/widget';
 
 export class EditorView extends Widget {
-	private actions: ActionsToolbar;
+	private game: Phaser.Game;
+	private gameParentElement: HTMLElement;
 	private gameContainer: HTMLElement;
+	private actions: ActionsToolbar;
 	private panels: Panel[] = [];
 
 	private _initialized = false;
 	private _enabled = false;
 
-	private game: Phaser.Game;
-	private gameParentElement: HTMLElement;
-
-	private init(game: Phaser.Game, root: Container) {
+	private init(game: Phaser.Game, config: PluginConfig) {
 		this.game = game;
 		this._initialized = true;
 		Editor.data.onSelectedObjectChanged.add(this.selectObject, this);
-
-		this.createElements();
-
 		Editor.actions.addContainer(ComponentTags.EditorView, this);
-
-		// initialize panels
-		this.panels.forEach(panel => panel.init(game, root));
+		this.createElements(config);
+		this.panels.forEach(panel => panel.init(game, config));
 	}
 
-	public setupActions(actions: ActionHandler) { }
+	public setupActions(_actions: ActionHandler) { }
 
-	private createElements() {
+	private createElements(config: PluginConfig) {
 		const leftPanel = this.appendChild(document.createElement(ComponentTags.Panel) as Panel);
 		leftPanel.setSide('left');
 		leftPanel.classList.add('small');
@@ -46,7 +42,7 @@ export class EditorView extends Widget {
 
 		this.actions = document.createElement(ComponentTags.ActionsToolbar) as ActionsToolbar;
 		content.appendChild(this.actions);
-		this.actions.init();
+		this.actions.init(config);
 
 		this.gameContainer = document.createElement('div');
 		this.gameContainer.id = 'phred-game-container';
@@ -67,10 +63,10 @@ export class EditorView extends Widget {
 		rightPanel.addInspector(props);
 	}
 
-	public enable(game: Phaser.Game, root: Container) {
+	public enable(game: Phaser.Game, config: PluginConfig) {
 		if (this._enabled) return;
 		this._enabled = true;
-		if (!this._initialized) this.init(game, root);
+		if (!this._initialized) this.init(game, config);
 
 		this.panels.forEach(panel => panel.enable());
 		this.addGameToContainer(game);
