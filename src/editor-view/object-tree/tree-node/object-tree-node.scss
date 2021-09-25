@@ -1,0 +1,76 @@
+@import 'colors';
+
+phred-object-tree-node {
+	display: inline-block;
+	cursor: pointer;
+	flex: 1;
+	min-width: 100%;
+
+	&.selected {
+		& > .node-head {
+			background-color: $primary-color;
+			color: $on-primary;
+		}
+	}
+
+	&.object-invisible {
+		.node-name {
+			opacity: 0.5;
+		}
+	}
+
+	&.collapsed {
+		& > .node-head > .collapse-icon {
+			transform: rotate(-90deg);
+		}
+		& > .node-children {
+			display: none;
+		}
+	}
+
+	&.invisible {
+		& > .node-head {
+			display: none;
+		}
+	}
+
+	.node-head {
+		height: 26px;
+		display: flex;
+		align-items: center;
+		justify-content: stretch;
+		padding: 0;
+
+		.fas {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.collapse-icon {
+			width: 26px;
+			height: 26px;
+			margin-right: 2px;
+			transition: transform 0.2s;
+		}
+
+		.node-icon {
+			display: inline-block;
+			width: 16px;
+			height: 16px;
+			margin: 0 6px 0 0;
+		}
+
+		.node-name {
+			display: inline-block;
+			white-space: nowrap;
+			padding-right: 10px;
+		}
+	}
+
+	.node-children {
+		margin-left: 16px;
+		overflow: hidden;
+		display: flex;
+	}
+}

@@ -1,0 +1,18 @@
+$primary-color: #2980b9;
+$on-primary: #f2f2f2;
+
+$background-color: #232323;
+$on-background: #f2f2f2;
+
+$border-color: #1b1b1b;
+$shadow-color: rgba(#111, 0.6);
+
+$focused-text-color: $on-background;
+$unfocused-text-color: darken($on-background, 20%);
+$disabled-text-color: rgba($on-background, 0.5);
+
+$button-text-color: darken($on-background, 40%);
+
+$input-background: rgba(white, 0.05);
+$input-foreground: $on-background;
+$focused-input-border: rgba($on-background, 0.3);

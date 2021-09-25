@@ -1,0 +1,36 @@
+@import 'colors';
+
+$handle-width: 5px;
+
+phred-panel {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: stretch;
+	z-index: 2;
+	position: relative;
+	overflow: visible;
+	min-width: 100px;
+
+	&.large {
+		width: 300px;
+		@media (max-width: 1600px) {
+			width: 250px;
+		}
+	}
+
+	&.small {
+		width: 250px;
+		@media (max-width: 1600px) {
+			width: 200px;
+		}
+	}
+
+	&.left {
+		box-shadow: 4px 0px 4px $shadow-color;
+	}
+
+	&.right {
+		box-shadow: -4px 0px 4px $shadow-color;
+	}
+}

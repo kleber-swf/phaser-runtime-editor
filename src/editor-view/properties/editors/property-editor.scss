@@ -1,0 +1,67 @@
+@import 'colors';
+
+.property-editor {
+	display: flex;
+	flex-direction: row;
+	padding: 0 2px;
+
+	&.has-children {
+		padding: 8px 0;
+
+		& > .property-content {
+			padding-right: 0;
+		}
+	}
+
+	.property-title {
+		min-width: 25%;
+		padding: 0 2px;
+		overflow: hidden;
+
+		label {
+			font-size: 14px;
+			color: $unfocused-text-color;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			display: inline-block;
+			width: 100%;
+			padding: 2px 6px;
+		}
+	}
+
+	.property-content {
+		flex: 1;
+		color: $input-foreground;
+		padding: 1px 4px 1px 0;
+		display: flex;
+	}
+
+	.copy-button {
+		width: 20px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0.5;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		&:active > i {
+			transform: translateY(1px);
+		}
+
+		i {
+			font-size: 10px;
+		}
+	}
+
+	.vertical-content {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: stretch;
+		margin: 0;
+		flex: 1;
+	}
+}

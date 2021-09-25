@@ -1,0 +1,8 @@
+{
+	"directory": "./src",
+	"delete": true,
+	"location": "top",
+	"structure": "flat",
+	"singleQuotes": true,
+	"exclude": "src/[^/]+\\.d\\.ts"
+}

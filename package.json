@@ -1,25 +1,59 @@
 {
-	"name": "phaser-runtime-editor",
-	"version": "0.0.6",
-	"description": "A simple plugin to edit a Phaser 2 game at runtime",
-	"main": "dist/phaser-runtime-editor.js",
-	"keywords": [
-		"phaser",
-		"phaser-2",
-		"phaser-ce",
-		"debug",
-		"editor",
-		"runtime"
-	],
+	"name": "@kleber-swf/phaser-runtime-editor",
+	"version": "0.1.0",
+	"description": "A runtime editor for Phaser-CE projects",
 	"author": "Kleber Silva <kleber.swf@gmail.com>",
 	"license": "MIT",
+	"keywords": [
+		"phaser-ce",
+		"runtime",
+		"editor",
+		"scene",
+		"game",
+		"development",
+		"gamedev"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/kleber-swf/phaser-runtime-editor.git"
+	},
+	"bugs": {
+		"url": "https://github.com/kleber-swf/phaser-runtime-editor/issues"
+	},
+	"homepage": "https://github.com/kleber-swf/phaser-runtime-editor#readme",
+	"publishConfig": {
+		"access": "public"
+	},
+	"main": "dist/phaser-runtime-editor.js",
+	"styles": "dist/phaser-runtime-editor.css",
+	"input": "src/index.ts",
+	"module": "PhaserRuntimeEditor",
 	"scripts": {
-		"start": "rollup -c -w rollup.config.js",
-		"build": "rollup -c rollup.config.js"
+		"dev": "rollup -w -c ./config/rollup.config.dev.js",
+		"predev": "npm run barrel",
+		"barrel": "barrelsby -c ./config/barrelsby.json",
+		"example": "browser-sync start -c ./config/bs-config.js",
+		"prebuild": "rm -rf dist; npm run barrel",
+		"build": "rollup -c ./config/rollup.config.js"
+	},
+	"dependencies": {
+		"phaser-ce": "^2.18.0"
 	},
 	"devDependencies": {
-		"phaser-ce": "^2.16.1",
-		"rollup": "^1.32.1"
-	},
-	"dependencies": {}
+		"@rollup/plugin-commonjs": "^20.0.0",
+		"@rollup/plugin-node-resolve": "^13.0.4",
+		"@rollup/plugin-typescript": "^8.2.5",
+		"autoprefixer": "^10.3.3",
+		"barrelsby": "^2.2.0",
+		"browser-sync": "^2.27.5",
+		"node-sass": "^6.0.1",
+		"postcss": "^8.3.6",
+		"rollup": "^2.56.2",
+		"rollup-plugin-browsersync": "^1.3.3",
+		"rollup-plugin-scss": "^3.0.0",
+		"rollup-plugin-terser": "^7.0.2",
+		"terser": "^5.7.1",
+		"tslib": "^2.3.1",
+		"typescript": "^4.3.5"
+	}
 }
