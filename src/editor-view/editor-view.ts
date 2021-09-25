@@ -1,5 +1,8 @@
+import { ComponentTags } from 'component-tags';
+import { ActionHandler } from 'core/action-handler';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
+import { PluginConfig } from 'plugin';
 import { ActionsToolbar } from './actions/actions-toolbar';
 import './editor-view.scss';
 import { ObjectTreeInspector } from './object-tree/inspector/object-tree-inspector';
@@ -8,33 +11,28 @@ import { PropertiesInspector } from './properties/inspector/properties-inspector
 import { Widget } from './widget/widget';
 
 export class EditorView extends Widget {
-	public static readonly tagName: string = 'phred-editor-view';
-
-	private actions: ActionsToolbar;
+	private game: Phaser.Game;
+	private gameParentElement: HTMLElement;
 	private gameContainer: HTMLElement;
+	private actions: ActionsToolbar;
 	private panels: Panel[] = [];
 
 	private _initialized = false;
 	private _enabled = false;
 
-	private game: Phaser.Game;
-	private gameParentElement: HTMLElement;
-
-	private init(game: Phaser.Game, root: Container) {
+	private init(game: Phaser.Game, config: PluginConfig) {
 		this.game = game;
 		this._initialized = true;
 		Editor.data.onSelectedObjectChanged.add(this.selectObject, this);
-
+		Editor.actions.addContainer(ComponentTags.EditorView, this);
 		this.createElements();
-
-		Editor.actions.addContainer(EditorView.tagName, this);
-
-		// initialize panels
-		this.panels.forEach(panel => panel.init(game, root));
+		this.panels.forEach(panel => panel.init(game, config));
 	}
 
+	public setupActions(_actions: ActionHandler) { }
+
 	private createElements() {
-		const leftPanel = this.appendChild(document.createElement(Panel.tagName) as Panel);
+		const leftPanel = this.appendChild(document.createElement(ComponentTags.Panel) as Panel);
 		leftPanel.setSide('left');
 		leftPanel.classList.add('small');
 		this.panels.push(leftPanel);
@@ -42,7 +40,7 @@ export class EditorView extends Widget {
 		const content = this.appendChild(document.createElement('div'));
 		content.classList.add('phred-content');
 
-		this.actions = document.createElement(ActionsToolbar.tagName) as ActionsToolbar;
+		this.actions = document.createElement(ComponentTags.ActionsToolbar) as ActionsToolbar;
 		content.appendChild(this.actions);
 		this.actions.init();
 
@@ -51,24 +49,24 @@ export class EditorView extends Widget {
 		this.gameContainer.classList.add('phred-game-container');
 		content.appendChild(this.gameContainer);
 
-		const rightPanel = this.appendChild(document.createElement(Panel.tagName) as Panel);
+		const rightPanel = this.appendChild(document.createElement(ComponentTags.Panel) as Panel);
 		rightPanel.setSide('right');
 		rightPanel.classList.add('large');
 		this.panels.push(rightPanel);
 
-		const tree = document.createElement(ObjectTreeInspector.tagName) as ObjectTreeInspector;
+		const tree = document.createElement(ComponentTags.ObjectTreeInspector) as ObjectTreeInspector;
 		tree.id = 'phred-object-tree';
 		leftPanel.addInspector(tree);
 
-		const props = document.createElement(PropertiesInspector.tagName) as PropertiesInspector;
+		const props = document.createElement(ComponentTags.PropertiesInspector) as PropertiesInspector;
 		props.id = 'phred-properties-panel';
 		rightPanel.addInspector(props);
 	}
 
-	public enable(game: Phaser.Game, root: Container) {
+	public enable(game: Phaser.Game, config: PluginConfig) {
 		if (this._enabled) return;
 		this._enabled = true;
-		if (!this._initialized) this.init(game, root);
+		if (!this._initialized) this.init(game, config);
 
 		this.panels.forEach(panel => panel.enable());
 		this.addGameToContainer(game);
@@ -102,4 +100,4 @@ export class EditorView extends Widget {
 	}
 }
 
-customElements.define(EditorView.tagName, EditorView);
+customElements.define(ComponentTags.EditorView, EditorView);

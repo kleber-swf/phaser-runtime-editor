@@ -1,4 +1,5 @@
 import { PhaserObjectType } from 'data/phaser-meta';
+import { ComponentTags } from 'component-tags';
 import { ObjectTreeNodeModel } from '../model/object-tree-model';
 import './object-tree-node.scss';
 
@@ -6,8 +7,6 @@ const SELECTED_CLASS = 'selected';
 const COLLAPSED_CLASS = 'collapsed';
 
 export class ObjectTreeNode extends HTMLElement {
-	public static readonly tagName: string = 'phred-object-tree-node';
-
 	public model: ObjectTreeNodeModel;
 	private label: HTMLElement;
 	private collapseIcon: HTMLElement;
@@ -82,4 +81,4 @@ export class ObjectTreeNode extends HTMLElement {
 	}
 }
 
-customElements.define(ObjectTreeNode.tagName, ObjectTreeNode);
+customElements.define(ComponentTags.ObjectTreeNode, ObjectTreeNode);

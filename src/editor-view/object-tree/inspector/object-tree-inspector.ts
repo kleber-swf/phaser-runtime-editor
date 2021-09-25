@@ -1,24 +1,25 @@
+import { ComponentTags } from 'component-tags';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
+import { PluginConfig } from 'plugin';
 import { ObjectTreeModel, ObjectTreeNodeModel } from '../model/object-tree-model';
 import { SearchField } from '../search-field/search-field';
 import { ObjectTreeNode } from '../tree-node/object-tree-node';
 import './object-tree-inspector.scss';
 
 export class ObjectTreeInspector extends Inspector {
-	public static readonly tagName: string = 'phred-object-tree-inspector';
 	private readonly model: ObjectTreeModel = new ObjectTreeModel();
 
-	public init(game: Phaser.Game, root: Container) {
-		super.init(game, root);
+	public init(game: Phaser.Game, config: PluginConfig) {
+		super.init(game, config);
 		this.title = 'Objects';
 
-		const el = this.headerElement.appendChild(document.createElement(SearchField.tagName)) as SearchField;
+		const el = this.headerElement.appendChild(document.createElement(ComponentTags.SearchField)) as SearchField;
 		el.onValueChanged = this.filterContent.bind(this);
 
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
-		this.setRoot(root);
+		this.setRoot(config.root);
 	}
 
 	private setRoot(root: PIXI.DisplayObjectContainer | Phaser.Stage) {
@@ -32,7 +33,7 @@ export class ObjectTreeInspector extends Inspector {
 		const m = model.getById(obj.__instanceId);
 		if (!m) throw new Error(`Model not found for ${obj.__instanceId}`);
 
-		const node = parent.appendChild(document.createElement(ObjectTreeNode.tagName)) as ObjectTreeNode;
+		const node = parent.appendChild(document.createElement(ComponentTags.ObjectTreeNode)) as ObjectTreeNode;
 		node.classList.add(`level-${m.level}`);
 		node.onNodeSelect = this.onNodeSelected.bind(this);
 		node.onCollapseStateChanged = this.onNodeCollapseStateChanged.bind(this);
@@ -111,4 +112,4 @@ export class ObjectTreeInspector extends Inspector {
 	}
 }
 
-customElements.define(ObjectTreeInspector.tagName, ObjectTreeInspector);
+customElements.define(ComponentTags.ObjectTreeInspector, ObjectTreeInspector);

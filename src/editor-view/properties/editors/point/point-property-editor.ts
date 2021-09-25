@@ -1,11 +1,10 @@
 import { InspectorPropertyModel } from 'data/inspector-data';
+import { ComponentTags } from 'component-tags';
 import { NumberPropertyEditor } from '../number/number-property-editor';
 import { PropertyEditor } from '../property-editor';
 import './point-property-editor.scss';
 
 export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
-	public static readonly tagName: string = 'phred-point-property-editor';
-
 	private xinput: NumberPropertyEditor;
 	private yinput: NumberPropertyEditor;
 	private internalValue = new Phaser.Point();
@@ -19,12 +18,12 @@ export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 		const parent = this.appendChild(document.createElement('div'));
 		parent.classList.add('vertical-content')
 
-		const xinput = this.xinput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;
+		const xinput = this.xinput = document.createElement(ComponentTags.NumberPropertyEditor) as NumberPropertyEditor;
 		xinput.setContent({ name: 'x', typeHint: 'number', data: prop.data }, value.x, false, fieldId);
 		xinput.onchange = this.onInputChanged.bind(this);
 		parent.appendChild(xinput);
 
-		const yinput = this.yinput = document.createElement(NumberPropertyEditor.tagName) as NumberPropertyEditor;
+		const yinput = this.yinput = document.createElement(ComponentTags.NumberPropertyEditor) as NumberPropertyEditor;
 		yinput.setContent({ name: 'y', typeHint: 'number', data: prop.data }, value.y, false);
 		yinput.onchange = this.onInputChanged.bind(this);
 		parent.appendChild(yinput);
@@ -61,4 +60,4 @@ export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 	}
 }
 
-customElements.define(PointPropertyEditor.tagName, PointPropertyEditor);
+customElements.define(ComponentTags.PointPropertyEditor, PointPropertyEditor);

@@ -1,13 +1,11 @@
-import { Widget } from 'editor-view/widget/widget';
+import { ComponentTags } from 'component-tags';
+import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
+import { Widget } from 'editor-view/widget/widget';
 import './actions-toolbar.scss';
 import { ActionButton } from './button/action-button';
-import { Actions } from 'actions';
-import { ReferenceImagePanel } from './reference-image/reference-image-panel';
 
 export class ActionsToolbar extends Widget {
-	public static readonly tagName: string = 'phred-actions-toolbar';
-
 	public init() {
 		this.createButton(Actions.TOGGLE_ENABLED);
 		this.createSeparator();
@@ -20,13 +18,6 @@ export class ActionsToolbar extends Widget {
 		this.createButton(Actions.UNDO);
 		this.createSeparator();
 		this.createSpacer();
-
-		if (!Editor.referenceImage) return;
-		this.createSeparator();
-
-		const refImage = document.createElement(ReferenceImagePanel.tagName) as ReferenceImagePanel;
-		this.appendChild(refImage);
-		refImage.init();
 	}
 
 	public enable() { }
@@ -35,7 +26,7 @@ export class ActionsToolbar extends Widget {
 	private createButton(actionId: string) {
 		const action = Editor.actions.getAction(actionId);
 		if (!action) return;
-		const btn = document.createElement(ActionButton.tagName) as ActionButton;
+		const btn = document.createElement(ComponentTags.ActionButton) as ActionButton;
 		btn.setAction(action);
 		this.appendChild(btn);
 	}
@@ -51,4 +42,4 @@ export class ActionsToolbar extends Widget {
 	}
 }
 
-customElements.define(ActionsToolbar.tagName, ActionsToolbar);
+customElements.define(ComponentTags.ActionsToolbar, ActionsToolbar);

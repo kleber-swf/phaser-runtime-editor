@@ -1,9 +1,9 @@
 import { Editor } from 'core/editor';
+import { ComponentTags } from 'component-tags';
 import { PanelSide } from 'types';
 import './resize-handle.scss';
 
 export class ResizeHandle extends HTMLElement {
-	public static readonly tagName: string = 'phred-resize-handle';
 	private panel: HTMLElement;
 	private side: PanelSide;
 
@@ -54,4 +54,4 @@ export class ResizeHandle extends HTMLElement {
 	}
 }
 
-customElements.define(ResizeHandle.tagName, ResizeHandle);
+customElements.define(ComponentTags.ResizeHandle, ResizeHandle);

@@ -1,15 +1,16 @@
+import { ComponentTags } from 'component-tags';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { InspectorPropertyModel } from 'data/inspector-data';
 import { Inspector } from 'editor-view/inspector/inspector';
+import { PluginConfig } from 'plugin';
 import { PropertyEditor } from '../editors/property-editor';
 
 export class PropertiesInspector extends Inspector {
-	public static readonly tagName: string = 'phred-properties-inspector';
 	private editors: Record<string, PropertyEditor<any>> = {};
 
-	public init(game: Phaser.Game, root: Container) {
-		super.init(game, root);
+	public init(game: Phaser.Game, config: PluginConfig) {
+		super.init(game, config);
 		this.title = 'Properties';
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 	}
@@ -71,4 +72,4 @@ export class PropertiesInspector extends Inspector {
 	}
 }
 
-customElements.define(PropertiesInspector.tagName, PropertiesInspector);
+customElements.define(ComponentTags.PropertiesInspector, PropertiesInspector);

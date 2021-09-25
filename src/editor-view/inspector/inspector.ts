@@ -1,5 +1,6 @@
+import { DataOrigin } from 'data/editor-data';
 import { Widget } from 'editor-view/widget/widget';
-import { DataOrigin } from 'index';
+import { PluginConfig } from 'plugin';
 import './inspector.scss';
 
 export abstract class Inspector extends Widget {
@@ -12,7 +13,7 @@ export abstract class Inspector extends Widget {
 	protected contentElement: HTMLElement;
 	protected selectedObject: PIXI.DisplayObject;
 
-	public init(_game: Phaser.Game, _root: Container) {
+	public init(_game: Phaser.Game, _config: PluginConfig) {
 		this.classList.add('phred-inspector');
 
 		this.headerElement = this.appendChild(document.createElement('h1'));

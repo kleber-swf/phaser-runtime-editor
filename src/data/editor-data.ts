@@ -1,3 +1,6 @@
+import { ActionHandler } from 'core/action-handler';
+import { Actions } from 'core/actions';
+
 export enum DataOrigin {
 	ACTION = 0,
 	SCENE = 1,
@@ -47,5 +50,12 @@ export class EditorData {
 			const e = events[k];
 			this.onPropertyChanged.dispatch(e.from, k, e.value, this._selectedObject);
 		});
+	}
+
+	public setupActions(actions: ActionHandler) {
+		actions.setActionCommand(Actions.DESELECT, () => this.selectObject(null, DataOrigin.ACTION));
+		actions.setActionCommand(Actions.PRINT_OBJECT, () => {
+			if (this._selectedObject) console.info(this._selectedObject);
+		})
 	}
 }

@@ -1,4 +1,6 @@
 import { OnlyProperties, PanelSide } from 'types';
+import { ActionHandler } from './action-handler';
+import { Actions } from './actions';
 
 export type PreferenceKey = OnlyProperties<Preferences>;
 
@@ -35,13 +37,13 @@ export class Preferences {
 		this.save('guides', value);
 	}
 
-	private _referenceImage = false;
+	private _refImage = false;
 
-	public get referenceImage() { return this._referenceImage; }
+	public get refImage() { return this._refImage; }
 
-	public set referenceImage(value: boolean) {
-		this._referenceImage = value;
-		this.notifyListeners('referenceImage', value);
+	public set refImage(value: boolean) {
+		this._refImage = value;
+		this.notifyListeners('refImage', value);
 		this.save('referenceImage', value);
 	}
 
@@ -55,7 +57,15 @@ export class Preferences {
 		this._snap = this.load('snap', true);
 		this._gizmos = this.load('gizmos', true);
 		this._guides = this.load('guides', false);
-		this._referenceImage = this.load('referenceImage', false);
+		this._refImage = this.load('refImage', false);
+	}
+
+	// hmm... this is weird
+	public setupActions(actions: ActionHandler) {
+		actions.setActionCommand(Actions.TOGGLE_SNAP, () => this.snap = !this._snap, () => this._snap);
+		actions.setActionCommand(Actions.TOGGLE_GIZMOS, () => this.gizmos = !this._gizmos, () => this._gizmos);
+		actions.setActionCommand(Actions.TOGGLE_GUIDES, () => this.guides = !this._guides, () => this._guides);
+		actions.setActionCommand(Actions.TOGGLE_REF_IMAGE, () => this.refImage = !this._refImage, () => this._refImage);
 	}
 
 
