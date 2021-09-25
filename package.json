@@ -1,6 +1,6 @@
 {
-	"name": "phaser-runtime-editor",
-	"version": "0.0.1",
+	"name": "@kleber-swf/phaser-runtime-editor",
+	"version": "0.1.0",
 	"description": "A runtime editor for Phaser-CE projects",
 	"author": "Kleber Silva <kleber.swf@gmail.com>",
 	"license": "MIT",
@@ -25,6 +25,7 @@
 		"access": "public"
 	},
 	"main": "dist/phaser-runtime-editor.js",
+	"styles": "dist/phaser-runtime-editor.css",
 	"input": "src/index.ts",
 	"module": "PhaserRuntimeEditor",
 	"scripts": {
