@@ -2,16 +2,17 @@ import { ComponentTags } from 'component-tags';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
+import { ActionHandler } from 'index';
 import { ReferenceImage } from 'scene-view/reference-image';
 import { ActionButton } from '../button/action-button';
 import './reference-image-panel.scss';
 
 export class ReferenceImagePanel extends HTMLElement {
+	private button: ActionButton;
 	private slider: HTMLInputElement;
 
 	public init(image: ReferenceImage) {
-		const btn = document.createElement(ComponentTags.ActionButton) as ActionButton;
-		btn.setAction(Editor.actions.getAction(Actions.TOGGLE_REF_IMAGE));
+		const btn = this.button = document.createElement(ComponentTags.ActionButton) as ActionButton;
 		this.appendChild(btn);
 
 		const slider = this.slider = document.createElement('input');
@@ -25,6 +26,10 @@ export class ReferenceImagePanel extends HTMLElement {
 
 		Editor.prefs.onPreferenceChanged.add(this.onPreferenceChanged, this);
 		this.onPreferenceChanged('refImage', Editor.prefs.refImage);
+	}
+
+	public setupActions(actions: ActionHandler) {
+		this.button.setAction(actions.getAction(Actions.TOGGLE_REF_IMAGE));
 	}
 
 	private onPreferenceChanged(pref: PreferenceKey, value: any) {

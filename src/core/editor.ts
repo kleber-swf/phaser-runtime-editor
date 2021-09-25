@@ -160,6 +160,11 @@ class EditorClass {
 				icon: 'fa-compress',
 			},
 			{
+				id: Actions.TOGGLE_REF_IMAGE,
+				label: 'reference image',
+				icon: 'fa-image'
+			},
+			{
 				id: Actions.UNDO,
 				label: 'undo',
 				icon: 'fa-undo-alt',
@@ -172,51 +177,16 @@ class EditorClass {
 				icon: 'fa-terminal',
 				shortcuts: ['ctrl+alt+p'],
 			},
-			{
-				id: Actions.DESELECT,
-				shortcuts: ['Escape'],
-			},
 
-			{
-				id: Actions.MOVE_UP_1,
-				shortcuts: ['ArrowUp'],
-				// command: () => scene.moveSelectedObject(0, -1)
-			},
-			{
-				id: Actions.MOVE_DOWN_1,
-				shortcuts: ['ArrowDown'],
-				// command: () => scene.moveSelectedObject(0, 1)
-			},
-			{
-				id: Actions.MOVE_LEFT_1,
-				shortcuts: ['ArrowLeft'],
-				// command: () => scene.moveSelectedObject(-1, 0)
-			},
-			{
-				id: Actions.MOVE_RIGHT_1,
-				shortcuts: ['ArrowRight'],
-				// command: () => scene.moveSelectedObject(1, 0)
-			},
-			{
-				id: Actions.MOVE_UP_10,
-				shortcuts: ['shift+ArrowUp'],
-				// command: () => scene.moveSelectedObject(0, -10)
-			},
-			{
-				id: Actions.MOVE_DOWN_10,
-				shortcuts: ['shift+ArrowDown'],
-				// command: () => scene.moveSelectedObject(0, 10)
-			},
-			{
-				id: Actions.MOVE_LEFT_10,
-				shortcuts: ['shift+ArrowLeft'],
-				// command: () => scene.moveSelectedObject(-10, 0)
-			},
-			{
-				id: Actions.MOVE_RIGHT_10,
-				shortcuts: ['shift+ArrowRight'],
-				// command: () => scene.moveSelectedObject(10, 0)
-			},
+			{ id: Actions.DESELECT, shortcuts: ['Escape'], },
+			{ id: Actions.MOVE_UP_1, shortcuts: ['ArrowUp'], },
+			{ id: Actions.MOVE_DOWN_1, shortcuts: ['ArrowDown'], },
+			{ id: Actions.MOVE_LEFT_1, shortcuts: ['ArrowLeft'], },
+			{ id: Actions.MOVE_RIGHT_1, shortcuts: ['ArrowRight'], },
+			{ id: Actions.MOVE_UP_10, shortcuts: ['shift+ArrowUp'], },
+			{ id: Actions.MOVE_DOWN_10, shortcuts: ['shift+ArrowDown'], },
+			{ id: Actions.MOVE_LEFT_10, shortcuts: ['shift+ArrowLeft'], },
+			{ id: Actions.MOVE_RIGHT_10, shortcuts: ['shift+ArrowRight'], },
 		);
 
 		return actions;

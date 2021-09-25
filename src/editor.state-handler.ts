@@ -4,7 +4,7 @@ import { Editor } from 'core/editor';
 import { DisabledUI } from 'disabled/disabled-ui';
 import { EditorView } from 'editor-view/editor-view';
 import { PluginConfig } from 'plugin';
-import { ReferenceImage } from 'scene-view/reference-image';
+import { ReferenceImageController } from 'reference-image/reference-image.controller';
 import { SceneView } from 'scene-view/scene-view';
 
 export class EditorStateHandler {
@@ -14,7 +14,7 @@ export class EditorStateHandler {
 
 	private sceneView: SceneView;
 	private editorView: EditorView;
-	private refImage: ReferenceImage;
+	private referenceImageController: ReferenceImageController;
 
 	private readonly game: Phaser.Game;
 	private readonly config: PluginConfig;
@@ -38,8 +38,8 @@ export class EditorStateHandler {
 
 		this.sceneView = new SceneView(this.game);
 		this.editorView = document.createElement(ComponentTags.EditorView) as EditorView;
+		this.referenceImageController = new ReferenceImageController(this.game, this.config);
 
-		this.refImage = new ReferenceImage(this.game, this.config.root);
 		this.setupInitialActions();
 	}
 
@@ -53,6 +53,7 @@ export class EditorStateHandler {
 
 		this.editorView.setupActions(actions);
 		this.sceneView.setupActions(actions);
+		this.referenceImageController.setupActions(actions);
 
 		actions.addContainer('body', document.body);
 	}
@@ -63,9 +64,9 @@ export class EditorStateHandler {
 		this.disabledUI.disable();
 		if (!this._initialized) this.init();
 
-		this.refImage.image = this.config.refImage;
 		this.sceneView.enable(this.config.root, this.game.stage);
 		this.editorView.enable(this.game, this.config);
+		this.referenceImageController.setImage(this.config.refImage);
 
 		Editor.enable();
 		if (this.onshow) this.onshow();

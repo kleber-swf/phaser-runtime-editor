@@ -25,13 +25,13 @@ export class EditorView extends Widget {
 		this._initialized = true;
 		Editor.data.onSelectedObjectChanged.add(this.selectObject, this);
 		Editor.actions.addContainer(ComponentTags.EditorView, this);
-		this.createElements(config);
+		this.createElements();
 		this.panels.forEach(panel => panel.init(game, config));
 	}
 
 	public setupActions(_actions: ActionHandler) { }
 
-	private createElements(config: PluginConfig) {
+	private createElements() {
 		const leftPanel = this.appendChild(document.createElement(ComponentTags.Panel) as Panel);
 		leftPanel.setSide('left');
 		leftPanel.classList.add('small');
@@ -42,7 +42,7 @@ export class EditorView extends Widget {
 
 		this.actions = document.createElement(ComponentTags.ActionsToolbar) as ActionsToolbar;
 		content.appendChild(this.actions);
-		this.actions.init(config);
+		this.actions.init();
 
 		this.gameContainer = document.createElement('div');
 		this.gameContainer.id = 'phred-game-container';
