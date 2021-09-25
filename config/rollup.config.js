@@ -18,7 +18,7 @@ export default [
 		plugins: [
 			scss({
 				processor: () => postcss([autoprefixer()]),
-				output: 'dist/phaser-runtime-editor-styles.css',
+				output: 'dist/phaser-runtime-editor.css',
 				outputStyle: 'compressed'
 			}),
 			commonjs(),

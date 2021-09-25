@@ -17,8 +17,7 @@ export default {
 	plugins: [
 		scss({
 			processor: () => postcss([autoprefixer()]),
-			output: 'dist/phaser-runtime-editor-styles.css',
-			// outputStyle: 'compressed'
+			output: 'dist/phaser-runtime-editor.css',
 		}),
 		typescript({
 			rootDir: './src',
