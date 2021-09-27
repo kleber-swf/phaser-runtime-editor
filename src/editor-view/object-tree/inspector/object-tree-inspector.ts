@@ -16,6 +16,7 @@ export class ObjectTreeInspector extends Inspector {
 		this.title = 'Objects';
 
 		const el = this.headerElement.appendChild(document.createElement(ComponentTags.SearchField)) as SearchField;
+		el.init();
 		el.onValueChanged = this.filterContent.bind(this);
 
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
