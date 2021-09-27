@@ -48,6 +48,15 @@ export class Plugin extends Phaser.Plugin {
 		link = head.appendChild(document.createElement('link'));
 		link.rel = 'stylesheet';
 		link.href = 'https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap';
+
+		const el = document.querySelector('#phaser-runtime-editor');
+		if (!el) return;
+		const src = el.getAttribute('src');
+		if (!src) return;
+
+		link = head.appendChild(document.createElement('link'));
+		link.rel = 'stylesheet';
+		link.href = src.replace('.min.js', '.css');
 	}
 
 	public show() {
