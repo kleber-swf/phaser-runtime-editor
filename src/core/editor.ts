@@ -187,6 +187,10 @@ class EditorClass {
 			{ id: Actions.MOVE_DOWN_10, shortcuts: ['shift+ArrowDown'], },
 			{ id: Actions.MOVE_LEFT_10, shortcuts: ['shift+ArrowLeft'], },
 			{ id: Actions.MOVE_RIGHT_10, shortcuts: ['shift+ArrowRight'], },
+
+			{ id: Actions.ZOOM, shortcuts: ['ctrl+wheel'], },
+			{ id: Actions.ZOOM_IN, shortcuts: ['ctrl+=', 'ctrl++'], },
+			{ id: Actions.ZOOM_OUT, shortcuts: ['ctrl+-'], },
 		);
 
 		return actions;
@@ -204,7 +208,7 @@ class EditorClass {
 	}
 
 	public disable() {
-		this.actions.enable();
+		this.actions.disable();
 	}
 }
 

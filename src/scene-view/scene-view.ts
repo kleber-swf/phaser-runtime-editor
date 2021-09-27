@@ -48,6 +48,8 @@ export class SceneView extends Phaser.Group {
 		Editor.data.onSelectedObjectChanged.add(this.onObjectSelected.bind(this));
 	}
 
+	public init() { }
+
 	public setupActions(actions: ActionHandler) {
 		actions.setActionCommand(Actions.MOVE_UP_1, () => this.moveSelectedObject(0, -1));
 		actions.setActionCommand(Actions.MOVE_DOWN_1, () => this.moveSelectedObject(0, 1));

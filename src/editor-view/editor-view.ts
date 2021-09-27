@@ -12,15 +12,15 @@ import { PropertiesInspector } from './properties/inspector/properties-inspector
 import { Widget } from './widget/widget';
 
 export class EditorView extends Widget {
+	private game: Phaser.Game;
 	private gameContainer: GameContainer;
 	private actions: ActionsToolbar;
 	private panels: Panel[] = [];
 
-	private _initialized = false;
 	private _enabled = false;
 
-	private init(game: Phaser.Game, config: PluginConfig) {
-		this._initialized = true;
+	public init(game: Phaser.Game, config: PluginConfig) {
+		this.game = game;
 		Editor.data.onSelectedObjectChanged.add(this.selectObject, this);
 		Editor.actions.addContainer(ComponentTags.EditorView, this);
 		this.createElements();
@@ -28,7 +28,10 @@ export class EditorView extends Widget {
 		this.panels.forEach(panel => panel.init(game, config));
 	}
 
-	public setupActions(_actions: ActionHandler) { }
+	public setupActions(actions: ActionHandler) {
+		this.actions.setupActions(actions);
+		this.gameContainer.setupActions(actions);
+	}
 
 	private createElements() {
 		const leftPanel = this.appendChild(document.createElement(ComponentTags.Panel) as Panel);
@@ -41,7 +44,6 @@ export class EditorView extends Widget {
 
 		this.actions = document.createElement(ComponentTags.ActionsToolbar) as ActionsToolbar;
 		content.appendChild(this.actions);
-		this.actions.init();
 
 		this.gameContainer = document.createElement(ComponentTags.GameContainer) as GameContainer;
 		content.appendChild(this.gameContainer);
@@ -60,13 +62,12 @@ export class EditorView extends Widget {
 		rightPanel.addInspector(props);
 	}
 
-	public enable(game: Phaser.Game, config: PluginConfig) {
+	public enable() {
 		if (this._enabled) return;
 		this._enabled = true;
-		if (!this._initialized) this.init(game, config);
 
 		this.panels.forEach(panel => panel.enable());
-		this.gameContainer.addGame(game);
+		this.gameContainer.addGame(this.game);
 		document.body.appendChild(this);
 	}
 
