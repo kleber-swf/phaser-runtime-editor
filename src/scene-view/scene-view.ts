@@ -103,6 +103,7 @@ export class SceneView extends Phaser.Group {
 	}
 
 	private onInputDown(_: any, pointer: Phaser.Pointer) {
+		if (pointer.button !== 0) return;
 		this._isDragging = false;
 		this._isInputDown = true;
 		this._hasSelected = !this.selection.getBounds().contains(pointer.x, pointer.y)
@@ -116,6 +117,7 @@ export class SceneView extends Phaser.Group {
 	}
 
 	private onInputUp(_: any, pointer: Phaser.Pointer) {
+		if (pointer.button !== 0) return;
 		this._isInputDown = false;
 		const wasDragging = this._isDragging;
 		this._isDragging = false;
