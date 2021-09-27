@@ -41,8 +41,11 @@ export class GameContainer extends HTMLElement {
 
 	private zoom(amount: number) {
 		const el = this.gameEditorParentElement;
+		const ratio = el.clientHeight / el.clientWidth;
 		const width = Math.max(Math.min(el.clientWidth + amount, MAX_WIDTH), MIN_WIDTH);
+		const height = width * ratio;
 		el.style.width = width + 'px';
+		el.style.height = height + 'px';
 		this.game.scale.refresh();
 	}
 }
