@@ -1,5 +1,6 @@
 import { ComponentTags } from 'component-tags';
-import { ActionHandler, Actions } from 'index';
+import { ActionHandler } from 'core/action-handler';
+import { Actions } from 'core/actions';
 import './game-container.scss';
 
 const MIN_WIDTH = 100;
