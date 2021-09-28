@@ -12,6 +12,7 @@ export class GameContainer extends HTMLElement {
 	private game: Phaser.Game;
 
 	public init() {
+		this._onInputUpFn = this.onInputUp.bind(this);
 		const el = this.gameEditorParentElement = document.createElement('div');
 		el.id = 'phred-game-parent';
 		this.appendChild(el);
@@ -21,6 +22,10 @@ export class GameContainer extends HTMLElement {
 		actions.setActionCommand(Actions.ZOOM, (e) => this.zoom(-(e as WheelEvent).deltaY));
 		actions.setActionCommand(Actions.ZOOM_IN, () => this.zoom(100));
 		actions.setActionCommand(Actions.ZOOM_OUT, () => this.zoom(-100));
+
+		this.onmousedown = this.onInputDown;
+		this.onmousemove = this.onInputMove;
+		this.onmouseup = this.onInputUp;
 	}
 
 	public addGame(game: Phaser.Game) {
@@ -48,6 +53,31 @@ export class GameContainer extends HTMLElement {
 		el.style.height = height + 'px';
 		this.game.scale.refresh();
 	}
+
+	// #region Panning
+
+	private _downPageX = 0;
+	private _downPageY = 0;
+	private _onInputUpFn: () => void;
+
+	private onInputDown(e: MouseEvent) {
+		this.onmousemove = this.onInputMove;
+		document.addEventListener('mouseup', this._onInputUpFn);
+		this._downPageX = this.scrollLeft + e.pageX;
+		this._downPageY = this.scrollTop + e.pageY;
+	}
+
+	private onInputMove(e: MouseEvent) {
+		this.scrollLeft = this._downPageX - e.pageX;
+		this.scrollTop = this._downPageY - e.pageY
+	}
+
+	private onInputUp() {
+		this.onmousemove = null;
+		document.removeEventListener('mouseup', this._onInputUpFn);
+	}
+
+	// #endregion
 }
 
 customElements.define(ComponentTags.GameContainer, GameContainer);
