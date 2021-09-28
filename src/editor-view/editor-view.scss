@@ -215,30 +215,9 @@ phred-editor-view {
 		}
 	}
 
-	// ============= INNER STRUCTURE ============= //
 	.phred-content {
 		flex: 1;
 		display: inline-flex;
 		flex-direction: column;
-
-		.phred-game-container {
-			background-color: #1b1b1b;
-			flex: 1;
-			overflow: overlay;
-
-			&::-webkit-scrollbar-track {
-				background: transparent;
-			}
-
-			&::-webkit-scrollbar-thumb {
-				background-color: transparent;
-				border-radius: 4px;
-			}
-		}
-
-		.phred-game,
-		.phred-game * {
-			max-width: 100% !important;
-		}
 	}
 }

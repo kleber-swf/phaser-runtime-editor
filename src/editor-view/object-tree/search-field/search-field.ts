@@ -7,7 +7,7 @@ export class SearchField extends HTMLElement {
 
 	public onValueChanged: (e: string) => void;
 
-	public connectedCallback() {
+	public init() {
 		const field = this.field = this.appendChild(document.createElement('input'));
 		field.type = 'text';
 		field.oninput = this.onFieldChanged.bind(this);

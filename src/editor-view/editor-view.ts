@@ -5,6 +5,7 @@ import { DataOrigin } from 'data/editor-data';
 import { PluginConfig } from 'plugin';
 import { ActionsToolbar } from './actions/actions-toolbar';
 import './editor-view.scss';
+import { GameContainer } from './game-container/game-container';
 import { ObjectTreeInspector } from './object-tree/inspector/object-tree-inspector';
 import { Panel } from './panel/panel';
 import { PropertiesInspector } from './properties/inspector/properties-inspector';
@@ -12,24 +13,25 @@ import { Widget } from './widget/widget';
 
 export class EditorView extends Widget {
 	private game: Phaser.Game;
-	private gameParentElement: HTMLElement;
-	private gameContainer: HTMLElement;
+	private gameContainer: GameContainer;
 	private actions: ActionsToolbar;
 	private panels: Panel[] = [];
 
-	private _initialized = false;
 	private _enabled = false;
 
-	private init(game: Phaser.Game, config: PluginConfig) {
+	public init(game: Phaser.Game, config: PluginConfig) {
 		this.game = game;
-		this._initialized = true;
 		Editor.data.onSelectedObjectChanged.add(this.selectObject, this);
 		Editor.actions.addContainer(ComponentTags.EditorView, this);
 		this.createElements();
+		this.gameContainer.init();
 		this.panels.forEach(panel => panel.init(game, config));
 	}
 
-	public setupActions(_actions: ActionHandler) { }
+	public setupActions(actions: ActionHandler) {
+		this.actions.setupActions(actions);
+		this.gameContainer.setupActions(actions);
+	}
 
 	private createElements() {
 		const leftPanel = this.appendChild(document.createElement(ComponentTags.Panel) as Panel);
@@ -42,11 +44,8 @@ export class EditorView extends Widget {
 
 		this.actions = document.createElement(ComponentTags.ActionsToolbar) as ActionsToolbar;
 		content.appendChild(this.actions);
-		this.actions.init();
 
-		this.gameContainer = document.createElement('div');
-		this.gameContainer.id = 'phred-game-container';
-		this.gameContainer.classList.add('phred-game-container');
+		this.gameContainer = document.createElement(ComponentTags.GameContainer) as GameContainer;
 		content.appendChild(this.gameContainer);
 
 		const rightPanel = this.appendChild(document.createElement(ComponentTags.Panel) as Panel);
@@ -63,36 +62,21 @@ export class EditorView extends Widget {
 		rightPanel.addInspector(props);
 	}
 
-	public enable(game: Phaser.Game, config: PluginConfig) {
+	public enable() {
 		if (this._enabled) return;
 		this._enabled = true;
-		if (!this._initialized) this.init(game, config);
 
 		this.panels.forEach(panel => panel.enable());
-		this.addGameToContainer(game);
+		this.gameContainer.addGame(this.game);
 		document.body.appendChild(this);
 	}
 
 	public disable() {
 		if (!this._enabled) return;
 		this._enabled = false;
-		this.returnGameToItsParent();
+		this.gameContainer.returnGameToItsParent();
 		this.panels.forEach(panel => panel.enable());
 		this.parentElement.removeChild(this);
-	}
-
-	private addGameToContainer(game: Phaser.Game) {
-		const el = game.canvas.parentElement;
-		this.gameParentElement = el.parentElement;
-		el.classList.add('phred-game');
-		this.gameContainer.appendChild(el);
-	}
-
-	private returnGameToItsParent() {
-		const el = this.game.canvas.parentElement;
-		el.classList.remove('phred-game');
-		this.gameParentElement.appendChild(el);
-		this.gameParentElement = null;
 	}
 
 	public selectObject(from: DataOrigin, obj: PIXI.DisplayObject) {

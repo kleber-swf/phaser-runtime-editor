@@ -1,5 +1,6 @@
 export class ComponentTags {
 	public static readonly EditorView = 'phred-editor-view';
+	public static readonly GameContainer = 'phred-game-container';
 	public static readonly ActionsToolbar = 'phred-actions-toolbar';
 	public static readonly ActionButton = 'phred-action-button';
 	public static readonly ReferenceImagePanel = 'phred-reference-image-panel';

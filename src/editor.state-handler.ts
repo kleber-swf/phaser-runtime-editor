@@ -40,6 +40,8 @@ export class EditorStateHandler {
 		this.editorView = document.createElement(ComponentTags.EditorView) as EditorView;
 		this.referenceImageController = new ReferenceImageController(this.game, this.config);
 
+		this.editorView.init(this.game, this.config);
+
 		this.setupInitialActions();
 	}
 
@@ -65,7 +67,7 @@ export class EditorStateHandler {
 		if (!this._initialized) this.init();
 
 		this.sceneView.enable(this.config.root, this.game.stage);
-		this.editorView.enable(this.game, this.config);
+		this.editorView.enable();
 		this.referenceImageController.setImage(this.config.refImage);
 
 		Editor.enable();
