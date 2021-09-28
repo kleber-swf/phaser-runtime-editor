@@ -9,7 +9,13 @@ export class ValueListPropertyEditor extends PropertyEditor<any> {
 		const select = this.select = document.createElement('select');
 		select.id = fieldId;
 
-		(prop.values || []).forEach(v => {
+		let values: { value: any, label: string }[];
+		if (!prop.values) prop.values = [];
+		values = Array.isArray(prop.values)
+			? prop.values
+			: Object.keys(prop.values).map((label, value) => ({ value, label }));
+
+		values.forEach(v => {
 			const option = document.createElement('option');
 			option.value = v.value;
 			option.innerHTML = v.label;

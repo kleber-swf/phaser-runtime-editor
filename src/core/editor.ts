@@ -63,13 +63,7 @@ class EditorClass {
 			// Sprite
 			{ name: 'key', typeHint: 'string' },
 			{ name: 'frameName', label: 'frame', typeHint: 'string' },
-			{
-				name: 'blendMode', typeHint: 'valueList', values: [
-					{ value: 0, label: 'NONE' },
-					{ value: 1, label: 'ADD' },
-					{ value: 2, label: 'MULTIPLY' },
-				]
-			},
+			{ name: 'blendMode', typeHint: 'valueList', values: Phaser.blendModes },
 			{ name: 'tint', typeHint: 'color' },
 
 			// Text
