@@ -34,7 +34,8 @@
 		"barrel": "barrelsby -c ./config/barrelsby.json",
 		"example": "browser-sync start -c ./config/bs-config.js",
 		"prebuild": "rm -rf dist; npm run barrel",
-		"build": "rollup -c ./config/rollup.config.js"
+		"build": "rollup -c ./config/rollup.config.js",
+		"prepublishOnly": "npm run build"
 	},
 	"dependencies": {
 		"phaser-ce": "^2.18.0"
