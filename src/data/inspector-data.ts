@@ -3,7 +3,7 @@ export type InspectableType = 'string' | 'text' | 'number' | 'boolean' | 'point'
 export interface InspectorPropertyModel {
 	name: string;
 	typeHint: InspectableType;
-	values?: { value: any, label: string }[] | Object;
+	values?: { value: any, label: string }[] | any[] | Object;
 	data?: any;
 	label?: string;
 }

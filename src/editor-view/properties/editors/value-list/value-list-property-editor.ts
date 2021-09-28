@@ -11,9 +11,12 @@ export class ValueListPropertyEditor extends PropertyEditor<any> {
 
 		let values: { value: any, label: string }[];
 		if (!prop.values) prop.values = [];
-		values = Array.isArray(prop.values)
-			? prop.values
-			: Object.keys(prop.values).map((label, value) => ({ value, label }));
+		
+		if (Array.isArray(prop.values)) {
+			values = prop.values.map(v => (typeof v === 'object' ? v : { value: v, label: v }));
+		} else {
+			values = Object.keys(prop.values).map((label, value) => ({ value, label }));
+		}
 
 		values.forEach(v => {
 			const option = document.createElement('option');
@@ -26,16 +29,31 @@ export class ValueListPropertyEditor extends PropertyEditor<any> {
 		return select;
 	}
 
-	public setInternalValue(value: number) {
+	public setInternalValue(value: number | any) {
 		const options = this.select.options;
-		if (value === null || isNaN(value) || value < 0 || value >= options.length) return;
-		this._internalValue = options[value].value;
-		options[value].selected = true;
+		if (typeof value === 'number') {
+			if (value === null || isNaN(value) || value < 0 || value >= options.length) {
+				console.warn(`Invalud value: ${value}`);
+				return;
+			}
+			this._internalValue = options[value].value;
+			options[value].selected = true;
+		} else {
+			for (let i = 0; i < options.length; i++) {
+				if (options[i].value !== value) continue;
+				this._internalValue = options[i].value;
+				options[i].selected = true;
+				return;
+			}
+		}
 	}
 
 	public updateInternalValue(): any {
-		const index = parseInt(this.select.value, 10);
-		this.setInternalValue(index);
+		// TODO what if the value is a number (instead of index)
+		if (typeof this.select.value === 'number') {
+			const index = parseInt(this.select.value, 10);
+			this.setInternalValue(index);
+		} else this.setInternalValue(this.select.value);
 		return this._internalValue;
 	}
 
