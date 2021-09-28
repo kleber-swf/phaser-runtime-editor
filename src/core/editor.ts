@@ -42,6 +42,7 @@ class EditorClass {
 
 			// custom
 			color: ComponentTags.ColorPropertyEditor,
+			valueList: ComponentTags.ValueListPropertyEditor,
 
 			// default
 			default: ComponentTags.StringPropertyEditor,
@@ -62,7 +63,13 @@ class EditorClass {
 			// Sprite
 			{ name: 'key', typeHint: 'string' },
 			{ name: 'frameName', label: 'frame', typeHint: 'string' },
-			{ name: 'blendMode', typeHint: 'number' },
+			{
+				name: 'blendMode', typeHint: 'valueList', values: [
+					{ value: 0, label: 'NONE' },
+					{ value: 1, label: 'ADD' },
+					{ value: 2, label: 'MULTIPLY' },
+				]
+			},
 			{ name: 'tint', typeHint: 'color' },
 
 			// Text

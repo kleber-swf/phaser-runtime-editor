@@ -1,8 +1,9 @@
-export type InspectableType = 'string' | 'text' | 'number' | 'boolean' | 'point' | 'rect' | 'color' | 'default';
+export type InspectableType = 'string' | 'text' | 'number' | 'boolean' | 'point' | 'rect' | 'color' | 'valueList' | 'default';
 
 export interface InspectorPropertyModel {
 	name: string;
 	typeHint: InspectableType;
+	values?: { value: any, label: string }[];
 	data?: any;
 	label?: string;
 }
