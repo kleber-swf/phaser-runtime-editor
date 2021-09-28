@@ -61,6 +61,7 @@ export class GameContainer extends HTMLElement {
 	private _onInputUpFn: () => void;
 
 	private onInputDown(e: MouseEvent) {
+		if (e.button !== 1) return;
 		this.onmousemove = this.onInputMove;
 		document.addEventListener('mouseup', this._onInputUpFn);
 		this._downPageX = this.scrollLeft + e.pageX;
