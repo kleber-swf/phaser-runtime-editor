@@ -40,6 +40,9 @@ class EditorClass {
 			point: ComponentTags.PointPropertyEditor,
 			rect: ComponentTags.RectPropertyEditor,
 
+			// custom
+			color: ComponentTags.ColorPropertyEditor,
+
 			// default
 			default: ComponentTags.StringPropertyEditor,
 		});
@@ -60,7 +63,7 @@ class EditorClass {
 			{ name: 'key', typeHint: 'string' },
 			{ name: 'frameName', label: 'frame', typeHint: 'string' },
 			{ name: 'blendMode', typeHint: 'number' },
-			{ name: 'tint', typeHint: 'number', data: { min: 0, max: 0xFFFFFF } },
+			{ name: 'tint', typeHint: 'color' },
 
 			// Text
 			{ name: 'text', typeHint: 'text', data: { rows: 3 } },
@@ -78,7 +81,6 @@ class EditorClass {
 			// { name: 'textBounds', typeHint: 'rect' },  // TODO waiting for null checking on rect editor
 			{ name: 'boundsAlignH', typeHint: 'string' },
 			{ name: 'boundsAlignV', typeHint: 'string' },
-
 		]);
 
 		const basicProperties = {
