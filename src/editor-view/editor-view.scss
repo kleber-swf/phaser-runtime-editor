@@ -152,7 +152,8 @@ phred-editor-view {
 
 	input[type='text'],
 	input[type='number'],
-	textarea {
+	textarea,
+	select {
 		@include basic-input-properties;
 
 		width: 100%;
@@ -164,6 +165,11 @@ phred-editor-view {
 		&:not([readonly]):focus {
 			border-color: $focused-input-border;
 		}
+	}
+
+	select option {
+		background-color: $input-background;
+		color: $input-foreground;
 	}
 
 	// ============= BUTTON ============= //
