@@ -38,6 +38,8 @@ export class ValueListPropertyEditor extends PropertyEditor<any> {
 		this.setInternalValue(index);
 		return this._internalValue;
 	}
+
+	protected valueToJson() { return this._internalValue.toString(); }
 }
 
 customElements.define(ComponentTags.ValueListPropertyEditor, ValueListPropertyEditor);

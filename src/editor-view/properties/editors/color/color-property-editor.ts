@@ -14,7 +14,7 @@ export class ColorPropertyEditor extends PropertyEditor<number> {
 	}
 
 	public setInternalValue(value: number) {
-		value = value === null || isNaN(value) ? 0 : value;
+		if (value === null || isNaN(value)) return;
 		this._internalValue = value;
 		this.input.value = '#' + value.toString(16).toUpperCase();
 	}
@@ -26,13 +26,12 @@ export class ColorPropertyEditor extends PropertyEditor<number> {
 		if (hex.length === 3)
 			hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
 
-		const ivalue = parseInt(hex, 16);
-		if (!isNaN(ivalue)) {
-			this.setInternalValue(ivalue);
-		}
+		this.setInternalValue(parseInt(hex, 16));
 
 		return this._internalValue;
 	}
+
+	protected valueToJson() { return JSON.stringify(this.input.value); }
 }
 
 customElements.define(ComponentTags.ColorPropertyEditor, ColorPropertyEditor);
