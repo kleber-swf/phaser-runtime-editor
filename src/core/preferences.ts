@@ -57,6 +57,16 @@ export class Preferences {
 		this.save('hitArea', value);
 	}
 
+	private _responsive = false;
+
+	public get responsive() { return this._responsive; }
+
+	public set responsive(value: boolean) {
+		this._responsive = value;
+		this.notifyListeners('responsive', value);
+		this.save('responsive', value);
+	}
+
 	// #endregion
 
 	public readonly onPreferenceChanged = new Phaser.Signal();
@@ -76,6 +86,7 @@ export class Preferences {
 		actions.setActionCommand(Actions.TOGGLE_GIZMOS, () => this.gizmos = !this._gizmos, () => this._gizmos);
 		actions.setActionCommand(Actions.TOGGLE_HIT_AREA, () => this.hitArea = !this._hitArea, () => this._hitArea);
 		actions.setActionCommand(Actions.TOGGLE_GUIDES, () => this.guides = !this._guides, () => this._guides);
+		actions.setActionCommand(Actions.TOGGLE_RESPONSIVE, () => this.responsive = !this._responsive, () => this._responsive);
 		actions.setActionCommand(Actions.TOGGLE_REF_IMAGE, () => this.refImage = !this._refImage, () => this._refImage);
 	}
 

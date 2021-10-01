@@ -170,6 +170,12 @@ class EditorClass {
 				icon: 'fa-hand-point-up',
 			},
 			{
+				id: Actions.TOGGLE_RESPONSIVE,
+				toggle: true,
+				label: 'responsive',
+				icon: 'fa-expand-arrows-alt',
+			},
+			{
 				id: Actions.TOGGLE_REF_IMAGE,
 				label: 'reference image',
 				icon: 'fa-image'
