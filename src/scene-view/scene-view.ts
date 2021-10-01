@@ -2,6 +2,7 @@ import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
+import { HIT_AREA_COLOR, PreferenceKey } from 'index';
 import { DragUtil } from '../util/drag.util';
 import { SceneModel } from './scene-model';
 import { Selection } from './selection/selection';
@@ -10,6 +11,7 @@ export class SceneView extends Phaser.Group {
 	private readonly touchArea: Phaser.Graphics;
 	private readonly selection: Selection;
 	private readonly model: SceneModel;
+	private readonly hitAreasView: Phaser.Graphics;
 
 	/** The container that will have the edition */
 	private root: Container;
@@ -39,11 +41,16 @@ export class SceneView extends Phaser.Group {
 		this.touchArea = this.createTouchArea(game);
 		this.redrawTouchArea();
 
+		this.hitAreasView = new Phaser.Graphics(game);
+		// this.hitAreasView.inputEnabled = true;
+		this.hitAreasView.__skip = true;
+
 		this.selection = new Selection(game);
 		this.addChild(this.selection);
 
 		game.scale.onSizeChange.add(() => this.selectObject(Editor.data.selectedObject, false));
 
+		Editor.data.onPropertyChanged.add(this.onPropertyChanged.bind(this));
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged.bind(this));
 		Editor.data.onSelectedObjectChanged.add(this.onObjectSelected.bind(this));
 	}
@@ -60,6 +67,9 @@ export class SceneView extends Phaser.Group {
 		actions.setActionCommand(Actions.MOVE_DOWN_10, () => this.moveSelectedObject(0, 10));
 		actions.setActionCommand(Actions.MOVE_LEFT_10, () => this.moveSelectedObject(-10, 0));
 		actions.setActionCommand(Actions.MOVE_RIGHT_10, () => this.moveSelectedObject(10, 0));
+
+		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
+		this.onPreferencesChanged('responsive', Editor.prefs.responsive);
 	}
 
 	public enable(root: Container, parent: Phaser.Stage) {
@@ -73,6 +83,20 @@ export class SceneView extends Phaser.Group {
 		if (!this.parent) return;
 		this.parent.removeChild(this);
 		this.touchArea.input.enabled = false;
+	}
+
+	private onPreferencesChanged(pref: PreferenceKey, value: boolean) {
+		if (pref !== 'allHitAreasSnapshot') return;
+		if (value) {
+			if (this.hitAreasView.parent !== this)
+				this.addChild(this.hitAreasView);
+			this.hitAreasView.clear().beginFill(0, 0).drawRect(0, 0, this.game.width, this.game.height);
+			this.showAllHitAreas(this.root, this.hitAreasView);
+		} else {
+			if (this.hitAreasView.parent === this)
+				this.removeChild(this.hitAreasView);
+			this.hitAreasView.clear();
+		}
 	}
 
 	private onPropertyChanged(origin: DataOrigin, property: string, value: any, obj: PIXI.DisplayObject) {
@@ -177,5 +201,22 @@ export class SceneView extends Phaser.Group {
 		}
 		this.selection.move(pointer.x - this._lastPos.x, pointer.y - this._lastPos.y);
 		this._lastPos.set(pointer.x, pointer.y);
+	}
+
+	private showAllHitAreas(parent: PIXI.DisplayObjectContainer, view: Phaser.Graphics) {
+		if (parent.__isLeaf || !parent.visible) return;
+		const children = parent.children;
+		for (let i = 0, n = children.length; i < n; i++) {
+			const child = children[i];
+			console.log(child.name, child.inputEnabled);
+			if (child.visible && child.inputEnabled) {
+				const area = child.hitArea as PIXI.Rectangle ?? child.getBounds();
+				view.lineStyle(1, HIT_AREA_COLOR, 1)
+					.beginFill(HIT_AREA_COLOR, 0.3)
+					.drawRect(area.x, area.y, area.width, area.height)
+					.endFill();
+			}
+			if ('children' in child) this.showAllHitAreas(child as PIXI.DisplayObjectContainer, view);
+		}
 	}
 }

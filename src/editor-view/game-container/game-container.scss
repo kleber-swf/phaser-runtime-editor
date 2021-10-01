@@ -6,12 +6,6 @@ phred-game-container {
 
 	#phred-game-parent {
 		position: absolute;
-
-		&.responsive {
-			width: 100% !important;
-			height: 100% !important;
-		}
-
 		.phred-game,
 		.phred-game * {
 			max-width: 100% !important;

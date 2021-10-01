@@ -7,6 +7,7 @@ declare namespace PIXI {
 		type?: number;
 		name?: string;
 		anchor?: Point;
+		inputEnabled?: boolean;
 		getBounds?(): Rectangle;
 		children?: DisplayObject[];
 	}

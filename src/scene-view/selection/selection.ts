@@ -1,6 +1,7 @@
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
 import { DataOrigin } from 'data/editor-data';
+import { HIT_AREA_COLOR } from 'index';
 import { PointUtil } from 'util/math.util';
 import { ANCHOR_COLOR, ANCHOR_STROKE, BORDER_COLOR, BORDER_STROKE, PIVOT_COLOR, PIVOT_STROKE } from '../scene-colors';
 import { ScaleHandler } from './scale/scale.handler';
@@ -136,7 +137,7 @@ export class Selection extends Phaser.Group {
 		const rect = obj.hitArea as PIXI.Rectangle ?? bounds;
 		this.view
 			.lineStyle(0)
-			.beginFill(0xFF8C64, 0.3)
+			.beginFill(HIT_AREA_COLOR, 0.3)
 			.drawRect(0, 0, rect.width, rect.height)
 			.endFill();
 	}

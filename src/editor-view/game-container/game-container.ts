@@ -24,6 +24,7 @@ export class GameContainer extends HTMLElement {
 		actions.setActionCommand(Actions.ZOOM, (e) => this.zoom(-(e as WheelEvent).deltaY));
 		actions.setActionCommand(Actions.ZOOM_IN, () => this.zoom(100));
 		actions.setActionCommand(Actions.ZOOM_OUT, () => this.zoom(-100));
+		
 		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
 		this.onPreferencesChanged('responsive', Editor.prefs.responsive);
 

@@ -14,6 +14,7 @@ export class Actions {
 	public static readonly TOGGLE_HIT_AREA = 'TOGGLE_HIT_AREA';
 	public static readonly TOGGLE_RESPONSIVE = 'TOGGLE_RESPONSIVE';
 	public static readonly TOGGLE_REF_IMAGE = 'TOGGLE_REF_IMAGE';
+	public static readonly TOGGLE_ALL_HIT_AREAS_SNAPSHOT = 'TOGGLE_ALL_HIT_AREAS_SNAPSHOT';
 	public static readonly TOGGLE_ENABLED = 'TOGGLE_ENABLED';
 	public static readonly PRINT_OBJECT = 'PRINT_OBJECT';
 	public static readonly DESELECT = 'DESELECT';

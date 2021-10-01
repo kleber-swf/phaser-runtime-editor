@@ -11,8 +11,9 @@ export class ActionsToolbar extends Widget {
 		this.createSeparator();
 		this.createButton(actions.getAction(Actions.TOGGLE_SNAP));
 		this.createButton(actions.getAction(Actions.TOGGLE_GUIDES));
-		this.createButton(actions.getAction(Actions.TOGGLE_HIT_AREA));
 		this.createButton(actions.getAction(Actions.TOGGLE_GIZMOS));
+		this.createButton(actions.getAction(Actions.TOGGLE_HIT_AREA));
+		this.createButton(actions.getAction(Actions.TOGGLE_ALL_HIT_AREAS_SNAPSHOT));
 		this.createSeparator();
 		this.createButton(actions.getAction(Actions.TOGGLE_RESPONSIVE));
 		this.createButton(actions.getAction(Actions.ZOOM_OUT));

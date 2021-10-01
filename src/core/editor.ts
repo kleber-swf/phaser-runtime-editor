@@ -170,6 +170,12 @@ class EditorClass {
 				icon: 'fa-hand-point-up',
 			},
 			{
+				id: Actions.TOGGLE_ALL_HIT_AREAS_SNAPSHOT,
+				toggle: true,
+				label: 'all hit areas snapshot',
+				icon: 'fa-layer-group',
+			},
+			{
 				id: Actions.TOGGLE_RESPONSIVE,
 				toggle: true,
 				label: 'responsive',
