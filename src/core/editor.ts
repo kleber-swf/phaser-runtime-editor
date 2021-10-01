@@ -65,6 +65,7 @@ class EditorClass {
 			{ name: 'frameName', label: 'frame', typeHint: 'string' },
 			{ name: 'blendMode', typeHint: 'valueList', values: Phaser.blendModes },
 			{ name: 'tint', typeHint: 'color' },
+			{ name: 'hitArea', typeHint: 'rect' },
 
 			// Text
 			{ name: 'text', typeHint: 'text', data: { rows: 3 } },
@@ -87,7 +88,7 @@ class EditorClass {
 		const basicProperties = {
 			title: '', properties: [
 				'__type', 'name', 'position', 'scale', 'pivot', 'anchor',
-				'alpha', 'visible', 'angle', '_bounds'
+				'alpha', 'visible', 'angle', 'hitArea', '_bounds'
 			]
 		};
 
@@ -161,6 +162,12 @@ class EditorClass {
 				toggle: true,
 				label: 'guides',
 				icon: 'fa-compress',
+			},
+			{
+				id: Actions.TOGGLE_HIT_AREA,
+				toggle: true,
+				label: 'hit area',
+				icon: 'fa-hand-point-up',
 			},
 			{
 				id: Actions.TOGGLE_REF_IMAGE,

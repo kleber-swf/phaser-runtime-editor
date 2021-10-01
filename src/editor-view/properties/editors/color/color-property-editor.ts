@@ -13,6 +13,8 @@ export class ColorPropertyEditor extends PropertyEditor<number> {
 		return input;
 	}
 
+	protected getDefaultValue() { return 0xFFFFFF; }
+
 	public setInternalValue(value: number) {
 		if (value === null || isNaN(value)) return;
 		this._internalValue = value;

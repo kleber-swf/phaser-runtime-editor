@@ -47,6 +47,16 @@ export class Preferences {
 		this.save('referenceImage', value);
 	}
 
+	private _hitArea = false;
+
+	public get hitArea() { return this._hitArea; }
+
+	public set hitArea(value: boolean) {
+		this._hitArea = value;
+		this.notifyListeners('hitArea', value);
+		this.save('hitArea', value);
+	}
+
 	// #endregion
 
 	public readonly onPreferenceChanged = new Phaser.Signal();
@@ -64,10 +74,10 @@ export class Preferences {
 	public setupActions(actions: ActionHandler) {
 		actions.setActionCommand(Actions.TOGGLE_SNAP, () => this.snap = !this._snap, () => this._snap);
 		actions.setActionCommand(Actions.TOGGLE_GIZMOS, () => this.gizmos = !this._gizmos, () => this._gizmos);
+		actions.setActionCommand(Actions.TOGGLE_HIT_AREA, () => this.hitArea = !this._hitArea, () => this._hitArea);
 		actions.setActionCommand(Actions.TOGGLE_GUIDES, () => this.guides = !this._guides, () => this._guides);
 		actions.setActionCommand(Actions.TOGGLE_REF_IMAGE, () => this.refImage = !this._refImage, () => this._refImage);
 	}
-
 
 	public setPanelSize(side: PanelSide, width: string) { this.save(`panel.${side}`, width); }
 

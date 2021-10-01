@@ -10,13 +10,12 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 
 	protected _internalValue: T;
 
-	public connectedCallback() {
-		this.classList.add('property-editor');
-	}
+	public connectedCallback() { this.classList.add('property-editor'); }
 
 	public setContent(prop: InspectorPropertyModel, value: T, hasCopyButton: boolean, fieldId?: string) {
 		fieldId = fieldId ?? `${prop.name}-${IdUtil.genHexId()}`;
 		this.prop = prop;
+		if (!value) value = this.getDefaultValue();
 
 		const titleCol = this.appendChild(document.createElement('div'));
 		titleCol.classList.add('property-title', prop.name);
@@ -78,6 +77,8 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 	public getInternalValue(): T { return this._internalValue; }
 	public abstract setInternalValue(value: T): void;
 	public abstract updateInternalValue(e: Event): void;
+
+	protected abstract getDefaultValue(): T;
 
 	public savePreviousValue() {
 		Editor.history.prepare(Editor.data.selectedObject, {

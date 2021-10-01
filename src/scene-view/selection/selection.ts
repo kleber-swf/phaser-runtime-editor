@@ -8,6 +8,7 @@ import { ScaleHandler } from './scale/scale.handler';
 export class Selection extends Phaser.Group {
 	private _selectedObject: PIXI.DisplayObject = null;
 	private _showGuides = false;
+	private _showHitArea = false;
 
 	public get hasObject() { return !!this._selectedObject; }
 
@@ -30,6 +31,7 @@ export class Selection extends Phaser.Group {
 		this.onPreferencesChanged('gizmos', prefs.gizmos);
 		this.onPreferencesChanged('snap', prefs.snap);
 		this.onPreferencesChanged('guides', prefs.guides);
+		this.onPreferencesChanged('hitArea', prefs.hitArea);
 
 		this.select(null);
 	}
@@ -47,6 +49,10 @@ export class Selection extends Phaser.Group {
 				this._showGuides = value === true;
 				if (this._selectedObject) this.move(0, 0);
 				return;
+			case 'hitArea':
+				this._showHitArea = value === true;
+				if (this._selectedObject) this.move(0, 0);
+				return;
 		}
 	}
 
@@ -62,6 +68,7 @@ export class Selection extends Phaser.Group {
 		if (!this._selectedObject) return;
 		const bounds = this._selectedObject.getBounds();
 		if (this._showGuides) this.drawGuides(bounds);
+		if (this._showHitArea) this.drawHitArea(this._selectedObject, bounds);
 		this.drawBorder(bounds);
 		this.drawPivot(this.scaleHandler.scaling
 			? this.scaleHandler.scaler.originalPivot
@@ -123,6 +130,15 @@ export class Selection extends Phaser.Group {
 			.drawCircle(bounds.width * anchor.x, bounds.height * anchor.y, 10)
 			.lineStyle(2, ANCHOR_COLOR, 1)
 			.drawCircle(bounds.width * anchor.x, bounds.height * anchor.y, 10);
+	}
+
+	private drawHitArea(obj: PIXI.DisplayObject, bounds: PIXI.Rectangle) {
+		const rect = obj.hitArea as PIXI.Rectangle ?? bounds;
+		this.view
+			.lineStyle(0)
+			.beginFill(0xFF8C64, 0.3)
+			.drawRect(0, 0, rect.width, rect.height)
+			.endFill();
 	}
 
 	public move(deltaX: number, deltaY: number) {
