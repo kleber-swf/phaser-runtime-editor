@@ -1,10 +1,11 @@
 import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
+import { PreferenceKey } from 'core/preferences';
 import { DataOrigin } from 'data/editor-data';
-import { HIT_AREA_COLOR, PreferenceKey } from 'index';
 import { DragUtil } from '../util/drag.util';
 import { SceneModel } from './scene-model';
+import { SceneViewUtil } from './scene-view.util';
 import { Selection } from './selection/selection';
 
 export class SceneView extends Phaser.Group {
@@ -69,7 +70,6 @@ export class SceneView extends Phaser.Group {
 		actions.setActionCommand(Actions.MOVE_RIGHT_10, () => this.moveSelectedObject(10, 0));
 
 		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
-		this.onPreferencesChanged('responsive', Editor.prefs.responsive);
 	}
 
 	public enable(root: Container, parent: Phaser.Stage) {
@@ -77,10 +77,12 @@ export class SceneView extends Phaser.Group {
 		if (this.parent === parent) return;
 		parent.addChild(this);
 		this.touchArea.input.enabled = true;
+		// this.onPreferencesChanged('allHitAreasSnapshot', Editor.prefs.allHitAreasSnapshot);
 	}
 
 	public disable() {
 		if (!this.parent) return;
+		Editor.prefs.allHitAreasSnapshot = false;
 		this.parent.removeChild(this);
 		this.touchArea.input.enabled = false;
 	}
@@ -204,18 +206,11 @@ export class SceneView extends Phaser.Group {
 	}
 
 	private showAllHitAreas(parent: PIXI.DisplayObjectContainer, view: Phaser.Graphics) {
-		if (parent.__isLeaf || !parent.visible) return;
+		if (!parent.visible || parent.__isLeaf) return;
 		const children = parent.children;
 		for (let i = 0, n = children.length; i < n; i++) {
 			const child = children[i];
-			console.log(child.name, child.inputEnabled);
-			if (child.visible && child.inputEnabled) {
-				const area = child.hitArea as PIXI.Rectangle ?? child.getBounds();
-				view.lineStyle(1, HIT_AREA_COLOR, 1)
-					.beginFill(HIT_AREA_COLOR, 0.3)
-					.drawRect(area.x, area.y, area.width, area.height)
-					.endFill();
-			}
+			if (child.visible && child.inputEnabled) SceneViewUtil.drawHitArea(child, child.getBounds(), view);
 			if ('children' in child) this.showAllHitAreas(child as PIXI.DisplayObjectContainer, view);
 		}
 	}

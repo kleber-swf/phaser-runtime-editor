@@ -56,7 +56,8 @@ function create() {
 	// 0   1
 	child = el(DIST * 2, DIST * 0, SIZE, SIZE, parent, 'child-a0-p1');
 	child.pivot.set(SIZE, SIZE);
-
+	child.inputEnabled = true;
+	child.hitArea = new Phaser.Circle(0, 0, 200);
 
 	// .5  0
 	child = el(DIST * 0, DIST * 1, SIZE, SIZE, parent, 'child-a.5-p0');

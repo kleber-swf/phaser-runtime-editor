@@ -1,7 +1,7 @@
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
 import { DataOrigin } from 'data/editor-data';
-import { HIT_AREA_COLOR } from 'index';
+import { SceneViewUtil } from 'scene-view/scene-view.util';
 import { PointUtil } from 'util/math.util';
 import { ANCHOR_COLOR, ANCHOR_STROKE, BORDER_COLOR, BORDER_STROKE, PIVOT_COLOR, PIVOT_STROKE } from '../scene-colors';
 import { ScaleHandler } from './scale/scale.handler';
@@ -69,7 +69,7 @@ export class Selection extends Phaser.Group {
 		if (!this._selectedObject) return;
 		const bounds = this._selectedObject.getBounds();
 		if (this._showGuides) this.drawGuides(bounds);
-		if (this._showHitArea) this.drawHitArea(this._selectedObject, bounds);
+		if (this._showHitArea) this.drawHitArea(bounds);
 		this.drawBorder(bounds);
 		this.drawPivot(this.scaleHandler.scaling
 			? this.scaleHandler.scaler.originalPivot
@@ -133,13 +133,12 @@ export class Selection extends Phaser.Group {
 			.drawCircle(bounds.width * anchor.x, bounds.height * anchor.y, 10);
 	}
 
-	private drawHitArea(obj: PIXI.DisplayObject, bounds: PIXI.Rectangle) {
-		const rect = obj.hitArea as PIXI.Rectangle ?? bounds;
-		this.view
-			.lineStyle(0)
-			.beginFill(HIT_AREA_COLOR, 0.3)
-			.drawRect(0, 0, rect.width, rect.height)
-			.endFill();
+	private drawHitArea(bounds: PIXI.Rectangle) {
+		if (!this._selectedObject.inputEnabled) return;
+		const b = new PIXI.Rectangle();
+		b.width = bounds.width;
+		b.height = bounds.height;
+		SceneViewUtil.drawHitArea(this._selectedObject, b, this.view);
 	}
 
 	public move(deltaX: number, deltaY: number) {

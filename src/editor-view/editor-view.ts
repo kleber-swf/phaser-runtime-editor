@@ -68,12 +68,14 @@ export class EditorView extends Widget {
 
 		this.panels.forEach(panel => panel.enable());
 		this.gameContainer.addGame(this.game);
+		this.actions.enable();
 		document.body.appendChild(this);
 	}
 
 	public disable() {
 		if (!this._enabled) return;
 		this._enabled = false;
+		this.actions.disable();
 		this.gameContainer.returnGameToItsParent();
 		this.panels.forEach(panel => panel.enable());
 		this.parentElement.removeChild(this);

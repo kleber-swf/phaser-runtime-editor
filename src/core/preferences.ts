@@ -64,7 +64,6 @@ export class Preferences {
 	public set allHitAreasSnapshot(value: boolean) {
 		this._allHitAreasSnapshot = value;
 		this.notifyListeners('allHitAreasSnapshot', value);
-		this.save('allHitAreasSnapshot', value);
 	}
 
 	private _responsive = false;
@@ -87,6 +86,8 @@ export class Preferences {
 		this._snap = this.load('snap', true);
 		this._gizmos = this.load('gizmos', true);
 		this._guides = this.load('guides', false);
+		this._hitArea = this.load('hitArea', false);
+		this._responsive = this.load('responsive', false);
 		this._refImage = this.load('refImage', false);
 	}
 
@@ -94,9 +95,9 @@ export class Preferences {
 	public setupActions(actions: ActionHandler) {
 		actions.setActionCommand(Actions.TOGGLE_SNAP, () => this.snap = !this._snap, () => this._snap);
 		actions.setActionCommand(Actions.TOGGLE_GIZMOS, () => this.gizmos = !this._gizmos, () => this._gizmos);
+		actions.setActionCommand(Actions.TOGGLE_GUIDES, () => this.guides = !this._guides, () => this._guides);
 		actions.setActionCommand(Actions.TOGGLE_HIT_AREA, () => this.hitArea = !this._hitArea, () => this._hitArea);
 		actions.setActionCommand(Actions.TOGGLE_ALL_HIT_AREAS_SNAPSHOT, () => this.allHitAreasSnapshot = !this._allHitAreasSnapshot, () => this._allHitAreasSnapshot);
-		actions.setActionCommand(Actions.TOGGLE_GUIDES, () => this.guides = !this._guides, () => this._guides);
 		actions.setActionCommand(Actions.TOGGLE_RESPONSIVE, () => this.responsive = !this._responsive, () => this._responsive);
 		actions.setActionCommand(Actions.TOGGLE_REF_IMAGE, () => this.refImage = !this._refImage, () => this._refImage);
 	}

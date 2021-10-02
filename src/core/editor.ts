@@ -65,7 +65,8 @@ class EditorClass {
 			{ name: 'frameName', label: 'frame', typeHint: 'string' },
 			{ name: 'blendMode', typeHint: 'valueList', values: Phaser.blendModes },
 			{ name: 'tint', typeHint: 'color' },
-			{ name: 'hitArea', typeHint: 'rect' },
+			// TODO waiting for multiple type hint
+			// { name: 'hitArea', typeHint: 'rect' },
 
 			// Text
 			{ name: 'text', typeHint: 'text', data: { rows: 3 } },
@@ -88,7 +89,7 @@ class EditorClass {
 		const basicProperties = {
 			title: '', properties: [
 				'__type', 'name', 'position', 'scale', 'pivot', 'anchor',
-				'alpha', 'visible', 'angle', 'hitArea', '_bounds'
+				'alpha', 'visible', 'angle', '_bounds'
 			]
 		};
 
