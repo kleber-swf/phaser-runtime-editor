@@ -1,6 +1,6 @@
 {
 	"name": "@kleber-swf/phaser-runtime-editor",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "A runtime editor for Phaser-CE projects",
 	"author": "Kleber Silva <kleber.swf@gmail.com>",
 	"license": "MIT",
