@@ -1,6 +1,7 @@
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
 import { DataOrigin } from 'data/editor-data';
+import { SceneViewUtil } from 'scene-view/scene-view.util';
 import { PointUtil } from 'util/math.util';
 import { ANCHOR_COLOR, ANCHOR_STROKE, BORDER_COLOR, BORDER_STROKE, PIVOT_COLOR, PIVOT_STROKE } from '../scene-colors';
 import { ScaleHandler } from './scale/scale.handler';
@@ -8,6 +9,7 @@ import { ScaleHandler } from './scale/scale.handler';
 export class Selection extends Phaser.Group {
 	private _selectedObject: PIXI.DisplayObject = null;
 	private _showGuides = false;
+	private _showHitArea = false;
 
 	public get hasObject() { return !!this._selectedObject; }
 
@@ -30,6 +32,7 @@ export class Selection extends Phaser.Group {
 		this.onPreferencesChanged('gizmos', prefs.gizmos);
 		this.onPreferencesChanged('snap', prefs.snap);
 		this.onPreferencesChanged('guides', prefs.guides);
+		this.onPreferencesChanged('hitArea', prefs.hitArea);
 
 		this.select(null);
 	}
@@ -47,6 +50,10 @@ export class Selection extends Phaser.Group {
 				this._showGuides = value === true;
 				if (this._selectedObject) this.move(0, 0);
 				return;
+			case 'hitArea':
+				this._showHitArea = value === true;
+				if (this._selectedObject) this.move(0, 0);
+				return;
 		}
 	}
 
@@ -62,6 +69,7 @@ export class Selection extends Phaser.Group {
 		if (!this._selectedObject) return;
 		const bounds = this._selectedObject.getBounds();
 		if (this._showGuides) this.drawGuides(bounds);
+		if (this._showHitArea) this.drawHitArea(bounds);
 		this.drawBorder(bounds);
 		this.drawPivot(this.scaleHandler.scaling
 			? this.scaleHandler.scaler.originalPivot
@@ -123,6 +131,14 @@ export class Selection extends Phaser.Group {
 			.drawCircle(bounds.width * anchor.x, bounds.height * anchor.y, 10)
 			.lineStyle(2, ANCHOR_COLOR, 1)
 			.drawCircle(bounds.width * anchor.x, bounds.height * anchor.y, 10);
+	}
+
+	private drawHitArea(bounds: PIXI.Rectangle) {
+		if (!this._selectedObject.inputEnabled) return;
+		const b = new PIXI.Rectangle();
+		b.width = bounds.width;
+		b.height = bounds.height;
+		SceneViewUtil.drawHitArea(this._selectedObject, b, this.view);
 	}
 
 	public move(deltaX: number, deltaY: number) {

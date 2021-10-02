@@ -18,6 +18,8 @@ export class TextPropertyEditor extends PropertyEditor<string> {
 		return input;
 	}
 
+	protected getDefaultValue() { return ''; }
+
 	public setInternalValue(value: string) {
 		value = value ?? '';
 		this._internalValue = value;

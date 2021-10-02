@@ -13,6 +13,8 @@ export class NumberPropertyEditor extends PropertyEditor<number> {
 		return input;
 	}
 
+	protected getDefaultValue() { return 0; }
+
 	public setInternalValue(value: number) {
 		value = value === null || isNaN(value) ? 0 : value;
 		this._internalValue = value;

@@ -66,9 +66,9 @@ export class EditorStateHandler {
 		this.disabledUI.disable();
 		if (!this._initialized) this.init();
 
-		this.sceneView.enable(this.config.root, this.game.stage);
-		this.editorView.enable();
-		this.referenceImageController.setImage(this.config.refImage);
+		this.sceneView.enable(this.config.root(), this.game.stage);
+		this.editorView.enable(this.config);
+		this.referenceImageController.setImage(this.config.refImage());
 
 		Editor.enable();
 		if (this.onshow) this.onshow();

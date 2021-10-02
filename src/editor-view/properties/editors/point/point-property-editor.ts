@@ -38,6 +38,8 @@ export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 		super.onValueChanged(e, false);
 	}
 
+	protected getDefaultValue() { return new PIXI.Point(); }
+
 	public getInternalValue() { return this.internalValue.clone(); }
 
 	public setInternalValue(value: PIXI.Point) {

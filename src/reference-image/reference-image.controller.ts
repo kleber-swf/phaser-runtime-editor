@@ -13,7 +13,7 @@ export class ReferenceImageController {
 	private image: PIXI.Sprite;
 
 	constructor(game: Phaser.Game, config: PluginConfig) {
-		this.referenceImage = new ReferenceImage(game, config.root);
+		this.referenceImage = new ReferenceImage(game, config.root());
 		this.panel = document.createElement(ComponentTags.ReferenceImagePanel) as ReferenceImagePanel;
 		this.panel.init(this.referenceImage);
 	}
@@ -22,7 +22,7 @@ export class ReferenceImageController {
 		this.panel.setupActions(actions);
 	}
 
-	public setImage(image: PIXI.Sprite) {
+	public setImage(image: Phaser.Image | Phaser.Sprite) {
 		if (!this.actionsToolbar) {
 			this.actionsToolbar = document.querySelector(ComponentTags.ActionsToolbar);
 		}
@@ -31,9 +31,11 @@ export class ReferenceImageController {
 		this.referenceImage.image = image;
 
 		if (image) {
-			this.actionsToolbar.appendChild(this.panel);
+			if (this.panel.parentElement !== this.actionsToolbar)
+				this.actionsToolbar.appendChild(this.panel);
 		} else {
-			this.actionsToolbar.removeChild(this.panel);
+			if (this.panel.parentElement === this.actionsToolbar)
+				this.actionsToolbar.removeChild(this.panel);
 		}
 	}
 }

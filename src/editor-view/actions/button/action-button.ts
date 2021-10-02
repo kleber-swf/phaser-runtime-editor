@@ -25,9 +25,6 @@ export class ActionButton extends HTMLElement {
 		}
 		this.onclick = this.toggleSelected.bind(this);
 		this.updateState();
-		Editor.prefs.onPreferenceChanged.add((pref: PreferenceKey) => {
-			if (pref === 'gizmos') this.updateState();
-		});
 	}
 
 	private toggleSelected() {
@@ -35,8 +32,8 @@ export class ActionButton extends HTMLElement {
 		this.updateState();
 	}
 
-	private updateState() {
-		if (this.action.state()) this.classList.add('selected');
+	public updateState() {
+		if (this.action.state?.()) this.classList.add('selected');
 		else this.classList.remove('selected');
 	}
 }

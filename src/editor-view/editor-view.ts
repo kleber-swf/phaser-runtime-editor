@@ -25,7 +25,7 @@ export class EditorView extends Widget {
 		Editor.actions.addContainer(ComponentTags.EditorView, this);
 		this.createElements();
 		this.gameContainer.init();
-		this.panels.forEach(panel => panel.init(game, config));
+		this.panels.forEach(panel => panel.init(game));
 	}
 
 	public setupActions(actions: ActionHandler) {
@@ -62,20 +62,22 @@ export class EditorView extends Widget {
 		rightPanel.addInspector(props);
 	}
 
-	public enable() {
+	public enable(config: PluginConfig) {
 		if (this._enabled) return;
 		this._enabled = true;
 
-		this.panels.forEach(panel => panel.enable());
+		this.panels.forEach(panel => panel.enable(config));
 		this.gameContainer.addGame(this.game);
+		this.actions.enable();
 		document.body.appendChild(this);
 	}
 
 	public disable() {
 		if (!this._enabled) return;
 		this._enabled = false;
+		this.actions.disable();
 		this.gameContainer.returnGameToItsParent();
-		this.panels.forEach(panel => panel.enable());
+		this.panels.forEach(panel => panel.disable());
 		this.parentElement.removeChild(this);
 	}
 

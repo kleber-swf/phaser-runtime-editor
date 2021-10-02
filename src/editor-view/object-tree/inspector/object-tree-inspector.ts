@@ -11,8 +11,8 @@ import './object-tree-inspector.scss';
 export class ObjectTreeInspector extends Inspector {
 	private readonly model: ObjectTreeModel = new ObjectTreeModel();
 
-	public init(game: Phaser.Game, config: PluginConfig) {
-		super.init(game, config);
+	public init(game: Phaser.Game) {
+		super.init(game);
 		this.title = 'Objects';
 
 		const el = this.headerElement.appendChild(document.createElement(ComponentTags.SearchField)) as SearchField;
@@ -20,8 +20,10 @@ export class ObjectTreeInspector extends Inspector {
 		el.onValueChanged = this.filterContent.bind(this);
 
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
-		this.setRoot(config.root);
 	}
+
+	public enable(config: PluginConfig) { this.setRoot(config.root()); }
+	public disable() { this.model.empty(); }
 
 	private setRoot(root: PIXI.DisplayObjectContainer | Phaser.Stage) {
 		this.model.create(root);

@@ -21,6 +21,12 @@ export class RectPropertyEditor extends PropertyEditor<PIXI.Rectangle> {
 		const parent = this.appendChild(document.createElement('div'));
 		parent.classList.add('vertical-content');
 
+		if (!value) {
+			value = new PIXI.Rectangle();
+			prop.data = prop.data ?? {};
+			prop.data.readonly = true;
+		}
+
 		const xinput = this.xinput = document.createElement(ComponentTags.NumberPropertyEditor) as NumberPropertyEditor;
 		xinput.setContent({ name: 'x', typeHint: 'number', data: prop.data }, value.x, false, fieldId);
 		xinput.onchange = this.onInputChanged.bind(this);
@@ -51,6 +57,7 @@ export class RectPropertyEditor extends PropertyEditor<PIXI.Rectangle> {
 		super.onValueChanged(e, false);
 	}
 
+	protected getDefaultValue() { return new PIXI.Rectangle(); }
 	public getInternalValue() { return this.internalValue.clone(); }
 
 	public setInternalValue(value: Phaser.Rectangle) {
