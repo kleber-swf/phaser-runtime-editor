@@ -23,6 +23,8 @@ export class ObjectTreeModel {
 		this.createNode(root, this.objectMap, null, 0);
 	}
 
+	public empty() { this.objectMap = null; }
+
 	// TODO __type and __isLeaf should be made elsewhere
 	private createNode(child: PIXI.DisplayObject, map: Record<number, ObjectTreeNodeModel>, parent: ObjectTreeNodeModel, level: number) {
 		if (!child.__instanceId) child.__instanceId = IdUtil.genIntId();

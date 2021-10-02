@@ -26,16 +26,16 @@ export class Panel extends Widget {
 		this.inspectors.forEach(p => p.selectObject(obj, from));
 	}
 
-	public init(game: Phaser.Game, config: PluginConfig) {
+	public init(game: Phaser.Game) {
 		const handle = document.createElement(ComponentTags.ResizeHandle) as ResizeHandle;
 		handle.init(this, this.side);
 		this.appendChild(handle);
-		this.inspectors.forEach(inspector => inspector.init(game, config));
+		this.inspectors.forEach(inspector => inspector.init(game));
 		this.style.width = Editor.prefs.getPanelSize(this.side);
 	}
 
-	public enable() {
-		this.inspectors.forEach(inspector => inspector.enable());
+	public enable(config: PluginConfig) {
+		this.inspectors.forEach(inspector => inspector.enable(config));
 	}
 
 	public disable() {

@@ -9,8 +9,8 @@ import { PropertyEditor } from '../editors/property-editor';
 export class PropertiesInspector extends Inspector {
 	private editors: Record<string, PropertyEditor<any>> = {};
 
-	public init(game: Phaser.Game, config: PluginConfig) {
-		super.init(game, config);
+	public init(game: Phaser.Game) {
+		super.init(game);
 		this.title = 'Properties';
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 	}
