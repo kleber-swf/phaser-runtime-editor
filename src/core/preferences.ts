@@ -37,14 +37,34 @@ export class Preferences {
 		this.save('guides', value);
 	}
 
-	private _refImage = false;
+	private _refImageVisible = false;
 
-	public get refImage() { return this._refImage; }
+	public get refImageVisible() { return this._refImageVisible; }
 
-	public set refImage(value: boolean) {
-		this._refImage = value;
-		this.notifyListeners('refImage', value);
-		this.save('referenceImage', value);
+	public set refImageVisible(value: boolean) {
+		this._refImageVisible = value;
+		this.notifyListeners('refImageVisible', value);
+		this.save('refImageVisible', value);
+	}
+
+	private _refImageX = 0;
+
+	public get refImageX() { return this._refImageX; }
+
+	public set refImageX(value: number) {
+		this._refImageX = value;
+		this.notifyListeners('refImageX', value);
+		this.save('refImageX', value);
+	}
+
+	private _refImageY = 0;
+
+	public get refImageY() { return this._refImageY; }
+
+	public set refImageY(value: number) {
+		this._refImageY = value;
+		this.notifyListeners('refImageY', value);
+		this.save('refImageY', value);
 	}
 
 	private _hitArea = false;
@@ -88,7 +108,9 @@ export class Preferences {
 		this._guides = this.load('guides', false);
 		this._hitArea = this.load('hitArea', false);
 		this._responsive = this.load('responsive', false);
-		this._refImage = this.load('refImage', false);
+		this._refImageVisible = this.load('refImageVisible', false);
+		this._refImageX = this.load('refImageX', 0);
+		this._refImageY = this.load('refImageY', 0);
 	}
 
 	// hmm... this is weird
@@ -99,7 +121,7 @@ export class Preferences {
 		actions.setActionCommand(Actions.TOGGLE_HIT_AREA, () => this.hitArea = !this._hitArea, () => this._hitArea);
 		actions.setActionCommand(Actions.TOGGLE_ALL_HIT_AREAS_SNAPSHOT, () => this.allHitAreasSnapshot = !this._allHitAreasSnapshot, () => this._allHitAreasSnapshot);
 		actions.setActionCommand(Actions.TOGGLE_RESPONSIVE, () => this.responsive = !this._responsive, () => this._responsive);
-		actions.setActionCommand(Actions.TOGGLE_REF_IMAGE, () => this.refImage = !this._refImage, () => this._refImage);
+		actions.setActionCommand(Actions.TOGGLE_REF_IMAGE, () => this.refImageVisible = !this._refImageVisible, () => this._refImageVisible);
 	}
 
 	public setPanelSize(side: PanelSide, width: string) { this.save(`panel.${side}`, width); }

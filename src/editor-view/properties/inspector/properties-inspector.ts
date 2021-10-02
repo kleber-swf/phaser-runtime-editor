@@ -52,7 +52,7 @@ export class PropertiesInspector extends Inspector {
 		this.contentElement.style.visibility = 'visible';
 
 		const idata = Editor.inspectorData;
-		const propertyGroups = idata.getObjectPropertiesForType(obj.__type)
+		const propertyGroups = idata.getObjectPropertiesForType(obj.__baseType)
 		propertyGroups.forEach(group => {
 			if (group.title) this.createTitleElement(group.title);
 			group.properties.forEach(prop => {

@@ -20,7 +20,7 @@ export class ObjectTreeInspector extends Inspector {
 		el.onValueChanged = this.filterContent.bind(this);
 
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
-		this.setRoot(config.root);
+		this.setRoot(config.root());
 	}
 
 	private setRoot(root: PIXI.DisplayObjectContainer | Phaser.Stage) {

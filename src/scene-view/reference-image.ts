@@ -4,14 +4,23 @@ import { PreferenceKey } from 'core/preferences';
 export class ReferenceImage extends Phaser.Group {
 	private _parent: PIXI.DisplayObjectContainer;
 
-	public set image(value: PIXI.Sprite) {
+	public set image(value: Phaser.Image|Phaser.Sprite) {
 		if (!value) {
 			this.visible = false;
 			return;
 		}
 
 		value.__skip = true;
-		if (value.parent !== this) this.addChild(value);
+		
+		if (value.parent !== this) {
+			this.addChild(value);
+			value.inputEnabled = true;
+			value.input.draggable = true;
+			value.events.onDragStop.add(() => {
+				Editor.prefs.refImageX = value.x;
+				Editor.prefs.refImageY = value.y;
+			});
+		}
 		this.visible = true;
 	}
 
@@ -23,13 +32,19 @@ export class ReferenceImage extends Phaser.Group {
 		this.alpha = 0.3;
 
 		this._parent = root;
-		Editor.prefs.onPreferenceChanged.add(this.onPreferenceChanged, this);
-		this.onPreferenceChanged('refImage', Editor.prefs.refImage);
+
+		const prefs = Editor.prefs;
+		prefs.onPreferenceChanged.add(this.onPreferenceChanged, this);
+		this.onPreferenceChanged('refImageVisible', prefs.refImageVisible);
+		// TODO waiting for proportional scaling
+		// this.onPreferenceChanged('refImageScaleX', prefs.refImageScaleX);
+		// this.onPreferenceChanged('refImageScaleY', prefs.refImageScaleY);
+
 		this.visible = false;
 	}
 
 	private onPreferenceChanged(pref: PreferenceKey, value: any) {
-		if (pref !== 'refImage') return;
+		if (pref !== 'refImageVisible') return;
 		if (value) this.show();
 		else this.hide();
 	}
