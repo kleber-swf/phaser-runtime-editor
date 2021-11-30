@@ -35,7 +35,7 @@ export class GameContainer extends HTMLElement {
 		el.classList.add('phred-game');
 		this.gameEditorParentElement.appendChild(el);
 
-		// this.gameEditorParentElement.appendChild(document.createElement('phred-selection-area'));
+		this.gameEditorParentElement.appendChild(document.createElement('phred-selection-area'));
 	}
 
 	public returnGameToItsParent() {
