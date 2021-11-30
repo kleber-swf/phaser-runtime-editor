@@ -28,7 +28,6 @@ export class ReferenceImage extends Phaser.Group {
 
 	private onPreferenceChanged(pref: PreferenceKey, value: any) {
 		if (pref !== 'refImage') return;
-		console.log(value);
 		if (value) this.show();
 		else this.hide();
 	}

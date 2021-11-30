@@ -135,7 +135,6 @@ class EditorClass {
 				id: Actions.TOGGLE_ENABLED,
 				label: 'edit',
 				icon: 'fa-edit',
-				toggle: true,
 				shortcuts: ['ctrl+F2']
 			},
 
@@ -161,6 +160,7 @@ class EditorClass {
 			},
 			{
 				id: Actions.TOGGLE_REF_IMAGE,
+				toggle: true,
 				label: 'reference image',
 				icon: 'fa-image'
 			},
