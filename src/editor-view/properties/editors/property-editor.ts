@@ -57,10 +57,8 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 			.classList.add('fas', 'fa-clone');
 	}
 
-	protected copyToClipboard() {
-		navigator.clipboard
-			.writeText(`"${this.prop.name}": ${JSON.stringify(this.getInternalValue())}`);
-	}
+	protected copyToClipboard() { navigator.clipboard.writeText(`"${this.prop.name}": ${this.valueToJson()}`); }
+	protected valueToJson(): string { return JSON.stringify(this.getInternalValue()); }
 
 	public propertyChangedOutsideInspector(value: T) {
 		this.changedOutsideInspector = true;

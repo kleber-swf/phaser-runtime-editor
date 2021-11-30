@@ -40,6 +40,10 @@ class EditorClass {
 			point: ComponentTags.PointPropertyEditor,
 			rect: ComponentTags.RectPropertyEditor,
 
+			// custom
+			color: ComponentTags.ColorPropertyEditor,
+			valueList: ComponentTags.ValueListPropertyEditor,
+
 			// default
 			default: ComponentTags.StringPropertyEditor,
 		});
@@ -59,26 +63,25 @@ class EditorClass {
 			// Sprite
 			{ name: 'key', typeHint: 'string' },
 			{ name: 'frameName', label: 'frame', typeHint: 'string' },
-			{ name: 'blendMode', typeHint: 'number' },
-			{ name: 'tint', typeHint: 'number', data: { min: 0, max: 0xFFFFFF } },
+			{ name: 'blendMode', typeHint: 'valueList', values: Phaser.blendModes },
+			{ name: 'tint', typeHint: 'color' },
 
 			// Text
 			{ name: 'text', typeHint: 'text', data: { rows: 3 } },
 			{ name: 'font', typeHint: 'string' },
 			{ name: 'fontSize', typeHint: 'number', data: { min: 0, step: 1 } },
-			{ name: 'fontStyle', typeHint: 'string' },
-			{ name: 'fontVariant', typeHint: 'string' },
-			{ name: 'fontWeight', typeHint: 'string' },
+			{ name: 'fontStyle', typeHint: 'valueList', values: ['normal', 'italic', 'oblique'] },
+			{ name: 'fontWeight', typeHint: 'valueList', values: ['normal', 'bold', 'bolder', 'lighter', '100', '200', '300', '400', '500', '600', '700', '800', '900'] },
+			{ name: 'fontVariant', typeHint: 'valueList', values: ['normal', 'small-caps'] },
 			{ name: 'autoRound', typeHint: 'boolean' },
-			{ name: 'align', typeHint: 'string' },
+			{ name: 'align', typeHint: 'valueList', values: ['left', 'center', 'right'] },
 			{ name: 'wordWrap', typeHint: 'boolean' },
 			{ name: 'wordWrapWidth', typeHint: 'number', data: { min: 0, step: 1 } },
 			{ name: 'useAdvancedWordWrap', typeHint: 'boolean' },
 			{ name: 'padding', typeHint: 'point' },
 			// { name: 'textBounds', typeHint: 'rect' },  // TODO waiting for null checking on rect editor
-			{ name: 'boundsAlignH', typeHint: 'string' },
-			{ name: 'boundsAlignV', typeHint: 'string' },
-
+			{ name: 'boundsAlignH', typeHint: 'valueList', values: ['left', 'center', 'right'] },
+			{ name: 'boundsAlignV', typeHint: 'valueList', values: ['top', 'middle', 'bottom'] },
 		]);
 
 		const basicProperties = {
