@@ -24,12 +24,11 @@ export class ReferenceImage extends Phaser.Group {
 
 		this._parent = root;
 		Editor.prefs.onPreferenceChanged.add(this.onPreferenceChanged, this);
-		this.onPreferenceChanged('refImage', Editor.prefs.refImage);
-		this.visible = false;
 	}
 
 	private onPreferenceChanged(pref: PreferenceKey, value: any) {
 		if (pref !== 'refImage') return;
+		console.log(value);
 		if (value) this.show();
 		else this.hide();
 	}
@@ -40,5 +39,13 @@ export class ReferenceImage extends Phaser.Group {
 
 	public hide() {
 		if (this.parent) this.parent.removeChild(this);
+	}
+
+	public enable() {
+		this.onPreferenceChanged('refImage', Editor.prefs.refImage);
+	}
+
+	public disable() {
+		this.hide();
 	}
 }

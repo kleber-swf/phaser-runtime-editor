@@ -22,18 +22,25 @@ export class ReferenceImageController {
 		this.panel.setupActions(actions);
 	}
 
-	public setImage(image: PIXI.Sprite) {
+	public enable(image: PIXI.Sprite) {
 		if (!this.actionsToolbar) {
 			this.actionsToolbar = document.querySelector(ComponentTags.ActionsToolbar);
 		}
 
-		if (this.image === image) return;
-		this.referenceImage.image = image;
+		if (this.image !== image) {
+			this.referenceImage.image = image;
 
-		if (image) {
-			this.actionsToolbar.appendChild(this.panel);
-		} else {
-			this.actionsToolbar.removeChild(this.panel);
+			if (image) {
+				this.actionsToolbar.appendChild(this.panel);
+			} else {
+				this.actionsToolbar.removeChild(this.panel);
+			}
 		}
+
+		this.referenceImage.enable();
+	}
+
+	public disable() {
+		this.referenceImage.disable();
 	}
 }
