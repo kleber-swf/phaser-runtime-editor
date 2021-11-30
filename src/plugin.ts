@@ -11,9 +11,15 @@ export interface PluginConfig {
 	onHide?: () => void;
 }
 
+interface GameStateConfig {
+	disableVisibilityChange: boolean;
+	slowMotion: number;
+	scaleMode: number;
+}
+
 export class Plugin extends Phaser.Plugin {
 	private readonly editorState: EditorStateHandler;
-	private gamePreState: { disableVisibilityChange: boolean, slowMotion: number };
+	private gamePreState: GameStateConfig;
 	private config: PluginConfig;
 
 	public constructor(game: Phaser.Game, config?: PluginConfig) {
@@ -67,23 +73,33 @@ export class Plugin extends Phaser.Plugin {
 		(this as any).postUpdate = this._postUpdate.bind(this);
 		this.hasPostUpdate = true;
 
+		const game = this.game;
+
+		// saves the pre editor game state
 		this.gamePreState = {
-			disableVisibilityChange: this.game.stage.disableVisibilityChange,
-			slowMotion: this.game.time.slowMotion,
+			disableVisibilityChange: game.stage.disableVisibilityChange,
+			slowMotion: game.time.slowMotion,
+			scaleMode: game.scale.scaleMode,
 		};
 
-		this.game.stage.disableVisibilityChange = true;
-		if (this.config.pauseGame) this.game.time.slowMotion = Number.POSITIVE_INFINITY;
+		// applies some properties to the game
+		game.stage.disableVisibilityChange = true;
+		if (this.config.pauseGame) game.time.slowMotion = Number.POSITIVE_INFINITY;
+		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
-		this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		if (this.config.onShow) this.config.onShow();
 	}
 
 	private onEditorHide() {
 		this.hasPostUpdate = false;
 		(this as any).postUpdate = null;
-		this.game.stage.disableVisibilityChange = this.gamePreState.disableVisibilityChange;
-		this.game.time.slowMotion = this.gamePreState.slowMotion;
+
+		// recovers pre editor game state
+		const { game, gamePreState } = this;
+		game.stage.disableVisibilityChange = gamePreState.disableVisibilityChange;
+		game.time.slowMotion = gamePreState.slowMotion;
+		game.scale.scaleMode = gamePreState.scaleMode;
+
 		if (this.config.onHide) this.config.onHide();
 	}
 
