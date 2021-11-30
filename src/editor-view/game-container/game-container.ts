@@ -3,8 +3,8 @@ import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import './game-container.scss';
 
-const MIN_WIDTH = 100;
-const MAX_WIDTH = 10000;
+const MIN_SCALE = 0.5;
+const MAX_SCALE = 5;
 
 export class GameContainer extends HTMLElement {
 	private gameOriginalParentElement: HTMLElement;
@@ -34,6 +34,8 @@ export class GameContainer extends HTMLElement {
 		this.gameOriginalParentElement = el.parentElement;
 		el.classList.add('phred-game');
 		this.gameEditorParentElement.appendChild(el);
+
+		// this.gameEditorParentElement.appendChild(document.createElement('phred-selection-area'));
 	}
 
 	public returnGameToItsParent() {
@@ -44,14 +46,12 @@ export class GameContainer extends HTMLElement {
 		this.game = null;
 	}
 
+	private _currentScale = 1;
 	private zoom(amount: number) {
 		const el = this.gameEditorParentElement;
-		const ratio = el.clientHeight / el.clientWidth;
-		const width = Math.max(Math.min(el.clientWidth + amount, MAX_WIDTH), MIN_WIDTH);
-		const height = width * ratio;
-		el.style.width = width + 'px';
-		el.style.height = height + 'px';
-		this.game.scale.refresh();
+		this._currentScale = Phaser.Math.clamp(this._currentScale + amount * 0.001, MIN_SCALE, MAX_SCALE);
+		el.style.transform = `scale(${this._currentScale * 100}%)`; // TODO pivot
+		// this.game.scale.refresh();
 	}
 
 	// #region Panning
