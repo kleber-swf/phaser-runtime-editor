@@ -5,20 +5,20 @@ export class ObjectSelector {
 		this.root = root;
 	}
 
-	public trySelectOver(pointer: Phaser.Pointer) {
+	public getObjectAt(x: number, y: number) {
 		const objects: PIXI.DisplayObject[] = [];
-		this.getObjectsUnderPoint(pointer.x, pointer.y, this.root.children, objects);
+		this.getObjectsUnderPoint(x, y, this.root.children, objects);
 
 		const obj = this.setSelectionTree(objects);
-		this.selectObject(obj, true);
-		return obj !== null;
+		// this.selectObject(obj, true);
+		return obj;
 	}
 
-	private selectObject(obj: PIXI.DisplayObject, dispatch: boolean) {
-		console.log(obj);
-		// this.selection.select(obj);
-		// if (dispatch) Editor.data.selectObject(obj, DataOrigin.SCENE);
-	}
+	// private selectObject(obj: PIXI.DisplayObject, dispatch: boolean) {
+	// 	console.log(obj?.name);
+	// 	// this.selection.select(obj);
+	// 	// if (dispatch) Editor.data.selectObject(obj, DataOrigin.SCENE);
+	// }
 
 	private getObjectsUnderPoint(x: number, y: number, children: PIXI.DisplayObject[], objects: PIXI.DisplayObject[]) {
 		for (let i = children.length - 1; i >= 0; i--) {
@@ -30,10 +30,13 @@ export class ObjectSelector {
 		}
 	}
 
+
+	/// ----
+
 	private _lastSelectionTree: PIXI.DisplayObject[];
 	private _lastSelectionTreeIndex = -1;
 
-	public setSelectionTree(selectionTree: PIXI.DisplayObject[]) {
+	private setSelectionTree(selectionTree: PIXI.DisplayObject[]) {
 		if (!selectionTree) {
 			this._lastSelectionTree = null;
 			this._lastSelectionTreeIndex = - 1;

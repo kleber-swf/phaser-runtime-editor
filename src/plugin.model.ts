@@ -4,3 +4,8 @@ export interface PluginConfig {
 	pauseGame: boolean;
 	clearPrefs: boolean;
 }
+
+export interface Point {
+	x: number;
+	y: number
+}

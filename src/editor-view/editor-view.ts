@@ -24,7 +24,7 @@ export class EditorView extends Widget {
 		Editor.data.onSelectedObjectChanged.add(this.selectObject, this);
 		Editor.actions.addContainer(ComponentTags.EditorView, this);
 		this.createElements();
-		this.gameContainer.init(config);
+		this.gameContainer.init(game, config);
 		this.panels.forEach(panel => panel.init(game));
 	}
 
@@ -67,7 +67,7 @@ export class EditorView extends Widget {
 		this._enabled = true;
 
 		this.panels.forEach(panel => panel.enable(config));
-		this.gameContainer.addGame(this.game);
+		this.gameContainer.enable();
 		this.actions.enable();
 		document.body.appendChild(this);
 	}
@@ -76,7 +76,7 @@ export class EditorView extends Widget {
 		if (!this._enabled) return;
 		this._enabled = false;
 		this.actions.disable();
-		this.gameContainer.returnGameToItsParent();
+		this.gameContainer.disable();
 		this.panels.forEach(panel => panel.disable());
 		this.remove()
 	}

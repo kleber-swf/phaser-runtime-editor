@@ -1,16 +1,21 @@
-import { PluginConfig } from 'plugin.model';
+import { PluginConfig, Point } from 'plugin.model';
 import { ObjectSelector } from './object-selector';
 import './selection-area.scss';
+import { SelectionUtil } from './selection.util';
 import { NewSelection } from './selection/new-selection';
 
 export class SelectionArea extends HTMLElement {
-	public game: Phaser.Game;
+	private game: Phaser.Game;
 	private selection: NewSelection;
 	private selector: ObjectSelector;
+	private _touchPoint: Point = { x: 0, y: 0 };
 
-	public init(config: PluginConfig) {
+	public init(game: Phaser.Game, config: PluginConfig) {
+		this.game = game;
+		SelectionUtil.init(game, this);
 		this.selector = new ObjectSelector(config.root);
 		this.selection = document.createElement('phred-selection') as NewSelection;
+		this.selection.init();
 	}
 
 	// TODO move it to init / enable
@@ -21,11 +26,14 @@ export class SelectionArea extends HTMLElement {
 
 	private onClick(e: PointerEvent) {
 		const game = this.game;
-		const gx = game.width * e.offsetX / this.clientWidth;
-		const gy = game.height * e.offsetY / this.clientHeight;
+		const p = this._touchPoint;
+		SelectionUtil.pointFromAreaToGame(e.offsetX, e.offsetY, p);
 
-		game.add.graphics(gx, gy)
+		game.add.graphics(p.x, p.y)
 			.beginFill(0xFFFF00).drawCircle(0, 0, 20);
+
+		const obj = this.selector.getObjectAt(p.x, p.y);
+		this.selection.object = obj;
 	}
 }
 
