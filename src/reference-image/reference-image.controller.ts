@@ -1,7 +1,7 @@
 import { ComponentTags } from 'component-tags';
+import { ActionHandler } from 'core/action-handler';
 import { ActionsToolbar } from 'editor-view/actions/actions-toolbar';
 import { ReferenceImagePanel } from 'editor-view/actions/reference-image/reference-image-panel';
-import { ActionHandler } from 'index';
 import { PluginConfig } from 'plugin.model';
 import { ReferenceImage } from 'scene-view/reference-image';
 
