@@ -29,8 +29,9 @@ export class SelectionArea extends HTMLElement {
 		const p = this._touchPoint;
 		SelectionUtil.pointFromAreaToGame(e.offsetX, e.offsetY, p);
 
-		game.add.graphics(p.x, p.y)
-			.beginFill(0xFFFF00).drawCircle(0, 0, 20);
+		game.add.graphics(p.x, p.y, this.game.world)
+			.beginFill(0xFFFF00).drawCircle(0, 0, 20)
+			.__skip = true;
 
 		const obj = this.selector.getObjectAt(p.x, p.y);
 		this.selection.object = obj;

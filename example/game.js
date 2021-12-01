@@ -96,9 +96,11 @@ function create() {
 
 
 	child = game.add.sprite(1180, 925, 'phaser');
+	child.name = 'sprite';
 	child.scale.set(2, 2);
 
-	game.add.bitmapText(50, 50, 'font', 'This is a bitmap text', 30);
+	game.add.bitmapText(50, 50, 'font', 'This is a bitmap text', 30)
+		.name = 'bitmap text';
 
 	// game.add.text(0, 0, 'this text scrolls\nwith the background', { font: '32px Arial', fill: '#f26c4f', align: 'center' });
 
@@ -142,6 +144,7 @@ function el(x, y, w, h, parent, name) {
 		fontSize: 14,
 	});
 
+	t.name = name + '_text';
 	g.addChild(t);
 
 	return g;
