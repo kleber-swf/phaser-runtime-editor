@@ -78,7 +78,7 @@ export class EditorView extends Widget {
 		this.actions.disable();
 		this.gameContainer.returnGameToItsParent();
 		this.panels.forEach(panel => panel.disable());
-		this.parentElement.removeChild(this);
+		this.remove()
 	}
 
 	public selectObject(from: DataOrigin, obj: PIXI.DisplayObject) {

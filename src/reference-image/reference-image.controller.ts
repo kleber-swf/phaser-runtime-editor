@@ -22,20 +22,26 @@ export class ReferenceImageController {
 		this.panel.setupActions(actions);
 	}
 
-	public setImage(image: Phaser.Image | Phaser.Sprite) {
+	public enable(image: Phaser.Image | Phaser.Sprite) {
 		if (!this.actionsToolbar) {
 			this.actionsToolbar = document.querySelector(ComponentTags.ActionsToolbar);
 		}
 
-		if (this.image === image) return;
-		this.referenceImage.image = image;
-
-		if (image) {
-			if (this.panel.parentElement !== this.actionsToolbar)
-				this.actionsToolbar.appendChild(this.panel);
-		} else {
-			if (this.panel.parentElement === this.actionsToolbar)
-				this.actionsToolbar.removeChild(this.panel);
+		if (this.image !== image) {
+			this.referenceImage.image = image;
+			if (image) {
+				if (this.panel.parentElement !== this.actionsToolbar)
+					this.actionsToolbar.appendChild(this.panel);
+			} else {
+				if (this.panel.parentElement === this.actionsToolbar)
+					this.actionsToolbar.removeChild(this.panel);
+			}
 		}
+
+		this.referenceImage.enable();
+	}
+
+	public disable() {
+		this.referenceImage.disable();
 	}
 }

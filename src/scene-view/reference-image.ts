@@ -4,14 +4,14 @@ import { PreferenceKey } from 'core/preferences';
 export class ReferenceImage extends Phaser.Group {
 	private _parent: PIXI.DisplayObjectContainer;
 
-	public set image(value: Phaser.Image|Phaser.Sprite) {
+	public set image(value: Phaser.Image | Phaser.Sprite) {
 		if (!value) {
 			this.visible = false;
 			return;
 		}
 
 		value.__skip = true;
-		
+
 		if (value.parent !== this) {
 			this.addChild(value);
 			value.inputEnabled = true;
@@ -32,15 +32,7 @@ export class ReferenceImage extends Phaser.Group {
 		this.alpha = 0.3;
 
 		this._parent = root;
-
-		const prefs = Editor.prefs;
-		prefs.onPreferenceChanged.add(this.onPreferenceChanged, this);
-		this.onPreferenceChanged('refImageVisible', prefs.refImageVisible);
-		// TODO waiting for proportional scaling
-		// this.onPreferenceChanged('refImageScaleX', prefs.refImageScaleX);
-		// this.onPreferenceChanged('refImageScaleY', prefs.refImageScaleY);
-
-		this.visible = false;
+		Editor.prefs.onPreferenceChanged.add(this.onPreferenceChanged, this);
 	}
 
 	private onPreferenceChanged(pref: PreferenceKey, value: any) {
@@ -55,5 +47,13 @@ export class ReferenceImage extends Phaser.Group {
 
 	public hide() {
 		if (this.parent) this.parent.removeChild(this);
+	}
+
+	public enable() {
+		this.onPreferenceChanged('refImageVisible', Editor.prefs.refImageVisible);
+	}
+
+	public disable() {
+		this.hide();
 	}
 }

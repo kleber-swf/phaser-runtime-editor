@@ -68,7 +68,7 @@ export class EditorStateHandler {
 
 		this.sceneView.enable(this.config.root(), this.game.stage);
 		this.editorView.enable(this.config);
-		this.referenceImageController.setImage(this.config.refImage());
+		this.referenceImageController.enable(this.config.refImage());
 
 		Editor.enable();
 		if (this.onshow) this.onshow();
@@ -80,6 +80,7 @@ export class EditorStateHandler {
 		Editor.disable();
 		this.sceneView.disable();
 		this.editorView.disable();
+		this.referenceImageController.disable();
 
 		this.disabledUI.enable();
 		if (this.onhide) this.onhide();
