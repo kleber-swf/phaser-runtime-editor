@@ -2,7 +2,7 @@ import { ComponentTags } from 'component-tags';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
-import { PluginConfig } from 'plugin';
+import { PluginConfig } from 'plugin.model';
 import { ObjectTreeModel, ObjectTreeNodeModel } from '../model/object-tree-model';
 import { SearchField } from '../search-field/search-field';
 import { ObjectTreeNode } from '../tree-node/object-tree-node';
@@ -22,7 +22,7 @@ export class ObjectTreeInspector extends Inspector {
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 	}
 
-	public enable(config: PluginConfig) { this.setRoot(config.root()); }
+	public enable(config: PluginConfig) { this.setRoot(config.root); }
 	public disable() { this.model.empty(); }
 
 	private setRoot(root: PIXI.DisplayObjectContainer | Phaser.Stage) {

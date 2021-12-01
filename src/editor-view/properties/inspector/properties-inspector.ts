@@ -3,7 +3,6 @@ import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { InspectorPropertyModel } from 'data/inspector-data';
 import { Inspector } from 'editor-view/inspector/inspector';
-import { PluginConfig } from 'plugin';
 import { PropertyEditor } from '../editors/property-editor';
 
 export class PropertiesInspector extends Inspector {

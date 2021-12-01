@@ -1,6 +1,6 @@
 import { DataOrigin } from 'data/editor-data';
 import { Widget } from 'editor-view/widget/widget';
-import { PluginConfig } from 'plugin';
+import { PluginConfig } from 'plugin.model';
 import './inspector.scss';
 
 export abstract class Inspector extends Widget {

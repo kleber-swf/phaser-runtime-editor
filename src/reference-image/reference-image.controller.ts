@@ -2,7 +2,7 @@ import { ComponentTags } from 'component-tags';
 import { ActionsToolbar } from 'editor-view/actions/actions-toolbar';
 import { ReferenceImagePanel } from 'editor-view/actions/reference-image/reference-image-panel';
 import { ActionHandler } from 'index';
-import { PluginConfig } from 'plugin';
+import { PluginConfig } from 'plugin.model';
 import { ReferenceImage } from 'scene-view/reference-image';
 
 export class ReferenceImageController {
@@ -13,7 +13,7 @@ export class ReferenceImageController {
 	private image: PIXI.Sprite;
 
 	constructor(game: Phaser.Game, config: PluginConfig) {
-		this.referenceImage = new ReferenceImage(game, config.root());
+		this.referenceImage = new ReferenceImage(game, config.root);
 		this.panel = document.createElement(ComponentTags.ReferenceImagePanel) as ReferenceImagePanel;
 		this.panel.init(this.referenceImage);
 	}

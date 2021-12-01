@@ -2,7 +2,7 @@ import { ComponentTags } from 'component-tags';
 import { ActionHandler } from 'core/action-handler';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
-import { PluginConfig } from 'plugin';
+import { PluginConfig } from 'plugin.model';
 import { ActionsToolbar } from './actions/actions-toolbar';
 import './editor-view.scss';
 import { GameContainer } from './game-container/game-container';
@@ -24,7 +24,7 @@ export class EditorView extends Widget {
 		Editor.data.onSelectedObjectChanged.add(this.selectObject, this);
 		Editor.actions.addContainer(ComponentTags.EditorView, this);
 		this.createElements();
-		this.gameContainer.init();
+		this.gameContainer.init(config);
 		this.panels.forEach(panel => panel.init(game));
 	}
 

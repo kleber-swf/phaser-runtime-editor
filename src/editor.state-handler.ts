@@ -3,7 +3,7 @@ import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { DisabledUI } from 'disabled/disabled-ui';
 import { EditorView } from 'editor-view/editor-view';
-import { PluginConfig } from 'plugin';
+import { PluginConfig } from 'plugin.model';
 import { ReferenceImageController } from 'reference-image/reference-image.controller';
 import { SceneView } from 'scene-view/scene-view';
 
@@ -17,15 +17,13 @@ export class EditorStateHandler {
 	private referenceImageController: ReferenceImageController;
 
 	private readonly game: Phaser.Game;
-	private readonly config: PluginConfig;
+	private config: PluginConfig;
 
 	public onshow: () => void;
 	public onhide: () => void;
 
-	constructor(game: Phaser.Game, config: PluginConfig) {
+	constructor(game: Phaser.Game) {
 		this.game = game;
-		this.config = config;
-
 		this.disabledUI = new DisabledUI();
 		this.disabledUI.onclick = this.show.bind(this);
 	}
@@ -50,7 +48,7 @@ export class EditorStateHandler {
 
 		const actions = Editor.actions;
 		actions.setActionCommand(Actions.TOGGLE_ENABLED,
-			() => this._isEnabled ? this.hide() : this.show(),
+			() => this._isEnabled ? this.hide() : this.show(this.config),
 			() => this._isEnabled);
 
 		this.editorView.setupActions(actions);
@@ -60,15 +58,16 @@ export class EditorStateHandler {
 		actions.addContainer('body', document.body);
 	}
 
-	public show() {
+	public show(context: PluginConfig) {
 		if (this._isEnabled) return;
 		this._isEnabled = true;
+		this.config = context;
 		this.disabledUI.disable();
 		if (!this._initialized) this.init();
 
-		this.sceneView.enable(this.config.root(), this.game.stage);
-		this.editorView.enable(this.config);
-		this.referenceImageController.enable(this.config.refImage());
+		this.sceneView.enable(context.root, this.game.stage);
+		this.editorView.enable(context);
+		this.referenceImageController.enable(context.refImage);
 
 		Editor.enable();
 		if (this.onshow) this.onshow();

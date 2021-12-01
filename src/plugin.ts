@@ -1,8 +1,9 @@
 import { Editor } from 'core/editor';
 import { EditorStateHandler } from 'editor.state-handler';
 import Phaser from 'phaser-ce';
+import { PluginConfig } from 'plugin.model';
 
-export interface PluginConfig {
+interface PluginConfigBuilder {
 	root?: () => Container;
 	refImage?: () => Phaser.Image | Phaser.Sprite;
 	pauseGame?: boolean;
@@ -20,17 +21,24 @@ interface GameStateConfig {
 export class Plugin extends Phaser.Plugin {
 	private readonly editorState: EditorStateHandler;
 	private gamePreState: GameStateConfig;
-	private config: PluginConfig;
+	private config: PluginConfigBuilder;
+	private context: PluginConfig;
 
-	public constructor(game: Phaser.Game, config?: PluginConfig) {
+	public constructor(game: Phaser.Game, config?: PluginConfigBuilder) {
 		super(game, game.plugins);
 		this.insertHead();
 		if (!config) config = {};
 		if (!config.root) config.root = () => game.world;
 		if (!config.refImage) config.refImage = () => null;
 		this.config = config;
+		this.context = {
+			root: null,
+			refImage: null,
+			clearPrefs: config.clearPrefs ?? false,
+			pauseGame: config.pauseGame ?? false,
+		}
 
-		this.editorState = new EditorStateHandler(game, config);
+		this.editorState = new EditorStateHandler(game);
 		this.editorState.onshow = this.onEditorShow.bind(this);
 		this.editorState.onhide = this.onEditorHide.bind(this);
 		this.editorState.start();
@@ -67,7 +75,9 @@ export class Plugin extends Phaser.Plugin {
 	}
 
 	public show() {
-		this.editorState.show();
+		this.context.root = this.config.root();
+		this.context.refImage = this.config.refImage();
+		this.editorState.show(this.context);
 	}
 
 	private onEditorShow() {

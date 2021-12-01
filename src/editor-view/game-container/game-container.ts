@@ -4,6 +4,7 @@ import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
 import { SelectionArea } from 'editor-view/selectors/selection-area';
+import { PluginConfig } from 'plugin.model';
 import './game-container.scss';
 
 const MIN_SCALE = 0.5;
@@ -17,11 +18,16 @@ export class GameContainer extends HTMLElement {
 
 	private _zoom = 1;
 
-	public init() {
+	public init(config:PluginConfig) {
 		this._onInputUpFn = this.onInputUp.bind(this);
-		const el = this.gameEditorParentElement = document.createElement('div');
-		el.id = 'phred-game-parent';
-		this.appendChild(el);
+		const gp = this.gameEditorParentElement = document.createElement('div');
+		gp.id = 'phred-game-parent';
+		this.appendChild(gp);
+
+		const sa = document.createElement('phred-selection-area') as SelectionArea;
+		this.selectionArea = this.gameEditorParentElement.appendChild(sa);
+		sa.id = 'selection-area';
+		sa.init(config);
 	}
 
 	public setupActions(actions: ActionHandler) {
@@ -53,9 +59,7 @@ export class GameContainer extends HTMLElement {
 		this.gameOriginalParentElement = el.parentElement;
 		el.classList.add('phred-game');
 		this.gameEditorParentElement.appendChild(el);
-
-		this.selectionArea = this.gameEditorParentElement.appendChild(document.createElement('phred-selection-area')) as SelectionArea;
-		this.selectionArea.game = this.game;
+		this.selectionArea.game = game;
 	}
 
 	public returnGameToItsParent() {
