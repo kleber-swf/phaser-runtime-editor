@@ -1,6 +1,7 @@
 import { ComponentTags } from 'component-tags';
 import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
+import { SelectionArea } from 'editor-view/selectors/selection-area';
 import './game-container.scss';
 
 const MIN_SCALE = 0.5;
@@ -9,7 +10,10 @@ const MAX_SCALE = 5;
 export class GameContainer extends HTMLElement {
 	private gameOriginalParentElement: HTMLElement;
 	private gameEditorParentElement: HTMLElement;
+	private selectionArea: SelectionArea;
 	private game: Phaser.Game;
+
+	private _zoom = 1;
 
 	public init() {
 		this._onInputUpFn = this.onInputUp.bind(this);
@@ -19,7 +23,13 @@ export class GameContainer extends HTMLElement {
 	}
 
 	public setupActions(actions: ActionHandler) {
-		actions.setActionCommand(Actions.ZOOM, (e) => this.zoom(-(e as WheelEvent).deltaY));
+		actions.setActionCommand(Actions.ZOOM, (e) => {
+			const w = e as WheelEvent;
+			// TODO scale anchor
+			// this.zoom(-w.deltaY, w.offsetX, w.offsetY);
+			this.zoom(-w.deltaY);
+		});
+
 		actions.setActionCommand(Actions.ZOOM_IN, () => this.zoom(100));
 		actions.setActionCommand(Actions.ZOOM_OUT, () => this.zoom(-100));
 
@@ -35,7 +45,8 @@ export class GameContainer extends HTMLElement {
 		el.classList.add('phred-game');
 		this.gameEditorParentElement.appendChild(el);
 
-		this.gameEditorParentElement.appendChild(document.createElement('phred-selection-area'));
+		this.selectionArea = this.gameEditorParentElement.appendChild(document.createElement('phred-selection-area')) as SelectionArea;
+		this.selectionArea.game = this.game;
 	}
 
 	public returnGameToItsParent() {
@@ -46,11 +57,12 @@ export class GameContainer extends HTMLElement {
 		this.game = null;
 	}
 
-	private _currentScale = 1;
-	private zoom(amount: number) {
+	private zoom(amount: number, ox = 0, oy = 0) {
 		const el = this.gameEditorParentElement;
-		this._currentScale = Phaser.Math.clamp(this._currentScale + amount * 0.001, MIN_SCALE, MAX_SCALE);
-		el.style.transform = `scale(${this._currentScale * 100}%)`; // TODO pivot
+		this._zoom = Phaser.Math.clamp(this._zoom + amount * 0.001, MIN_SCALE, MAX_SCALE);
+		el.style.transform = `scale(${this._zoom * 100}%)`;
+		el.style.transformOrigin = `${ox}px ${oy}px`;
+		this.selectionArea.zoom = this._zoom;
 		// this.game.scale.refresh();
 	}
 
