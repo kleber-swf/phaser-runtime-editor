@@ -21,19 +21,24 @@ export class SelectionArea extends HTMLElement {
 	// TODO move it to init / enable
 	public connectedCallback() {
 		this.appendChild(this.selection);
-		this.addEventListener('click', this.onClick.bind(this))
+		this.addEventListener('mouseup', this.onMouseUp.bind(this))
 	}
 
-	private onClick(e: PointerEvent) {
+	private onMouseUp(e: PointerEvent) {
 		const game = this.game;
-		const p = this._touchPoint;
-		SelectionUtil.pointFromAreaToGame(e.offsetX, e.offsetY, p);
+		const point = this._touchPoint;
+		const target = e.target as HTMLElement;
 
-		game.add.graphics(p.x, p.y, this.game.world)
+		SelectionUtil.pointFromAreaToGame(
+			target.offsetLeft + e.offsetX,
+			target.offsetTop + e.offsetY,
+			point);
+
+		game.add.graphics(point.x, point.y, this.game.world)
 			.beginFill(0xFFFF00).drawCircle(0, 0, 20)
 			.__skip = true;
 
-		const obj = this.selector.getObjectAt(p.x, p.y);
+		const obj = this.selector.getObjectAt(point.x, point.y);
 		this.selection.object = obj;
 	}
 }

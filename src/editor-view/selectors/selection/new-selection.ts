@@ -30,7 +30,6 @@ export class NewSelection extends HTMLElement {
 		style.top = `${_rect.y}px`;
 		style.width = `${_rect.width}px`;
 		style.height = `${_rect.height}px`;
-		console.log(bounds, this._rect);
 	}
 }
 
