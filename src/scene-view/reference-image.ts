@@ -28,7 +28,7 @@ export class ReferenceImage extends Phaser.Group {
 
 	constructor(game: Phaser.Game, root: Container) {
 		super(game, null, '__ref_image');
-		this.__skip = true;
+		// this.__skip = true;
 		this.alpha = 0.3;
 
 		this._parent = root;
