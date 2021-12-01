@@ -71,7 +71,6 @@ export class GameContainer extends HTMLElement {
 		this._zoom = Phaser.Math.clamp(this._zoom + amount * 0.001, MIN_SCALE, MAX_SCALE);
 		el.style.transform = `scale(${this._zoom * 100}%)`;
 		el.style.transformOrigin = `${ox}px ${oy}px`;
-		this.selectionArea.zoom = this._zoom;
 		// this.game.scale.refresh();
 	}
 
