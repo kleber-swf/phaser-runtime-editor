@@ -4,14 +4,23 @@ import { PreferenceKey } from 'core/preferences';
 export class ReferenceImage extends Phaser.Group {
 	private _parent: PIXI.DisplayObjectContainer;
 
-	public set image(value: PIXI.Sprite) {
+	public set image(value: Phaser.Image | Phaser.Sprite) {
 		if (!value) {
 			this.visible = false;
 			return;
 		}
 
 		value.__skip = true;
-		if (value.parent !== this) this.addChild(value);
+
+		if (value.parent !== this) {
+			this.addChild(value);
+			value.inputEnabled = true;
+			value.input.draggable = true;
+			value.events.onDragStop.add(() => {
+				Editor.prefs.refImageX = value.x;
+				Editor.prefs.refImageY = value.y;
+			});
+		}
 		this.visible = true;
 	}
 
@@ -19,7 +28,7 @@ export class ReferenceImage extends Phaser.Group {
 
 	constructor(game: Phaser.Game, root: Container) {
 		super(game, null, '__ref_image');
-		this.__skip = true;
+		// this.__skip = true;
 		this.alpha = 0.3;
 
 		this._parent = root;
@@ -27,7 +36,7 @@ export class ReferenceImage extends Phaser.Group {
 	}
 
 	private onPreferenceChanged(pref: PreferenceKey, value: any) {
-		if (pref !== 'refImage') return;
+		if (pref !== 'refImageVisible') return;
 		if (value) this.show();
 		else this.hide();
 	}
@@ -41,7 +50,7 @@ export class ReferenceImage extends Phaser.Group {
 	}
 
 	public enable() {
-		this.onPreferenceChanged('refImage', Editor.prefs.refImage);
+		this.onPreferenceChanged('refImageVisible', Editor.prefs.refImageVisible);
 	}
 
 	public disable() {

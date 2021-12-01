@@ -1,6 +1,8 @@
 import { ComponentTags } from 'component-tags';
 import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
+import { Editor } from 'core/editor';
+import { PreferenceKey } from 'core/preferences';
 import { SelectionArea } from 'editor-view/selectors/selection-area';
 import './game-container.scss';
 
@@ -33,9 +35,16 @@ export class GameContainer extends HTMLElement {
 		actions.setActionCommand(Actions.ZOOM_IN, () => this.zoom(100));
 		actions.setActionCommand(Actions.ZOOM_OUT, () => this.zoom(-100));
 
+		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
+		this.onPreferencesChanged('responsive', Editor.prefs.responsive);
+
 		this.onmousedown = this.onInputDown;
 		this.onmousemove = this.onInputMove;
 		this.onmouseup = this.onInputUp;
+	}
+
+	private onPreferencesChanged(key: PreferenceKey, value: boolean) {
+		if (key === 'responsive') this.setResponsive(value);
 	}
 
 	public addGame(game: Phaser.Game) {
@@ -64,6 +73,17 @@ export class GameContainer extends HTMLElement {
 		el.style.transformOrigin = `${ox}px ${oy}px`;
 		this.selectionArea.zoom = this._zoom;
 		// this.game.scale.refresh();
+	}
+
+	private setResponsive(responsive: boolean) {
+		const style = this.gameEditorParentElement.style;
+		if (responsive) {
+			style.width = '100%';
+			style.height = '100%';
+		} else {
+			style.width = 'unset';
+			style.height = 'unset';
+		}
 	}
 
 	// #region Panning

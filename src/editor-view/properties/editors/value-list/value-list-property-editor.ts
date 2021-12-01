@@ -11,7 +11,7 @@ export class ValueListPropertyEditor extends PropertyEditor<any> {
 
 		let values: { value: any, label: string }[];
 		if (!prop.values) prop.values = [];
-		
+
 		if (Array.isArray(prop.values)) {
 			values = prop.values.map(v => (typeof v === 'object' ? v : { value: v, label: v }));
 		} else {
@@ -28,6 +28,8 @@ export class ValueListPropertyEditor extends PropertyEditor<any> {
 		if (prop.data) Object.keys(prop.data).forEach(p => select.setAttribute(p, prop.data[p]));
 		return select;
 	}
+
+	protected getDefaultValue() { return 0; }
 
 	public setInternalValue(value: number | any) {
 		const options = this.select.options;

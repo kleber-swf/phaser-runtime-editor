@@ -65,6 +65,8 @@ class EditorClass {
 			{ name: 'frameName', label: 'frame', typeHint: 'string' },
 			{ name: 'blendMode', typeHint: 'valueList', values: Phaser.blendModes },
 			{ name: 'tint', typeHint: 'color' },
+			// TODO waiting for multiple type hint
+			// { name: 'hitArea', typeHint: 'rect' },
 
 			// Text
 			{ name: 'text', typeHint: 'text', data: { rows: 3 } },
@@ -160,6 +162,24 @@ class EditorClass {
 				toggle: true,
 				label: 'guides',
 				icon: 'fa-compress',
+			},
+			{
+				id: Actions.TOGGLE_HIT_AREA,
+				toggle: true,
+				label: 'hit area',
+				icon: 'fa-hand-point-up',
+			},
+			{
+				id: Actions.TOGGLE_ALL_HIT_AREAS_SNAPSHOT,
+				toggle: true,
+				label: 'all hit areas snapshot',
+				icon: 'fa-layer-group',
+			},
+			{
+				id: Actions.TOGGLE_RESPONSIVE,
+				toggle: true,
+				label: 'responsive',
+				icon: 'fa-expand-arrows-alt',
 			},
 			{
 				id: Actions.TOGGLE_REF_IMAGE,

@@ -3,8 +3,8 @@ import { EditorStateHandler } from 'editor.state-handler';
 import Phaser from 'phaser-ce';
 
 export interface PluginConfig {
-	root?: Container;
-	refImage?: PIXI.Sprite;
+	root?: () => Container;
+	refImage?: () => Phaser.Image | Phaser.Sprite;
 	pauseGame?: boolean;
 	clearPrefs?: boolean;
 	onShow?: () => void;
@@ -26,7 +26,8 @@ export class Plugin extends Phaser.Plugin {
 		super(game, game.plugins);
 		this.insertHead();
 		if (!config) config = {};
-		config.root = config.root ?? game.world
+		if (!config.root) config.root = () => game.world;
+		if (!config.refImage) config.refImage = () => null;
 		this.config = config;
 
 		this.editorState = new EditorStateHandler(game, config);

@@ -23,11 +23,14 @@ export class ObjectTreeModel {
 		this.createNode(root, this.objectMap, null, 0);
 	}
 
-	// TODO __type and __isLeaf should be make elsewhere
+	public empty() { this.objectMap = null; }
+
+	// TODO __type and __isLeaf should be made elsewhere
 	private createNode(child: PIXI.DisplayObject, map: Record<number, ObjectTreeNodeModel>, parent: ObjectTreeNodeModel, level: number) {
 		if (!child.__instanceId) child.__instanceId = IdUtil.genIntId();
 		const type = Editor.meta.getType(child);
 		child.__type = type.name;
+		child.__baseType = type.type;
 
 		const isLeaf = type.ignoreChildren || !(child.children && child.children.length > 0);
 		child.__isLeaf = isLeaf;

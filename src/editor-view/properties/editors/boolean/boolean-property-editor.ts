@@ -13,6 +13,8 @@ export class BooleanPropertyEditor extends PropertyEditor<boolean> {
 		return input;
 	}
 
+	protected getDefaultValue() { return false; }
+
 	public setInternalValue(value: boolean) {
 		this.input.checked = value;
 		this._internalValue = value;

@@ -13,7 +13,7 @@ export abstract class Inspector extends Widget {
 	protected contentElement: HTMLElement;
 	protected selectedObject: PIXI.DisplayObject;
 
-	public init(_game: Phaser.Game, _config: PluginConfig) {
+	public init(_game: Phaser.Game) {
 		this.classList.add('phred-inspector');
 
 		this.headerElement = this.appendChild(document.createElement('h1'));
@@ -24,7 +24,7 @@ export abstract class Inspector extends Widget {
 		this.contentElement.classList.add('content');
 	}
 
-	public enable() { }
+	public enable(_config: PluginConfig) { }
 	public disable() { }
 
 	public abstract selectObject(obj: PIXI.DisplayObject, from: DataOrigin): void;
