@@ -1,24 +1,47 @@
-export class SelectionHandler {
-	public root: Container;
+import { Point } from 'plugin.model';
+import { SelectionUtil } from '../selection.util';
 
-	public constructor(root: Container) {
-		this.root = root;
+export class SelectionChangedEvent extends CustomEvent<PIXI.DisplayObject> {
+}
+
+export class SelectionHandler extends EventTarget {
+	private root: Container;
+	private _object: PIXI.DisplayObject;
+	private _candidate: PIXI.DisplayObject;
+
+	public get object(): PIXI.DisplayObject { return this._object; }
+
+	public set object(value: PIXI.DisplayObject) {
+		this._object = value;
+		this.dispatchEvent(new SelectionChangedEvent('changed', { detail: value }));
 	}
 
-	public getObjectAt(x: number, y: number) {
+	public enable(root: Container) { this.root = root; }
+
+	public findSelectionCandidate(e: MouseEvent) {
+		const target = e.target as HTMLElement;
+		const point: Point = { x: 0, y: 0 };
+
+		SelectionUtil.pointFromAreaToGame(
+			target.offsetLeft + e.offsetX,
+			target.offsetTop + e.offsetY,
+			point);
+
+		this._candidate = this.getObjectAt(point.x, point.y);
+		console.log(this._candidate?.name, point);
+	}
+
+	public selectCandidate() {
+		this.object = this._candidate;
+		this._candidate = null;
+	}
+
+
+	private getObjectAt(x: number, y: number) {
 		const objects: PIXI.DisplayObject[] = [];
 		this.getObjectsUnderPoint(x, y, this.root.children, objects);
-
-		const obj = this.setSelectionTree(objects);
-		// this.selectObject(obj, true);
-		return obj;
+		return this.setSelectionTree(objects);
 	}
-
-	// private selectObject(obj: PIXI.DisplayObject, dispatch: boolean) {
-	// 	console.log(obj?.name);
-	// 	// this.selection.select(obj);
-	// 	// if (dispatch) Editor.data.selectObject(obj, DataOrigin.SCENE);
-	// }
 
 	private getObjectsUnderPoint(x: number, y: number, children: PIXI.DisplayObject[], objects: PIXI.DisplayObject[]) {
 		for (let i = children.length - 1; i >= 0; i--) {

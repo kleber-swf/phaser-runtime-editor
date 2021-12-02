@@ -1,13 +1,13 @@
 import { Rect } from 'plugin.model';
-import { Selection, SelectionChangedEvent } from '../selection';
+import { SelectionChangedEvent, SelectionHandler } from '../handlers/selection.handler';
 import { SelectionUtil } from '../selection.util';
 import './selection.view.scss';
 
 export class SelectionView extends HTMLElement {
-	private _selection: Selection;
+	private _selection: SelectionHandler;
 	private _rect: Rect = { x: 0, y: 0, width: 0, height: 0 };
 
-	public init(selection: Selection) {
+	public init(selection: SelectionHandler) {
 		this._selection = selection;
 		selection.addEventListener('changed', this.onSelectionChanged.bind(this));
 		this.classList.add('selector');

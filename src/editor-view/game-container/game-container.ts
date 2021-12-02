@@ -18,7 +18,7 @@ export class GameContainer extends HTMLElement {
 
 	private _zoom = 1;
 
-	public init(game: Phaser.Game, config: PluginConfig) {
+	public init(game: Phaser.Game) {
 		this.game = game;
 		this._onInputUpFn = this.onInputUp.bind(this);
 		const gp = this.gameEditorParentElement = document.createElement('div');
@@ -28,7 +28,7 @@ export class GameContainer extends HTMLElement {
 		const sa = document.createElement('phred-selection-area') as SelectionArea;
 		this.selectionArea = this.gameEditorParentElement.appendChild(sa);
 		sa.id = 'selection-area';
-		sa.init(game, config);
+		sa.init(game);
 	}
 
 	public setupActions(actions: ActionHandler) {
@@ -54,11 +54,12 @@ export class GameContainer extends HTMLElement {
 		if (key === 'responsive') this.setResponsive(value);
 	}
 
-	public enable() {
+	public enable(config: PluginConfig) {
 		const el = this.game.canvas.parentElement;
 		this.gameOriginalParentElement = el.parentElement;
 		el.classList.add('phred-game');
 		this.gameEditorParentElement.appendChild(el);
+		this.selectionArea.enable(config);
 	}
 
 	// returns the game to its original parent

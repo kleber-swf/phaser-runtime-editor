@@ -38,7 +38,7 @@ export class EditorStateHandler {
 		this.editorView = document.createElement(ComponentTags.EditorView) as EditorView;
 		this.referenceImageController = new ReferenceImageController(this.game, this.config);
 
-		this.editorView.init(this.game, this.config);
+		this.editorView.init(this.game);
 
 		this.setupInitialActions();
 	}

@@ -19,12 +19,12 @@ export class EditorView extends Widget {
 
 	private _enabled = false;
 
-	public init(game: Phaser.Game, config: PluginConfig) {
+	public init(game: Phaser.Game) {
 		this.game = game;
 		Editor.data.onSelectedObjectChanged.add(this.selectObject, this);
 		Editor.actions.addContainer(ComponentTags.EditorView, this);
 		this.createElements();
-		this.gameContainer.init(game, config);
+		this.gameContainer.init(game);
 		this.panels.forEach(panel => panel.init(game));
 	}
 
@@ -67,7 +67,7 @@ export class EditorView extends Widget {
 		this._enabled = true;
 
 		this.panels.forEach(panel => panel.enable(config));
-		this.gameContainer.enable();
+		this.gameContainer.enable(config);
 		this.actions.enable();
 		document.body.appendChild(this);
 	}
