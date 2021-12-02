@@ -1,39 +1,28 @@
 import { Point } from 'plugin.model';
+import { Selection } from '../selection';
 import { SelectionUtil } from '../selection.util';
 
-export class SelectionChangedEvent extends CustomEvent<PIXI.DisplayObject> {
-}
 
-export class SelectionHandler extends EventTarget {
+export class SelectionHandler {
+	private readonly selection: Selection;
 	private root: Container;
-	private _object: PIXI.DisplayObject;
-	private _candidate: PIXI.DisplayObject;
 
-	public get object(): PIXI.DisplayObject { return this._object; }
-
-	public set object(value: PIXI.DisplayObject) {
-		this._object = value;
-		this.dispatchEvent(new SelectionChangedEvent('changed', { detail: value }));
-	}
+	constructor(selection: Selection) { this.selection = selection; }
 
 	public enable(root: Container) { this.root = root; }
 
-	public findSelectionCandidate(e: MouseEvent) {
-		const target = e.target as HTMLElement;
-		const point: Point = { x: 0, y: 0 };
-
-		SelectionUtil.pointFromAreaToGame(
-			target.offsetLeft + e.offsetX,
-			target.offsetTop + e.offsetY,
-			point);
-
-		this._candidate = this.getObjectAt(point.x, point.y);
-		console.log(this._candidate?.name, point);
+	public selectAt(e: MouseEvent) {
+		const point = SelectionUtil.mouseEventToGamePoint(e, { x: 0, y: 0 });
+		const obj = this.getObjectAt(point.x, point.y);
+		this.selection.object = obj;
+		return !!obj;
 	}
 
-	public selectCandidate() {
-		this.object = this._candidate;
-		this._candidate = null;
+	public isOverSelection(e: MouseEvent) {
+		if (!this.selection.object) return false;
+		const point = SelectionUtil.mouseEventToGamePoint(e, { x: 0, y: 0 });
+		const result = this.selection.object.getBounds().contains(point.x, point.y);
+		return result;
 	}
 
 
