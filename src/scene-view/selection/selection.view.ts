@@ -6,7 +6,7 @@ import { PointUtil } from 'util/math.util';
 import { ANCHOR_COLOR, ANCHOR_STROKE, BORDER_COLOR, BORDER_STROKE, PIVOT_COLOR, PIVOT_STROKE } from '../scene-colors';
 import { ScaleHandler } from './scale/scale.handler';
 
-export class Selection extends Phaser.Group {
+export class SelectionView extends Phaser.Group {
 	private _selectedObject: PIXI.DisplayObject = null;
 	private _showGuides = false;
 	private _showHitArea = false;

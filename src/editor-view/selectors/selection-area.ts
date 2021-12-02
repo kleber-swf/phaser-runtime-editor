@@ -4,11 +4,11 @@ import { SelectionHandler } from './handlers/selection.handler';
 import { Selection } from './selection';
 import './selection-area.scss';
 import { SelectionUtil } from './selection.util';
-import { SelectionView } from './selection/selection.view';
+import { Gizmo } from './gizmo/gizmo';
 
 export class SelectionArea extends HTMLElement {
 	private game: Phaser.Game;
-	private selectionView: SelectionView;
+	private selectionView: Gizmo;
 
 	private selection: Selection;
 	private selectionHandler: SelectionHandler;
@@ -39,7 +39,7 @@ export class SelectionArea extends HTMLElement {
 	}
 
 	private createViews(selection: Selection) {
-		this.selectionView = document.createElement('phred-selection') as SelectionView;
+		this.selectionView = document.createElement('phred-selection') as Gizmo;
 		this.appendChild(this.selectionView);
 		this.selectionView.init(selection);
 	}

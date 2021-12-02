@@ -1,9 +1,9 @@
 import { Rect } from 'plugin.model';
 import { Selection, SelectionChangedEvent } from '../selection';
 import { SelectionUtil } from '../selection.util';
-import './selection.view.scss';
+import './gizmo.scss';
 
-export class SelectionView extends HTMLElement {
+export class Gizmo extends HTMLElement {
 	private _rect: Rect = { x: 0, y: 0, width: 0, height: 0 };
 
 	public init(selection: Selection) {
@@ -31,4 +31,4 @@ export class SelectionView extends HTMLElement {
 
 }
 
-customElements.define('phred-selection', SelectionView);
+customElements.define('phred-selection', Gizmo);

@@ -6,11 +6,11 @@ import { DataOrigin } from 'data/editor-data';
 import { DragUtil } from '../util/drag.util';
 import { SceneModel } from './scene-model';
 import { SceneViewUtil } from './scene-view.util';
-import { Selection } from './selection/selection';
+import { SelectionView } from './selection/selection.view';
 
 export class SceneView extends Phaser.Group {
 	private readonly touchArea: Phaser.Graphics;
-	private readonly selection: Selection;
+	private readonly selection: SelectionView;
 	private readonly model: SceneModel;
 	private readonly hitAreasView: Phaser.Graphics;
 
@@ -46,7 +46,7 @@ export class SceneView extends Phaser.Group {
 		// this.hitAreasView.inputEnabled = true;
 		this.hitAreasView.__skip = true;
 
-		this.selection = new Selection(game);
+		this.selection = new SelectionView(game);
 		this.addChild(this.selection);
 
 		game.scale.onSizeChange.add(() => this.selectObject(Editor.data.selectedObject, false));
