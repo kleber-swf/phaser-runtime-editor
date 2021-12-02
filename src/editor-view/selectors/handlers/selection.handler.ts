@@ -1,4 +1,4 @@
-export class ObjectSelector {
+export class SelectionHandler {
 	public root: Container;
 
 	public constructor(root: Container) {
