@@ -64,6 +64,7 @@ export class GameContainer extends HTMLElement {
 
 	// returns the game to its original parent
 	public disable() {
+		this.selectionArea.disable();
 		const el = this.game.canvas.parentElement;
 		el.classList.remove('phred-game');
 		this.gameOriginalParentElement.appendChild(el);

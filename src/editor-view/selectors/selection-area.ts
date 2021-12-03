@@ -37,6 +37,10 @@ export class SelectionArea extends HTMLElement {
 		this.interval = setInterval(this.update.bind(this), INTERVAL);
 	}
 
+	public disable() {
+		clearInterval(this.interval);
+	}
+
 	private createHandlers(selection: Selection) {
 		this.selectionHandler = new SelectionHandler(selection);
 		this.moveHandler = new MoveHandler(selection);
