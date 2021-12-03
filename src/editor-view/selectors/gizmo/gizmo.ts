@@ -22,6 +22,22 @@ export class Gizmo extends HTMLElement {
 	public init(selection: Selection) {
 		selection.addEventListener('changed', this.onSelectionChanged.bind(this));
 		this.classList.add('selector');
+
+		const tl = this.appendChild(document.createElement('div'));
+		tl.appendChild(document.createElement('div')).classList.add('handle');
+		tl.classList.add('scale', 'top-left');
+		
+		const tr = this.appendChild(document.createElement('div'));
+		tr.appendChild(document.createElement('div')).classList.add('handle');
+		tr.classList.add('scale', 'top-right');
+		
+		const bl = this.appendChild(document.createElement('div'));
+		bl.appendChild(document.createElement('div')).classList.add('handle');
+		bl.classList.add('scale', 'bottom-left');
+		
+		const br = this.appendChild(document.createElement('div'));
+		br.appendChild(document.createElement('div')).classList.add('handle');
+		br.classList.add('scale', 'bottom-right');
 	}
 
 	public redraw(object: PIXI.DisplayObject, checkCache = true) {
@@ -46,6 +62,8 @@ export class Gizmo extends HTMLElement {
 		style.top = _rect.y + 'px';
 		style.width = _rect.width + 'px';
 		style.height = _rect.height + 'px';
+
+
 	}
 
 	public onSelectionChanged(event: SelectionChangedEvent) {
@@ -53,4 +71,4 @@ export class Gizmo extends HTMLElement {
 	}
 }
 
-customElements.define('phred-selection', Gizmo);
+customElements.define('phred-gizmo', Gizmo);

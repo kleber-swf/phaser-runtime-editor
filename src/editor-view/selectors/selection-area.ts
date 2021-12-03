@@ -16,7 +16,6 @@ export class SelectionArea extends HTMLElement {
 	private selectionHandler: SelectionHandler;
 	private moveHandler: MoveHandler;
 
-
 	// #region Initialization
 
 	public init(game: Phaser.Game) {
@@ -46,7 +45,7 @@ export class SelectionArea extends HTMLElement {
 	}
 
 	private createViews(selection: Selection) {
-		this.gizmo = document.createElement('phred-selection') as Gizmo;
+		this.gizmo = document.createElement('phred-gizmo') as Gizmo;
 		this.appendChild(this.gizmo);
 		this.gizmo.init(selection);
 	}
@@ -66,12 +65,14 @@ export class SelectionArea extends HTMLElement {
 	private _hasSelection = false;
 
 	private onMouseDown(e: MouseEvent) {
+		if (e.button !== 0) return;
 		this._mouseIsDown = true;
 		this._isDragging = false;
 		this._hasSelection = this.selectionHandler.isOverSelection(e);
 	}
 
 	private onMouseUp(e: MouseEvent) {
+		if (e.button !== 0) return;
 		this._mouseIsDown = false;
 		if (!(this._hasSelection && this._isDragging)) {
 			this._hasSelection = this.selectionHandler.selectAt(e);
