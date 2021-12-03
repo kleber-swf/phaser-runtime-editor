@@ -17,7 +17,13 @@ export class ScaleHandler implements DraggingHandler {
 		const gizmo = e.target as ScaleGizmo;
 		let hside = gizmo.hside;
 		let vside = gizmo.vside;
+		console.log(hside, object?.name)
+		if (hside === undefined || vside === undefined) {
+			this._object = null;
+			return;
+		}
 		this._object = object;
+
 
 		// inverting axis
 		if (object.scale.x < 0) {
@@ -30,23 +36,27 @@ export class ScaleHandler implements DraggingHandler {
 
 		object.updateTransform();
 
+		let pivotx = 0;
+		let pivoty = 0;
+		let x = 0;
+		let y = 0;
+
 		if (hside === HSide.Right) {
-			object.position.set(
-				object.x - object.pivot.x * object.scale.x,
-				object.y - object.pivot.y);
-			object.pivot.set(0, 0);
+			pivotx = 0;
+			x = object.x - object.pivot.x * object.scale.x;
+			y = object.y - object.pivot.y;
 
 
 		} else if (hside === HSide.Left) {
 			const originalWidth = object.width / object.scale.x;
-			object.position.set(
-				object.x + object.width - object.pivot.x * object.scale.x,
-				object.y - object.pivot.y);
-			
-			object.pivot.set(Math.abs(originalWidth), 0);
-			console.log(originalWidth)
+			pivotx = Math.abs(originalWidth);
+
+			x = object.x + object.width - object.pivot.x * object.scale.x;
+			y = object.y - object.pivot.y;
 		}
 
+		object.pivot.set(pivotx, pivoty);
+		object.position.set(x, y);
 
 		// this._isGroup = !object.anchor;
 		// if (this._isGroup) {
@@ -58,6 +68,7 @@ export class ScaleHandler implements DraggingHandler {
 	}
 
 	public handle(e: MouseEvent): void {
+		if (!this._object) return;
 		if (!this._point) {
 			this._point = SelectionUtil.mouseEventToGamePoint(e, { x: 0, y: 0 });
 		}
