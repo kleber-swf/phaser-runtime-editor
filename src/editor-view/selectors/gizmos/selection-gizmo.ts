@@ -1,8 +1,9 @@
+import { HSide, VSide } from 'index';
 import { Rect } from 'plugin.model';
 import { Selection, SelectionChangedEvent } from '../selection';
 import { SelectionUtil } from '../selection.util';
 import { Gizmo, GIZMO_MOVE } from './gizmo';
-import { Corner, ScaleGizmo } from './scale-gizmo';
+import { ScaleGizmo } from './scale-gizmo';
 import './selection-gizmo.scss';
 
 // interface PropertiesCache {
@@ -40,19 +41,19 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 
 	private createResizeHandlers(handlers: HTMLElement[]) {
 		const tl = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
-		tl.init(Corner.TopLeft);
+		tl.init(VSide.Top, HSide.Left);
 		handlers.push(tl);
 
 		const tr = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
-		tr.init(Corner.TopRight);
+		tr.init(VSide.Top, HSide.Right);
 		handlers.push(tr);
 
 		const bl = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
-		bl.init(Corner.BottomLeft);
+		bl.init(VSide.Bottom, HSide.Left);
 		handlers.push(bl);
 
 		const br = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
-		br.init(Corner.BottomRight);
+		br.init(VSide.Bottom, HSide.Right);
 		handlers.push(br);
 	}
 
@@ -84,7 +85,7 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 		this.style.pointerEvents = 'none';
 		this.handlers.forEach(h => h.style.pointerEvents = 'none');
 	}
-	
+
 	public stopMoving() {
 		this.style.pointerEvents = 'all';
 		this.handlers.forEach(h => h.style.pointerEvents = 'all');

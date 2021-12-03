@@ -9,14 +9,15 @@ declare namespace PIXI {
 		name?: string;
 		anchor?: Point;
 		inputEnabled?: boolean;
-		getBounds?(): Rectangle;
-		children?: DisplayObject[];
 		top: number;
 		left: number;
 		bottom: number;
 		right: number;
 		width: number;
 		height: number;
+		children?: DisplayObject[];
+		getBounds?(): Rectangle;
+		getLocalBounds(): Rectangle;
 	}
 }
 

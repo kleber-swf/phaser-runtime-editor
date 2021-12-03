@@ -1,27 +1,60 @@
 import { Point } from 'plugin.model';
-import { ScaleGizmo } from '../gizmos/scale-gizmo';
+import { HSide, ScaleGizmo, VSide } from '../gizmos/scale-gizmo';
 import { SelectionUtil } from '../selection.util';
 import { DraggingHandler } from './dragging-handler';
 
 export class ScaleHandler implements DraggingHandler {
 	private _point: Point;
 	private _object: PIXI.DisplayObject;
+	private _vside: VSide;
+	private _hside: HSide;
+
 	private _isGroup: boolean;
 	private _top: number;
 	private _left: number;
 
 	public startHandling(e: MouseEvent, object: PIXI.DisplayObject): void {
-		const corner = (e.target as ScaleGizmo).corner;
+		const gizmo = e.target as ScaleGizmo;
+		let hside = gizmo.hside;
+		let vside = gizmo.vside;
 		this._object = object;
 
-		object.position.set(object.x - object.pivot.x, object.y - object.pivot.y);
-		object.pivot.set(0, 0);
-
-		this._isGroup = !object.anchor;
-		if (this._isGroup) {
-			this._top = object.top;
-			this._left = object.left;
+		// inverting axis
+		if (object.scale.x < 0) {
+			if (hside == HSide.Left) hside = HSide.Right;
+			else if (hside == HSide.Right) hside = HSide.Left;
 		}
+
+		this._vside = vside;
+		this._hside = hside;
+
+		object.updateTransform();
+
+		if (hside === HSide.Right) {
+			object.position.set(
+				object.x - object.pivot.x * object.scale.x,
+				object.y - object.pivot.y);
+			object.pivot.set(0, 0);
+
+
+		} else if (hside === HSide.Left) {
+			const originalWidth = object.width / object.scale.x;
+			object.position.set(
+				object.x + object.width - object.pivot.x * object.scale.x,
+				object.y - object.pivot.y);
+			
+			object.pivot.set(Math.abs(originalWidth), 0);
+			console.log(originalWidth)
+		}
+
+
+		// this._isGroup = !object.anchor;
+		// if (this._isGroup) {
+		// 	this._top = object.top;
+		// 	this._left = object.left;
+		// }
+
+		object.updateTransform();
 	}
 
 	public handle(e: MouseEvent): void {
@@ -32,8 +65,14 @@ export class ScaleHandler implements DraggingHandler {
 		const lastPoint = this._point;
 		const newPoint = SelectionUtil.mouseEventToGamePoint(e, { x: 0, y: 0 });
 
-		const dx = newPoint.x - lastPoint.x
-		const dy = newPoint.y - lastPoint.y
+		let dx = 0;
+		if (this._hside === HSide.Left) dx = lastPoint.x - newPoint.x;
+		else if (this._hside === HSide.Right) dx = newPoint.x - lastPoint.x;
+		// if (this._corner == Corner.BottomRight) dx = newPoint.x - lastPoint.x;
+		// else if (this._corner === Corner.BottomLeft) dx = lastPoint.x - newPoint.x;
+		// const dx = newPoint.x - lastPoint.x; // bottom right
+		// const dx = lastPoint.x - newPoint.x; // bottom left
+		const dy = newPoint.y - lastPoint.y;
 		this._point = newPoint;
 
 		this._object.updateTransform();
