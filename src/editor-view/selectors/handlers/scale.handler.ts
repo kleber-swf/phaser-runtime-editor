@@ -4,7 +4,6 @@ import { SelectionUtil } from '../selection.util';
 import { DraggingHandler } from './dragging-handler';
 
 // TODO
-//	- group
 //	- reset pivot
 
 export class ScaleHandler implements DraggingHandler {
@@ -14,10 +13,10 @@ export class ScaleHandler implements DraggingHandler {
 	private _hside: HSide;
 	private _centered = false;
 
-	// private _isGroup: boolean;
-	// private _groupBoundaries = {
-	// 	top: 0, left: 0, bottom: 0, right: 0,
-	// };
+	private _isGroup: boolean;
+	private _groupBoundaries = { top: 0, left: 0, bottom: 0, right: 0 };
+	private _groupStickySideH: string;
+	private _groupStickySideV: string;
 
 	public startHandling(e: MouseEvent, object: PIXI.DisplayObject): void {
 		const gizmo = e.target as ScaleGizmo;
@@ -54,14 +53,21 @@ export class ScaleHandler implements DraggingHandler {
 
 		object.updateTransform();
 
-		// this._isGroup = !object.anchor;
-		// if (this._isGroup) {
-		// 	this._groupBoundaries.top = object.top;
-		// 	this._groupBoundaries.left = object.left;
-		// 	this._groupBoundaries.bottom = object.bottom;
-		// 	this._groupBoundaries.right = object.right;
-		// 	// this._groupStickHorizontal = hside ===HSide.Left
-		// }
+		this._isGroup = !object.renderable;
+		if (this._isGroup) {
+			this._groupBoundaries.top = object.top;
+			this._groupBoundaries.left = object.left;
+			this._groupBoundaries.bottom = object.bottom;
+			this._groupBoundaries.right = object.right;
+
+			if (vside === VSide.Top) this._groupStickySideV = 'bottom';
+			else if (vside === VSide.Bottom) this._groupStickySideV = 'top';
+			else this._groupStickySideH = null;
+
+			if (hside === HSide.Left) this._groupStickySideH = 'right';
+			else if (hside === HSide.Right) this._groupStickySideH = 'left';
+			else this._groupStickySideH = null;
+		}
 	}
 
 	private setPivotAndPosition(object: PIXI.DisplayObject, vside: VSide, hside: HSide) {
@@ -114,10 +120,15 @@ export class ScaleHandler implements DraggingHandler {
 			obj.width += dx;
 			obj.height += dy;
 		}
-		// if (this._isGroup) {
-		// 	obj.top = this._top;
-		// 	obj.left = this._left;
-		// }
+
+		if (this._isGroup && !this._centered) {
+			if (this._groupStickySideH) {
+				obj[this._groupStickySideH] = this._groupBoundaries[this._groupStickySideH];
+			}
+			if (this._groupStickySideV) {
+				obj[this._groupStickySideV] = this._groupBoundaries[this._groupStickySideV];
+			}
+		}
 		obj.updateTransform();
 	}
 
