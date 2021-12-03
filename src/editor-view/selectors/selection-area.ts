@@ -1,23 +1,25 @@
 import { PluginConfig } from 'plugin.model';
+import { Gizmo } from './gizmo/gizmo';
 import { MoveHandler } from './handlers/move.handler';
 import { SelectionHandler } from './handlers/selection.handler';
 import { Selection } from './selection';
 import './selection-area.scss';
 import { SelectionUtil } from './selection.util';
-import { Gizmo } from './gizmo/gizmo';
+
+const INTERVAL = 1000 / 60;	// FPS
 
 export class SelectionArea extends HTMLElement {
-	private game: Phaser.Game;
-	private selectionView: Gizmo;
+	private gizmo: Gizmo;
+	private interval: any;
 
 	private selection: Selection;
 	private selectionHandler: SelectionHandler;
 	private moveHandler: MoveHandler;
 
+
 	// #region Initialization
 
 	public init(game: Phaser.Game) {
-		this.game = game;
 		SelectionUtil.init(game, this);
 
 		this.selection = new Selection();
@@ -27,10 +29,12 @@ export class SelectionArea extends HTMLElement {
 		this.addEventListener('mousedown', this.onMouseDown.bind(this));
 		this.addEventListener('mouseup', this.onMouseUp.bind(this));
 		this.addEventListener('mousemove', this.onMouseMove.bind(this));
+
 	}
 
 	public enable(config: PluginConfig) {
 		this.selectionHandler.enable(config.root);
+		this.interval = setInterval(this.update.bind(this), INTERVAL);
 	}
 
 	private createHandlers(selection: Selection) {
@@ -39,12 +43,18 @@ export class SelectionArea extends HTMLElement {
 	}
 
 	private createViews(selection: Selection) {
-		this.selectionView = document.createElement('phred-selection') as Gizmo;
-		this.appendChild(this.selectionView);
-		this.selectionView.init(selection);
+		this.gizmo = document.createElement('phred-selection') as Gizmo;
+		this.appendChild(this.gizmo);
+		this.gizmo.init(selection);
 	}
 
 	// #endregion
+
+	private update() {
+		if (this.selection.object) {
+			this.gizmo.redraw(this.selection.object);
+		}
+	}
 
 	// #region Event Handlers
 
