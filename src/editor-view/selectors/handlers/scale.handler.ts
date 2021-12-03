@@ -18,17 +18,23 @@ export class ScaleHandler implements DraggingHandler {
 		let hside = gizmo.hside;
 		let vside = gizmo.vside;
 		console.log(hside, object?.name)
+
 		if (hside === undefined || vside === undefined) {
 			this._object = null;
 			return;
 		}
-		this._object = object;
 
+		this._object = object;
 
 		// inverting axis
 		if (object.scale.x < 0) {
 			if (hside == HSide.Left) hside = HSide.Right;
 			else if (hside == HSide.Right) hside = HSide.Left;
+		}
+
+		if (object.scale.y < 0) {
+			if (vside == VSide.Top) vside = VSide.Bottom;
+			else if (vside == VSide.Bottom) vside = VSide.Top;
 		}
 
 		this._vside = vside;
@@ -44,15 +50,18 @@ export class ScaleHandler implements DraggingHandler {
 		if (hside === HSide.Right) {
 			pivotx = 0;
 			x = object.x - object.pivot.x * object.scale.x;
-			y = object.y - object.pivot.y;
-
-
 		} else if (hside === HSide.Left) {
-			const originalWidth = object.width / object.scale.x;
-			pivotx = Math.abs(originalWidth);
-
+			pivotx = Math.abs(object.width / object.scale.x);
 			x = object.x + object.width - object.pivot.x * object.scale.x;
-			y = object.y - object.pivot.y;
+		}
+
+		if (vside === VSide.Bottom) {
+			pivoty = 0;
+			y = object.y - object.pivot.y * object.scale.y;
+
+		} else if (vside === VSide.Top) {
+			pivoty = Math.abs(object.height / object.scale.y);
+			y = object.y + object.height - object.pivot.y * object.scale.y;
 		}
 
 		object.pivot.set(pivotx, pivoty);
@@ -79,11 +88,15 @@ export class ScaleHandler implements DraggingHandler {
 		let dx = 0;
 		if (this._hside === HSide.Left) dx = lastPoint.x - newPoint.x;
 		else if (this._hside === HSide.Right) dx = newPoint.x - lastPoint.x;
+
+		let dy = 0;
+		if (this._vside === VSide.Top) dy = lastPoint.y - newPoint.y;
+		else if (this._vside === VSide.Bottom) dy = newPoint.y - lastPoint.y;
 		// if (this._corner == Corner.BottomRight) dx = newPoint.x - lastPoint.x;
 		// else if (this._corner === Corner.BottomLeft) dx = lastPoint.x - newPoint.x;
 		// const dx = newPoint.x - lastPoint.x; // bottom right
 		// const dx = lastPoint.x - newPoint.x; // bottom left
-		const dy = newPoint.y - lastPoint.y;
+		// const dy = newPoint.y - lastPoint.y;
 		this._point = newPoint;
 
 		this._object.updateTransform();

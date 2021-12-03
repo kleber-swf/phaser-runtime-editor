@@ -1,6 +1,6 @@
 $handle-size: 15px;
-$size: 20px;
-$padding: $size - $handle-size;
+$size: 30px;
+$padding: ($size - $handle-size)/2;
 
 phred-scale-gizmo {
 	position: absolute;
@@ -8,42 +8,43 @@ phred-scale-gizmo {
 	box-sizing: border-box;
 	width: $size;
 	height: $size;
-	margin: -($size + $handle-size * 0.5)/2;
-	background-color: transparent;
+	margin: -($size + 2)/2;
+	border-radius: $size;
 	pointer-events: all;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	.handle {
 		box-sizing: border-box;
 		width: $handle-size;
 		height: $handle-size;
+		pointer-events: none;
 		background-color: chocolate;
 		border: 1px solid white;
-		pointer-events: none;
+		margin: auto;
+		padding: 0;
 	}
 
 	&.top-left {
-		padding: $padding 0 0 $padding;
 		top: 0;
 		left: 0;
 		cursor: nwse-resize;
 	}
 
 	&.top-right {
-		padding: $padding $padding 0 0;
 		top: 0;
 		right: 0;
 		cursor: nesw-resize;
 	}
 
 	&.bottom-left {
-		padding: 0 0 $padding $padding;
 		bottom: 0;
 		left: 0;
 		cursor: nesw-resize;
 	}
 
 	&.bottom-right {
-		padding: 0 $padding $padding 0;
 		bottom: 0;
 		right: 0;
 		cursor: nwse-resize;
