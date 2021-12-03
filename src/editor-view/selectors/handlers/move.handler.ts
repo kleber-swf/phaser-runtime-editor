@@ -1,8 +1,9 @@
 import { Point } from 'plugin.model';
 import { Selection } from '../selection';
 import { SelectionUtil } from '../selection.util';
+import { DraggingHandler } from './dragging-handler';
 
-export class MoveHandler {
+export class MoveHandler implements DraggingHandler {
 	private readonly selection: Selection;
 	private _point: Point = { x: 0, y: 0 };
 
@@ -10,11 +11,11 @@ export class MoveHandler {
 		this.selection = selection;
 	}
 
-	public startMoving(e: MouseEvent) {
+	public startHandling(e: MouseEvent) {
 		SelectionUtil.mouseEventToGamePoint(e, this._point);
 	}
 
-	public move(e: MouseEvent) {
+	public handle(e: MouseEvent) {
 		const lastPoint = this._point;
 		const newPoint = SelectionUtil.mouseEventToGamePoint(e, { x: 0, y: 0 });
 
@@ -25,4 +26,6 @@ export class MoveHandler {
 		const object = this.selection.object;
 		object.position.set(object.x + dx, object.y + dy);
 	}
+
+	public stopHandling() { }
 }

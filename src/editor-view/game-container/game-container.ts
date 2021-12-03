@@ -25,9 +25,8 @@ export class GameContainer extends HTMLElement {
 		gp.id = 'phred-game-parent';
 		this.appendChild(gp);
 
-		const sa = document.createElement('phred-selection-area') as SelectionArea;
+		const sa = document.createElement(SelectionArea.tagName) as SelectionArea;
 		this.selectionArea = this.gameEditorParentElement.appendChild(sa);
-		sa.id = 'selection-area';
 		sa.init(game);
 	}
 

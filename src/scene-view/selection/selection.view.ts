@@ -4,7 +4,7 @@ import { DataOrigin } from 'data/editor-data';
 import { SceneViewUtil } from 'scene-view/scene-view.util';
 import { PointUtil } from 'util/math.util';
 import { ANCHOR_COLOR, ANCHOR_STROKE, BORDER_COLOR, BORDER_STROKE, PIVOT_COLOR, PIVOT_STROKE } from '../scene-colors';
-import { ScaleHandler } from './scale/scale.handler';
+import { OldScaleHandler } from './scale/scale.handler';
 
 export class SelectionView extends Phaser.Group {
 	private _selectedObject: PIXI.DisplayObject = null;
@@ -14,7 +14,7 @@ export class SelectionView extends Phaser.Group {
 	public get hasObject() { return !!this._selectedObject; }
 
 	private readonly view: Phaser.Graphics;
-	private readonly scaleHandler: ScaleHandler;
+	private readonly scaleHandler: OldScaleHandler;
 
 	constructor(game: Phaser.Game) {
 		super(game);
@@ -24,7 +24,7 @@ export class SelectionView extends Phaser.Group {
 		this.view = new Phaser.Graphics(game);
 		this.addChild(this.view);
 
-		this.scaleHandler = new ScaleHandler(game);
+		this.scaleHandler = new OldScaleHandler(game);
 		this.addChild(this.scaleHandler);
 
 		const prefs = Editor.prefs;

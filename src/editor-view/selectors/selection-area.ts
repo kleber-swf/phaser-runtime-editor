@@ -1,6 +1,9 @@
 import { PluginConfig } from 'plugin.model';
-import { Gizmo } from './gizmo/gizmo';
+import { Gizmo, GIZMO_SCALE } from './gizmos/gizmo';
+import { SelectionGizmo } from './gizmos/selection-gizmo';
+import { DraggingHandler } from './handlers/dragging-handler';
 import { MoveHandler } from './handlers/move.handler';
+import { ScaleHandler } from './handlers/scale.handler';
 import { SelectionHandler } from './handlers/selection.handler';
 import { Selection } from './selection';
 import './selection-area.scss';
@@ -9,12 +12,15 @@ import { SelectionUtil } from './selection.util';
 const INTERVAL = 1000 / 60;	// FPS
 
 export class SelectionArea extends HTMLElement {
-	private gizmo: Gizmo;
+	public static readonly tagName = 'phred-selection-area';
+
+	private gizmo: SelectionGizmo;
 	private interval: any;
 
 	private selection: Selection;
 	private selectionHandler: SelectionHandler;
 	private moveHandler: MoveHandler;
+	private scaleHandler: ScaleHandler;
 
 	// #region Initialization
 
@@ -42,10 +48,11 @@ export class SelectionArea extends HTMLElement {
 	private createHandlers(selection: Selection) {
 		this.selectionHandler = new SelectionHandler(selection);
 		this.moveHandler = new MoveHandler(selection);
+		this.scaleHandler = new ScaleHandler();
 	}
 
 	private createViews(selection: Selection) {
-		this.gizmo = document.createElement('phred-gizmo') as Gizmo;
+		this.gizmo = document.createElement(SelectionGizmo.tagName) as SelectionGizmo;
 		this.appendChild(this.gizmo);
 		this.gizmo.init(selection);
 	}
@@ -63,18 +70,22 @@ export class SelectionArea extends HTMLElement {
 	private _mouseIsDown = false;
 	private _isDragging = false;
 	private _hasSelection = false;
+	private _handler: DraggingHandler;
 
 	private onMouseDown(e: MouseEvent) {
 		if (e.button !== 0) return;
 		this._mouseIsDown = true;
 		this._isDragging = false;
 		this._hasSelection = this.selectionHandler.isOverSelection(e);
+		this._handler = (e.target as Gizmo).type === GIZMO_SCALE
+			? this.scaleHandler : this.moveHandler;
 	}
 
 	private onMouseUp(e: MouseEvent) {
 		if (e.button !== 0) return;
 		this._mouseIsDown = false;
-		this.gizmo.stopMoving();
+		this._handler?.stopHandling(e);
+		this._handler = null;
 		if (!(this._hasSelection && this._isDragging)) {
 			this._hasSelection = this.selectionHandler.selectAt(e);
 		}
@@ -88,13 +99,14 @@ export class SelectionArea extends HTMLElement {
 			if (!this._hasSelection) {
 				this._hasSelection = this.selectionHandler.selectAt(e);
 			}
-			this.moveHandler.startMoving(e);
+			console.log(this._handler);
+			this._handler.startHandling(e);
 			this.gizmo.startMoving();
 		}
-		this.moveHandler.move(e);
+		this._handler.handle(e);
 	}
 
 	// #endregion
 }
 
-customElements.define('phred-selection-area', SelectionArea);
+customElements.define(SelectionArea.tagName, SelectionArea);

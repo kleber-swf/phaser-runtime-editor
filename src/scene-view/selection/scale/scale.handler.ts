@@ -1,10 +1,10 @@
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
-import { ScaleGizmo } from './scale.gizmo';
+import { OldScaleGizmo } from './scale.gizmo';
 import { Scaler } from './scaler';
 
-export class ScaleHandler extends Phaser.Group {
-	private readonly gizmos: ScaleGizmo[];
+export class OldScaleHandler extends Phaser.Group {
+	private readonly gizmos: OldScaleGizmo[];
 	private _scaling = false;
 
 	public readonly scaler: Scaler;
@@ -20,16 +20,16 @@ export class ScaleHandler extends Phaser.Group {
 	}
 
 	private createGizmos(game: Phaser.Game) {
-		const gizmos: ScaleGizmo[] = [
-			new ScaleGizmo(game, 1, 1),		// top left
-			new ScaleGizmo(game, 0, 1),		// top right
-			new ScaleGizmo(game, 0, 0),		// bottom right
-			new ScaleGizmo(game, 1, 0),		// bottom left
+		const gizmos: OldScaleGizmo[] = [
+			new OldScaleGizmo(game, 1, 1),		// top left
+			new OldScaleGizmo(game, 0, 1),		// top right
+			new OldScaleGizmo(game, 0, 0),		// bottom right
+			new OldScaleGizmo(game, 1, 0),		// bottom left
 
-			new ScaleGizmo(game, 0.5, 1),	// top
-			new ScaleGizmo(game, 1, 0.5),	// right
-			new ScaleGizmo(game, 0.5, 0),	// bottom
-			new ScaleGizmo(game, 0, 0.5),	// left
+			new OldScaleGizmo(game, 0.5, 1),	// top
+			new OldScaleGizmo(game, 1, 0.5),	// right
+			new OldScaleGizmo(game, 0.5, 0),	// bottom
+			new OldScaleGizmo(game, 0, 0.5),	// left
 		];
 
 		gizmos.forEach(gizmo => {
@@ -54,7 +54,7 @@ export class ScaleHandler extends Phaser.Group {
 		gizmos[7].position.set(bounds.width, bounds.height * 0.5);	// left
 	}
 
-	private startScaling(gizmos: ScaleGizmo) {
+	private startScaling(gizmos: OldScaleGizmo) {
 		const obj = Editor.data.selectedObject;
 		Editor.history.prepare(obj, {
 			scale: obj.scale.clone(),

@@ -1,7 +1,5 @@
-import { Point } from 'plugin.model';
 import { Selection } from '../selection';
 import { SelectionUtil } from '../selection.util';
-
 
 export class SelectionHandler {
 	private readonly selection: Selection;

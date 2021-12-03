@@ -1,7 +1,9 @@
 import { Rect } from 'plugin.model';
 import { Selection, SelectionChangedEvent } from '../selection';
 import { SelectionUtil } from '../selection.util';
-import './gizmo.scss';
+import { Gizmo, GIZMO_MOVE } from './gizmo';
+import { ScaleGizmo } from './scale-gizmo';
+import './selection-gizmo.scss';
 
 // interface PropertiesCache {
 // 	x: number;
@@ -12,7 +14,10 @@ import './gizmo.scss';
 // 	scaleY: number;
 // };
 
-export class Gizmo extends HTMLElement {
+export class SelectionGizmo extends HTMLElement implements Gizmo {
+	public static readonly tagName = 'phred-selection-gizmo';
+	public readonly type = GIZMO_MOVE;
+
 	private _rect: Rect = { x: 0, y: 0, width: 0, height: 0 };
 	private handlers: HTMLElement[] = [];
 
@@ -28,24 +33,20 @@ export class Gizmo extends HTMLElement {
 	}
 
 	private createResizeHandlers(handlers: HTMLElement[]) {
-		const tl = this.appendChild(document.createElement('div'));
-		tl.appendChild(document.createElement('div')).classList.add('handle');
-		tl.classList.add('scale', 'top-left');
+		const tl = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
+		tl.init('top-left');
 		handlers.push(tl);
 
-		const tr = this.appendChild(document.createElement('div'));
-		tr.appendChild(document.createElement('div')).classList.add('handle');
-		tr.classList.add('scale', 'top-right');
+		const tr = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
+		tr.init('top-right');
 		handlers.push(tr);
 
-		const bl = this.appendChild(document.createElement('div'));
-		bl.appendChild(document.createElement('div')).classList.add('handle');
-		bl.classList.add('scale', 'bottom-left');
+		const bl = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
+		bl.init('bottom-left');
 		handlers.push(bl);
 
-		const br = this.appendChild(document.createElement('div'));
-		br.appendChild(document.createElement('div')).classList.add('handle');
-		br.classList.add('scale', 'bottom-right');
+		const br = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
+		br.init('bottom-right');
 		handlers.push(br);
 	}
 
@@ -86,4 +87,4 @@ export class Gizmo extends HTMLElement {
 	}
 }
 
-customElements.define('phred-gizmo', Gizmo);
+customElements.define(SelectionGizmo.tagName, SelectionGizmo);

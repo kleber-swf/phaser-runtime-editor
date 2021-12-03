@@ -1,4 +1,4 @@
-export class ScaleGizmo extends Phaser.Graphics {
+export class OldScaleGizmo extends Phaser.Graphics {
 	private readonly _cursor: string;
 
 	constructor(game: Phaser.Game, public readonly factorH: number, public readonly factorV: number) {
