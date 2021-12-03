@@ -1,17 +1,13 @@
 import { Point } from 'plugin.model';
-import { Selection } from '../selection';
 import { SelectionUtil } from '../selection.util';
 import { DraggingHandler } from './dragging-handler';
 
 export class MoveHandler implements DraggingHandler {
-	private readonly selection: Selection;
 	private _point: Point = { x: 0, y: 0 };
+	private _object: PIXI.DisplayObject;
 
-	public constructor(selection: Selection) {
-		this.selection = selection;
-	}
-
-	public startHandling(e: MouseEvent) {
+	public startHandling(e: MouseEvent, object: PIXI.DisplayObject) {
+		this._object = object;
 		SelectionUtil.mouseEventToGamePoint(e, this._point);
 	}
 
@@ -23,9 +19,8 @@ export class MoveHandler implements DraggingHandler {
 		const dy = newPoint.y - lastPoint.y
 		this._point = newPoint;
 
-		const object = this.selection.object;
-		object.position.set(object.x + dx, object.y + dy);
+		this._object.position.set(this._object.x + dx, this._object.y + dy);
 	}
 
-	public stopHandling() { }
+	public stopHandling() { this._object = null; }
 }

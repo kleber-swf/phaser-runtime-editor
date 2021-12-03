@@ -11,6 +11,12 @@ declare namespace PIXI {
 		inputEnabled?: boolean;
 		getBounds?(): Rectangle;
 		children?: DisplayObject[];
+		top: number;
+		left: number;
+		bottom: number;
+		right: number;
+		width: number;
+		height: number;
 	}
 }
 

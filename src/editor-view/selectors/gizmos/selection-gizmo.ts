@@ -2,7 +2,7 @@ import { Rect } from 'plugin.model';
 import { Selection, SelectionChangedEvent } from '../selection';
 import { SelectionUtil } from '../selection.util';
 import { Gizmo, GIZMO_MOVE } from './gizmo';
-import { ScaleGizmo } from './scale-gizmo';
+import { Corner, ScaleGizmo } from './scale-gizmo';
 import './selection-gizmo.scss';
 
 // interface PropertiesCache {
@@ -18,8 +18,11 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 	public static readonly tagName = 'phred-selection-gizmo';
 	public readonly type = GIZMO_MOVE;
 
+	private _isOver = false;
 	private _rect: Rect = { x: 0, y: 0, width: 0, height: 0 };
 	private handlers: HTMLElement[] = [];
+
+	public get isOver() { return this._isOver; }
 
 	// private _selectionPropertiesCache: PropertiesCache = {
 	// 	x: 0, y: 0, width: 0, height: 0, scaleX: 0, scaleY: 0
@@ -29,24 +32,27 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 		selection.addEventListener('changed', this.onSelectionChanged.bind(this));
 		this.classList.add('selector');
 
+		this.addEventListener('mouseover', this.onMouseOver.bind(this));
+		this.addEventListener('mouseout', this.onMouseOut.bind(this));
+
 		this.createResizeHandlers(this.handlers);
 	}
 
 	private createResizeHandlers(handlers: HTMLElement[]) {
 		const tl = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
-		tl.init('top-left');
+		tl.init(Corner.TopLeft);
 		handlers.push(tl);
 
 		const tr = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
-		tr.init('top-right');
+		tr.init(Corner.TopRight);
 		handlers.push(tr);
 
 		const bl = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
-		bl.init('bottom-left');
+		bl.init(Corner.BottomLeft);
 		handlers.push(bl);
 
 		const br = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
-		br.init('bottom-right');
+		br.init(Corner.BottomRight);
 		handlers.push(br);
 	}
 
@@ -75,16 +81,26 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 	}
 
 	public startMoving() {
+		this.style.pointerEvents = 'none';
 		this.handlers.forEach(h => h.style.pointerEvents = 'none');
 	}
-
+	
 	public stopMoving() {
+		this.style.pointerEvents = 'all';
 		this.handlers.forEach(h => h.style.pointerEvents = 'all');
 	}
+
+
+	// #region Event Listeners
 
 	public onSelectionChanged(event: SelectionChangedEvent) {
 		this.style.display = event.detail ? 'block' : 'none';
 	}
+
+	public onMouseOver() { this._isOver = true; }
+	public onMouseOut() { this._isOver = false; }
+
+	// #endregion
 }
 
 customElements.define(SelectionGizmo.tagName, SelectionGizmo);

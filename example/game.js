@@ -1,6 +1,6 @@
 const game = new Phaser.Game({
 	width: 1920,
-	height: 1080,
+	height: 1920,
 	renderer: Phaser.CANVAS,
 	parent: 'game',
 	scaleMode: Phaser.ScaleManager.USER_SCALE,
@@ -44,8 +44,21 @@ function create() {
 	const DIST = 400;
 
 	const parent = new Phaser.Group(game, game.world);
-	parent.position.set(100, 300)
+	parent.position.set(100, 300);
 
+	// parent.top = 0;
+	// game.tweens.create(parent.scale)
+	// 	.to({ x: 0.5, y: 0.5 }, 2000)
+	// 	.to({ x: 1, y: 1 }, 2000)
+	// 	.repeatAll(-1)
+	// 	.start();
+	
+	// game.tweens.create(parent)
+	// 	.to({ top: 0 }, 2000)
+	// 	.to({ top: 0 }, 2000)
+	// 	.repeatAll(-1)
+	// 	.start();
+	
 	// 0   0
 	let child = el(DIST * 0, DIST * 0, SIZE, SIZE, parent, 'child-a0-p0 child-a0-p0 child-a0-p0 child-a0-p0');
 
@@ -86,16 +99,24 @@ function create() {
 	child = el(DIST * 2, DIST * 2, SIZE, SIZE, parent, 'child-a1-p1');
 	child.anchor.set(1, 1);
 	child.pivot.set(SIZE, SIZE);
-
-
+	
+	
 	child = el(DIST * 3, 100, SIZE * 2, SIZE * 2, parent, 'child');
+	parent.setChildIndex(child, 0)
+	child.anchor.set(1, 1);
 	child.pivot.set(SIZE * 1.5, SIZE * 1.5);
+	// game.tweens.create(child.scale)
+	// 	.to({ x: 0.5, y: 0.5 }, 2000)
+	// 	.to({ x: 1, y: 1 }, 2000)
+	// 	.repeatAll(-1)
+	// 	.start();
+
 
 	child = el(DIST * 3, 500, SIZE, SIZE, parent, 'child');
 	child.scale.set(-1, -1);
 
 
-	child = game.add.sprite(1180, 925, 'phaser');
+	child = game.add.sprite(900, 600, 'phaser');
 	child.name = 'sprite';
 	child.scale.set(2, 2);
 

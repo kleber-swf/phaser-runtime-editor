@@ -47,7 +47,7 @@ export class SelectionArea extends HTMLElement {
 
 	private createHandlers(selection: Selection) {
 		this.selectionHandler = new SelectionHandler(selection);
-		this.moveHandler = new MoveHandler(selection);
+		this.moveHandler = new MoveHandler();
 		this.scaleHandler = new ScaleHandler();
 	}
 
@@ -76,7 +76,7 @@ export class SelectionArea extends HTMLElement {
 		if (e.button !== 0) return;
 		this._mouseIsDown = true;
 		this._isDragging = false;
-		this._hasSelection = this.selectionHandler.isOverSelection(e);
+		this._hasSelection = this.gizmo.isOver;
 		this._handler = (e.target as Gizmo).type === GIZMO_SCALE
 			? this.scaleHandler : this.moveHandler;
 	}
@@ -86,6 +86,7 @@ export class SelectionArea extends HTMLElement {
 		this._mouseIsDown = false;
 		this._handler?.stopHandling(e);
 		this._handler = null;
+		this.gizmo.stopMoving();
 		if (!(this._hasSelection && this._isDragging)) {
 			this._hasSelection = this.selectionHandler.selectAt(e);
 		}
@@ -99,9 +100,11 @@ export class SelectionArea extends HTMLElement {
 			if (!this._hasSelection) {
 				this._hasSelection = this.selectionHandler.selectAt(e);
 			}
-			console.log(this._handler);
-			this._handler.startHandling(e);
-			this.gizmo.startMoving();
+			if (this._hasSelection) {
+				this._handler.startHandling(e, this.selection.object);
+				this.gizmo.startMoving();
+				return;
+			}
 		}
 		this._handler.handle(e);
 	}

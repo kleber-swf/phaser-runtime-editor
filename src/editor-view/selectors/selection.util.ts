@@ -10,6 +10,7 @@ class SelectionUtilClass {
 	}
 
 	public mouseEventToGamePoint(e: MouseEvent, out: Point) {
+		// TODO test if offsetLeft/offsetRight is different than 0
 		return SelectionUtil.pointFromAreaToGame(
 			(e.target as HTMLElement).offsetLeft + e.offsetX,
 			(e.target as HTMLElement).offsetTop + e.offsetY,
