@@ -26,27 +26,37 @@ phred-scale-gizmo {
 		padding: 0;
 	}
 
-	&.top-left {
+	&.top {
 		top: 0;
+	}
+
+	&.left {
 		left: 0;
+	}
+
+	&.bottom {
+		bottom: 0;
+	}
+
+	&.right {
+		right: 0;
+	}
+
+	&.middle {
+		top: 50%;
+		cursor: ew-resize;
+	}
+
+	&.center {
+		left: 50%;
+		cursor: ns-resize;
+	}
+
+	&.top.left, &.bottom.right {
 		cursor: nwse-resize;
 	}
 
-	&.top-right {
-		top: 0;
-		right: 0;
+	&.top.right, &.bottom.left {
 		cursor: nesw-resize;
-	}
-
-	&.bottom-left {
-		bottom: 0;
-		left: 0;
-		cursor: nesw-resize;
-	}
-
-	&.bottom-right {
-		bottom: 0;
-		right: 0;
-		cursor: nwse-resize;
 	}
 }

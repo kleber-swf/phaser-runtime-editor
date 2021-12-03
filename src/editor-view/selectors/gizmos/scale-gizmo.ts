@@ -20,23 +20,9 @@ export class ScaleGizmo extends HTMLElement implements Gizmo {
 	public vside: VSide;
 
 	public init(vside: VSide, hside: HSide) {
-		this.hside = hside ?? 0;
-		this.vside = vside ?? 0;
-		let clazz = '';
-
-		switch (vside) {
-			case VSide.Top: clazz = 'top'; break;
-			case VSide.Bottom: clazz += 'bottom'; break;
-			default: clazz = 'middle'; break;
-		}
-
-		switch (hside) {
-			case HSide.Right: clazz += '-right'; break;
-			case HSide.Left: clazz += '-left'; break;
-			default: clazz = '-center'; break;
-		}
-
-		this.classList.add(clazz);
+		this.hside = hside = hside ?? 0;
+		this.vside = vside = vside ?? 0;
+		this.classList.add(VSide[vside].toLowerCase(), HSide[hside].toLowerCase());
 		this.appendChild(document.createElement('div')).classList.add('handle');
 	}
 }

@@ -1,9 +1,8 @@
-import { HSide, VSide } from 'index';
 import { Rect } from 'plugin.model';
 import { Selection, SelectionChangedEvent } from '../selection';
 import { SelectionUtil } from '../selection.util';
 import { Gizmo, GIZMO_MOVE } from './gizmo';
-import { ScaleGizmo } from './scale-gizmo';
+import { HSide, ScaleGizmo, VSide } from './scale-gizmo';
 import './selection-gizmo.scss';
 
 // interface PropertiesCache {
@@ -40,21 +39,17 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 	}
 
 	private createResizeHandlers(handlers: HTMLElement[]) {
-		const tl = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
-		tl.init(VSide.Top, HSide.Left);
-		handlers.push(tl);
+		const vsides = [VSide.Top, VSide.Middle, VSide.Bottom];
+		const hsides = [HSide.Left, HSide.Center, HSide.Right];
 
-		const tr = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
-		tr.init(VSide.Top, HSide.Right);
-		handlers.push(tr);
-
-		const bl = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
-		bl.init(VSide.Bottom, HSide.Left);
-		handlers.push(bl);
-
-		const br = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
-		br.init(VSide.Bottom, HSide.Right);
-		handlers.push(br);
+		vsides.forEach(v => {
+			hsides.forEach(h => {
+				if (v === VSide.Middle && h === HSide.Center) return;
+				const el = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
+				el.init(v, h);
+				handlers.push(el);
+			});
+		});
 	}
 
 	public redraw(object: PIXI.DisplayObject, checkCache = true) {

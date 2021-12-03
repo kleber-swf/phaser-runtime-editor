@@ -17,7 +17,6 @@ export class ScaleHandler implements DraggingHandler {
 		const gizmo = e.target as ScaleGizmo;
 		let hside = gizmo.hside;
 		let vside = gizmo.vside;
-		console.log(hside, object?.name)
 
 		if (hside === undefined || vside === undefined) {
 			this._object = null;
@@ -52,16 +51,21 @@ export class ScaleHandler implements DraggingHandler {
 			x = object.x - object.pivot.x * object.scale.x;
 		} else if (hside === HSide.Left) {
 			pivotx = Math.abs(object.width / object.scale.x);
-			x = object.x + object.width - object.pivot.x * object.scale.x;
+			x = object.x - object.pivot.x * object.scale.x + object.width;
+		} else {
+			pivotx = Math.abs(object.width / object.scale.x) * 0.5;
+			x = object.x - object.pivot.x * object.scale.x + object.width * 0.5;
 		}
 
 		if (vside === VSide.Bottom) {
 			pivoty = 0;
 			y = object.y - object.pivot.y * object.scale.y;
-
 		} else if (vside === VSide.Top) {
 			pivoty = Math.abs(object.height / object.scale.y);
-			y = object.y + object.height - object.pivot.y * object.scale.y;
+			y = object.y - object.pivot.y * object.scale.y + object.height;
+		} else {
+			pivoty = Math.abs(object.height / object.scale.y) * 0.5;
+			y = object.y - object.pivot.y * object.scale.y + object.height * 0.5;
 		}
 
 		object.pivot.set(pivotx, pivoty);

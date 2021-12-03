@@ -38,6 +38,7 @@ export class SelectionArea extends HTMLElement {
 
 	public enable(config: PluginConfig) {
 		this.selectionHandler.enable(config.root);
+		// TODO make it tied to the Phaser's update cycle
 		this.interval = setInterval(this.update.bind(this), INTERVAL);
 	}
 
