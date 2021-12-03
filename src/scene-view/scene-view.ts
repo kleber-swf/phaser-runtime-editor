@@ -90,13 +90,15 @@ export class SceneView extends Phaser.Group {
 	private onPreferencesChanged(pref: PreferenceKey, value: boolean) {
 		if (pref !== 'allHitAreasSnapshot') return;
 		if (value) {
-			if (this.hitAreasView.parent !== this)
+			if (this.hitAreasView.parent !== this) {
 				this.addChild(this.hitAreasView);
+			}
 			this.hitAreasView.clear().beginFill(0, 0).drawRect(0, 0, this.game.width, this.game.height);
 			this.showAllHitAreas(this.root, this.hitAreasView);
 		} else {
-			if (this.hitAreasView.parent === this)
+			if (this.hitAreasView.parent === this) {
 				this.removeChild(this.hitAreasView);
+			}
 			this.hitAreasView.clear();
 		}
 	}
@@ -109,8 +111,9 @@ export class SceneView extends Phaser.Group {
 	}
 
 	private onObjectSelected(origin: DataOrigin, obj: PIXI.DisplayObject) {
-		if (origin !== DataOrigin.SCENE)
+		if (origin !== DataOrigin.SCENE) {
 			this.selectObject(obj, false);
+		}
 	}
 
 	private createTouchArea(game: Phaser.Game): Phaser.Graphics {
@@ -136,7 +139,7 @@ export class SceneView extends Phaser.Group {
 			&& this.trySelectOver(pointer);
 		this._lastPos.set(pointer.x, pointer.y);
 
-		const obj = Editor.data.selectedObject
+		const obj = Editor.data.selectedObject;
 		if (!obj) return;
 
 		Editor.history.prepare(Editor.data.selectedObject, { position: obj.position.clone() });

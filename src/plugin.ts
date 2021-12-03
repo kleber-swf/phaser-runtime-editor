@@ -36,7 +36,7 @@ export class Plugin extends Phaser.Plugin {
 			refImage: null,
 			clearPrefs: config.clearPrefs ?? false,
 			pauseGame: config.pauseGame ?? false,
-		}
+		};
 
 		this.editorState = new EditorStateHandler(game);
 		this.editorState.onshow = this.onEditorShow.bind(this);

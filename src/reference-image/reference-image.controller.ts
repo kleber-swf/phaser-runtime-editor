@@ -30,11 +30,11 @@ export class ReferenceImageController {
 		if (this.image !== image) {
 			this.referenceImage.image = image;
 			if (image) {
-				if (this.panel.parentElement !== this.actionsToolbar)
+				if (this.panel.parentElement !== this.actionsToolbar) {
 					this.actionsToolbar.appendChild(this.panel);
-			} else {
-				if (this.panel.parentElement === this.actionsToolbar)
-					this.actionsToolbar.removeChild(this.panel);
+				}
+			} else if (this.panel.parentElement === this.actionsToolbar) {
+				this.actionsToolbar.removeChild(this.panel);
 			}
 		}
 

@@ -53,7 +53,6 @@ export class SelectionView extends Phaser.Group {
 			case 'hitArea':
 				this._showHitArea = value === true;
 				if (this._selectedObject) this.move(0, 0);
-				return;
 		}
 	}
 
@@ -96,7 +95,6 @@ export class SelectionView extends Phaser.Group {
 
 			.moveTo(bounds.width, -y)
 			.lineTo(bounds.width, y);
-
 	}
 
 	private drawBorder(bounds: PIXI.Rectangle) {
@@ -155,15 +153,16 @@ export class SelectionView extends Phaser.Group {
 	private freeMove(pos: PIXI.Point, scale: PIXI.Point, deltaX: number, deltaY: number) {
 		this._selectedObject.position.set(
 			pos.x + deltaX / scale.x,
-			pos.y + deltaY / scale.y);
+			pos.y + deltaY / scale.y
+		);
 	}
 
 	private snapMove(pos: PIXI.Point, scale: PIXI.Point, deltaX: number, deltaY: number) {
 		this._selectedObject.position.set(
 			Math.round(pos.x + deltaX / scale.x),
-			Math.round(pos.y + deltaY / scale.y));
+			Math.round(pos.y + deltaY / scale.y)
+		);
 	}
-
 
 	public update() {
 		super.update();

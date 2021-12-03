@@ -47,9 +47,11 @@ export class EditorStateHandler {
 		Editor.setupInitialActions();
 
 		const actions = Editor.actions;
-		actions.setActionCommand(Actions.TOGGLE_ENABLED,
+		actions.setActionCommand(
+			Actions.TOGGLE_ENABLED,
 			() => this._isEnabled ? this.hide() : this.show(this.config),
-			() => this._isEnabled);
+			() => this._isEnabled
+		);
 
 		this.editorView.setupActions(actions);
 		this.sceneView.setupActions(actions);

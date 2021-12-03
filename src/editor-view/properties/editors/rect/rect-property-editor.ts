@@ -77,7 +77,7 @@ export class RectPropertyEditor extends PropertyEditor<PIXI.Rectangle> {
 			this.xinput.getInternalValue(),
 			this.yinput.getInternalValue(),
 			this.winput.getInternalValue(),
-			this.hinput.getInternalValue(),
+			this.hinput.getInternalValue()
 		);
 		return this._internalValue;
 	}

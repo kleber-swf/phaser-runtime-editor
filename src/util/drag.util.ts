@@ -1,4 +1,4 @@
-// TODO should this be relative to screen size, game scale or something? 
+// TODO should this be relative to screen size, game scale or something?
 const SQUARED_DRAG_DISTANCE = 10 * 10;
 
 export class DragUtil {

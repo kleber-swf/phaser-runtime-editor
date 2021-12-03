@@ -14,13 +14,14 @@ class SelectionUtilClass {
 		return SelectionUtil.pointFromAreaToGame(
 			(e.target as HTMLElement).offsetLeft + e.offsetX,
 			(e.target as HTMLElement).offsetTop + e.offsetY,
-			out);
+			out
+		);
 	}
 
 	public pointFromAreaToGame(x: number, y: number, out: Point) {
 		// gx = ax * gw/aw;
-		out.x = x * this.game.width / this.selectionArea.clientWidth;
-		out.y = y * this.game.height / this.selectionArea.clientHeight;
+		out.x = (x * this.game.width) / this.selectionArea.clientWidth;
+		out.y = (y * this.game.height) / this.selectionArea.clientHeight;
 		return out;
 	}
 
@@ -33,7 +34,7 @@ class SelectionUtilClass {
 		out.y = rect.y * vr;
 		out.width = rect.width * hr;
 		out.height = rect.height * vr;
-		
+
 		return out;
 	}
 }

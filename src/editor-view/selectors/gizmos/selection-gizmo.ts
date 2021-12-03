@@ -52,7 +52,7 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 		});
 	}
 
-	public redraw(object: PIXI.DisplayObject, checkCache = true) {
+	public redraw(object: PIXI.DisplayObject) {
 		// const cache = this._selectionPropertiesCache;
 		const bounds = object.getBounds();
 		// const scale = object.worldScale;
@@ -85,7 +85,6 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 		this.style.pointerEvents = 'all';
 		this.handlers.forEach(h => h.style.pointerEvents = 'all');
 	}
-
 
 	// #region Event Listeners
 

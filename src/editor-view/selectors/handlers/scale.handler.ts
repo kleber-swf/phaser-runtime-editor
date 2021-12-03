@@ -27,13 +27,13 @@ export class ScaleHandler implements DraggingHandler {
 
 		// inverting axis
 		if (object.scale.x < 0) {
-			if (hside == HSide.Left) hside = HSide.Right;
-			else if (hside == HSide.Right) hside = HSide.Left;
+			if (hside === HSide.Left) hside = HSide.Right;
+			else if (hside === HSide.Right) hside = HSide.Left;
 		}
 
 		if (object.scale.y < 0) {
-			if (vside == VSide.Top) vside = VSide.Bottom;
-			else if (vside == VSide.Bottom) vside = VSide.Top;
+			if (vside === VSide.Top) vside = VSide.Bottom;
+			else if (vside === VSide.Bottom) vside = VSide.Top;
 		}
 
 		this._vside = vside;
@@ -104,8 +104,8 @@ export class ScaleHandler implements DraggingHandler {
 		this._point = newPoint;
 
 		this._object.updateTransform();
-		this._object.width = this._object.width + dx;
-		this._object.height = this._object.height + dy;
+		this._object.width += dx;
+		this._object.height += dy;
 
 		if (this._isGroup) {
 			this._object.top = this._top;
@@ -114,9 +114,9 @@ export class ScaleHandler implements DraggingHandler {
 		this._object.updateTransform();
 	}
 
-	public stopHandling(e: MouseEvent): void {
+	public stopHandling(): void {
 		this._point = null;
-		if (!this._object) return;
+		// if (!this._object) return;
 		// TODO reset object
 	}
 }

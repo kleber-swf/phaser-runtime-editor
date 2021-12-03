@@ -106,7 +106,7 @@ export class GameContainer extends HTMLElement {
 
 	private onInputMove(e: MouseEvent) {
 		this.scrollLeft = this._downPageX - e.pageX;
-		this.scrollTop = this._downPageY - e.pageY
+		this.scrollTop = this._downPageY - e.pageY;
 	}
 
 	private onInputUp() {

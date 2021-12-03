@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 export type PanelSide = 'left' | 'right';
 
 export type OnlyProperties<T> = {

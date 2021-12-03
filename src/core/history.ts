@@ -24,8 +24,8 @@ export class History {
 
 	public prepare(obj: PIXI.DisplayObject, properties: { [id: string]: any }) {
 		const entry = this.holdingEntry = { obj, properties };
-		Object.keys(entry.properties).forEach(k =>
-			entry.properties[k] = JSON.stringify(entry.properties[k]));
+		Object.keys(entry.properties)
+			.forEach(k => entry.properties[k] = JSON.stringify(entry.properties[k]));
 		return this;
 	}
 
@@ -33,8 +33,9 @@ export class History {
 
 	public commit() {
 		if (!this.holdingEntry) return;
-		if (this.entries.length === HISTORY_LIMIT)
+		if (this.entries.length === HISTORY_LIMIT) {
 			this.entries.shift();
+		}
 		this.entries.push(this.holdingEntry);
 		this.holdingEntry = null;
 	}
@@ -58,8 +59,9 @@ export class History {
 					Object.keys(prop).forEach(k => {
 						obj[pk][k] = prop[k];
 					});
-				} else
+				} else {
 					obj[pk] = prop;
+				}
 				this.data.propertyChanged(pk, obj[pk], DataOrigin.ACTION);
 			});
 

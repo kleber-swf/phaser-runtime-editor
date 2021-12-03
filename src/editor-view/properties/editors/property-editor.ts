@@ -82,7 +82,7 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 
 	public savePreviousValue() {
 		Editor.history.prepare(Editor.data.selectedObject, {
-			[this.prop.name]: this.getInternalValue()
+			[this.prop.name]: this.getInternalValue(),
 		}).commit();
 	}
 }

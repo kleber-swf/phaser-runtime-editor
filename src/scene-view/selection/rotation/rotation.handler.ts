@@ -43,9 +43,7 @@ export class RotationHandler extends Phaser.Group {
 		this._initialRotation = this.calcAngleFor(gizmo.x, gizmo.y, 0);
 	}
 
-
 	private stopRotating() { this._rotating = false; }
-
 
 	private _center = new Phaser.Point();
 	private _initialRotation: number;
@@ -62,7 +60,7 @@ export class RotationHandler extends Phaser.Group {
 		console.log(
 			Phaser.Math.radToDeg(rad),
 			Phaser.Math.radToDeg(offset),
-			Phaser.Math.radToDeg(offset + rad),
+			Phaser.Math.radToDeg(offset + rad)
 		);
 		return offset + rad;
 	}

@@ -26,21 +26,21 @@ export class Scaler {
 			bounds.x + bounds.width * factorH,
 			bounds.y + bounds.height * factorV,
 			bounds.width / obj.scale.x,
-			bounds.height / obj.scale.y,
+			bounds.height / obj.scale.y
 		);
 
 		this.originalPivot.set(obj.pivot.x, obj.pivot.y);
 
 		this.transformPivot.set(
 			(factorH + dirH) * this.unscaledBounds.width,
-			(factorV + dirV) * this.unscaledBounds.height,
+			(factorV + dirV) * this.unscaledBounds.height
 		);
 
 		obj.pivot.set(this.transformPivot.x, this.transformPivot.y);
 
 		obj.position.set(
 			obj.x + (this.transformPivot.x - this.originalPivot.x) * obj.scale.x,
-			obj.y + (this.transformPivot.y - this.originalPivot.y) * obj.scale.y,
+			obj.y + (this.transformPivot.y - this.originalPivot.y) * obj.scale.y
 		);
 	}
 
@@ -57,7 +57,6 @@ export class Scaler {
 		if (this._scaleV) this.obj.scale.y = ((ub.y - y) * this._distFactorV) / ub.height;
 	}
 
-
 	private _stopPosition = new Phaser.Point();
 
 	public getObjectStopPosition() {
@@ -65,7 +64,7 @@ export class Scaler {
 		const { transformPivot, originalPivot } = this;
 		this._stopPosition.set(
 			position.x - (transformPivot.x - originalPivot.x) * scale.x,
-			position.y - (transformPivot.y - originalPivot.y) * scale.y,
+			position.y - (transformPivot.y - originalPivot.y) * scale.y
 		);
 		return this._stopPosition;
 	}

@@ -16,7 +16,7 @@ export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 
 	protected createInnerContent(fieldId: string, value: PIXI.Point, prop: InspectorPropertyModel) {
 		const parent = this.appendChild(document.createElement('div'));
-		parent.classList.add('vertical-content')
+		parent.classList.add('vertical-content');
 
 		const xinput = this.xinput = document.createElement(ComponentTags.NumberPropertyEditor) as NumberPropertyEditor;
 		xinput.setContent({ name: 'x', typeHint: 'number', data: prop.data }, value.x, false, fieldId);

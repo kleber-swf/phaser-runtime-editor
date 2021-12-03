@@ -23,7 +23,6 @@ export class SelectionHandler {
 		return result;
 	}
 
-
 	private getObjectAt(x: number, y: number) {
 		const objects: PIXI.DisplayObject[] = [];
 		this.getObjectsUnderPoint(x, y, this.root.children, objects);
@@ -40,7 +39,6 @@ export class SelectionHandler {
 		}
 	}
 
-
 	/// ----
 
 	private _lastSelectionTree: PIXI.DisplayObject[];
@@ -49,13 +47,13 @@ export class SelectionHandler {
 	private setSelectionTree(selectionTree: PIXI.DisplayObject[]) {
 		if (!selectionTree) {
 			this._lastSelectionTree = null;
-			this._lastSelectionTreeIndex = - 1;
+			this._lastSelectionTreeIndex = -1;
 			return null;
 		}
 
-		const areEqual = this._lastSelectionTree?.length && this._lastSelectionTree.every((e, i) =>
-			i < selectionTree.length && e === selectionTree[i]
-		);
+		const areEqual = this._lastSelectionTree?.length
+			&& this._lastSelectionTree.every((e, i) => i < selectionTree.length
+				&& e === selectionTree[i]);
 
 		// TODO test something like this
 		// const areEqual = this._lastSelectionTree?.length && selectionTree.length

@@ -66,8 +66,9 @@ export class ObjectTreeNode extends HTMLElement {
 		if (this.model.collapsed) this.expand();
 		else this.collapse();
 		e.stopImmediatePropagation();
-		if (this.onCollapseStateChanged)
+		if (this.onCollapseStateChanged) {
 			this.onCollapseStateChanged(this, this.model.collapsed, e.altKey);
+		}
 	}
 
 	public collapse() {

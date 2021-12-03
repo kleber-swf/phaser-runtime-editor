@@ -15,8 +15,9 @@ export class PropertiesInspector extends Inspector {
 	}
 
 	private onPropertyChanged(origin: DataOrigin, property: string, value: any) {
-		if (origin !== DataOrigin.INSPECTOR)
+		if (origin !== DataOrigin.INSPECTOR) {
 			this.editors[property]?.propertyChangedOutsideInspector(value);
+		}
 	}
 
 	private createPropertyEditor(prop: InspectorPropertyModel, value: any, tagName: string) {
@@ -51,16 +52,17 @@ export class PropertiesInspector extends Inspector {
 		this.contentElement.style.visibility = 'visible';
 
 		const idata = Editor.inspectorData;
-		const propertyGroups = idata.getObjectPropertiesForType(obj.__baseType)
+		const propertyGroups = idata.getObjectPropertiesForType(obj.__baseType);
 		propertyGroups.forEach(group => {
 			if (group.title) this.createTitleElement(group.title);
 			group.properties.forEach(prop => {
-				if (prop !== 'divider')
+				if (prop !== 'divider') {
 					this.createEditorForProperty(obj, idata.getInspectableProperty(prop));
-				else
+				} else {
 					this.createDivider();
+				}
 			});
-		})
+		});
 	}
 
 	private createEditorForProperty(obj: PIXI.DisplayObject, prop: InspectorPropertyModel) {

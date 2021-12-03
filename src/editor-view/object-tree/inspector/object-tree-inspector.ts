@@ -27,8 +27,9 @@ export class ObjectTreeInspector extends Inspector {
 
 	private setRoot(root: PIXI.DisplayObjectContainer | Phaser.Stage) {
 		this.model.create(root);
-		for (let i = 0, n = root.children.length; i < n; i++)
+		for (let i = 0, n = root.children.length; i < n; i++) {
 			this.createNode(root.children[i], this.contentElement, this.model);
+		}
 	}
 
 	private createNode(obj: PIXI.DisplayObject, parent: HTMLElement, model: ObjectTreeModel) {
@@ -59,7 +60,6 @@ export class ObjectTreeInspector extends Inspector {
 		}
 		if (property === 'visible') {
 			this._lastSelectedModel.node.updateObjectVisibility(value);
-			return;
 		}
 	}
 
@@ -104,8 +104,9 @@ export class ObjectTreeInspector extends Inspector {
 			model.node.expand();
 		}
 
-		if (model.parent)
+		if (model.parent) {
 			this.expandParents(model.parent);
+		}
 	}
 
 	private filterContent(filter: string) {

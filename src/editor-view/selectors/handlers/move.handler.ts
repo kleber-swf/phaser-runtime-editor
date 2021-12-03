@@ -15,8 +15,8 @@ export class MoveHandler implements DraggingHandler {
 		const lastPoint = this._point;
 		const newPoint = SelectionUtil.mouseEventToGamePoint(e, { x: 0, y: 0 });
 
-		const dx = newPoint.x - lastPoint.x
-		const dy = newPoint.y - lastPoint.y
+		const dx = newPoint.x - lastPoint.x;
+		const dy = newPoint.y - lastPoint.y;
 		this._point = newPoint;
 
 		this._object.position.set(this._object.x + dx, this._object.y + dy);
