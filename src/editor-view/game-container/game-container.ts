@@ -7,8 +7,8 @@ import { SelectionArea } from 'editor-view/selectors/selection-area';
 import { PluginConfig } from 'plugin.model';
 import './game-container.scss';
 
-const MIN_SCALE = 0.5;
-const MAX_SCALE = 5;
+const MIN_WIDTH = 100;
+const MAX_WIDTH = 10000;
 
 export class GameContainer extends HTMLElement {
 	private gameOriginalParentElement: HTMLElement;
@@ -72,12 +72,12 @@ export class GameContainer extends HTMLElement {
 		this.game = null;
 	}
 
-	private zoom(amount: number, ox = 0, oy = 0) {
+	private zoom(amount: number) {
 		const el = this.gameEditorParentElement;
-		this._zoom = Phaser.Math.clamp(this._zoom + amount * 0.001, MIN_SCALE, MAX_SCALE);
-		el.style.transform = `scale(${this._zoom * 100}%)`;
-		el.style.transformOrigin = `${ox}px ${oy}px`;
-		// this.game.scale.refresh();
+		const width = Math.max(Math.min(el.clientWidth + amount, MAX_WIDTH), MIN_WIDTH);
+		const height = width * (el.clientHeight / el.clientWidth);
+		el.style.width = width + 'px';
+		el.style.height = height + 'px';
 	}
 
 	private setResponsive(responsive: boolean) {
