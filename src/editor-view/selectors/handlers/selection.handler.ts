@@ -73,6 +73,9 @@ export class SelectionHandler {
 		// 3. click on the parent (B)
 		// 4. clicking on (B) should select (C) but it doesn't
 
+		// maybe the statement is: when clicking somewhere, if the generated tree is different
+		// than the last one, then select the first object in the new tree
+
 		if (areEqual) {
 			this._lastSelectionTreeIndex = (this._lastSelectionTreeIndex + 1) % this._lastSelectionTree.length;
 		} else {
