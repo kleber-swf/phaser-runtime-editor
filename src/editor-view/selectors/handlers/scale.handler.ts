@@ -10,8 +10,9 @@ export class ScaleHandler implements DraggingHandler {
 	private _hside: HSide;
 
 	private _isGroup: boolean;
-	private _top: number;
-	private _left: number;
+	private _groupBoundaries = {
+		top: 0, left: 0, bottom: 0, right: 0,
+	};
 
 	public startHandling(e: MouseEvent, object: PIXI.DisplayObject): void {
 		const gizmo = e.target as ScaleGizmo;
@@ -41,43 +42,23 @@ export class ScaleHandler implements DraggingHandler {
 
 		object.updateTransform();
 
-		let pivotx = 0;
-		let pivoty = 0;
-		let x = 0;
-		let y = 0;
-
-		if (hside === HSide.Right) {
-			pivotx = 0;
-			x = object.x - object.pivot.x * object.scale.x;
-		} else if (hside === HSide.Left) {
-			pivotx = Math.abs(object.width / object.scale.x);
-			x = object.x - object.pivot.x * object.scale.x + object.width;
-		} else {
-			pivotx = Math.abs(object.width / object.scale.x) * 0.5;
-			x = object.x - object.pivot.x * object.scale.x + object.width * 0.5;
-		}
-
-		if (vside === VSide.Bottom) {
-			pivoty = 0;
-			y = object.y - object.pivot.y * object.scale.y;
-		} else if (vside === VSide.Top) {
-			pivoty = Math.abs(object.height / object.scale.y);
-			y = object.y - object.pivot.y * object.scale.y + object.height;
-		} else {
-			pivoty = Math.abs(object.height / object.scale.y) * 0.5;
-			y = object.y - object.pivot.y * object.scale.y + object.height * 0.5;
-		}
+		const x = object.x - object.pivot.x * object.scale.x + object.width * hside;
+		const y = object.y - object.pivot.y * object.scale.y + object.height * vside;
+		const pivotx = Math.abs(object.width / object.scale.x) * hside;
+		const pivoty = Math.abs(object.height / object.scale.y) * vside;
 
 		object.pivot.set(pivotx, pivoty);
 		object.position.set(x, y);
+		object.updateTransform();
 
 		// this._isGroup = !object.anchor;
 		// if (this._isGroup) {
-		// 	this._top = object.top;
-		// 	this._left = object.left;
+		// 	this._groupBoundaries.top = object.top;
+		// 	this._groupBoundaries.left = object.left;
+		// 	this._groupBoundaries.bottom = object.bottom;
+		// 	this._groupBoundaries.right = object.right;
+		// 	// this._groupStickHorizontal = hside ===HSide.Left
 		// }
-
-		object.updateTransform();
 	}
 
 	public handle(e: MouseEvent): void {
@@ -96,21 +77,16 @@ export class ScaleHandler implements DraggingHandler {
 		let dy = 0;
 		if (this._vside === VSide.Top) dy = lastPoint.y - newPoint.y;
 		else if (this._vside === VSide.Bottom) dy = newPoint.y - lastPoint.y;
-		// if (this._corner == Corner.BottomRight) dx = newPoint.x - lastPoint.x;
-		// else if (this._corner === Corner.BottomLeft) dx = lastPoint.x - newPoint.x;
-		// const dx = newPoint.x - lastPoint.x; // bottom right
-		// const dx = lastPoint.x - newPoint.x; // bottom left
-		// const dy = newPoint.y - lastPoint.y;
 		this._point = newPoint;
 
 		this._object.updateTransform();
 		this._object.width += dx;
 		this._object.height += dy;
 
-		if (this._isGroup) {
-			this._object.top = this._top;
-			this._object.left = this._left;
-		}
+		// if (this._isGroup) {
+		// 	this._object.top = this._top;
+		// 	this._object.left = this._left;
+		// }
 		this._object.updateTransform();
 	}
 

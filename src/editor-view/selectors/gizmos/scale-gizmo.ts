@@ -2,15 +2,15 @@ import { Gizmo, GIZMO_SCALE } from './gizmo';
 import './scale-gizmo.scss';
 
 export enum HSide {
-	Left = 0,
+	Right = 0,
 	Center = 0.5,
-	Right = 1,
+	Left = 1,
 }
 
 export enum VSide {
-	Top = 0,
+	Bottom = 0,
 	Middle = 0.5,
-	Bottom = 1,
+	Top = 1,
 }
 
 export class ScaleGizmo extends HTMLElement implements Gizmo {
