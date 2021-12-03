@@ -74,6 +74,7 @@ export class SelectionArea extends HTMLElement {
 	private onMouseUp(e: MouseEvent) {
 		if (e.button !== 0) return;
 		this._mouseIsDown = false;
+		this.gizmo.stopMoving();
 		if (!(this._hasSelection && this._isDragging)) {
 			this._hasSelection = this.selectionHandler.selectAt(e);
 		}
@@ -88,6 +89,7 @@ export class SelectionArea extends HTMLElement {
 				this._hasSelection = this.selectionHandler.selectAt(e);
 			}
 			this.moveHandler.startMoving(e);
+			this.gizmo.startMoving();
 		}
 		this.moveHandler.move(e);
 	}
