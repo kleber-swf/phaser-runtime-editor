@@ -13,8 +13,16 @@ export class ScaleHandler implements DraggingHandler {
 	private _hside: HSide;
 	private _centered = false;
 
+	private _objectProps = {
+		top: 0,
+		left: 0,
+		bottom: 0,
+		right: 0,
+		pivotX: 0,
+		pivotY: 0,
+	};
+
 	private _isGroup: boolean;
-	private _groupBoundaries = { top: 0, left: 0, bottom: 0, right: 0 };
 	private _groupStickySideH: string;
 	private _groupStickySideV: string;
 
@@ -45,6 +53,9 @@ export class ScaleHandler implements DraggingHandler {
 		this._vside = vside;
 		this._hside = hside;
 
+		this._objectProps.pivotX = object.pivot.x;
+		this._objectProps.pivotY = object.pivot.y;
+
 		if (this._centered) {
 			this.setPivotAndPosition(object, VSide.Middle, HSide.Center);
 		} else {
@@ -54,23 +65,23 @@ export class ScaleHandler implements DraggingHandler {
 		object.updateTransform();
 
 		this._isGroup = !object.renderable;
-		if (this._isGroup) {
-			this._groupBoundaries.top = object.top;
-			this._groupBoundaries.left = object.left;
-			this._groupBoundaries.bottom = object.bottom;
-			this._groupBoundaries.right = object.right;
+		if (!this._isGroup) return;
 
-			if (vside === VSide.Top) this._groupStickySideV = 'bottom';
-			else if (vside === VSide.Bottom) this._groupStickySideV = 'top';
-			else this._groupStickySideH = null;
+		this._objectProps.top = object.top;
+		this._objectProps.left = object.left;
+		this._objectProps.bottom = object.bottom;
+		this._objectProps.right = object.right;
 
-			if (hside === HSide.Left) this._groupStickySideH = 'right';
-			else if (hside === HSide.Right) this._groupStickySideH = 'left';
-			else this._groupStickySideH = null;
-		}
+		if (vside === VSide.Top) this._groupStickySideV = 'bottom';
+		else if (vside === VSide.Bottom) this._groupStickySideV = 'top';
+		else this._groupStickySideH = null;
+
+		if (hside === HSide.Left) this._groupStickySideH = 'right';
+		else if (hside === HSide.Right) this._groupStickySideH = 'left';
+		else this._groupStickySideH = null;
 	}
 
-	private setPivotAndPosition(object: PIXI.DisplayObject, vside: VSide, hside: HSide) {
+	private setPivotAndPosition(object: PIXI.DisplayObject, vside: number, hside: number) {
 		const x = object.x - object.pivot.x * object.scale.x + object.width * hside;
 		const y = object.y - object.pivot.y * object.scale.y + object.height * vside;
 		const pivotx = Math.abs(object.width / object.scale.x) * hside;
@@ -96,6 +107,9 @@ export class ScaleHandler implements DraggingHandler {
 		let dy = 0;
 		if (this._vside === VSide.Top) dy = lastPoint.y - newPoint.y;
 		else if (this._vside === VSide.Bottom) dy = newPoint.y - lastPoint.y;
+
+		// const dy = (lastPoint.y - newPoint.y) * Math.sign(this._vside - 0.5);
+		// const dx = (lastPoint.x - newPoint.x) * Math.sign(this._hside - 0.5);
 		this._point = newPoint;
 
 		const obj = this._object;
@@ -123,10 +137,10 @@ export class ScaleHandler implements DraggingHandler {
 
 		if (this._isGroup && !this._centered) {
 			if (this._groupStickySideH) {
-				obj[this._groupStickySideH] = this._groupBoundaries[this._groupStickySideH];
+				obj[this._groupStickySideH] = this._objectProps[this._groupStickySideH];
 			}
 			if (this._groupStickySideV) {
-				obj[this._groupStickySideV] = this._groupBoundaries[this._groupStickySideV];
+				obj[this._groupStickySideV] = this._objectProps[this._groupStickySideV];
 			}
 		}
 		obj.updateTransform();
@@ -134,7 +148,17 @@ export class ScaleHandler implements DraggingHandler {
 
 	public stopHandling(): void {
 		this._point = null;
-		// if (!this._object) return;
-		// TODO reset object
+		if (!this._object) return;
+		const object = this._object;
+		const { pivotX, pivotY } = this._objectProps;
+
+		const x = object.x + (pivotX - object.pivot.x) * object.scale.x;
+		const y = object.y + (pivotY - object.pivot.y) * object.scale.y;
+
+		object.pivot.set(pivotX, pivotY);
+		object.position.set(x, y);
+		object.updateTransform();
+
+		this._object = null;
 	}
 }
