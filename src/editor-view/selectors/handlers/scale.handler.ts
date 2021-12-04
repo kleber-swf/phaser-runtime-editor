@@ -106,6 +106,7 @@ export class ScaleHandler implements DraggingHandler {
 		this._point = newPoint;
 
 		const obj = this._object;
+		obj.updateTransform();
 
 		if (e.altKey) {
 			if (!this._centered) {
