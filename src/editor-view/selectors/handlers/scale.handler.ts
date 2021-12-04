@@ -53,6 +53,8 @@ export class ScaleHandler implements DraggingHandler {
 		this._vside = vside;
 		this._hside = hside;
 
+		object.updateTransform();
+
 		this._objectProps.pivotX = object.pivot.x;
 		this._objectProps.pivotY = object.pivot.y;
 
@@ -93,20 +95,21 @@ export class ScaleHandler implements DraggingHandler {
 
 	public handle(e: MouseEvent): void {
 		if (!this._object) return;
+
+		const obj = this._object;
+		obj.updateTransform();
+
 		if (!this._point) {
-			this._point = SelectionUtil.mouseEventToGamePoint(e, { x: 0, y: 0 });
+			this._point = SelectionUtil.pointFromAreaToGame(e.offsetX, e.offsetY, { x: 0, y: 0 });
 		}
 
 		const lastPoint = this._point;
-		const newPoint = SelectionUtil.mouseEventToGamePoint(e, { x: 0, y: 0 });
+		const newPoint = SelectionUtil.pointFromAreaToGame(e.offsetX, e.offsetY, { x: 0, y: 0 });
 
 		const dx = (lastPoint.x - newPoint.x) * Math.sign(this._hside - 0.5);
 		const dy = (lastPoint.y - newPoint.y) * Math.sign(this._vside - 0.5);
 
 		this._point = newPoint;
-
-		const obj = this._object;
-		obj.updateTransform();
 
 		if (e.altKey) {
 			if (!this._centered) {

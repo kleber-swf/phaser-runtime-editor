@@ -9,11 +9,10 @@ import { Selection } from './selection';
 import './selection-area.scss';
 import { SelectionUtil } from './selection.util';
 
-const INTERVAL = 1000 / 60;	// FPS
-
 export class SelectionArea extends HTMLElement {
 	public static readonly tagName = 'phred-selection-area';
 
+	private game: Phaser.Game;
 	private gizmo: SelectionGizmo;
 	private interval: any;
 
@@ -25,6 +24,7 @@ export class SelectionArea extends HTMLElement {
 	// #region Initialization
 
 	public init(game: Phaser.Game) {
+		this.game = game;
 		SelectionUtil.init(game, this);
 
 		this.selection = new Selection();
@@ -38,8 +38,7 @@ export class SelectionArea extends HTMLElement {
 
 	public enable(config: PluginConfig) {
 		this.selectionHandler.enable(config.root);
-		// TODO make it tied to the Phaser's update cycle
-		this.interval = setInterval(this.update.bind(this), INTERVAL);
+		this.interval = setInterval(this.update.bind(this), 1000 / this.game.time.fps);
 	}
 
 	public disable() {
