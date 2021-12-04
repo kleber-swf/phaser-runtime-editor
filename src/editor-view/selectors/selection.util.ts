@@ -20,8 +20,15 @@ class SelectionUtilClass {
 
 	public pointFromAreaToGame(x: number, y: number, out: Point) {
 		// gx = ax * gw/aw;
-		out.x = (x * this.game.width) / this.selectionArea.clientWidth;
-		out.y = (y * this.game.height) / this.selectionArea.clientHeight;
+		out.x = x * (this.game.width / this.selectionArea.clientWidth);
+		out.y = y * (this.game.height / this.selectionArea.clientHeight);
+		return out;
+	}
+
+	public pointFromGameToArea(x: number, y: number, out: Point) {
+		// ax = gx * aw/gw
+		out.x = x * (this.selectionArea.clientWidth / this.game.width);
+		out.y = y * (this.selectionArea.clientHeight / this.game.height);
 		return out;
 	}
 

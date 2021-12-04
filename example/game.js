@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 const game = new Phaser.Game({
 	width: 1920,
 	height: 1920,
@@ -9,8 +11,16 @@ const game = new Phaser.Game({
 });
 
 const COLORS = [
-	0xFEA443, 0x705E78, 0x812F33, 0x3EB595, 0x6446A6,
-	0xBF1774, 0x4D748C, 0xF25757, 0x8AA69B, 0xD9A491
+	0xFEA443,
+	0x705E78,
+	0x812F33,
+	0x3EB595,
+	0x6446A6,
+	0xBF1774,
+	0x4D748C,
+	0xF25757,
+	0x8AA69B,
+	0xD9A491,
 ];
 
 let _colorIndex = 0;
@@ -52,13 +62,13 @@ function create() {
 	// 	.to({ x: 1, y: 1 }, 2000)
 	// 	.repeatAll(-1)
 	// 	.start();
-	
+
 	// game.tweens.create(parent)
 	// 	.to({ top: 0 }, 2000)
 	// 	.to({ top: 0 }, 2000)
 	// 	.repeatAll(-1)
 	// 	.start();
-	
+
 	// 0   0
 	let child = el(DIST * 0, DIST * 0, SIZE, SIZE, parent, 'child-a0-p0 child-a0-p0 child-a0-p0 child-a0-p0');
 
@@ -99,22 +109,18 @@ function create() {
 	child = el(DIST * 2, DIST * 2, SIZE, SIZE, parent, 'child-a1-p1');
 	child.anchor.set(1, 1);
 	child.pivot.set(SIZE, SIZE);
-	
-	
+
 	child = el(DIST * 3, 100, SIZE * 2, SIZE * 2, parent, 'child');
-	parent.setChildIndex(child, 0)
-	child.anchor.set(1, 1);
-	child.pivot.set(SIZE * 1.5, SIZE * 1.5);
-	// game.tweens.create(child.scale)
-	// 	.to({ x: 0.5, y: 0.5 }, 2000)
-	// 	.to({ x: 1, y: 1 }, 2000)
+	// child.pivot.set(SIZE * 1.5, SIZE * 1.5);
+	child.pivot.set(SIZE, SIZE);
+	parent.setChildIndex(child, 0);
+	// game.tweens.create(child)
+	// 	.to({ angle: 360 }, 2000)
 	// 	.repeatAll(-1)
 	// 	.start();
 
-
-	child = el(DIST * 3, 500, SIZE, SIZE, parent, 'child');
+	child = el(DIST * 3, 500, SIZE, SIZE, parent, 'child-inverted');
 	child.scale.set(-1, -1);
-
 
 	child = game.add.sprite(900, 600, 'phaser');
 	child.name = 'sprite';

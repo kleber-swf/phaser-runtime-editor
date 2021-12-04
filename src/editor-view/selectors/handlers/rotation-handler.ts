@@ -43,11 +43,7 @@ export class RotationHandler implements DraggingHandler {
 			.lineStyle(1, 0xFFFFFF)
 			.moveTo(p1.x, p1.y)
 			.lineTo(p2.x, p2.y);
-
-		console.log(Math.atan2(p2.x - p1.x, p2.y - p1.y) * (180 / Math.PI));
-
 		object.rotation = this._initialRotation + delta;
-		console.log('>>', object.rotation * (180 / Math.PI));
 		object.updateTransform();
 	}
 
