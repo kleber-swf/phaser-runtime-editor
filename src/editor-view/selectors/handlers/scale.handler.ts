@@ -100,16 +100,9 @@ export class ScaleHandler implements DraggingHandler {
 		const lastPoint = this._point;
 		const newPoint = SelectionUtil.mouseEventToGamePoint(e, { x: 0, y: 0 });
 
-		let dx = 0;
-		if (this._hside === HSide.Left) dx = lastPoint.x - newPoint.x;
-		else if (this._hside === HSide.Right) dx = newPoint.x - lastPoint.x;
+		const dx = (lastPoint.x - newPoint.x) * Math.sign(this._hside - 0.5);
+		const dy = (lastPoint.y - newPoint.y) * Math.sign(this._vside - 0.5);
 
-		let dy = 0;
-		if (this._vside === VSide.Top) dy = lastPoint.y - newPoint.y;
-		else if (this._vside === VSide.Bottom) dy = newPoint.y - lastPoint.y;
-
-		// const dy = (lastPoint.y - newPoint.y) * Math.sign(this._vside - 0.5);
-		// const dx = (lastPoint.x - newPoint.x) * Math.sign(this._hside - 0.5);
 		this._point = newPoint;
 
 		const obj = this._object;
