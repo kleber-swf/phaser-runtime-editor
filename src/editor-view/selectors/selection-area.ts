@@ -1,8 +1,9 @@
 import { PluginConfig } from 'plugin.model';
-import { Gizmo, GIZMO_SCALE } from './gizmos/gizmo';
+import { Gizmo, GIZMO_MOVE, GIZMO_ROTATION, GIZMO_SCALE } from './gizmos/gizmo';
 import { SelectionGizmo } from './gizmos/selection-gizmo';
 import { DraggingHandler } from './handlers/dragging-handler';
 import { MoveHandler } from './handlers/move.handler';
+import { RotationHandler } from './handlers/rotation-handler';
 import { ScaleHandler } from './handlers/scale.handler';
 import { SelectionHandler } from './handlers/selection.handler';
 import { Selection } from './selection';
@@ -18,8 +19,8 @@ export class SelectionArea extends HTMLElement {
 
 	private selection: Selection;
 	private selectionHandler: SelectionHandler;
-	private moveHandler: MoveHandler;
-	private scaleHandler: ScaleHandler;
+
+	private handlers: { [id: number]: DraggingHandler } = {};
 
 	// #region Initialization
 
@@ -47,8 +48,15 @@ export class SelectionArea extends HTMLElement {
 
 	private createHandlers(selection: Selection) {
 		this.selectionHandler = new SelectionHandler(selection);
-		this.moveHandler = new MoveHandler();
-		this.scaleHandler = new ScaleHandler();
+		this.handlers = {
+			[GIZMO_MOVE]: new MoveHandler(),
+			[GIZMO_SCALE]: new ScaleHandler(),
+			[GIZMO_ROTATION]: new RotationHandler(),
+		};
+
+		// this.moveHandler = new MoveHandler();
+		// this.scaleHandler = new ScaleHandler();
+		// this.rotationHandler = new RotationHandler();
 	}
 
 	private createViews(selection: Selection) {
@@ -77,8 +85,7 @@ export class SelectionArea extends HTMLElement {
 		this._mouseIsDown = true;
 		this._isDragging = false;
 		this._hasSelection = this.gizmo.isOver;
-		this._handler = (e.target as Gizmo).type === GIZMO_SCALE
-			? this.scaleHandler : this.moveHandler;
+		this._handler = this.handlers[(e.target as Gizmo).type];
 	}
 
 	private onMouseUp(e: MouseEvent) {

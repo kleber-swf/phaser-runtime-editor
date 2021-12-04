@@ -1,5 +1,6 @@
 import { Point } from 'plugin.model';
-import { HSide, ScaleGizmo, VSide } from '../gizmos/scale-gizmo';
+import { HSide, VSide } from '../gizmos/gizmo';
+import { ScaleGizmo } from '../gizmos/scale-gizmo';
 import { SelectionUtil } from '../selection.util';
 import { DraggingHandler } from './dragging-handler';
 

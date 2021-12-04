@@ -1,8 +1,9 @@
 import { Rect } from 'plugin.model';
 import { Selection, SelectionChangedEvent } from '../selection';
 import { SelectionUtil } from '../selection.util';
-import { Gizmo, GIZMO_MOVE } from './gizmo';
-import { HSide, ScaleGizmo, VSide } from './scale-gizmo';
+import { Gizmo, GIZMO_MOVE, HSide, VSide } from './gizmo';
+import { RotationGizmo } from './rotation-gizmo';
+import { ScaleGizmo } from './scale-gizmo';
 import './selection-gizmo.scss';
 
 // interface PropertiesCache {
@@ -48,6 +49,10 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 				const el = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
 				el.init(v, h);
 				handlers.push(el);
+				if (v === VSide.Middle || h === HSide.Center) return;
+				const r = this.appendChild(document.createElement(RotationGizmo.tagName)) as RotationGizmo;
+				r.init(v, h);
+				handlers.push(r);
 			});
 		});
 	}

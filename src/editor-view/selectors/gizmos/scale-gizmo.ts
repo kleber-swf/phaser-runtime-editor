@@ -1,17 +1,5 @@
-import { Gizmo, GIZMO_SCALE } from './gizmo';
+import { Gizmo, GIZMO_SCALE, HSide, VSide } from './gizmo';
 import './scale-gizmo.scss';
-
-export enum HSide {
-	Right = 0,
-	Center = 0.5,
-	Left = 1,
-}
-
-export enum VSide {
-	Bottom = 0,
-	Middle = 0.5,
-	Top = 1,
-}
 
 export class ScaleGizmo extends HTMLElement implements Gizmo {
 	public static readonly tagName = 'phred-scale-gizmo';

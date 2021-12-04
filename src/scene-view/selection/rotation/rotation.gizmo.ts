@@ -1,4 +1,4 @@
-export class RotationGizmo extends Phaser.Graphics {
+export class OldRotationGizmo extends Phaser.Graphics {
 	constructor(game: Phaser.Game) {
 		super(game);
 		this.__skip = true;

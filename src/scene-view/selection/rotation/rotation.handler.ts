@@ -1,7 +1,7 @@
-import { RotationGizmo } from './rotation.gizmo';
+import { OldRotationGizmo } from './rotation.gizmo';
 
-export class RotationHandler extends Phaser.Group {
-	private gizmos: RotationGizmo[];
+export class OldRotationHandler extends Phaser.Group {
+	private gizmos: OldRotationGizmo[];
 	public selectedObject: PIXI.DisplayObject;
 	private _rotating = false;
 
@@ -11,11 +11,11 @@ export class RotationHandler extends Phaser.Group {
 	}
 
 	private createGizmos(game: Phaser.Game) {
-		const gizmos: RotationGizmo[] = [
-			new RotationGizmo(game),		// top left
-			new RotationGizmo(game),		// top right
-			new RotationGizmo(game),		// bottom right
-			new RotationGizmo(game),		// bottom left
+		const gizmos: OldRotationGizmo[] = [
+			new OldRotationGizmo(game),		// top left
+			new OldRotationGizmo(game),		// top right
+			new OldRotationGizmo(game),		// bottom right
+			new OldRotationGizmo(game),		// bottom left
 		];
 
 		gizmos.forEach(gizmo => {
@@ -35,7 +35,7 @@ export class RotationHandler extends Phaser.Group {
 		gizmos[3].position.set(0, bounds.height);							// bottom right
 	}
 
-	private startRotating(gizmo: RotationGizmo) {
+	private startRotating(gizmo: OldRotationGizmo) {
 		this._rotating = true;
 		const center = this.selectedObject.position;
 		this._center.set(center.x, center.y);
