@@ -97,10 +97,14 @@ export class SelectionArea extends HTMLElement {
 
 	private onMouseMove(e: MouseEvent) {
 		if (!this._mouseIsDown) return;
+
 		if (!this._isDragging) {
 			this._isDragging = true;
 			if (!this._hasSelection) {
 				this._hasSelection = this.selectionHandler.selectAt(e);
+				if (this._hasSelection && !this._handler) {
+					this._handler = this.handlers[GIZMO_MOVE];
+				}
 			}
 			if (this._hasSelection) {
 				this._handler.startHandling(e, this.selection.object);
@@ -108,7 +112,10 @@ export class SelectionArea extends HTMLElement {
 				return;
 			}
 		}
-		this._handler.handle(e);
+
+		if (this._handler) {
+			this._handler.handle(e);
+		}
 	}
 
 	// #endregion
