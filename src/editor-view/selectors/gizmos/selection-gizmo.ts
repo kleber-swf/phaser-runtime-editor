@@ -12,6 +12,8 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 	private _isOver = false;
 	private _rect: Rect = { x: 0, y: 0, width: 0, height: 0 };
 	private handlers: HTMLElement[] = [];
+	private pivot: HTMLElement;
+	private anchor: HTMLElement;
 
 	public get isOver() { return this._isOver; }
 
@@ -37,6 +39,12 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 				handlers.push(el);
 			});
 		});
+
+		this.pivot = this.appendChild(document.createElement('div'));
+		this.pivot.classList.add('pivot');
+
+		this.anchor = this.appendChild(document.createElement('div'));
+		this.anchor.classList.add('anchor');
 	}
 
 	public redraw(object: PIXI.DisplayObject) {
@@ -47,6 +55,14 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 		style.top = _rect.y + 'px';
 		style.width = _rect.width + 'px';
 		style.height = _rect.height + 'px';
+		if (object.pivot) {
+			const p = SelectionUtil.pointFromGameToArea(
+				object.pivot.x * Math.abs(object.scale.x),
+				object.pivot.y * Math.abs(object.scale.y),
+				{ x: 0, y: 0 }
+			);
+			this.pivot.style.transform = `translate(${p.x}px, ${p.y}px)`;
+		}
 	}
 
 	public startMoving() {

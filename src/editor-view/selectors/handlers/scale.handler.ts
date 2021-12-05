@@ -14,7 +14,12 @@ export class ScaleHandler implements DraggingHandler {
 	private _hside: HSide;
 	private _centered = false;
 
+	private _hsign = 0;
+	private _vsign = 0;
+
 	private _objectProps = {
+		x: 0,
+		y: 0,
 		top: 0,
 		left: 0,
 		bottom: 0,
@@ -67,6 +72,12 @@ export class ScaleHandler implements DraggingHandler {
 
 		object.updateTransform();
 
+		console.log(vside, hside);
+		this._vsign = Math.sign(vside - 0.5);
+		this._hsign = Math.sign(hside - 0.5);
+		this._objectProps.x = object.x + object.pivot.x * object.scale.x * this._hsign;
+		this._objectProps.y = object.y + object.pivot.y * object.scale.y * this._vsign;
+
 		this._isGroup = !object.renderable;
 		if (!this._isGroup) return;
 
@@ -85,13 +96,13 @@ export class ScaleHandler implements DraggingHandler {
 	}
 
 	private setPivotAndPosition(object: PIXI.DisplayObject, vside: number, hside: number) {
-		const x = object.x - object.pivot.x * object.scale.x + object.width * hside;
-		const y = object.y - object.pivot.y * object.scale.y + object.height * vside;
-		const pivotx = Math.abs(object.width / object.scale.x) * hside;
-		const pivoty = Math.abs(object.height / object.scale.y) * vside;
+		// const x = object.x - object.pivot.x * object.scale.x + object.width * hside;
+		// const y = object.y - object.pivot.y * object.scale.y + object.height * vside;
+		// const pivotx = Math.abs(object.width / object.scale.x) * hside;
+		// const pivoty = Math.abs(object.height / object.scale.y) * vside;
 
-		object.pivot.set(pivotx, pivoty);
-		object.position.set(x, y);
+		// object.pivot.set(pivotx, pivoty);
+		// object.position.set(x, y);
 	}
 
 	public handle(e: MouseEvent): void {
@@ -107,8 +118,8 @@ export class ScaleHandler implements DraggingHandler {
 		const lastPoint = this._point;
 		const newPoint = SelectionUtil.pointFromAreaToGame(e.offsetX, e.offsetY, { x: 0, y: 0 });
 
-		const dx = (lastPoint.x - newPoint.x) * Math.sign(this._hside - 0.5);
-		const dy = (lastPoint.y - newPoint.y) * Math.sign(this._vside - 0.5);
+		const dx = (lastPoint.x - newPoint.x) * this._hsign;
+		const dy = (lastPoint.y - newPoint.y) * this._vsign;
 
 		this._point = newPoint;
 
@@ -133,14 +144,19 @@ export class ScaleHandler implements DraggingHandler {
 			obj.height += dy;
 		}
 
-		if (this._isGroup && !this._centered) {
-			if (this._groupStickySideH) {
-				obj[this._groupStickySideH] = this._objectProps[this._groupStickySideH];
-			}
-			if (this._groupStickySideV) {
-				obj[this._groupStickySideV] = this._objectProps[this._groupStickySideV];
-			}
-		}
+		obj.position.x = this._objectProps.x
+			- (this._objectProps.pivotX * obj.scale.x) * this._hsign;
+		obj.position.y = this._objectProps.y
+			- (this._objectProps.pivotY * obj.scale.y) * this._vsign;
+
+		// if (this._isGroup && !this._centered) {
+		// 	if (this._groupStickySideH) {
+		// 		obj[this._groupStickySideH] = this._objectProps[this._groupStickySideH];
+		// 	}
+		// 	if (this._groupStickySideV) {
+		// 		obj[this._groupStickySideV] = this._objectProps[this._groupStickySideV];
+		// 	}
+		// }
 		obj.updateTransform();
 	}
 

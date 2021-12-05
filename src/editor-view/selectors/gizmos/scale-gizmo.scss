@@ -1,3 +1,5 @@
+@import 'editor-vars';
+
 $handle-size: 15px;
 $size: 25px;
 $padding: ($size - $handle-size)/2;
@@ -20,10 +22,11 @@ phred-scale-gizmo {
 		width: $handle-size;
 		height: $handle-size;
 		pointer-events: none;
-		background-color: chocolate;
-		border: 1px solid white;
+		background-color: $selection-color;
+		border-radius: 50%;
 		margin: auto;
 		padding: 0;
+		box-shadow: $gizmo-shadow;
 	}
 
 	&.top {
@@ -52,11 +55,13 @@ phred-scale-gizmo {
 		cursor: ns-resize;
 	}
 
-	&.top.left, &.bottom.right {
+	&.top.left,
+	&.bottom.right {
 		cursor: nwse-resize;
 	}
 
-	&.top.right, &.bottom.left {
+	&.top.right,
+	&.bottom.left {
 		cursor: nesw-resize;
 	}
 }
