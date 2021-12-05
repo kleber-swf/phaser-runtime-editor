@@ -1,9 +1,8 @@
 import { PluginConfig } from 'plugin.model';
-import { Gizmo, GIZMO_MOVE, GIZMO_ROTATION, GIZMO_SCALE } from './gizmos/gizmo';
+import { Gizmo, GIZMO_MOVE, GIZMO_SCALE } from './gizmos/gizmo';
 import { SelectionGizmo } from './gizmos/selection-gizmo';
 import { DraggingHandler } from './handlers/dragging-handler';
 import { MoveHandler } from './handlers/move.handler';
-import { RotationHandler } from './handlers/rotation-handler';
 import { ScaleHandler } from './handlers/scale.handler';
 import { SelectionHandler } from './handlers/selection.handler';
 import { Selection } from './selection';
@@ -39,7 +38,7 @@ export class SelectionArea extends HTMLElement {
 
 	public enable(config: PluginConfig) {
 		this.selectionHandler.enable(config.root);
-		this.interval = setInterval(this.update.bind(this), 1000 / this.game.time.fps);
+		this.interval = setInterval(this.update.bind(this), 1000 / 30);
 	}
 
 	public disable() {
@@ -51,12 +50,8 @@ export class SelectionArea extends HTMLElement {
 		this.handlers = {
 			[GIZMO_MOVE]: new MoveHandler(),
 			[GIZMO_SCALE]: new ScaleHandler(),
-			[GIZMO_ROTATION]: new RotationHandler(),
+			// [GIZMO_ROTATION]: new RotationHandler(),
 		};
-
-		// this.moveHandler = new MoveHandler();
-		// this.scaleHandler = new ScaleHandler();
-		// this.rotationHandler = new RotationHandler();
 	}
 
 	private createViews(selection: Selection) {
