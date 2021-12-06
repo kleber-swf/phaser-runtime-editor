@@ -134,9 +134,14 @@ export class ScaleHandler implements DraggingHandler {
 			dscale = 1;
 		}
 
-		const dx = (lastPoint.x - newPoint.x) * this._hsign * dscale;
-		const dy = (lastPoint.y - newPoint.y) * this._vsign * dscale;
+		let dx = (lastPoint.x - newPoint.x) * this._hsign * dscale;
+		let dy = (lastPoint.y - newPoint.y) * this._vsign * dscale;
 		this._point = newPoint;
+
+		if (e.ctrlKey) {
+			if (this._hside === 0.5) dx = dy;
+			else dy = dx;
+		}
 
 		obj.width += dx;
 		obj.height += dy;
