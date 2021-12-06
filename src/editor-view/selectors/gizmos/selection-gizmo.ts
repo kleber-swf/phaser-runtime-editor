@@ -1,5 +1,6 @@
+import { Editor } from 'core/editor';
+import { DataOrigin } from 'data/editor-data';
 import { Point, Rect } from 'plugin.model';
-import { Selection, SelectionChangedEvent } from '../selection';
 import { SelectionUtil } from '../selection.util';
 import { Gizmo, GIZMO_MOVE, HSide, VSide } from './gizmo';
 import { ScaleGizmo } from './scale-gizmo';
@@ -17,8 +18,8 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 
 	public get isOver() { return this._isOver; }
 
-	public init(selection: Selection) {
-		selection.addEventListener('changed', this.onSelectionChanged.bind(this));
+	public init() {
+		Editor.data.onSelectedObjectChanged.add(this.onSelectionChanged, this);
 		this.classList.add('selector');
 
 		this.addEventListener('mouseover', this.onMouseOver.bind(this));
@@ -52,6 +53,8 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 
 	public redraw(object: PIXI.DisplayObject) {
 		const bounds = object.getBounds();
+		const scale = object.worldScale;
+
 		const { style, _rect, _pivot, _anchor } = this;
 		SelectionUtil.rectFromGameToArea(bounds, _rect);
 		style.left = _rect.x + 'px';
@@ -60,16 +63,16 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 		style.height = _rect.height + 'px';
 
 		SelectionUtil.pointFromGameToArea(
-			object.pivot.x * Math.abs(object.scale.x),
-			object.pivot.y * Math.abs(object.scale.y),
+			object.pivot.x * Math.abs(scale.x),
+			object.pivot.y * Math.abs(scale.y),
 			_pivot
 		);
 		this.pivot.style.transform = `translate(${_pivot.x}px, ${_pivot.y}px)`;
 
 		if (object.anchor) {
 			SelectionUtil.pointFromGameToArea(
-				object.anchor.x * Math.abs(object.width),
-				object.anchor.y * Math.abs(object.height),
+				object.anchor.x * (object.width / object.scale.x),
+				object.anchor.y * (object.height / object.scale.y),
 				_anchor
 			);
 			this.anchor.style.top = _anchor.y + 'px';
@@ -89,8 +92,7 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 
 	// #region Event Listeners
 
-	public onSelectionChanged(event: SelectionChangedEvent) {
-		const object = event.detail;
+	public onSelectionChanged(_origin: DataOrigin, object: PIXI.DisplayObject) {
 		if (!object) {
 			this.style.display = 'none';
 			return;

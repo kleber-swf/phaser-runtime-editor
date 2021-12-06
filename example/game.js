@@ -71,6 +71,7 @@ function create() {
 
 	// 0   0
 	let child = el(DIST * 0, DIST * 0, SIZE, SIZE, parent, 'child-a0-p0 child-a0-p0 child-a0-p0 child-a0-p0');
+	child.scale.set(2, 2);
 
 	// 0   .5
 	child = el(DIST * 1, DIST * 0, SIZE, SIZE, parent, 'child-a0-p.5');
@@ -129,27 +130,14 @@ function create() {
 	game.add.bitmapText(50, 50, 'font', 'This is a bitmap text', 30)
 		.name = 'bitmap text';
 
-	// game.add.text(0, 0, 'this text scrolls\nwith the background', { font: '32px Arial', fill: '#f26c4f', align: 'center' });
+	child = el(900, 700, SIZE * 4, SIZE * 4, parent, 'deep-hierarchy');
+	child = el(50, 50, SIZE * 3.5, SIZE * 3.5, child, 'child-1');
+	child = el(50, 50, SIZE * 3, SIZE * 3, child, 'child-2');
+	child = el(50, 50, SIZE * 2.5, SIZE * 2.5, child, 'child-3');
+	child = el(50, 50, SIZE * 2, SIZE * 2, child, 'child-4');
+	child = el(50, 50, SIZE * 1.5, SIZE * 1.5, child, 'child-5');
+	child = el(50, 50, SIZE, SIZE, child, 'child-6');
 
-	// logo1 = game.add.sprite(0, 0, 'phaser');
-	// logo1.fixedToCamera = true;
-	// logo1.cameraOffset.setTo(100, 100);
-
-	// logo2 = game.add.sprite(0, 0, 'phaser');
-	// logo2.fixedToCamera = true;
-	// logo2.cameraOffset.setTo(500, 100);
-
-	// var t = game.add.text(0, 0, 'this text is fixed to the camera', { font: '32px Arial', fill: '#ffffff', align: 'center' });
-	// t.fixedToCamera = true;
-	// t.cameraOffset.setTo(200, 500);
-
-	// game.add.tween(logo2.cameraOffset).to({ y: 400 }, 2000, Phaser.Easing.Back.InOut, true, 0, 2000, true);
-	// cursors = game.input.keyboard.createCursorKeys();
-
-	// game.add.graphics(0, 0, game.stage)
-	// 	.lineStyle(4, 0xFFFFFF, 1)
-	// 	.beginFill(0, 0)
-	// 	.drawRect(0, 0, game.width, game.height);
 	plugin.show();
 }
 

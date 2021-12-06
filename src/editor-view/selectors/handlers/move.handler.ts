@@ -1,3 +1,5 @@
+import { Editor } from 'core/editor';
+import { DataOrigin } from 'data/editor-data';
 import { Point } from 'plugin.model';
 import { SelectionUtil } from '../selection.util';
 import { DraggingHandler } from './dragging-handler';
@@ -15,11 +17,25 @@ export class MoveHandler implements DraggingHandler {
 		const lastPoint = this._point;
 		const newPoint = SelectionUtil.mouseEventToGamePoint(e, { x: 0, y: 0 });
 
-		const dx = newPoint.x - lastPoint.x;
-		const dy = newPoint.y - lastPoint.y;
+		const object = this._object;
+		const scale = object.worldScale.clone();
+
+		scale.x /= object.scale.x;
+		scale.y /= object.scale.y;
+
+		const dx = (newPoint.x - lastPoint.x) / scale.x;
+		const dy = (newPoint.y - lastPoint.y) / scale.y;
+
 		this._point = newPoint;
 
-		this._object.position.set(this._object.x + dx, this._object.y + dy);
+		object.position.set(
+			object.x + dx,
+			object.y + dy
+		);
+
+		object.updateTransform();
+		Editor.data.propertyChanged('position', object.position, DataOrigin.SCENE);
+		Editor.data.propertyChanged('_bounds', object.getBounds(), DataOrigin.SCENE);
 	}
 
 	public stopHandling() { this._object = null; }

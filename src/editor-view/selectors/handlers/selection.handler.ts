@@ -1,25 +1,23 @@
-import { Selection } from '../selection';
+import { Editor } from 'core/editor';
+import { DataOrigin } from 'data/editor-data';
 import { SelectionUtil } from '../selection.util';
 
 export class SelectionHandler {
-	private readonly selection: Selection;
 	private root: Container;
-
-	constructor(selection: Selection) { this.selection = selection; }
 
 	public enable(root: Container) { this.root = root; }
 
 	public selectAt(e: MouseEvent) {
 		const point = SelectionUtil.mouseEventToGamePoint(e, { x: 0, y: 0 });
 		const obj = this.getObjectAt(point.x, point.y);
-		this.selection.object = obj;
+		Editor.data.selectObject(obj, DataOrigin.SCENE);
 		return !!obj;
 	}
 
 	public isOverSelection(e: MouseEvent) {
-		if (!this.selection.object) return false;
+		if (!Editor.data.selectedObject) return false;
 		const point = SelectionUtil.mouseEventToGamePoint(e, { x: 0, y: 0 });
-		const result = this.selection.object.getBounds().contains(point.x, point.y);
+		const result = Editor.data.selectedObject.getBounds().contains(point.x, point.y);
 		return result;
 	}
 

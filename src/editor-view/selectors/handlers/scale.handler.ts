@@ -1,3 +1,6 @@
+import { Editor } from 'core/editor';
+import { DataOrigin } from 'data/editor-data';
+import { Math as PMath } from 'phaser-ce';
 import { Point } from 'plugin.model';
 import { HSide, VSide } from '../gizmos/gizmo';
 import { ScaleGizmo } from '../gizmos/scale-gizmo';
@@ -34,7 +37,7 @@ export class ScaleHandler implements DraggingHandler {
 
 		this._object = object;
 
-		// inverting axis id scale is negative
+		// inverting axis when scale is negative
 		if (object.scale.x < 0) hside = Math.abs(hside - 1);
 		if (object.scale.y < 0) vside = Math.abs(vside - 1);
 
@@ -68,8 +71,8 @@ export class ScaleHandler implements DraggingHandler {
 	public handle(e: MouseEvent): void {
 		if (!this._object) return;
 
-		const obj = this._object;
-		obj.updateTransform();
+		const object = this._object;
+		object.updateTransform();
 
 		if (!this._point) {
 			this._point = SelectionUtil.pointFromAreaToGame(e.offsetX, e.offsetY, { x: 0, y: 0 });
@@ -93,8 +96,12 @@ export class ScaleHandler implements DraggingHandler {
 			dscale = 1;
 		}
 
-		let dx = (lastPoint.x - newPoint.x) * this._hsign * dscale;
-		let dy = (lastPoint.y - newPoint.y) * this._vsign * dscale;
+		const scale = object.worldScale.clone();
+		scale.x /= object.scale.x;
+		scale.y /= object.scale.y;
+
+		let dx = ((lastPoint.x - newPoint.x) * this._hsign * dscale) / scale.x;
+		let dy = ((lastPoint.y - newPoint.y) * this._vsign * dscale) / scale.y;
 		this._point = newPoint;
 
 		if (e.ctrlKey) {
@@ -102,16 +109,20 @@ export class ScaleHandler implements DraggingHandler {
 			else dy = dx;
 		}
 
-		obj.width += dx;
-		obj.height += dy;
-		obj.x += dx * hratio;
-		obj.y += dy * vratio;
+		object.width = PMath.roundTo(object.width + dx, -2);
+		object.height = PMath.roundTo(object.height + dy, -2);
+		object.x = PMath.roundTo(object.x + dx * hratio, -2);
+		object.y = PMath.roundTo(object.y + dy * vratio, -2);
 
-		if (!(obj.renderable || centered)) {
-			if (this._groupStickySideVKey) obj[this._groupStickySideVKey] = this._groupStickySideVValue;
-			if (this._groupStickySideHKey) obj[this._groupStickySideHKey] = this._groupStickySideHValue;
+		if (!(object.renderable || centered)) {
+			if (this._groupStickySideVKey) object[this._groupStickySideVKey] = this._groupStickySideVValue;
+			if (this._groupStickySideHKey) object[this._groupStickySideHKey] = this._groupStickySideHValue;
 		}
-		obj.updateTransform();
+		object.updateTransform();
+
+		Editor.data.propertyChanged('scale', object.scale, DataOrigin.SCENE);
+		Editor.data.propertyChanged('position', object.position, DataOrigin.SCENE);
+		Editor.data.propertyChanged('_bounds', object.getBounds(), DataOrigin.SCENE);
 	}
 
 	public stopHandling(): void {
