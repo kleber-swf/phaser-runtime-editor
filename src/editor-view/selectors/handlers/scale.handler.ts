@@ -12,10 +12,11 @@ export class ScaleHandler implements DraggingHandler {
 	private _hside: HSide;
 	private _hsign = 0;
 	private _vsign = 0;
-	private _normalizedPivot: Point = { x: 0, y: 0 };
+	private _normalizedPivot: Point;
 
 	// XXX Hack to make (non-renderable objects) work properly. Since their position may differ than
 	// their visual corners, this hack helps to keep them.
+	// TODO find a better way to make this, like using the difference between the top and y
 	private _groupStickySideHKey: string;
 	private _groupStickySideVKey: string;
 	private _groupStickySideHValue: number;
@@ -33,21 +34,15 @@ export class ScaleHandler implements DraggingHandler {
 
 		this._object = object;
 
-		// inverting axis
-		if (object.scale.x < 0) {
-			if (hside === HSide.Left) hside = HSide.Right;
-			else if (hside === HSide.Right) hside = HSide.Left;
-		}
-
-		if (object.scale.y < 0) {
-			if (vside === VSide.Top) vside = VSide.Bottom;
-			else if (vside === VSide.Bottom) vside = VSide.Top;
-		}
+		// inverting axis id scale is negative
+		if (object.scale.x < 0) hside = Math.abs(hside - 1);
+		if (object.scale.y < 0) vside = Math.abs(vside - 1);
 
 		this._vside = vside;
 		this._hside = hside;
 
 		object.updateTransform();
+
 		this._normalizedPivot = {
 			x: (object.pivot.x / (object.width / object.scale.x)),
 			y: (object.pivot.y / (object.height / object.scale.y)),
