@@ -10,27 +10,30 @@ phred-selection-gizmo {
 	background-color: transparent;
 	box-shadow: inset $gizmo-shadow, $gizmo-shadow;
 
-	.pivot {
-		width: 8px;
-		height: 8px;
+	& > div {
 		box-sizing: content-box;
-		border-radius: 50%;
 		position: absolute;
 		padding: 0;
-		transform-origin: 10px;
-		margin-left: -10px;
-		margin-top: -10px;
-		border: 4px solid $selection-color;
 		box-shadow: $gizmo-shadow;
 		pointer-events: none;
 	}
 
+	.pivot {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		margin-left: -10px;
+		margin-top: -10px;
+		border: 4px solid rgba($selection-color, 0.6);
+	}
+
 	.anchor {
-		width: 6px;
-		height: 6px;
-		position: absolute;
-		border: 3px solid rgba(255, 255, 0, 0.5);
+		width: 8px;
+		height: 8px;
+		margin-left: -6px;
+		margin-top: -6px;
+		background-color: rgba(#8EBF24, 0.9);
+		transform-origin: 4px 4px;
 		transform: rotateZ(45deg);
-		box-shadow: $gizmo-shadow;
 	}
 }

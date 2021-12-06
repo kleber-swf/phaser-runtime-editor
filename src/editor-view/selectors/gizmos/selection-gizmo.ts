@@ -1,4 +1,4 @@
-import { Rect } from 'plugin.model';
+import { Point, Rect } from 'plugin.model';
 import { Selection, SelectionChangedEvent } from '../selection';
 import { SelectionUtil } from '../selection.util';
 import { Gizmo, GIZMO_MOVE, HSide, VSide } from './gizmo';
@@ -47,21 +47,33 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 		this.anchor.classList.add('anchor');
 	}
 
+	private _pivot: Point = { x: 0, y: 0 };
+	private _anchor: Point = { x: 0, y: 0 };
+
 	public redraw(object: PIXI.DisplayObject) {
 		const bounds = object.getBounds();
-		SelectionUtil.rectFromGameToArea(bounds, this._rect);
-		const { style, _rect } = this;
+		const { style, _rect, _pivot, _anchor } = this;
+		SelectionUtil.rectFromGameToArea(bounds, _rect);
 		style.left = _rect.x + 'px';
 		style.top = _rect.y + 'px';
 		style.width = _rect.width + 'px';
 		style.height = _rect.height + 'px';
-		if (object.pivot) {
-			const p = SelectionUtil.pointFromGameToArea(
-				object.pivot.x * Math.abs(object.scale.x),
-				object.pivot.y * Math.abs(object.scale.y),
-				{ x: 0, y: 0 }
+
+		SelectionUtil.pointFromGameToArea(
+			object.pivot.x * Math.abs(object.scale.x),
+			object.pivot.y * Math.abs(object.scale.y),
+			_pivot
+		);
+		this.pivot.style.transform = `translate(${_pivot.x}px, ${_pivot.y}px)`;
+
+		if (object.anchor) {
+			SelectionUtil.pointFromGameToArea(
+				object.anchor.x * Math.abs(object.width),
+				object.anchor.y * Math.abs(object.height),
+				_anchor
 			);
-			this.pivot.style.transform = `translate(${p.x}px, ${p.y}px)`;
+			this.anchor.style.top = _anchor.y + 'px';
+			this.anchor.style.left = _anchor.x + 'px';
 		}
 	}
 
@@ -78,7 +90,13 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 	// #region Event Listeners
 
 	public onSelectionChanged(event: SelectionChangedEvent) {
-		this.style.display = event.detail ? 'block' : 'none';
+		const object = event.detail;
+		if (!object) {
+			this.style.display = 'none';
+			return;
+		}
+		this.style.display = 'block';
+		this.anchor.style.display = object.anchor ? 'block' : 'none';
 	}
 
 	public onMouseOver() { this._isOver = true; }
