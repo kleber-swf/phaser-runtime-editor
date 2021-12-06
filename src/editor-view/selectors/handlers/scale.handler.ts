@@ -4,29 +4,17 @@ import { ScaleGizmo } from '../gizmos/scale-gizmo';
 import { SelectionUtil } from '../selection.util';
 import { DraggingHandler } from './dragging-handler';
 
-// TODO
-//	- reset pivot
-
 export class ScaleHandler implements DraggingHandler {
 	private _point: Point;
 	private _object: PIXI.DisplayObject;
-	private _vside: VSide;
-	private _hside: HSide;
 	private _centered = false;
 
+	private _vside: VSide;
+	private _hside: HSide;
 	private _hsign = 0;
 	private _vsign = 0;
-
-	private _objectProps = {
-		x: 0,
-		y: 0,
-		top: 0,
-		left: 0,
-		bottom: 0,
-		right: 0,
-		pivotX: 0,
-		pivotY: 0,
-	};
+	private _hratio = 0;
+	private _vratio = 0;
 
 	private _isGroup: boolean;
 	private _groupStickySideH: string;
@@ -60,49 +48,60 @@ export class ScaleHandler implements DraggingHandler {
 		this._hside = hside;
 
 		object.updateTransform();
-
-		this._objectProps.pivotX = object.pivot.x;
-		this._objectProps.pivotY = object.pivot.y;
-
-		if (this._centered) {
-			this.setPivotAndPosition(object, VSide.Middle, HSide.Center);
-		} else {
-			this.setPivotAndPosition(object, vside, hside);
-		}
-
-		object.updateTransform();
-
-		console.log(vside, hside);
+		this._hratio = (object.pivot.x / (object.width / object.scale.x)) - this._hside;
+		this._vratio = (object.pivot.y / (object.height / object.scale.y)) - this._vside;
 		this._vsign = Math.sign(vside - 0.5);
 		this._hsign = Math.sign(hside - 0.5);
-		this._objectProps.x = object.x + object.pivot.x * object.scale.x * this._hsign;
-		this._objectProps.y = object.y + object.pivot.y * object.scale.y * this._vsign;
 
-		this._isGroup = !object.renderable;
-		if (!this._isGroup) return;
+		// object.updateTransform();
 
-		this._objectProps.top = object.top;
-		this._objectProps.left = object.left;
-		this._objectProps.bottom = object.bottom;
-		this._objectProps.right = object.right;
+		// this._objectProps.pivotX = object.pivot.x;
+		// this._objectProps.pivotY = object.pivot.y;
 
-		if (vside === VSide.Top) this._groupStickySideV = 'bottom';
-		else if (vside === VSide.Bottom) this._groupStickySideV = 'top';
-		else this._groupStickySideH = null;
+		// if (this._centered) {
+		// 	this.setPivotAndPosition(object, VSide.Middle, HSide.Center);
+		// } else {
+		// 	this.setPivotAndPosition(object, vside, hside);
+		// }
 
-		if (hside === HSide.Left) this._groupStickySideH = 'right';
-		else if (hside === HSide.Right) this._groupStickySideH = 'left';
-		else this._groupStickySideH = null;
-	}
+		// object.updateTransform();
+		// this._objectProps.w = object.width / object.scale.x;
 
-	private setPivotAndPosition(object: PIXI.DisplayObject, vside: number, hside: number) {
-		// const x = object.x - object.pivot.x * object.scale.x + object.width * hside;
-		// const y = object.y - object.pivot.y * object.scale.y + object.height * vside;
-		// const pivotx = Math.abs(object.width / object.scale.x) * hside;
-		// const pivoty = Math.abs(object.height / object.scale.y) * vside;
+		// const w = Math.sign(object.pivot.x - vside * object.width);
 
-		// object.pivot.set(pivotx, pivoty);
-		// object.position.set(x, y);
+		// this._objectProps.x = object.x + ((hside * this._objectProps.w - object.pivot.x) * object.scale.x) * this._hsign;
+		// this._objectProps.y = object.y + object.pivot.y * object.scale.y * this._vsign;
+
+		// // obj.position.x = this._objectProps.x
+		// // 	- (this._objectProps.pivotX * obj.scale.x) * this._hsign;
+
+		// console.log(this._hsign);
+		// console.log(object.x, object.width, object.pivot.x, this._objectProps.x);
+		// object.parent.addChild(
+		// 	new Phaser.Graphics(
+		// 		object.game,
+		// 		this._objectProps.x,
+		// 		this._objectProps.y
+		// 	)
+		// 		.beginFill(0xFF0000)
+		// 		.drawCircle(0, 0, 30)
+		// );
+
+		// this._isGroup = !object.renderable;
+		// // if (!this._isGroup) return;
+
+		// this._objectProps.top = object.top;
+		// this._objectProps.left = object.left;
+		// this._objectProps.bottom = object.bottom;
+		// this._objectProps.right = object.right;
+
+		// if (vside === VSide.Top) this._groupStickySideV = 'bottom';
+		// else if (vside === VSide.Bottom) this._groupStickySideV = 'top';
+		// else this._groupStickySideH = null;
+
+		// if (hside === HSide.Left) this._groupStickySideH = 'right';
+		// else if (hside === HSide.Right) this._groupStickySideH = 'left';
+		// else this._groupStickySideH = null;
 	}
 
 	public handle(e: MouseEvent): void {
@@ -123,31 +122,35 @@ export class ScaleHandler implements DraggingHandler {
 
 		this._point = newPoint;
 
-		if (e.altKey) {
-			if (!this._centered) {
-				this.setPivotAndPosition(this._object, VSide.Middle, HSide.Center);
-			}
-		} else if (this._centered) {
-			this.setPivotAndPosition(this._object, this._vside, this._hside);
-		}
+		obj.width += dx;
+		obj.height += dy;
 
-		this._centered = e.altKey;
+		const hratio = this._hratio;
+		const vratio = this._vratio;
 
-		if (e.ctrlKey) {
-			const ratio = this._hside === 0.5
-				? (obj.height + dy) / obj.height
-				: (obj.width + dx) / obj.width;
-			obj.width *= ratio;
-			obj.height *= ratio;
-		} else {
-			obj.width += dx;
-			obj.height += dy;
-		}
+		obj.x += dx * hratio;
+		obj.y += dy * vratio;
 
-		obj.position.x = this._objectProps.x
-			- (this._objectProps.pivotX * obj.scale.x) * this._hsign;
-		obj.position.y = this._objectProps.y
-			- (this._objectProps.pivotY * obj.scale.y) * this._vsign;
+		// if (e.altKey) {
+		// 	if (!this._centered) {
+		// 		this.setPivotAndPosition(this._object, VSide.Middle, HSide.Center);
+		// 	}
+		// } else if (this._centered) {
+		// 	this.setPivotAndPosition(this._object, this._vside, this._hside);
+		// }
+
+		// this._centered = e.altKey;
+
+		// if (e.ctrlKey) {
+		// 	const ratio = this._hside === 0.5
+		// 		? (obj.height + dy) / obj.height
+		// 		: (obj.width + dx) / obj.width;
+		// 	obj.width *= ratio;
+		// 	obj.height *= ratio;
+		// } else {
+		// 	obj.width += dx;
+		// 	obj.height += dy;
+		// }
 
 		// if (this._isGroup && !this._centered) {
 		// 	if (this._groupStickySideH) {
@@ -162,16 +165,16 @@ export class ScaleHandler implements DraggingHandler {
 
 	public stopHandling(): void {
 		this._point = null;
-		if (!this._object) return;
-		const object = this._object;
-		const { pivotX, pivotY } = this._objectProps;
+		// if (!this._object) return;
+		// const object = this._object;
+		// const { pivotX, pivotY } = this._objectProps;
 
-		const x = object.x + (pivotX - object.pivot.x) * object.scale.x;
-		const y = object.y + (pivotY - object.pivot.y) * object.scale.y;
+		// const x = object.x + (pivotX - object.pivot.x) * object.scale.x;
+		// const y = object.y + (pivotY - object.pivot.y) * object.scale.y;
 
-		object.pivot.set(pivotX, pivotY);
-		object.position.set(x, y);
-		object.updateTransform();
+		// object.pivot.set(pivotX, pivotY);
+		// object.position.set(x, y);
+		// object.updateTransform();
 
 		this._object = null;
 	}

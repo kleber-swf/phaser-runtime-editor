@@ -111,8 +111,8 @@ function create() {
 	child.pivot.set(SIZE, SIZE);
 
 	child = el(DIST * 3, 100, SIZE * 2, SIZE * 2, parent, 'child');
-	// child.pivot.set(SIZE * 1.5, SIZE * 1.5);
-	child.pivot.set(SIZE, SIZE);
+	child.pivot.set(SIZE * 1.5, SIZE * 1.5);
+	// child.pivot.set(SIZE, SIZE);
 	parent.setChildIndex(child, 0);
 	// game.tweens.create(child)
 	// 	.to({ angle: 360 }, 2000)
