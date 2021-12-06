@@ -7,7 +7,6 @@ import { DraggingHandler } from './dragging-handler';
 export class ScaleHandler implements DraggingHandler {
 	private _point: Point;
 	private _object: PIXI.DisplayObject;
-	private _centered = false;
 
 	private _vside: VSide;
 	private _hside: HSide;
@@ -15,9 +14,12 @@ export class ScaleHandler implements DraggingHandler {
 	private _vsign = 0;
 	private _normalizedPivot: Point = { x: 0, y: 0 };
 
-	private _isGroup: boolean;
-	private _groupStickySideH: string;
-	private _groupStickySideV: string;
+	// XXX Hack to make (non-renderable objects) work properly. Since their position may differ than
+	// their visual corners, this hack helps to keep them.
+	private _groupStickySideHKey: string;
+	private _groupStickySideVKey: string;
+	private _groupStickySideHValue: number;
+	private _groupStickySideVValue: number;
 
 	public startHandling(e: MouseEvent, object: PIXI.DisplayObject): void {
 		const gizmo = e.target as ScaleGizmo;
@@ -30,7 +32,6 @@ export class ScaleHandler implements DraggingHandler {
 		}
 
 		this._object = object;
-		this._centered = e.altKey;
 
 		// inverting axis
 		if (object.scale.x < 0) {
@@ -55,55 +56,18 @@ export class ScaleHandler implements DraggingHandler {
 		this._vsign = Math.sign(vside - 0.5);
 		this._hsign = Math.sign(hside - 0.5);
 
-		// object.updateTransform();
+		if (object.renderable) return;
 
-		// this._objectProps.pivotX = object.pivot.x;
-		// this._objectProps.pivotY = object.pivot.y;
+		if (vside === VSide.Top) this._groupStickySideVKey = 'bottom';
+		else if (vside === VSide.Bottom) this._groupStickySideVKey = 'top';
+		else this._groupStickySideVKey = null;
 
-		// if (this._centered) {
-		// 	this.setPivotAndPosition(object, VSide.Middle, HSide.Center);
-		// } else {
-		// 	this.setPivotAndPosition(object, vside, hside);
-		// }
+		if (hside === HSide.Left) this._groupStickySideHKey = 'right';
+		else if (hside === HSide.Right) this._groupStickySideHKey = 'left';
+		else this._groupStickySideHKey = null;
 
-		// object.updateTransform();
-		// this._objectProps.w = object.width / object.scale.x;
-
-		// const w = Math.sign(object.pivot.x - vside * object.width);
-
-		// this._objectProps.x = object.x + ((hside * this._objectProps.w - object.pivot.x) * object.scale.x) * this._hsign;
-		// this._objectProps.y = object.y + object.pivot.y * object.scale.y * this._vsign;
-
-		// // obj.position.x = this._objectProps.x
-		// // 	- (this._objectProps.pivotX * obj.scale.x) * this._hsign;
-
-		// console.log(this._hsign);
-		// console.log(object.x, object.width, object.pivot.x, this._objectProps.x);
-		// object.parent.addChild(
-		// 	new Phaser.Graphics(
-		// 		object.game,
-		// 		this._objectProps.x,
-		// 		this._objectProps.y
-		// 	)
-		// 		.beginFill(0xFF0000)
-		// 		.drawCircle(0, 0, 30)
-		// );
-
-		// this._isGroup = !object.renderable;
-		// // if (!this._isGroup) return;
-
-		// this._objectProps.top = object.top;
-		// this._objectProps.left = object.left;
-		// this._objectProps.bottom = object.bottom;
-		// this._objectProps.right = object.right;
-
-		// if (vside === VSide.Top) this._groupStickySideV = 'bottom';
-		// else if (vside === VSide.Bottom) this._groupStickySideV = 'top';
-		// else this._groupStickySideH = null;
-
-		// if (hside === HSide.Left) this._groupStickySideH = 'right';
-		// else if (hside === HSide.Right) this._groupStickySideH = 'left';
-		// else this._groupStickySideH = null;
+		this._groupStickySideVValue = this._groupStickySideVKey ? object[this._groupStickySideVKey] : null;
+		this._groupStickySideHValue = this._groupStickySideHKey ? object[this._groupStickySideHKey] : null;
 	}
 
 	public handle(e: MouseEvent): void {
@@ -148,41 +112,15 @@ export class ScaleHandler implements DraggingHandler {
 		obj.x += dx * hratio;
 		obj.y += dy * vratio;
 
-		// if (e.ctrlKey) {
-		// 	const ratio = this._hside === 0.5
-		// 		? (obj.height + dy) / obj.height
-		// 		: (obj.width + dx) / obj.width;
-		// 	obj.width *= ratio;
-		// 	obj.height *= ratio;
-		// } else {
-		// 	obj.width += dx;
-		// 	obj.height += dy;
-		// }
-
-		// if (this._isGroup && !this._centered) {
-		// 	if (this._groupStickySideH) {
-		// 		obj[this._groupStickySideH] = this._objectProps[this._groupStickySideH];
-		// 	}
-		// 	if (this._groupStickySideV) {
-		// 		obj[this._groupStickySideV] = this._objectProps[this._groupStickySideV];
-		// 	}
-		// }
+		if (!(obj.renderable || centered)) {
+			if (this._groupStickySideVKey) obj[this._groupStickySideVKey] = this._groupStickySideVValue;
+			if (this._groupStickySideHKey) obj[this._groupStickySideHKey] = this._groupStickySideHValue;
+		}
 		obj.updateTransform();
 	}
 
 	public stopHandling(): void {
 		this._point = null;
-		// if (!this._object) return;
-		// const object = this._object;
-		// const { pivotX, pivotY } = this._objectProps;
-
-		// const x = object.x + (pivotX - object.pivot.x) * object.scale.x;
-		// const y = object.y + (pivotY - object.pivot.y) * object.scale.y;
-
-		// object.pivot.set(pivotX, pivotY);
-		// object.position.set(x, y);
-		// object.updateTransform();
-
 		this._object = null;
 	}
 }
