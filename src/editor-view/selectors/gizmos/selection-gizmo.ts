@@ -13,8 +13,20 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 	private _isOver = false;
 	private _rect: Rect = { x: 0, y: 0, width: 0, height: 0 };
 	private handlers: HTMLElement[] = [];
-	private pivot: HTMLElement;
-	private anchor: HTMLElement;
+	private pivotGizmo: HTMLElement;
+	private anchorGizmo: HTMLElement;
+	private guidesGizmo: HTMLElement;
+
+	private _pivot: Point = { x: 0, y: 0 };
+	private _anchor: Point = { x: 0, y: 0 };
+
+	public set visible(value: boolean) {
+		this.style.display = value && Editor.data.selectedObject ? 'block' : 'none';
+	}
+
+	public set showGuides(value: boolean) {
+		this.guidesGizmo.style.display = value ? 'block' : 'none';
+	}
 
 	public get isOver() { return this._isOver; }
 
@@ -26,6 +38,7 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 		this.addEventListener('mouseout', this.onMouseOut.bind(this));
 
 		this.createResizeHandlers(this.handlers);
+		this.createGuides();
 	}
 
 	private createResizeHandlers(handlers: HTMLElement[]) {
@@ -41,15 +54,20 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 			});
 		});
 
-		this.pivot = this.appendChild(document.createElement('div'));
-		this.pivot.classList.add('pivot');
+		this.pivotGizmo = this.appendChild(document.createElement('div'));
+		this.pivotGizmo.classList.add('pivot');
 
-		this.anchor = this.appendChild(document.createElement('div'));
-		this.anchor.classList.add('anchor');
+		this.anchorGizmo = this.appendChild(document.createElement('div'));
+		this.anchorGizmo.classList.add('anchor');
 	}
 
-	private _pivot: Point = { x: 0, y: 0 };
-	private _anchor: Point = { x: 0, y: 0 };
+	private createGuides() {
+		const el = this.appendChild(document.createElement('div'));
+		el.classList.add('guides');
+		el.appendChild(document.createElement('div')).classList.add('horizontal');
+		el.appendChild(document.createElement('div')).classList.add('vertical');
+		this.guidesGizmo = el;
+	}
 
 	public redraw(object: PIXI.DisplayObject) {
 		const bounds = object.getBounds();
@@ -67,7 +85,7 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 			object.pivot.y * Math.abs(scale.y),
 			_pivot
 		);
-		this.pivot.style.transform = `translate(${_pivot.x}px, ${_pivot.y}px)`;
+		this.pivotGizmo.style.transform = `translate(${_pivot.x}px, ${_pivot.y}px)`;
 
 		if (object.anchor) {
 			SelectionUtil.pointFromGameToArea(
@@ -75,8 +93,8 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 				object.anchor.y * (object.height / object.scale.y),
 				_anchor
 			);
-			this.anchor.style.top = _anchor.y + 'px';
-			this.anchor.style.left = _anchor.x + 'px';
+			this.anchorGizmo.style.top = _anchor.y + 'px';
+			this.anchorGizmo.style.left = _anchor.x + 'px';
 		}
 	}
 
@@ -93,12 +111,12 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 	// #region Event Listeners
 
 	public onSelectionChanged(_origin: DataOrigin, object: PIXI.DisplayObject) {
-		if (!object) {
-			this.style.display = 'none';
-			return;
+		if (object) {
+			this.visible = true;
+			this.anchorGizmo.style.display = object.anchor ? 'block' : 'none';
+		} else {
+			this.visible = false;
 		}
-		this.style.display = 'block';
-		this.anchor.style.display = object.anchor ? 'block' : 'none';
 	}
 
 	public onMouseOver() { this._isOver = true; }

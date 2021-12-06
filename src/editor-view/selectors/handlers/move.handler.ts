@@ -7,6 +7,14 @@ import { DraggingHandler } from './dragging-handler';
 export class MoveHandler implements DraggingHandler {
 	private _point: Point = { x: 0, y: 0 };
 	private _object: PIXI.DisplayObject;
+	private _moveFn: (obj: PIXI.DisplayObject, x: number, y: number) => void;
+
+	public snap(object: PIXI.DisplayObject, value: boolean) {
+		this._moveFn = value ? this.snapMove.bind(this) : this.freeMove.bind(this);
+		if (object) this._moveFn(object, object.x, object.y);
+	}
+
+	public constructor() { this._moveFn = this.freeMove; }
 
 	public startHandling(e: MouseEvent, object: PIXI.DisplayObject) {
 		this._object = object;
@@ -27,12 +35,20 @@ export class MoveHandler implements DraggingHandler {
 		const dy = (newPoint.y - lastPoint.y) / scale.y;
 
 		this._point = newPoint;
+		this._moveFn(object, object.x + dx, object.y + dy);
+	}
 
-		object.position.set(
-			object.x + dx,
-			object.y + dy
-		);
+	private freeMove(object: PIXI.DisplayObject, x: number, y: number) {
+		object.position.set(x, y);
+		this.updateObjectTransform(object);
+	}
 
+	private snapMove(object: PIXI.DisplayObject, x: number, y: number) {
+		object.position.set(Math.round(x), Math.round(y));
+		this.updateObjectTransform(object);
+	}
+
+	private updateObjectTransform(object: PIXI.DisplayObject) {
 		object.updateTransform();
 		Editor.data.propertyChanged('position', object.position, DataOrigin.SCENE);
 		Editor.data.propertyChanged('_bounds', object.getBounds(), DataOrigin.SCENE);

@@ -1,4 +1,5 @@
 import { Editor } from 'core/editor';
+import { PreferenceKey } from 'core/preferences';
 import { PluginConfig } from 'plugin.model';
 import { Gizmo, GIZMO_MOVE, GIZMO_SCALE } from './gizmos/gizmo';
 import { SelectionGizmo } from './gizmos/selection-gizmo';
@@ -25,11 +26,18 @@ export class SelectionArea extends HTMLElement {
 		SelectionUtil.init(game, this);
 
 		this.createHandlers();
-		this.createViews();
+		this.createGizmos();
 
 		this.addEventListener('mousedown', this.onMouseDown.bind(this));
 		this.addEventListener('mouseup', this.onMouseUp.bind(this));
 		this.addEventListener('mousemove', this.onMouseMove.bind(this));
+
+		const prefs = Editor.prefs;
+		prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
+		this.onPreferencesChanged('gizmos', prefs.gizmos);
+		this.onPreferencesChanged('snap', prefs.snap);
+		this.onPreferencesChanged('guides', prefs.guides);
+		this.onPreferencesChanged('hitArea', prefs.hitArea);
 	}
 
 	public enable(config: PluginConfig) {
@@ -50,7 +58,7 @@ export class SelectionArea extends HTMLElement {
 		};
 	}
 
-	private createViews() {
+	private createGizmos() {
 		this.gizmo = document.createElement(SelectionGizmo.tagName) as SelectionGizmo;
 		this.appendChild(this.gizmo);
 		this.gizmo.init();
@@ -111,6 +119,25 @@ export class SelectionArea extends HTMLElement {
 
 		if (this._handler) {
 			this._handler.handle(e);
+		}
+	}
+
+	private onPreferencesChanged(key: PreferenceKey, value: any) {
+		switch (key) {
+			case 'gizmos':
+				this.gizmo.visible = value;
+				return;
+			case 'snap':
+				(this.handlers[GIZMO_MOVE] as MoveHandler)
+					.snap(Editor.data.selectedObject, value);
+				return;
+			case 'guides':
+				this.gizmo.showGuides = value === true;
+			// 	return;
+			// case 'hitArea':
+			// 	this.gizmo.showHitArea = value === true;
+			// 	this._showHitArea = value === true;
+			// 	if (this._selectedObject) this.move(0, 0);
 		}
 	}
 
