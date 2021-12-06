@@ -67,9 +67,7 @@ export class SelectionArea extends HTMLElement {
 	// #endregion
 
 	private update() {
-		if (Editor.data.selectedObject) {
-			this.gizmo.redraw(Editor.data.selectedObject);
-		}
+		this.gizmo.redraw();
 	}
 
 	// #region Event Handlers
@@ -133,11 +131,9 @@ export class SelectionArea extends HTMLElement {
 				return;
 			case 'guides':
 				this.gizmo.showGuides = value === true;
-			// 	return;
-			// case 'hitArea':
-			// 	this.gizmo.showHitArea = value === true;
-			// 	this._showHitArea = value === true;
-			// 	if (this._selectedObject) this.move(0, 0);
+				return;
+			case 'hitArea':
+				this.gizmo.showHitArea = value === true;
 		}
 	}
 

@@ -62,7 +62,7 @@ phred-selection-gizmo {
 			border-right: none;
 			height: 100%;
 		}
-		
+
 		.vertical {
 			width: 100%;
 			margin-top: -100vh;
@@ -70,5 +70,15 @@ phred-selection-gizmo {
 			border-bottom: none;
 			height: 200vh;
 		}
+	}
+
+	.hit-area {
+		display: block;
+		position: absolute;
+		box-sizing: border-box;
+		padding: 0;
+		margin: 0;
+		border: 1px solid orange;
+		background-color: rgba(orange, 0.1);
 	}
 }

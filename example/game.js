@@ -81,6 +81,7 @@ function create() {
 	child = el(DIST * 2, DIST * 0, SIZE, SIZE, parent, 'child-a0-p1');
 	child.pivot.set(SIZE, SIZE);
 	child.inputEnabled = true;
+	child.input.useHandCursor = true;
 	child.hitArea = new Phaser.Circle(0, 0, 200);
 
 	// .5  0
@@ -113,12 +114,10 @@ function create() {
 
 	child = el(DIST * 3, 100, SIZE * 2, SIZE * 2, parent, 'child');
 	child.pivot.set(SIZE * 1.5, SIZE * 1.5);
-	// child.pivot.set(SIZE, SIZE);
+	child.inputEnabled = true;
+	child.input.useHandCursor = true;
+	child.hitArea = new Phaser.Rectangle(-100, -100, 200, 200);
 	parent.setChildIndex(child, 0);
-	// game.tweens.create(child)
-	// 	.to({ angle: 360 }, 2000)
-	// 	.repeatAll(-1)
-	// 	.start();
 
 	child = el(DIST * 3, 500, SIZE, SIZE, parent, 'child-inverted');
 	child.scale.set(-1, -1);
