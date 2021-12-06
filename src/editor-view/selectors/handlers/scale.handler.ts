@@ -13,8 +13,7 @@ export class ScaleHandler implements DraggingHandler {
 	private _hside: HSide;
 	private _hsign = 0;
 	private _vsign = 0;
-	private _hratio = 0;
-	private _vratio = 0;
+	private _normalizedPivot: Point = { x: 0, y: 0 };
 
 	private _isGroup: boolean;
 	private _groupStickySideH: string;
@@ -48,8 +47,11 @@ export class ScaleHandler implements DraggingHandler {
 		this._hside = hside;
 
 		object.updateTransform();
-		this._hratio = (object.pivot.x / (object.width / object.scale.x)) - this._hside;
-		this._vratio = (object.pivot.y / (object.height / object.scale.y)) - this._vside;
+		this._normalizedPivot = {
+			x: (object.pivot.x / (object.width / object.scale.x)),
+			y: (object.pivot.y / (object.height / object.scale.y)),
+		};
+
 		this._vsign = Math.sign(vside - 0.5);
 		this._hsign = Math.sign(hside - 0.5);
 
@@ -116,30 +118,30 @@ export class ScaleHandler implements DraggingHandler {
 
 		const lastPoint = this._point;
 		const newPoint = SelectionUtil.pointFromAreaToGame(e.offsetX, e.offsetY, { x: 0, y: 0 });
+		const centered = e.altKey;
 
-		const dx = (lastPoint.x - newPoint.x) * this._hsign;
-		const dy = (lastPoint.y - newPoint.y) * this._vsign;
+		let hratio: number;
+		let vratio: number;
+		let dscale: number;
 
+		if (centered) {
+			hratio = this._normalizedPivot.x - HSide.Center;
+			vratio = this._normalizedPivot.y - VSide.Middle;
+			dscale = 2;
+		} else {
+			hratio = this._normalizedPivot.x - this._hside;
+			vratio = this._normalizedPivot.y - this._vside;
+			dscale = 1;
+		}
+
+		const dx = (lastPoint.x - newPoint.x) * this._hsign * dscale;
+		const dy = (lastPoint.y - newPoint.y) * this._vsign * dscale;
 		this._point = newPoint;
 
 		obj.width += dx;
 		obj.height += dy;
-
-		const hratio = this._hratio;
-		const vratio = this._vratio;
-
 		obj.x += dx * hratio;
 		obj.y += dy * vratio;
-
-		// if (e.altKey) {
-		// 	if (!this._centered) {
-		// 		this.setPivotAndPosition(this._object, VSide.Middle, HSide.Center);
-		// 	}
-		// } else if (this._centered) {
-		// 	this.setPivotAndPosition(this._object, this._vside, this._hside);
-		// }
-
-		// this._centered = e.altKey;
 
 		// if (e.ctrlKey) {
 		// 	const ratio = this._hside === 0.5
