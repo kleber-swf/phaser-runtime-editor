@@ -51,9 +51,9 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 		this.addEventListener('mouseover', this.onMouseOver.bind(this));
 		this.addEventListener('mouseout', this.onMouseOut.bind(this));
 
-		this.createResizeHandlers(this.handlers);
 		this.createGuides();
 		this.createHitArea();
+		this.createResizeHandlers(this.handlers);
 	}
 
 	private createResizeHandlers(handlers: HTMLElement[]) {
