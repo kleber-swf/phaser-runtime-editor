@@ -24,7 +24,7 @@ phred-selection-gizmo {
 		left: 0;
 		box-shadow: none;
 		box-sizing: border-box;
-		border: 2px solid white;
+		border: 2px solid rgba(white, 0.8);
 		box-shadow: inset $gizmo-shadow, $gizmo-shadow;
 
 		.pivot {
@@ -39,8 +39,8 @@ phred-selection-gizmo {
 		.anchor {
 			width: 8px;
 			height: 8px;
-			margin-left: -4px;
-			margin-top: -5px;
+			margin-left: -6px;
+			margin-top: -6px;
 			background-color: rgba(#8ebf24, 0.9);
 			transform-origin: 4px 4px;
 			transform: rotateZ(45deg);
@@ -55,6 +55,7 @@ phred-selection-gizmo {
 		pointer-events: none;
 		padding: 0;
 		margin: 0;
+		box-shadow: none;
 
 		div {
 			padding: 0;
@@ -63,6 +64,7 @@ phred-selection-gizmo {
 			border: 1px solid rgba(#fff, 0.15);
 			user-select: none;
 			pointer-events: none;
+			box-shadow: none;
 		}
 
 		.horizontal {

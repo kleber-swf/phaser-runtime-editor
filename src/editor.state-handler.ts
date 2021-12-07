@@ -5,14 +5,12 @@ import { DisabledUI } from 'disabled/disabled-ui';
 import { EditorView } from 'editor-view/editor-view';
 import { PluginConfig } from 'plugin.model';
 import { ReferenceImageController } from 'reference-image/reference-image.controller';
-import { SceneView } from 'scene-view/scene-view';
 
 export class EditorStateHandler {
 	private _initialized = false;
 	private _isEnabled = false;
 	private disabledUI: DisabledUI;
 
-	private sceneView: SceneView;
 	private editorView: EditorView;
 	private referenceImageController: ReferenceImageController;
 
@@ -34,7 +32,6 @@ export class EditorStateHandler {
 		this._initialized = true;
 		Editor.init(this.config);
 
-		this.sceneView = new SceneView(this.game);
 		this.editorView = document.createElement(ComponentTags.EditorView) as EditorView;
 		this.referenceImageController = new ReferenceImageController(this.game, this.config);
 
@@ -54,7 +51,6 @@ export class EditorStateHandler {
 		);
 
 		this.editorView.setupActions(actions);
-		this.sceneView.setupActions(actions);
 		this.referenceImageController.setupActions(actions);
 
 		actions.addContainer('body', document.body);
@@ -67,7 +63,6 @@ export class EditorStateHandler {
 		this.disabledUI.disable();
 		if (!this._initialized) this.init();
 
-		this.sceneView.enable(context.root, this.game.stage);
 		this.editorView.enable(context);
 		this.referenceImageController.enable(context.refImage);
 
@@ -79,7 +74,6 @@ export class EditorStateHandler {
 		if (!this._isEnabled) return;
 		this._isEnabled = false;
 		Editor.disable();
-		this.sceneView.disable();
 		this.editorView.disable();
 		this.referenceImageController.disable();
 
