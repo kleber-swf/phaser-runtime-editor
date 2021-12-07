@@ -35,8 +35,9 @@ function preload() {
 }
 
 function create() {
-	const refImage = new Phaser.Image(game, 0, 0, 'ref');
-	const plugin = game.plugins.add(new Phaser.Plugin.RuntimeEditor(game, { refImage: () => refImage }));
+	const plugin = game.plugins.add(new Phaser.Plugin.RuntimeEditor(game, {
+		refImage: () => new Phaser.Image(game, 0, 0, 'ref')
+	}));
 
 	const grid = new Phaser.Graphics(game);
 

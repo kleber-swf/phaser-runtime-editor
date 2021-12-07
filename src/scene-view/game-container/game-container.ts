@@ -3,7 +3,7 @@ import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
-import { SelectionArea } from 'editor-view/selectors/selection-area';
+import { SelectionArea } from 'scene-view/selection-area/selection-area';
 import { PluginConfig } from 'plugin.model';
 import './game-container.scss';
 
@@ -15,8 +15,6 @@ export class GameContainer extends HTMLElement {
 	private gameEditorParentElement: HTMLElement;
 	private selectionArea: SelectionArea;
 	private game: Phaser.Game;
-
-	private _zoom = 1;
 
 	public init(game: Phaser.Game) {
 		this.game = game;
@@ -68,7 +66,6 @@ export class GameContainer extends HTMLElement {
 		el.classList.remove('phred-game');
 		this.gameOriginalParentElement.appendChild(el);
 		this.gameOriginalParentElement = null;
-		this.game = null;
 	}
 
 	private zoom(amount: number) {

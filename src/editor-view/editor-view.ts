@@ -5,7 +5,7 @@ import { DataOrigin } from 'data/editor-data';
 import { PluginConfig } from 'plugin.model';
 import { ActionsToolbar } from './actions/actions-toolbar';
 import './editor-view.scss';
-import { GameContainer } from './game-container/game-container';
+import { GameContainer } from '../scene-view/game-container/game-container';
 import { ObjectTreeInspector } from './object-tree/inspector/object-tree-inspector';
 import { Panel } from './panel/panel';
 import { PropertiesInspector } from './properties/inspector/properties-inspector';

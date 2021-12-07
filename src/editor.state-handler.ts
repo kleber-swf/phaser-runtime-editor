@@ -3,7 +3,7 @@ import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { DisabledUI } from 'disabled/disabled-ui';
 import { EditorView } from 'editor-view/editor-view';
-import { PluginConfig } from 'plugin.model';
+import { PluginConfig, PluginConfigBuilder } from 'plugin.model';
 import { ReferenceImageController } from 'reference-image/reference-image.controller';
 
 export class EditorStateHandler {
@@ -15,25 +15,27 @@ export class EditorStateHandler {
 	private referenceImageController: ReferenceImageController;
 
 	private readonly game: Phaser.Game;
+	private configBuilder: PluginConfigBuilder;
 	private config: PluginConfig;
 
 	public onshow: () => void;
 	public onhide: () => void;
 
-	constructor(game: Phaser.Game) {
+	constructor(game: Phaser.Game, configBuilder: PluginConfigBuilder) {
 		this.game = game;
+		this.configBuilder = configBuilder;
 		this.disabledUI = new DisabledUI();
 		this.disabledUI.onclick = this.show.bind(this);
 	}
 
 	public start() { this.disabledUI.enable(); }
 
-	private init() {
+	private init(config: PluginConfig) {
 		this._initialized = true;
-		Editor.init(this.config);
+		Editor.init(config);
 
 		this.editorView = document.createElement(ComponentTags.EditorView) as EditorView;
-		this.referenceImageController = new ReferenceImageController(this.game, this.config);
+		this.referenceImageController = new ReferenceImageController(this.game, config);
 
 		this.editorView.init(this.game);
 
@@ -46,7 +48,7 @@ export class EditorStateHandler {
 		const actions = Editor.actions;
 		actions.setActionCommand(
 			Actions.TOGGLE_ENABLED,
-			() => this._isEnabled ? this.hide() : this.show(this.config),
+			() => this._isEnabled ? this.hide() : this.show(),
 			() => this._isEnabled
 		);
 
@@ -56,18 +58,27 @@ export class EditorStateHandler {
 		actions.addContainer('body', document.body);
 	}
 
-	public show(context: PluginConfig) {
+	public show() {
 		if (this._isEnabled) return;
+		this.config = this.createConfig(this.configBuilder);
 		this._isEnabled = true;
-		this.config = context;
 		this.disabledUI.disable();
-		if (!this._initialized) this.init();
+		if (!this._initialized) this.init(this.config);
 
-		this.editorView.enable(context);
-		this.referenceImageController.enable(context.refImage);
+		this.editorView.enable(this.config);
+		this.referenceImageController.enable(this.config.refImage);
 
 		Editor.enable();
 		if (this.onshow) this.onshow();
+	}
+
+	private createConfig(builder: PluginConfigBuilder): PluginConfig {
+		return {
+			clearPrefs: builder.clearPrefs,
+			pauseGame: builder.pauseGame,
+			refImage: builder.refImage(),
+			root: builder.root(),
+		};
 	}
 
 	private hide() {
