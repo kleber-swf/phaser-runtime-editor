@@ -3,13 +3,13 @@ import { Actions } from 'core/actions';
 import { EditorData } from 'data/editor-data';
 import { InspectorData } from 'data/inspector-data';
 import { PhaserMeta } from 'data/phaser-meta';
-import { PluginConfig } from 'plugin';
+import { PluginConfig } from 'plugin.model';
 import { ActionHandler } from './action-handler';
 import { History } from './history';
 import { Preferences } from './preferences';
 
 class EditorClass {
-	public data: EditorData
+	public data: EditorData;
 	public inspectorData: InspectorData;
 	public meta: PhaserMeta;
 
@@ -87,10 +87,19 @@ class EditorClass {
 		]);
 
 		const basicProperties = {
-			title: '', properties: [
-				'__type', 'name', 'position', 'scale', 'pivot', 'anchor',
-				'alpha', 'visible', 'angle', '_bounds'
-			]
+			title: '',
+			properties: [
+				'__type',
+				'name',
+				'position',
+				'scale',
+				'pivot',
+				'anchor',
+				'alpha',
+				'visible',
+				'angle',
+				'_bounds',
+			],
 		};
 
 		data.addObjectProperties('default', [basicProperties]);
@@ -116,11 +125,23 @@ class EditorClass {
 			{
 				title: 'Text',
 				properties: [
-					'text', 'font', 'fontSize', 'fontStyle', 'fontVariant', 'fontWeight', 'autoRound',
+					'text',
+					'font',
+					'fontSize',
+					'fontStyle',
+					'fontVariant',
+					'fontWeight',
+					'autoRound',
 					'divider',
-					'align', 'wordWrap', 'wordWrapWidth', 'useAdvancedWordWrap',
+					'align',
+					'wordWrap',
+					'wordWrapWidth',
+					'useAdvancedWordWrap',
 					'divider',
-					'padding', /*'textBounds', */'boundsAlignH', 'boundsAlignV']
+					'padding', /* 'textBounds', */
+					'boundsAlignH',
+					'boundsAlignV',
+				],
 			},
 		]);
 
@@ -140,7 +161,7 @@ class EditorClass {
 				id: Actions.TOGGLE_ENABLED,
 				label: 'edit',
 				icon: 'fa-edit',
-				shortcuts: ['ctrl+F2']
+				shortcuts: ['ctrl+F2'],
 			},
 
 			{
@@ -185,7 +206,7 @@ class EditorClass {
 				id: Actions.TOGGLE_REF_IMAGE,
 				toggle: true,
 				label: 'reference image',
-				icon: 'fa-image'
+				icon: 'fa-image',
 			},
 			{
 				id: Actions.UNDO,
@@ -201,19 +222,19 @@ class EditorClass {
 				shortcuts: ['ctrl+alt+p'],
 			},
 
-			{ id: Actions.DESELECT, shortcuts: ['Escape'], },
-			{ id: Actions.MOVE_UP_1, shortcuts: ['ArrowUp'], },
-			{ id: Actions.MOVE_DOWN_1, shortcuts: ['ArrowDown'], },
-			{ id: Actions.MOVE_LEFT_1, shortcuts: ['ArrowLeft'], },
-			{ id: Actions.MOVE_RIGHT_1, shortcuts: ['ArrowRight'], },
-			{ id: Actions.MOVE_UP_10, shortcuts: ['shift+ArrowUp'], },
-			{ id: Actions.MOVE_DOWN_10, shortcuts: ['shift+ArrowDown'], },
-			{ id: Actions.MOVE_LEFT_10, shortcuts: ['shift+ArrowLeft'], },
-			{ id: Actions.MOVE_RIGHT_10, shortcuts: ['shift+ArrowRight'], },
+			{ id: Actions.DESELECT, shortcuts: ['Escape'] },
+			{ id: Actions.MOVE_UP_1, shortcuts: ['ArrowUp'] },
+			{ id: Actions.MOVE_DOWN_1, shortcuts: ['ArrowDown'] },
+			{ id: Actions.MOVE_LEFT_1, shortcuts: ['ArrowLeft'] },
+			{ id: Actions.MOVE_RIGHT_1, shortcuts: ['ArrowRight'] },
+			{ id: Actions.MOVE_UP_10, shortcuts: ['shift+ArrowUp'] },
+			{ id: Actions.MOVE_DOWN_10, shortcuts: ['shift+ArrowDown'] },
+			{ id: Actions.MOVE_LEFT_10, shortcuts: ['shift+ArrowLeft'] },
+			{ id: Actions.MOVE_RIGHT_10, shortcuts: ['shift+ArrowRight'] },
 
-			{ id: Actions.ZOOM, shortcuts: ['ctrl+wheel'], },
-			{ id: Actions.ZOOM_IN, label: 'zoom in', icon: 'fa-plus', shortcuts: ['ctrl+=', 'ctrl++'], },
-			{ id: Actions.ZOOM_OUT, label: 'zoom out', icon: 'fa-minus', shortcuts: ['ctrl+-'], },
+			{ id: Actions.ZOOM, shortcuts: ['ctrl+wheel'] },
+			{ id: Actions.ZOOM_IN, label: 'zoom in', icon: 'fa-plus', shortcuts: ['ctrl+=', 'ctrl++'] },
+			{ id: Actions.ZOOM_OUT, label: 'zoom out', icon: 'fa-minus', shortcuts: ['ctrl+-'] }
 		);
 
 		return actions;

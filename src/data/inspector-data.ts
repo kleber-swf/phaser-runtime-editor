@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 export type InspectableType = 'string' | 'text' | 'number' | 'boolean' | 'point' | 'rect' | 'color' | 'valueList' | 'default';
 
 export interface InspectorPropertyModel {
@@ -12,7 +13,6 @@ export interface ObjectPropertiesModel {
 	title: string;
 	properties: string[];
 }
-
 
 export class InspectorData {
 	/** Editors for each type of data ({@link InspectableType}). */
@@ -52,11 +52,9 @@ export class InspectorData {
 	 * @param name The name of the property to get the inspector for.
 	 */
 	public getInspectableProperty(name: string) {
-		if (name in this.inspectableProperties)
-			return this.inspectableProperties[name];
-		throw `Could not find inspectable editor for property ${name}`;
+		if (name in this.inspectableProperties) return this.inspectableProperties[name];
+		throw Error(`Could not find inspectable editor for property ${name}`);
 	}
-
 
 	/** Properties that should be inspected when an object of the related type is selected on the editor */
 	private readonly objectProperties: Record<string, ObjectPropertiesModel[]> = {};

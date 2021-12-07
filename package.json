@@ -32,7 +32,9 @@
 		"dev": "rollup -w -c ./config/rollup.config.dev.js",
 		"predev": "npm run barrel",
 		"barrel": "barrelsby -c ./config/barrelsby.json",
+		"lint": "eslint --cache --fix --color --ext .ts \"src\"",
 		"example": "browser-sync start -c ./config/bs-config.js",
+		"postinstall": "npm rebuild node-sass",
 		"prebuild": "rm -rf dist; npm run barrel",
 		"build": "rollup -c ./config/rollup.config.js",
 		"prepublishOnly": "npm run build"
@@ -41,20 +43,25 @@
 		"phaser-ce": "^2.18.0"
 	},
 	"devDependencies": {
-		"@rollup/plugin-commonjs": "^20.0.0",
-		"@rollup/plugin-node-resolve": "^13.0.4",
-		"@rollup/plugin-typescript": "^8.2.5",
-		"autoprefixer": "^10.3.3",
-		"barrelsby": "^2.2.0",
-		"browser-sync": "^2.27.5",
+		"@rollup/plugin-commonjs": "^21.0.1",
+		"@rollup/plugin-node-resolve": "^13.0.6",
+		"@rollup/plugin-typescript": "^8.3.0",
+		"@typescript-eslint/eslint-plugin": "^5.5.0",
+		"autoprefixer": "^10.4.0",
+		"barrelsby": "^2.3.0",
+		"browser-sync": "^2.27.7",
+		"eslint": "^8.3.0",
+		"eslint-config-airbnb-base": "^15.0.0",
+		"eslint-plugin-import": "^2.25.3",
+		"eslint-plugin-unused-imports": "^2.0.0",
 		"node-sass": "^6.0.1",
-		"postcss": "^8.3.6",
-		"rollup": "^2.56.2",
+		"postcss": "^8.4.4",
+		"rollup": "^2.60.2",
 		"rollup-plugin-browsersync": "^1.3.3",
 		"rollup-plugin-scss": "^3.0.0",
 		"rollup-plugin-terser": "^7.0.2",
-		"terser": "^5.7.1",
+		"terser": "^5.10.0",
 		"tslib": "^2.3.1",
-		"typescript": "^4.3.5"
+		"typescript": "^4.5.2"
 	}
 }

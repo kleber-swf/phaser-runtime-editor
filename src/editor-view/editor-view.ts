@@ -2,10 +2,10 @@ import { ComponentTags } from 'component-tags';
 import { ActionHandler } from 'core/action-handler';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
-import { PluginConfig } from 'plugin';
+import { PluginConfig } from 'plugin.model';
 import { ActionsToolbar } from './actions/actions-toolbar';
 import './editor-view.scss';
-import { GameContainer } from './game-container/game-container';
+import { GameContainer } from '../scene-view/game-container/game-container';
 import { ObjectTreeInspector } from './object-tree/inspector/object-tree-inspector';
 import { Panel } from './panel/panel';
 import { PropertiesInspector } from './properties/inspector/properties-inspector';
@@ -19,12 +19,12 @@ export class EditorView extends Widget {
 
 	private _enabled = false;
 
-	public init(game: Phaser.Game, config: PluginConfig) {
+	public init(game: Phaser.Game) {
 		this.game = game;
 		Editor.data.onSelectedObjectChanged.add(this.selectObject, this);
 		Editor.actions.addContainer(ComponentTags.EditorView, this);
 		this.createElements();
-		this.gameContainer.init();
+		this.gameContainer.init(game);
 		this.panels.forEach(panel => panel.init(game));
 	}
 
@@ -67,7 +67,7 @@ export class EditorView extends Widget {
 		this._enabled = true;
 
 		this.panels.forEach(panel => panel.enable(config));
-		this.gameContainer.addGame(this.game);
+		this.gameContainer.enable(config);
 		this.actions.enable();
 		document.body.appendChild(this);
 	}
@@ -76,9 +76,9 @@ export class EditorView extends Widget {
 		if (!this._enabled) return;
 		this._enabled = false;
 		this.actions.disable();
-		this.gameContainer.returnGameToItsParent();
+		this.gameContainer.disable();
 		this.panels.forEach(panel => panel.disable());
-		this.remove()
+		this.remove();
 	}
 
 	public selectObject(from: DataOrigin, obj: PIXI.DisplayObject) {

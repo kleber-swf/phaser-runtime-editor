@@ -3,6 +3,8 @@ import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
+import { SelectionArea } from 'scene-view/selection-area/selection-area';
+import { PluginConfig } from 'plugin.model';
 import './game-container.scss';
 
 const MIN_WIDTH = 100;
@@ -11,20 +13,32 @@ const MAX_WIDTH = 10000;
 export class GameContainer extends HTMLElement {
 	private gameOriginalParentElement: HTMLElement;
 	private gameEditorParentElement: HTMLElement;
+	private selectionArea: SelectionArea;
 	private game: Phaser.Game;
 
-	public init() {
+	public init(game: Phaser.Game) {
+		this.game = game;
 		this._onInputUpFn = this.onInputUp.bind(this);
-		const el = this.gameEditorParentElement = document.createElement('div');
-		el.id = 'phred-game-parent';
-		this.appendChild(el);
+		const gp = this.gameEditorParentElement = document.createElement('div');
+		gp.id = 'phred-game-parent';
+		this.appendChild(gp);
+
+		const sa = document.createElement(SelectionArea.tagName) as SelectionArea;
+		this.selectionArea = this.gameEditorParentElement.appendChild(sa);
+		sa.init(game);
 	}
 
 	public setupActions(actions: ActionHandler) {
-		actions.setActionCommand(Actions.ZOOM, (e) => this.zoom(-(e as WheelEvent).deltaY));
+		actions.setActionCommand(Actions.ZOOM, (e) => {
+			const w = e as WheelEvent;
+			// TODO scale anchor
+			// this.zoom(-w.deltaY, w.offsetX, w.offsetY);
+			this.zoom(-w.deltaY);
+		});
+
 		actions.setActionCommand(Actions.ZOOM_IN, () => this.zoom(100));
 		actions.setActionCommand(Actions.ZOOM_OUT, () => this.zoom(-100));
-		
+
 		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
 		this.onPreferencesChanged('responsive', Editor.prefs.responsive);
 
@@ -37,30 +51,29 @@ export class GameContainer extends HTMLElement {
 		if (key === 'responsive') this.setResponsive(value);
 	}
 
-	public addGame(game: Phaser.Game) {
-		this.game = game;
-		const el = game.canvas.parentElement;
+	public enable(config: PluginConfig) {
+		const el = this.game.canvas.parentElement;
 		this.gameOriginalParentElement = el.parentElement;
 		el.classList.add('phred-game');
 		this.gameEditorParentElement.appendChild(el);
+		this.selectionArea.enable(config);
 	}
 
-	public returnGameToItsParent() {
+	// returns the game to its original parent
+	public disable() {
+		this.selectionArea.disable();
 		const el = this.game.canvas.parentElement;
 		el.classList.remove('phred-game');
 		this.gameOriginalParentElement.appendChild(el);
 		this.gameOriginalParentElement = null;
-		this.game = null;
 	}
 
 	private zoom(amount: number) {
 		const el = this.gameEditorParentElement;
-		const ratio = el.clientHeight / el.clientWidth;
 		const width = Math.max(Math.min(el.clientWidth + amount, MAX_WIDTH), MIN_WIDTH);
-		const height = width * ratio;
+		const height = width * (el.clientHeight / el.clientWidth);
 		el.style.width = width + 'px';
 		el.style.height = height + 'px';
-		this.game.scale.refresh();
 	}
 
 	private setResponsive(responsive: boolean) {
@@ -90,7 +103,7 @@ export class GameContainer extends HTMLElement {
 
 	private onInputMove(e: MouseEvent) {
 		this.scrollLeft = this._downPageX - e.pageX;
-		this.scrollTop = this._downPageY - e.pageY
+		this.scrollTop = this._downPageY - e.pageY;
 	}
 
 	private onInputUp() {

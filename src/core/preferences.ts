@@ -100,7 +100,6 @@ export class Preferences {
 
 	public readonly onPreferenceChanged = new Phaser.Signal();
 
-
 	public constructor(clean: boolean) {
 		if (clean) localStorage.clear();
 		this._snap = this.load('snap', true);
@@ -119,9 +118,17 @@ export class Preferences {
 		actions.setActionCommand(Actions.TOGGLE_GIZMOS, () => this.gizmos = !this._gizmos, () => this._gizmos);
 		actions.setActionCommand(Actions.TOGGLE_GUIDES, () => this.guides = !this._guides, () => this._guides);
 		actions.setActionCommand(Actions.TOGGLE_HIT_AREA, () => this.hitArea = !this._hitArea, () => this._hitArea);
-		actions.setActionCommand(Actions.TOGGLE_ALL_HIT_AREAS_SNAPSHOT, () => this.allHitAreasSnapshot = !this._allHitAreasSnapshot, () => this._allHitAreasSnapshot);
 		actions.setActionCommand(Actions.TOGGLE_RESPONSIVE, () => this.responsive = !this._responsive, () => this._responsive);
-		actions.setActionCommand(Actions.TOGGLE_REF_IMAGE, () => this.refImageVisible = !this._refImageVisible, () => this._refImageVisible);
+		actions.setActionCommand(
+			Actions.TOGGLE_ALL_HIT_AREAS_SNAPSHOT,
+			() => this.allHitAreasSnapshot = !this._allHitAreasSnapshot,
+			() => this._allHitAreasSnapshot
+		);
+		actions.setActionCommand(
+			Actions.TOGGLE_REF_IMAGE,
+			() => this.refImageVisible = !this._refImageVisible,
+			() => this._refImageVisible
+		);
 	}
 
 	public setPanelSize(side: PanelSide, width: string) { this.save(`panel.${side}`, width); }
@@ -130,7 +137,6 @@ export class Preferences {
 		const result = this.load<string>(`panel.${side}`, '');
 		return result === '' ? undefined : result;
 	}
-
 
 	private notifyListeners(field: PreferenceKey, value: any) {
 		this.onPreferenceChanged.dispatch(field, value);

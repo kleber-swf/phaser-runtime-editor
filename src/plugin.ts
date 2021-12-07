@@ -1,15 +1,7 @@
 import { Editor } from 'core/editor';
 import { EditorStateHandler } from 'editor.state-handler';
 import Phaser from 'phaser-ce';
-
-export interface PluginConfig {
-	root?: () => Container;
-	refImage?: () => Phaser.Image | Phaser.Sprite;
-	pauseGame?: boolean;
-	clearPrefs?: boolean;
-	onShow?: () => void;
-	onHide?: () => void;
-}
+import { PluginConfig, PluginConfigBuilder } from 'plugin.model';
 
 interface GameStateConfig {
 	disableVisibilityChange: boolean;
@@ -20,15 +12,22 @@ interface GameStateConfig {
 export class Plugin extends Phaser.Plugin {
 	private readonly editorState: EditorStateHandler;
 	private gamePreState: GameStateConfig;
-	private config: PluginConfig;
+	private configBuilder: PluginConfigBuilder;
+	// private config: PluginConfig;
 
-	public constructor(game: Phaser.Game, config?: PluginConfig) {
+	public constructor(game: Phaser.Game, config?: PluginConfigBuilder) {
 		super(game, game.plugins);
 		this.insertHead();
 		if (!config) config = {};
 		if (!config.root) config.root = () => game.world;
 		if (!config.refImage) config.refImage = () => null;
-		this.config = config;
+		this.configBuilder = config;
+		// this.config = {
+		// 	root: null,
+		// 	refImage: null,
+		// 	clearPrefs: config.clearPrefs ?? false,
+		// 	pauseGame: config.pauseGame ?? false,
+		// };
 
 		this.editorState = new EditorStateHandler(game, config);
 		this.editorState.onshow = this.onEditorShow.bind(this);
@@ -66,9 +65,7 @@ export class Plugin extends Phaser.Plugin {
 		link.href = src.replace('.min.js', '.css');
 	}
 
-	public show() {
-		this.editorState.show();
-	}
+	public show() { this.editorState.show(); }
 
 	private onEditorShow() {
 		(this as any).postUpdate = this._postUpdate.bind(this);
@@ -85,10 +82,10 @@ export class Plugin extends Phaser.Plugin {
 
 		// applies some properties to the game
 		game.stage.disableVisibilityChange = true;
-		if (this.config.pauseGame) game.time.slowMotion = Number.POSITIVE_INFINITY;
+		if (this.configBuilder.pauseGame) game.time.slowMotion = Number.POSITIVE_INFINITY;
 		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
-		if (this.config.onShow) this.config.onShow();
+		if (this.configBuilder.onShow) this.configBuilder.onShow();
 	}
 
 	private onEditorHide() {
@@ -101,7 +98,7 @@ export class Plugin extends Phaser.Plugin {
 		game.time.slowMotion = gamePreState.slowMotion;
 		game.scale.scaleMode = gamePreState.scaleMode;
 
-		if (this.config.onHide) this.config.onHide();
+		if (this.configBuilder.onHide) this.configBuilder.onHide();
 	}
 
 	private _postUpdate() {
@@ -110,3 +107,9 @@ export class Plugin extends Phaser.Plugin {
 }
 
 (Phaser.Plugin as any).RuntimeEditor = Plugin;
+
+Object.defineProperty(PIXI.DisplayObject.prototype, 'globalScale', {
+	enumerable: true,
+	configurable: true,
+	get() { return new PIXI.Point(this.worldTransform.a, this.worldTransform.d); }
+})

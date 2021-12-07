@@ -1,12 +1,12 @@
+import { ComponentTags } from 'component-tags';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
 import { Widget } from 'editor-view/widget/widget';
-import { ComponentTags } from 'component-tags';
+import { PluginConfig } from 'plugin.model';
 import { PanelSide } from 'types';
 import './panel.scss';
 import { ResizeHandle } from './resize-handle/resize-handle';
-import { PluginConfig } from 'plugin';
 
 export class Panel extends Widget {
 	private readonly inspectors: Inspector[] = [];

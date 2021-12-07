@@ -1,8 +1,8 @@
 import { ComponentTags } from 'component-tags';
+import { ActionHandler } from 'core/action-handler';
 import { ActionsToolbar } from 'editor-view/actions/actions-toolbar';
 import { ReferenceImagePanel } from 'editor-view/actions/reference-image/reference-image-panel';
-import { ActionHandler } from 'index';
-import { PluginConfig } from 'plugin';
+import { PluginConfig } from 'plugin.model';
 import { ReferenceImage } from 'scene-view/reference-image';
 
 export class ReferenceImageController {
@@ -13,7 +13,7 @@ export class ReferenceImageController {
 	private image: PIXI.Sprite;
 
 	constructor(game: Phaser.Game, config: PluginConfig) {
-		this.referenceImage = new ReferenceImage(game, config.root());
+		this.referenceImage = new ReferenceImage(game, config.root);
 		this.panel = document.createElement(ComponentTags.ReferenceImagePanel) as ReferenceImagePanel;
 		this.panel.init(this.referenceImage);
 	}
@@ -30,11 +30,11 @@ export class ReferenceImageController {
 		if (this.image !== image) {
 			this.referenceImage.image = image;
 			if (image) {
-				if (this.panel.parentElement !== this.actionsToolbar)
+				if (this.panel.parentElement !== this.actionsToolbar) {
 					this.actionsToolbar.appendChild(this.panel);
-			} else {
-				if (this.panel.parentElement === this.actionsToolbar)
-					this.actionsToolbar.removeChild(this.panel);
+				}
+			} else if (this.panel.parentElement === this.actionsToolbar) {
+				this.actionsToolbar.removeChild(this.panel);
 			}
 		}
 

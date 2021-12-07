@@ -2,7 +2,7 @@ import { ComponentTags } from 'component-tags';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
-import { PluginConfig } from 'plugin';
+import { PluginConfig } from 'plugin.model';
 import { ObjectTreeModel, ObjectTreeNodeModel } from '../model/object-tree-model';
 import { SearchField } from '../search-field/search-field';
 import { ObjectTreeNode } from '../tree-node/object-tree-node';
@@ -22,13 +22,14 @@ export class ObjectTreeInspector extends Inspector {
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 	}
 
-	public enable(config: PluginConfig) { this.setRoot(config.root()); }
+	public enable(config: PluginConfig) { this.setRoot(config.root); }
 	public disable() { this.model.empty(); }
 
 	private setRoot(root: PIXI.DisplayObjectContainer | Phaser.Stage) {
 		this.model.create(root);
-		for (let i = 0, n = root.children.length; i < n; i++)
+		for (let i = 0, n = root.children.length; i < n; i++) {
 			this.createNode(root.children[i], this.contentElement, this.model);
+		}
 	}
 
 	private createNode(obj: PIXI.DisplayObject, parent: HTMLElement, model: ObjectTreeModel) {
@@ -59,7 +60,6 @@ export class ObjectTreeInspector extends Inspector {
 		}
 		if (property === 'visible') {
 			this._lastSelectedModel.node.updateObjectVisibility(value);
-			return;
 		}
 	}
 
@@ -104,8 +104,9 @@ export class ObjectTreeInspector extends Inspector {
 			model.node.expand();
 		}
 
-		if (model.parent)
+		if (model.parent) {
 			this.expandParents(model.parent);
+		}
 	}
 
 	private filterContent(filter: string) {

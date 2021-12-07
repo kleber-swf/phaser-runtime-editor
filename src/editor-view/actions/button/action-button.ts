@@ -1,6 +1,4 @@
 import { Action } from 'core/action-handler';
-import { Editor } from 'core/editor';
-import { PreferenceKey } from 'core/preferences';
 import { ComponentTags } from 'component-tags';
 import './action-button.scss';
 

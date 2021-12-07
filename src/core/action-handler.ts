@@ -30,8 +30,9 @@ export class ActionHandler {
 
 			if (action.shortcuts) {
 				action.shortcuts.forEach(s => {
-					if (s in container)
+					if (s in container) {
 						throw new Error(`There is already an action with shortcut ${s}: ${container[s].label}`);
+					}
 					container[s] = action;
 				});
 			}
@@ -54,7 +55,6 @@ export class ActionHandler {
 		action.command = command;
 		action.state = state;
 	}
-
 
 	public enable() {
 		Object.keys(this.containers).forEach(cid => {
@@ -84,8 +84,9 @@ export class ActionHandler {
 		if (k in actions) {
 			const action = actions[k];
 			action.command?.(e);
-			if (action.toggle && action.hold)
+			if (action.toggle && action.hold) {
 				this._holdingToggleAction = action;
+			}
 			e.preventDefault();
 		}
 	}
@@ -96,7 +97,7 @@ export class ActionHandler {
 		this._holdingToggleAction = null;
 	}
 
-	private onWheel(e: WheelEvent, actions: Record<string, Action>, container: HTMLElement) {
+	private onWheel(e: WheelEvent, actions: Record<string, Action>, _container: HTMLElement) {
 		const k = (e.ctrlKey ? 'ctrl+' : '')
 			+ (e.shiftKey ? 'shift+' : '')
 			+ (e.altKey ? 'alt+' : '')

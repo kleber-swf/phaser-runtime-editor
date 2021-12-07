@@ -9,8 +9,16 @@ declare namespace PIXI {
 		name?: string;
 		anchor?: Point;
 		inputEnabled?: boolean;
-		getBounds?(): Rectangle;
+		top: number;
+		left: number;
+		bottom: number;
+		right: number;
+		width: number;
+		height: number;
 		children?: DisplayObject[];
+		getBounds?(): Rectangle;
+		getLocalBounds(): Rectangle;
+		readonly globalScale: Point;
 	}
 }
 
