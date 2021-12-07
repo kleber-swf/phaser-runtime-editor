@@ -28,8 +28,8 @@ export class MoveHandler implements DraggingHandler {
 		const object = this._object;
 		const scale = object.worldScale.clone();
 
-		scale.x /= object.scale.x;
-		scale.y /= object.scale.y;
+		scale.x = Math.abs(scale.x / object.scale.x);
+		scale.y = Math.abs(scale.y / object.scale.y);
 
 		const dx = (newPoint.x - lastPoint.x) / scale.x;
 		const dy = (newPoint.y - lastPoint.y) / scale.y;

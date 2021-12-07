@@ -97,8 +97,8 @@ export class ScaleHandler implements DraggingHandler {
 		}
 
 		const scale = object.worldScale.clone();
-		scale.x /= object.scale.x;
-		scale.y /= object.scale.y;
+		scale.x = Math.abs(scale.x / object.scale.x);
+		scale.y = Math.abs(scale.y / object.scale.y);
 
 		let dx = ((lastPoint.x - newPoint.x) * this._hsign * dscale) / scale.x;
 		let dy = ((lastPoint.y - newPoint.y) * this._vsign * dscale) / scale.y;
