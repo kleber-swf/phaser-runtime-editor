@@ -120,3 +120,9 @@ export class Plugin extends Phaser.Plugin {
 }
 
 (Phaser.Plugin as any).RuntimeEditor = Plugin;
+
+Object.defineProperty(PIXI.DisplayObject.prototype, 'globalScale', {
+	enumerable: true,
+	configurable: true,
+	get() { return new PIXI.Point(this.worldTransform.a, this.worldTransform.d); }
+})

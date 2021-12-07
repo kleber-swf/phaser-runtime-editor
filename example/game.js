@@ -162,7 +162,7 @@ function el(x, y, w, h, parent, name) {
 	g.addChild(t);
 
 	g.inputEnabled = true;
-	g.useHandCursor = true;
+	// g.useHandCursor = true;
 	return g;
 }
 

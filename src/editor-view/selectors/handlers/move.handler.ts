@@ -25,9 +25,8 @@ export class MoveHandler implements DraggingHandler {
 	public handle(e: MouseEvent) {
 		const lastPoint = this._point;
 		const newPoint = SelectionUtil.mouseEventToGamePoint(e, { x: 0, y: 0 });
-
 		const object = this._object;
-		const scale = object.worldScale.clone();
+		const scale = object.globalScale;
 
 		scale.x = Math.abs(scale.x / object.scale.x);
 		scale.y = Math.abs(scale.y / object.scale.y);

@@ -141,7 +141,7 @@ export class SelectionView extends Phaser.Group {
 
 	public move(deltaX: number, deltaY: number) {
 		const pos = this._selectedObject.position;
-		const scale = this._selectedObject.parent?.worldScale ?? PointUtil.one;
+		const scale = this._selectedObject.parent?.globalScale ?? PointUtil.one;
 		this.moveFn(pos, scale, deltaX, deltaY);
 		this.redraw();
 		Editor.data.propertyChanged('position', pos, DataOrigin.SCENE);

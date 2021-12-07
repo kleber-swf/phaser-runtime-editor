@@ -36,7 +36,9 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 		this._showHitArea = value;
 		if (value) {
 			this.setupHitArea(this._object);
-			if (this._object) this.drawHitArea(this._object.worldScale);
+			if (this._object) {
+				this.drawHitArea(this._object.globalScale);
+			}
 		} else {
 			this.setupHitArea(null);
 		}
@@ -95,8 +97,9 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 	public redraw() {
 		if (!this._object) return;
 		const object = this._object;
-		const bounds = this._object.getBounds();
-		const scale = object.worldScale;
+		object.updateTransform();
+		const scale = object.globalScale;
+		const bounds = object.getBounds();
 
 		const { style, _rectCache, _pointCache1 } = this;
 		SelectionUtil.rectFromGameToArea(bounds, _rectCache);
@@ -122,7 +125,9 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 			this.anchor.style.left = _pointCache1.x + 'px';
 		}
 
-		if (this._objectHitArea) this.drawHitArea(scale);
+		if (this._objectHitArea) {
+			this.drawHitArea(scale);
+		}
 	}
 
 	private setupHitArea(object: PIXI.DisplayObject) {
@@ -133,35 +138,42 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 		}
 
 		this.hitArea.style.display = 'block';
-		this._objectHitArea = object.hitArea as any
-			?? { x: 0, y: 0, width: object.width, height: object.height };
+		const b = object.getBounds();
+		this._objectHitArea = object.hitArea as any ?? {
+			x: 0, y: 0,
+			width: Math.abs(b.width / object.scale.x),
+			height: Math.abs(b.height / object.scale.y)
+		};
 		this.hitArea.style.borderRadius = this._objectHitArea.radius ? '50%' : '0';
 	}
 
 	private drawHitArea(scale: PIXI.Point) {
 		const { _pointCache1, _pointCache2 } = this;
 		const hitArea = this._objectHitArea;
+		const style = this.hitArea.style;
+
 		SelectionUtil.pointFromGameToArea(hitArea.x * scale.x, hitArea.y * scale.y, _pointCache1);
-		const haStyle = this.hitArea.style;
+
 		if (hitArea.radius) {
 			SelectionUtil.pointFromGameToArea(
 				hitArea.radius * 2 * scale.x,
 				hitArea.radius * 2 * scale.y,
 				_pointCache2
 			);
-			haStyle.left = (_pointCache1.x - _pointCache2.x * 0.5) + 'px';
-			haStyle.top = (_pointCache1.y - _pointCache2.y * 0.5) + 'px';
+			_pointCache1.x -= _pointCache2.x * 0.5;
+			_pointCache1.y -= _pointCache2.y * 0.5;
 		} else {
 			SelectionUtil.pointFromGameToArea(
 				hitArea.width * scale.x,
 				hitArea.height * scale.y,
 				_pointCache2
 			);
-			haStyle.left = _pointCache1.x + 'px';
-			haStyle.top = _pointCache1.y + 'px';
 		}
-		haStyle.width = _pointCache2.x + 'px';
-		haStyle.height = _pointCache2.y + 'px';
+
+		style.left = _pointCache1.x + 'px';
+		style.top = _pointCache1.y + 'px';
+		style.width = Math.abs(_pointCache2.x) + 'px';
+		style.height = Math.abs(_pointCache2.y) + 'px';
 	}
 
 	public startMoving() {

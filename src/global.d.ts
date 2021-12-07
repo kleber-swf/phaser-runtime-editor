@@ -18,6 +18,7 @@ declare namespace PIXI {
 		children?: DisplayObject[];
 		getBounds?(): Rectangle;
 		getLocalBounds(): Rectangle;
+		readonly globalScale: Point;
 	}
 }
 

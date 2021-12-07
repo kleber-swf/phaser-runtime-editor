@@ -101,7 +101,7 @@ export class ScaleHandler implements DraggingHandler {
 			dscale = 1;
 		}
 
-		const scale = object.worldScale.clone();
+		const scale = object.globalScale;
 		scale.x = Math.abs(scale.x / object.scale.x);
 		scale.y = Math.abs(scale.y / object.scale.y);
 
