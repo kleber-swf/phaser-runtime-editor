@@ -161,6 +161,8 @@ function el(x, y, w, h, parent, name) {
 	t.name = name + '_text';
 	g.addChild(t);
 
+	g.inputEnabled = true;
+	g.useHandCursor = true;
 	return g;
 }
 

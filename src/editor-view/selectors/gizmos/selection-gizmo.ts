@@ -51,28 +51,31 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 		this.addEventListener('mouseover', this.onMouseOver.bind(this));
 		this.addEventListener('mouseout', this.onMouseOut.bind(this));
 
+		const handlersParent = this.appendChild(document.createElement('div'));
+		handlersParent.classList.add('handlers');
+
 		this.createGuides();
 		this.createHitArea();
-		this.createResizeHandlers(this.handlers);
+		this.createResizeHandlers(this.handlers, handlersParent);
 	}
 
-	private createResizeHandlers(handlers: HTMLElement[]) {
+	private createResizeHandlers(handlers: HTMLElement[], parent: HTMLElement) {
 		const vsides = [VSide.Top, VSide.Middle, VSide.Bottom];
 		const hsides = [HSide.Left, HSide.Center, HSide.Right];
 
 		vsides.forEach(v => {
 			hsides.forEach(h => {
 				if (v === VSide.Middle && h === HSide.Center) return;
-				const el = this.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
+				const el = parent.appendChild(document.createElement(ScaleGizmo.tagName)) as ScaleGizmo;
 				el.init(v, h);
 				handlers.push(el);
 			});
 		});
 
-		this.pivot = this.appendChild(document.createElement('div'));
+		this.pivot = parent.appendChild(document.createElement('div'));
 		this.pivot.classList.add('pivot');
 
-		this.anchor = this.appendChild(document.createElement('div'));
+		this.anchor = parent.appendChild(document.createElement('div'));
 		this.anchor.classList.add('anchor');
 	}
 
