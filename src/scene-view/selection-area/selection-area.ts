@@ -15,17 +15,19 @@ export class SelectionArea extends HTMLElement {
 	public static readonly tagName = 'phred-selection-area';
 
 	private gizmo: SelectionGizmo;
-	private interval: any;
 
+	private handlers: { [id: number]: DraggingHandler } = {};
 	private selectionHandler: SelectionHandler;
 	private hitAreaSnapshot: HitAreaSnapshot;
 
-	private handlers: { [id: number]: DraggingHandler } = {};
+	private _enabled: boolean;
+	private updateBind: () => void;
 
 	// #region Initialization
 
 	public init(game: Phaser.Game) {
 		SelectionUtil.init(game, this);
+		this.updateBind = this.update.bind(this);
 
 		this.createHandlers();
 		this.createGizmos();
@@ -47,13 +49,12 @@ export class SelectionArea extends HTMLElement {
 
 	public enable(config: PluginConfig) {
 		this.selectionHandler.enable(config.root);
-		this.interval = setInterval(this.update.bind(this), 1000 / 30);
 		this.hitAreaSnapshot.enable(config.root);
+		this._enabled = true;
+		window.requestAnimationFrame(this.updateBind);
 	}
 
-	public disable() {
-		clearInterval(this.interval);
-	}
+	public disable() { this._enabled = false; }
 
 	private createHandlers() {
 		this.selectionHandler = new SelectionHandler();
@@ -80,6 +81,9 @@ export class SelectionArea extends HTMLElement {
 
 	private update() {
 		this.gizmo.redraw();
+		if (this._enabled) {
+			window.requestAnimationFrame(this.updateBind);
+		}
 	}
 
 	// #region Event Handlers
