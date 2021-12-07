@@ -79,4 +79,6 @@ export class SelectionHandler {
 
 		return selectionTree[this._lastSelectionTreeIndex];
 	}
+
+	public clearSelectionTree() { this.setSelectionTree(null); }
 }

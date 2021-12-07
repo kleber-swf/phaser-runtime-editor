@@ -35,6 +35,8 @@ export class SelectionArea extends HTMLElement {
 		this.addEventListener('mouseup', this.onMouseUp.bind(this));
 		this.addEventListener('mousemove', this.onMouseMove.bind(this));
 
+		Editor.data.onSelectedObjectChanged.add(this.onSelectedObjectChanged, this);
+
 		const prefs = Editor.prefs;
 		prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
 		this.onPreferencesChanged('gizmos', prefs.gizmos);
@@ -149,6 +151,10 @@ export class SelectionArea extends HTMLElement {
 				if (value === true) this.hitAreaSnapshot.show();
 				else this.hitAreaSnapshot.hide();
 		}
+	}
+
+	private onSelectedObjectChanged(selection: PIXI.DisplayObject) {
+		if (!selection) this.selectionHandler.clearSelectionTree();
 	}
 
 	// #endregion
