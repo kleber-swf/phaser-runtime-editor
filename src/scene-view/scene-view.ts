@@ -42,9 +42,9 @@ export class SceneView extends Phaser.Group {
 		this.touchArea = this.createTouchArea(game);
 		this.redrawTouchArea();
 
-		this.hitAreasView = new Phaser.Graphics(game);
+		// this.hitAreasView = new Phaser.Graphics(game);
 		// this.hitAreasView.inputEnabled = true;
-		this.hitAreasView.__skip = true;
+		// this.hitAreasView.__skip = true;
 
 		this.selection = new SelectionView(game);
 		this.addChild(this.selection);
@@ -88,19 +88,19 @@ export class SceneView extends Phaser.Group {
 	}
 
 	private onPreferencesChanged(pref: PreferenceKey, value: boolean) {
-		if (pref !== 'allHitAreasSnapshot') return;
-		if (value) {
-			if (this.hitAreasView.parent !== this) {
-				this.addChild(this.hitAreasView);
-			}
-			this.hitAreasView.clear().beginFill(0, 0).drawRect(0, 0, this.game.width, this.game.height);
-			this.showAllHitAreas(this.root, this.hitAreasView);
-		} else {
-			if (this.hitAreasView.parent === this) {
-				this.removeChild(this.hitAreasView);
-			}
-			this.hitAreasView.clear();
-		}
+		// if (pref !== 'allHitAreasSnapshot') return;
+		// if (value) {
+		// 	if (this.hitAreasView.parent !== this) {
+		// 		this.addChild(this.hitAreasView);
+		// 	}
+		// 	this.hitAreasView.clear().beginFill(0, 0).drawRect(0, 0, this.game.width, this.game.height);
+		// 	this.showAllHitAreas(this.root, this.hitAreasView);
+		// } else {
+		// 	if (this.hitAreasView.parent === this) {
+		// 		this.removeChild(this.hitAreasView);
+		// 	}
+		// 	this.hitAreasView.clear();
+		// }
 	}
 
 	private onPropertyChanged(origin: DataOrigin, property: string, value: any, obj: PIXI.DisplayObject) {

@@ -7,6 +7,7 @@ import { DraggingHandler } from './handlers/dragging-handler';
 import { MoveHandler } from './handlers/move.handler';
 import { ScaleHandler } from './handlers/scale.handler';
 import { SelectionHandler } from './handlers/selection.handler';
+import { HitAreaSnapshot } from './hit-area-snapshot/hit-area-snapshot';
 import './selection-area.scss';
 import { SelectionUtil } from './selection.util';
 
@@ -17,6 +18,7 @@ export class SelectionArea extends HTMLElement {
 	private interval: any;
 
 	private selectionHandler: SelectionHandler;
+	private hitAreaSnapshot: HitAreaSnapshot;
 
 	private handlers: { [id: number]: DraggingHandler } = {};
 
@@ -27,6 +29,7 @@ export class SelectionArea extends HTMLElement {
 
 		this.createHandlers();
 		this.createGizmos();
+		this.createHitAreaSnapshot(game);
 
 		this.addEventListener('mousedown', this.onMouseDown.bind(this));
 		this.addEventListener('mouseup', this.onMouseUp.bind(this));
@@ -43,6 +46,7 @@ export class SelectionArea extends HTMLElement {
 	public enable(config: PluginConfig) {
 		this.selectionHandler.enable(config.root);
 		this.interval = setInterval(this.update.bind(this), 1000 / 30);
+		this.hitAreaSnapshot.enable(config.root);
 	}
 
 	public disable() {
@@ -62,6 +66,12 @@ export class SelectionArea extends HTMLElement {
 		this.gizmo = document.createElement(SelectionGizmo.tagName) as SelectionGizmo;
 		this.appendChild(this.gizmo);
 		this.gizmo.init();
+	}
+
+	private createHitAreaSnapshot(game: Phaser.Game) {
+		this.hitAreaSnapshot = document.createElement(HitAreaSnapshot.tagName) as HitAreaSnapshot;
+		this.appendChild(this.hitAreaSnapshot);
+		this.hitAreaSnapshot.init(game);
 	}
 
 	// #endregion
@@ -134,6 +144,10 @@ export class SelectionArea extends HTMLElement {
 				return;
 			case 'hitArea':
 				this.gizmo.showHitArea = value === true;
+				return;
+			case 'allHitAreasSnapshot':
+				if (value === true) this.hitAreaSnapshot.show();
+				else this.hitAreaSnapshot.hide();
 		}
 	}
 
