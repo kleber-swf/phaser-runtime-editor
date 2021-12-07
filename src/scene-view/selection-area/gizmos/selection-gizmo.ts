@@ -140,9 +140,10 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 		this.hitArea.style.display = 'block';
 		const b = object.getBounds();
 		this._objectHitArea = object.hitArea as any ?? {
-			x: 0, y: 0,
+			x: 0,
+			y: 0,
 			width: Math.abs(b.width / object.scale.x),
-			height: Math.abs(b.height / object.scale.y)
+			height: Math.abs(b.height / object.scale.y),
 		};
 		this.hitArea.style.borderRadius = this._objectHitArea.radius ? '50%' : '0';
 	}

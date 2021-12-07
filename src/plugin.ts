@@ -1,7 +1,7 @@
 import { Editor } from 'core/editor';
 import { EditorStateHandler } from 'editor.state-handler';
 import Phaser from 'phaser-ce';
-import { PluginConfig, PluginConfigBuilder } from 'plugin.model';
+import { PluginConfigBuilder } from 'plugin.model';
 
 interface GameStateConfig {
 	disableVisibilityChange: boolean;
@@ -111,5 +111,5 @@ export class Plugin extends Phaser.Plugin {
 Object.defineProperty(PIXI.DisplayObject.prototype, 'globalScale', {
 	enumerable: true,
 	configurable: true,
-	get() { return new PIXI.Point(this.worldTransform.a, this.worldTransform.d); }
-})
+	get() { return new PIXI.Point(this.worldTransform.a, this.worldTransform.d); },
+});
