@@ -57,8 +57,10 @@ export class ObjectTreeNode extends HTMLElement {
 
 	public select(focus: boolean) {
 		this.classList.add(SELECTED_CLASS);
-		if (focus) this.collapseIcon.scrollIntoView();
+		if (focus) this.focus();
 	}
+
+	public focus() { this.collapseIcon.scrollIntoView(); }
 
 	public clearSelection() { this.classList.remove(SELECTED_CLASS); }
 

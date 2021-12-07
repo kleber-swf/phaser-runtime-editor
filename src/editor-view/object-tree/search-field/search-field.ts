@@ -6,6 +6,7 @@ export class SearchField extends HTMLElement {
 	private field: HTMLInputElement;
 
 	public onValueChanged: (e: string) => void;
+	public onClear: () => void;
 
 	public init() {
 		const field = this.field = this.appendChild(document.createElement('input'));
@@ -21,6 +22,7 @@ export class SearchField extends HTMLElement {
 		this.field.value = '';
 		this.field.dispatchEvent(new InputEvent('input'));
 		this.field.focus();
+		setTimeout(() => this.onClear(), 100);
 	}
 
 	private onFieldChanged() {

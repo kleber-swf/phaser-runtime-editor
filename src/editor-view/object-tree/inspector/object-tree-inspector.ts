@@ -18,6 +18,7 @@ export class ObjectTreeInspector extends Inspector {
 		const el = this.headerElement.appendChild(document.createElement(ComponentTags.SearchField)) as SearchField;
 		el.init();
 		el.onValueChanged = this.filterContent.bind(this);
+		el.onClear = this.onFilterClear.bind(this);
 
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 	}
@@ -113,6 +114,13 @@ export class ObjectTreeInspector extends Inspector {
 		if (filter) this.classList.add('filtering');
 		else this.classList.remove('filtering');
 		this.model.filter(filter);
+	}
+
+	private onFilterClear() {
+		if (this._lastSelectedModel?.parent) {
+			this.expandParents(this._lastSelectedModel.parent);
+			this._lastSelectedModel.node.focus();
+		}
 	}
 }
 
