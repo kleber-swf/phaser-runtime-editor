@@ -19,6 +19,7 @@ export class MoveHandler implements DraggingHandler {
 	public startHandling(e: MouseEvent, object: PIXI.DisplayObject) {
 		this._object = object;
 		SelectionUtil.mouseEventToGamePoint(e, this._point);
+		Editor.history.prepare(Editor.data.selectedObject, { position: object.position.clone() });
 	}
 
 	public handle(e: MouseEvent) {
@@ -54,5 +55,8 @@ export class MoveHandler implements DraggingHandler {
 		Editor.data.propertyChanged('_bounds', object.getBounds(), DataOrigin.SCENE);
 	}
 
-	public stopHandling() { this._object = null; }
+	public stopHandling() {
+		this._object = null;
+		Editor.history.commit();
+	}
 }

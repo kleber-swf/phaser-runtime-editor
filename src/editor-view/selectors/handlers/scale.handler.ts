@@ -54,6 +54,11 @@ export class ScaleHandler implements DraggingHandler {
 		this._vsign = Math.sign(vside - 0.5);
 		this._hsign = Math.sign(hside - 0.5);
 
+		Editor.history.prepare(object, {
+			scale: object.scale.clone(),
+			position: object.position.clone(),
+		});
+
 		if (object.renderable) return;
 
 		if (vside === VSide.Top) this._groupStickySideVKey = 'bottom';
@@ -128,5 +133,6 @@ export class ScaleHandler implements DraggingHandler {
 	public stopHandling(): void {
 		this._point = null;
 		this._object = null;
+		Editor.history.commit();
 	}
 }
