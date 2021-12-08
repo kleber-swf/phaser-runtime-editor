@@ -23,4 +23,6 @@ export class Actions {
 	public static readonly ZOOM_IN = 'ZOOM_IN';
 	public static readonly ZOOM_OUT = 'ZOOM_OUT';
 	public static readonly ZOOM_RESET = 'ZOOM_RESET';
+	public static readonly TOGGLE_LEFT_PANEL = 'TOGGLE_LEFT_PANEL';
+	public static readonly TOGGLE_RIGHT_PANEL = 'TOGGLE_RIGHT_PANEL';
 }

@@ -135,6 +135,26 @@ export class Preferences {
 		this.save('responsiveSizeTemplateIndex', index);
 	}
 
+	private _leftPanelVisible = true;
+
+	public get leftPanelVisible(): boolean { return this._leftPanelVisible; }
+
+	public set leftPanelVisible(value: boolean) {
+		this._leftPanelVisible = value;
+		this.notifyListeners('leftPanelVisible', value);
+		this.save('leftPanelVisible', value);
+	}
+
+	private _rightPanelVisible = true;
+
+	public get rightPanelVisible(): boolean { return this._rightPanelVisible; }
+
+	public set rightPanelVisible(value: boolean) {
+		this._rightPanelVisible = value;
+		this.notifyListeners('rightPanelVisible', value);
+		this.save('rightPanelVisible', value);
+	}
+
 	// #endregion
 
 	public readonly onPreferenceChanged = new Phaser.Signal();
@@ -152,6 +172,8 @@ export class Preferences {
 			this._refImageY = this.load('refImageY', 0);
 			this._responsiveSize = this.load('responsiveSize', Object.assign({}, DEFAULT_RESPONSIVE_SIZE));
 			this._responsiveSizeTemplateIndex = this.load('responsiveSizeTemplateIndex', 0);
+			this._leftPanelVisible = this.load('leftPanelVisible', true);
+			this._rightPanelVisible = this.load('rightPanelVisible', true);
 		} catch (_e: any) {
 			localStorage.clear();
 		}
@@ -177,6 +199,17 @@ export class Preferences {
 			Actions.TOGGLE_REF_IMAGE,
 			() => this.refImageVisible = !this._refImageVisible,
 			() => this._refImageVisible
+		);
+
+		actions.setActionCommand(
+			Actions.TOGGLE_LEFT_PANEL,
+			() => this.leftPanelVisible = !this._leftPanelVisible,
+			() => this._leftPanelVisible
+		);
+		actions.setActionCommand(
+			Actions.TOGGLE_RIGHT_PANEL,
+			() => this.rightPanelVisible = !this._rightPanelVisible,
+			() => this._rightPanelVisible
 		);
 	}
 

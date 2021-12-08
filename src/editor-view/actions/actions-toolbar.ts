@@ -14,6 +14,9 @@ export class ActionsToolbar extends Widget {
 	private orientationBtn: ActionButton;
 	private orientationTemplates: SizeTemplatesPanel;
 
+	private leftPanelToggle: HTMLElement;
+	private rightPanelToggle: HTMLElement;
+
 	public setupActions(actions: ActionHandler) {
 		this.createButton(actions.getAction(Actions.TOGGLE_ENABLED));
 		this.createSeparator();
@@ -44,14 +47,44 @@ export class ActionsToolbar extends Widget {
 		this.createSpacer();
 
 		this.orientationTemplates.init();
-		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
+
+		const leftPanelToggle = this.appendChild(document.createElement('div'));
+		leftPanelToggle.classList.add('left', 'panel-toggle', 'fa');
+		leftPanelToggle.addEventListener('click', () => actions.getAction(Actions.TOGGLE_LEFT_PANEL).command());
+		this.leftPanelToggle = leftPanelToggle;
+
+		const rightPanelToggle = this.appendChild(document.createElement('div'));
+		rightPanelToggle.classList.add('right', 'panel-toggle', 'fa');
+		rightPanelToggle.addEventListener('click', () => actions.getAction(Actions.TOGGLE_RIGHT_PANEL).command());
+		this.rightPanelToggle = rightPanelToggle;
+
 		this.onPreferencesChanged('responsive', Editor.prefs.responsive);
+		this.onPreferencesChanged('leftPanelVisible', Editor.prefs.leftPanelVisible);
+		this.onPreferencesChanged('rightPanelVisible', Editor.prefs.rightPanelVisible);
+		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
 	}
 
 	private onPreferencesChanged(key: PreferenceKey, value: any) {
-		if (key !== 'responsive') return;
-		this.orientationBtn.interactable = value === true;
-		this.orientationTemplates.interactable = value === true;
+		switch (key) {
+			case 'responsive':
+				this.orientationBtn.interactable = value === true;
+				this.orientationTemplates.interactable = value === true;
+				break;
+			case 'leftPanelVisible':
+				if (value === true) {
+					this.leftPanelToggle.classList.remove('is-hidden');
+				} else {
+					this.leftPanelToggle.classList.add('is-hidden');
+				}
+				break;
+			case 'rightPanelVisible':
+				if (value === true) {
+					this.rightPanelToggle.classList.remove('is-hidden');
+				} else {
+					this.rightPanelToggle.classList.add('is-hidden');
+				}
+				break;
+		}
 	}
 
 	public enable() { this.buttons.forEach(e => e.updateState()); }

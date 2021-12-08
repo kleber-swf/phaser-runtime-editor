@@ -239,7 +239,10 @@ class EditorClass {
 			{ id: Actions.ZOOM, shortcuts: ['ctrl+wheel'] },
 			{ id: Actions.ZOOM_IN, label: 'zoom in', icon: 'fa-search-plus', shortcuts: ['ctrl+=', 'ctrl++'] },
 			{ id: Actions.ZOOM_OUT, label: 'zoom out', icon: 'fa-search-minus', shortcuts: ['ctrl+-'] },
-			{ id: Actions.ZOOM_RESET, label: 'reset zoom', icon: 'fa-expand', shortcuts: ['ctrl+0'] }
+			{ id: Actions.ZOOM_RESET, label: 'reset zoom', icon: 'fa-expand', shortcuts: ['ctrl+0'] },
+
+			{ id: Actions.TOGGLE_LEFT_PANEL, label: 'toogle left panel', shortcuts: ['ctrl+['] },
+			{ id: Actions.TOGGLE_RIGHT_PANEL, label: 'toogle right panel', shortcuts: ['ctrl+]'] }
 		);
 
 		return actions;

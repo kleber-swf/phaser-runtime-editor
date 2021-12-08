@@ -1,4 +1,5 @@
 import { Editor } from 'core/editor';
+import { PreferenceKey } from 'core/preferences';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
 import { Widget } from 'editor-view/widget/widget';
@@ -12,6 +13,14 @@ export class Panel extends Widget {
 
 	private readonly inspectors: Inspector[] = [];
 	private side: PanelSide;
+
+	public set visible(value: boolean) {
+		if (value) {
+			this.classList.remove('hidden');
+		} else if (!this.classList.contains('hidden')) {
+			this.classList.add('hidden');
+		}
+	}
 
 	public setSide(value: PanelSide) {
 		this.side = value;
@@ -33,6 +42,10 @@ export class Panel extends Widget {
 		this.appendChild(handle);
 		this.inspectors.forEach(inspector => inspector.init(game));
 		this.style.width = Editor.prefs.getPanelSize(this.side);
+
+		this.onPreferencesChanged('leftPanelVisible', Editor.prefs.leftPanelVisible);
+		this.onPreferencesChanged('rightPanelVisible', Editor.prefs.rightPanelVisible);
+		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
 	}
 
 	public enable(config: PluginConfig) {
@@ -41,6 +54,12 @@ export class Panel extends Widget {
 
 	public disable() {
 		this.inspectors.forEach(inspector => inspector.disable());
+	}
+
+	private onPreferencesChanged(key: PreferenceKey, value: any) {
+		if (key === this.side + 'PanelVisible') {
+			this.visible = value === true;
+		}
 	}
 }
 
