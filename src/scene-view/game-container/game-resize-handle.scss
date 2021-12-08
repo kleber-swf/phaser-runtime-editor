@@ -1,0 +1,54 @@
+@import 'colors';
+$size: 20px;
+
+phred-game-resize-handle {
+	position: absolute;
+	background-color: #ccc;
+	color: rgba($on-background, 0.3);
+	background-color: $background-color;
+
+	&:hover {
+		color: rgba($on-background, 0.5);
+	}
+
+	&.right {
+		width: $size;
+		height: 100%;
+		right: -$size;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: ew-resize;
+		&:after {
+			content: '\f7a5';
+		}
+	}
+
+	&.bottom {
+		width: 100%;
+		height: $size;
+		bottom: -$size;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: ns-resize;
+		&:after {
+			content: '\f7a4';
+		}
+	}
+
+	&.both {
+		width: $size;
+		height: $size;
+		right: -$size;
+		bottom: -$size;
+		cursor: nwse-resize;
+
+		&:after {
+			content: '\f0d7';
+			display: inline-block;
+			transform: rotate(-45deg);
+			margin: 3px 0 0 5px;
+		}
+	}
+}

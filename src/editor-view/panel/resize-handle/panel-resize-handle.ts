@@ -1,9 +1,9 @@
 import { Editor } from 'core/editor';
 import { PanelSide } from 'types';
-import './resize-handle.scss';
+import './panel-resize-handle.scss';
 
-export class ResizeHandle extends HTMLElement {
-	public static readonly tagName = 'phred-resize-handle';
+export class PanelResizeHandle extends HTMLElement {
+	public static readonly tagName = 'phred-panel-resize-handle';
 
 	private panel: HTMLElement;
 	private side: PanelSide;
@@ -28,6 +28,7 @@ export class ResizeHandle extends HTMLElement {
 	private _stopResize: () => void;
 
 	private startResizing(e: MouseEvent) {
+		if (e.button !== 0) return;
 		e.stopImmediatePropagation();
 		e.preventDefault();
 		window.addEventListener('mousemove', this._resize);
@@ -55,4 +56,4 @@ export class ResizeHandle extends HTMLElement {
 	}
 }
 
-customElements.define(ResizeHandle.tagName, ResizeHandle);
+customElements.define(PanelResizeHandle.tagName, PanelResizeHandle);

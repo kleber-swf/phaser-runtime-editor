@@ -5,7 +5,7 @@ import { Widget } from 'editor-view/widget/widget';
 import { PluginConfig } from 'plugin.model';
 import { PanelSide } from 'types';
 import './panel.scss';
-import { ResizeHandle } from './resize-handle/resize-handle';
+import { PanelResizeHandle } from './resize-handle/panel-resize-handle';
 
 export class Panel extends Widget {
 	public static readonly tagName = 'phred-panel';
@@ -28,7 +28,7 @@ export class Panel extends Widget {
 	}
 
 	public init(game: Phaser.Game) {
-		const handle = document.createElement(ResizeHandle.tagName) as ResizeHandle;
+		const handle = document.createElement(PanelResizeHandle.tagName) as PanelResizeHandle;
 		handle.init(this, this.side);
 		this.appendChild(handle);
 		this.inspectors.forEach(inspector => inspector.init(game));

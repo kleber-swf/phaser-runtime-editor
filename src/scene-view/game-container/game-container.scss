@@ -1,3 +1,5 @@
+@import 'colors';
+
 phred-game-container {
 	background-color: #1b1b1b;
 	flex: 1;
@@ -10,8 +12,10 @@ phred-game-container {
 		justify-content: center;
 
 		#phred-game-parent {
-			width: 400px;
-			height: 700px;
+			box-shadow: 9px 9px 8px 18px $shadow-color;
+			phred-game-resize-handle {
+				display: flex;
+			}
 		}
 	}
 
@@ -22,6 +26,9 @@ phred-game-container {
 			max-width: 100% !important;
 			width: 100% !important;
 			height: 100% !important;
+		}
+		phred-game-resize-handle {
+			display: none;
 		}
 	}
 }

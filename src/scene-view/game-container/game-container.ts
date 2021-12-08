@@ -2,10 +2,10 @@ import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
-import { ResizeHandle } from 'editor-view/panel/resize-handle/resize-handle';
 import { PluginConfig, Size } from 'plugin.model';
 import { SelectionArea } from 'scene-view/selection-area/selection-area';
 import './game-container.scss';
+import { GameResizeHandle } from './game-resize-handle';
 
 const MIN_WIDTH = 100;
 const MAX_WIDTH = 10000;
@@ -28,9 +28,17 @@ export class GameContainer extends HTMLElement {
 		const sa = document.createElement(SelectionArea.tagName) as SelectionArea;
 		this.selectionArea = this.gameEditorParentElement.appendChild(sa);
 
-		const handle = document.createElement(ResizeHandle.tagName) as ResizeHandle;
-		handle.init(this.gameEditorParentElement, 'left');
-		this.appendChild(handle);
+		const handleRight = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
+		handleRight.init(gp, 'right');
+		gp.appendChild(handleRight);
+
+		const handleBottom = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
+		handleBottom.init(gp, 'bottom');
+		gp.appendChild(handleBottom);
+
+		const handleBoth = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
+		handleBoth.init(gp, 'both');
+		gp.appendChild(handleBoth);
 
 		sa.init(game);
 	}
