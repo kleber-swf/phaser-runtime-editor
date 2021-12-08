@@ -5,6 +5,16 @@ import './action-button.scss';
 export class ActionButton extends HTMLElement {
 	private action: Action;
 
+	public set interactable(value: boolean) {
+		if (value) {
+			this.classList.remove('disabled');
+			return;
+		}
+		if (!this.classList.contains('disabled')) {
+			this.classList.add('disabled');
+		}
+	}
+
 	public setAction(action: Action) {
 		this.classList.add('button');
 		this.action = action;

@@ -199,7 +199,12 @@ class EditorClass {
 				id: Actions.TOGGLE_RESPONSIVE,
 				toggle: true,
 				label: 'responsive',
-				icon: 'fa-expand-arrows-alt',
+				icon: 'fa-tablet-alt',
+			},
+			{
+				id: Actions.TOGGLE_ORIENTATION,
+				label: 'orientation',
+				icon: 'fa-retweet',
 			},
 			{
 				id: Actions.TOGGLE_REF_IMAGE,

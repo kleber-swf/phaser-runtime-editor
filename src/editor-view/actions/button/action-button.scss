@@ -21,6 +21,11 @@ phred-action-button.button {
 		}
 	}
 
+	&:hover .tooltip {
+		opacity: 1;
+		transition: opacity 200ms 800ms;
+	}
+
 	&.selected {
 		background-color: lighten($primary-color, 10%);
 		color: $on-primary;
@@ -29,9 +34,9 @@ phred-action-button.button {
 		}
 	}
 
-	&:hover .tooltip {
-		opacity: 1;
-		transition: opacity 200ms 800ms;
+	&.disabled {
+		pointer-events: none;
+		opacity: 0.5;
 	}
 
 	.tooltip {

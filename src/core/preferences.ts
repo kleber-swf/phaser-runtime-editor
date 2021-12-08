@@ -96,6 +96,19 @@ export class Preferences {
 		this.save('responsive', value);
 	}
 
+	private _responsiveSize = { width: 450, height: 800 };
+
+	public get responsiveSize() { return this._responsiveSize; }
+
+	public set responsiveSize(value: { width: number, height: number }) {
+		value = value ?? { width: 450, height: 800 };
+		value.width = value.width > 0 ? value.width : 450;
+		value.height = value.height > 0 ? value.height : 800;
+		this._responsiveSize = value;
+		this.notifyListeners('responsiveSize', value);
+		this.save('responsiveSize', value);
+	}
+
 	// #endregion
 
 	public readonly onPreferenceChanged = new Phaser.Signal();
@@ -119,6 +132,10 @@ export class Preferences {
 		actions.setActionCommand(Actions.TOGGLE_GUIDES, () => this.guides = !this._guides, () => this._guides);
 		actions.setActionCommand(Actions.TOGGLE_HIT_AREA, () => this.hitArea = !this._hitArea, () => this._hitArea);
 		actions.setActionCommand(Actions.TOGGLE_RESPONSIVE, () => this.responsive = !this._responsive, () => this._responsive);
+		actions.setActionCommand(Actions.TOGGLE_ORIENTATION, () => {
+			const size = this._responsiveSize;
+			this.responsiveSize = { width: size.height, height: size.width };
+		});
 		actions.setActionCommand(
 			Actions.TOGGLE_ALL_HIT_AREAS_SNAPSHOT,
 			() => this.allHitAreasSnapshot = !this._allHitAreasSnapshot,

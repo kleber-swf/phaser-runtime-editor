@@ -13,6 +13,7 @@ export class Actions {
 	public static readonly TOGGLE_GUIDES = 'TOGGLE_GUIDES';
 	public static readonly TOGGLE_HIT_AREA = 'TOGGLE_HIT_AREA';
 	public static readonly TOGGLE_RESPONSIVE = 'TOGGLE_RESPONSIVE';
+	public static readonly TOGGLE_ORIENTATION = 'TOGGLE_ORIENTATION';
 	public static readonly TOGGLE_REF_IMAGE = 'TOGGLE_REF_IMAGE';
 	public static readonly TOGGLE_ALL_HIT_AREAS_SNAPSHOT = 'TOGGLE_ALL_HIT_AREAS_SNAPSHOT';
 	public static readonly TOGGLE_ENABLED = 'TOGGLE_ENABLED';
