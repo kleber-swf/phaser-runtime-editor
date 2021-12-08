@@ -3,8 +3,8 @@ import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
+import { PluginConfig, Size } from 'plugin.model';
 import { SelectionArea } from 'scene-view/selection-area/selection-area';
-import { PluginConfig } from 'plugin.model';
 import './game-container.scss';
 
 const MIN_WIDTH = 100;
@@ -47,8 +47,9 @@ export class GameContainer extends HTMLElement {
 		this.onmouseup = this.onInputUp;
 	}
 
-	private onPreferencesChanged(key: PreferenceKey, value: boolean) {
-		if (key === 'responsive') this.setResponsive(value);
+	private onPreferencesChanged(key: PreferenceKey, value: any) {
+		if (key === 'responsive') this.setResponsive(value === true);
+		if (key === 'responsiveSize') this.setResponsiveSize(value);
 	}
 
 	public enable(config: PluginConfig) {
@@ -81,9 +82,22 @@ export class GameContainer extends HTMLElement {
 			if (!this.classList.contains('responsive')) {
 				this.classList.add('responsive');
 			}
+			this.setResponsiveSize(Editor.prefs.responsiveSize);
 		} else {
 			this.classList.remove('responsive');
+			this.clearResponsiveSize();
 		}
+	}
+
+	private setResponsiveSize(size: Size) {
+		console.log(size);
+		this.gameEditorParentElement.style.width = size.width + 'px';
+		this.gameEditorParentElement.style.height = size.height + 'px';
+	}
+
+	private clearResponsiveSize() {
+		this.gameEditorParentElement.style.width = 'unset';
+		this.gameEditorParentElement.style.height = 'unset';
 	}
 
 	// #region Panning
