@@ -3,7 +3,7 @@
 $handle-width: 6px;
 $active-handle-margin: 20px;
 
-phred-resize-handle {
+phred-panel-resize-handle {
 	height: 100%;
 	position: absolute;
 	cursor: e-resize;
@@ -16,7 +16,6 @@ phred-resize-handle {
 		&.right {
 			left: -($active-handle-margin + $handle-width/2);
 		}
-
 		& > .thumb {
 			margin: 0 $active-handle-margin;
 		}

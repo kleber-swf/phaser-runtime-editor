@@ -1,4 +1,4 @@
-import { ComponentTags } from 'component-tags';
+import { PropertyElementTag } from 'property-element-tag';
 import { Actions } from 'core/actions';
 import { EditorData } from 'data/editor-data';
 import { InspectorData } from 'data/inspector-data';
@@ -31,21 +31,21 @@ class EditorClass {
 		const data = new InspectorData();
 		data.addTypeEditors({
 			// basic types
-			string: ComponentTags.StringPropertyEditor,
-			text: ComponentTags.TextPropertyEditor,
-			number: ComponentTags.NumberPropertyEditor,
-			boolean: ComponentTags.BooleanPropertyEditor,
+			string: PropertyElementTag.StringPropertyEditor,
+			text: PropertyElementTag.TextPropertyEditor,
+			number: PropertyElementTag.NumberPropertyEditor,
+			boolean: PropertyElementTag.BooleanPropertyEditor,
 
 			// PIXI/Phaser types
-			point: ComponentTags.PointPropertyEditor,
-			rect: ComponentTags.RectPropertyEditor,
+			point: PropertyElementTag.PointPropertyEditor,
+			rect: PropertyElementTag.RectPropertyEditor,
 
 			// custom
-			color: ComponentTags.ColorPropertyEditor,
-			valueList: ComponentTags.ValueListPropertyEditor,
+			color: PropertyElementTag.ColorPropertyEditor,
+			valueList: PropertyElementTag.ValueListPropertyEditor,
 
 			// default
-			default: ComponentTags.StringPropertyEditor,
+			default: PropertyElementTag.StringPropertyEditor,
 		});
 
 		data.addInspectableProperties([
@@ -199,7 +199,12 @@ class EditorClass {
 				id: Actions.TOGGLE_RESPONSIVE,
 				toggle: true,
 				label: 'responsive',
-				icon: 'fa-expand-arrows-alt',
+				icon: 'fa-tablet-alt',
+			},
+			{
+				id: Actions.TOGGLE_ORIENTATION,
+				label: 'orientation',
+				icon: 'fa-retweet',
 			},
 			{
 				id: Actions.TOGGLE_REF_IMAGE,
@@ -232,8 +237,8 @@ class EditorClass {
 			{ id: Actions.MOVE_RIGHT_10, shortcuts: ['shift+ArrowRight'] },
 
 			{ id: Actions.ZOOM, shortcuts: ['ctrl+wheel'] },
-			{ id: Actions.ZOOM_IN, label: 'zoom in', icon: 'fa-plus', shortcuts: ['ctrl+=', 'ctrl++'] },
-			{ id: Actions.ZOOM_OUT, label: 'zoom out', icon: 'fa-minus', shortcuts: ['ctrl+-'] }
+			{ id: Actions.ZOOM_IN, label: 'zoom in', icon: 'fa-search-plus', shortcuts: ['ctrl+=', 'ctrl++'] },
+			{ id: Actions.ZOOM_OUT, label: 'zoom out', icon: 'fa-search-minus', shortcuts: ['ctrl+-'] }
 		);
 
 		return actions;

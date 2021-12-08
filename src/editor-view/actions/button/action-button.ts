@@ -1,9 +1,20 @@
 import { Action } from 'core/action-handler';
-import { ComponentTags } from 'component-tags';
 import './action-button.scss';
 
 export class ActionButton extends HTMLElement {
+	public static readonly tagName = 'phred-action-button';
+
 	private action: Action;
+
+	public set interactable(value: boolean) {
+		if (value) {
+			this.classList.remove('disabled');
+			return;
+		}
+		if (!this.classList.contains('disabled')) {
+			this.classList.add('disabled');
+		}
+	}
 
 	public setAction(action: Action) {
 		this.classList.add('button');
@@ -49,4 +60,4 @@ export class ActionButton extends HTMLElement {
 	}
 }
 
-customElements.define(ComponentTags.ActionButton, ActionButton);
+customElements.define(ActionButton.tagName, ActionButton);

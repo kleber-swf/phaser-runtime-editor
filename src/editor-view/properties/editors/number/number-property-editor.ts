@@ -1,5 +1,5 @@
 import { InspectorPropertyModel } from 'data/inspector-data';
-import { ComponentTags } from 'component-tags';
+import { PropertyElementTag } from 'property-element-tag';
 import { PropertyEditor } from '../property-editor';
 
 export class NumberPropertyEditor extends PropertyEditor<number> {
@@ -28,4 +28,4 @@ export class NumberPropertyEditor extends PropertyEditor<number> {
 	}
 }
 
-customElements.define(ComponentTags.NumberPropertyEditor, NumberPropertyEditor);
+customElements.define(PropertyElementTag.NumberPropertyEditor, NumberPropertyEditor);

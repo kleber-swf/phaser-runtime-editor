@@ -1,4 +1,4 @@
-import { ComponentTags } from 'component-tags';
+import { PropertyElementTag } from 'property-element-tag';
 import { InspectorPropertyModel } from 'data/inspector-data';
 import { PropertyEditor } from '../property-editor';
 
@@ -36,4 +36,4 @@ export class ColorPropertyEditor extends PropertyEditor<number> {
 	protected valueToJson() { return JSON.stringify(this.input.value); }
 }
 
-customElements.define(ComponentTags.ColorPropertyEditor, ColorPropertyEditor);
+customElements.define(PropertyElementTag.ColorPropertyEditor, ColorPropertyEditor);

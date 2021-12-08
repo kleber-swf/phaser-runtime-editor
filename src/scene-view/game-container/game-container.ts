@@ -1,17 +1,21 @@
-import { ComponentTags } from 'component-tags';
 import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
+import { PluginConfig, Size } from 'plugin.model';
 import { SelectionArea } from 'scene-view/selection-area/selection-area';
-import { PluginConfig } from 'plugin.model';
 import './game-container.scss';
+import { GameResizeHandle } from './game-resize-handle';
 
 const MIN_WIDTH = 100;
 const MAX_WIDTH = 10000;
 
 export class GameContainer extends HTMLElement {
+	public static readonly tagName = 'phred-game-container';
+
+	// TODO this could be a custom element
 	private gameOriginalParentElement: HTMLElement;
+
 	private gameEditorParentElement: HTMLElement;
 	private selectionArea: SelectionArea;
 	private game: Phaser.Game;
@@ -24,8 +28,10 @@ export class GameContainer extends HTMLElement {
 		this.appendChild(gp);
 
 		const sa = document.createElement(SelectionArea.tagName) as SelectionArea;
-		this.selectionArea = this.gameEditorParentElement.appendChild(sa);
+		this.selectionArea = gp.appendChild(sa);
 		sa.init(game);
+
+		this.createResizeHandles(gp);
 	}
 
 	public setupActions(actions: ActionHandler) {
@@ -41,14 +47,29 @@ export class GameContainer extends HTMLElement {
 
 		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
 		this.onPreferencesChanged('responsive', Editor.prefs.responsive);
+		this.onPreferencesChanged('responsiveSizeTemplateIndex', Editor.prefs.responsiveSizeTemplateIndex);
 
 		this.onmousedown = this.onInputDown;
 		this.onmousemove = this.onInputMove;
 		this.onmouseup = this.onInputUp;
 	}
 
-	private onPreferencesChanged(key: PreferenceKey, value: boolean) {
-		if (key === 'responsive') this.setResponsive(value);
+	private createResizeHandles(parent: HTMLElement) {
+		const onStopDrag = this.onGameResized.bind(this);
+		const handleRight = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
+		handleRight.init(parent, 'right');
+		handleRight.onStopDrag = onStopDrag;
+		parent.appendChild(handleRight);
+
+		const handleBottom = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
+		handleBottom.init(parent, 'bottom');
+		handleBottom.onStopDrag = onStopDrag;
+		parent.appendChild(handleBottom);
+
+		const handleBoth = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
+		handleBoth.init(parent, 'both');
+		handleBoth.onStopDrag = onStopDrag;
+		parent.appendChild(handleBoth);
 	}
 
 	public enable(config: PluginConfig) {
@@ -59,7 +80,7 @@ export class GameContainer extends HTMLElement {
 		this.selectionArea.enable(config);
 	}
 
-	// returns the game to its original parent
+	/** Returns the game to its original parent */
 	public disable() {
 		this.selectionArea.disable();
 		const el = this.game.canvas.parentElement;
@@ -77,13 +98,32 @@ export class GameContainer extends HTMLElement {
 	}
 
 	private setResponsive(responsive: boolean) {
-		const style = this.gameEditorParentElement.style;
 		if (responsive) {
-			style.width = '100%';
-			style.height = '100%';
+			if (!this.classList.contains('responsive')) {
+				this.classList.add('responsive');
+			}
+			this.setResponsiveSize(Editor.prefs.responsiveSize);
 		} else {
-			style.width = 'unset';
-			style.height = 'unset';
+			this.classList.remove('responsive');
+			this.clearResponsiveSize();
+		}
+	}
+
+	private setResponsiveSize(size: Size) {
+		this.gameEditorParentElement.style.width = size.width + 'px';
+		this.gameEditorParentElement.style.height = size.height + 'px';
+	}
+
+	private clearResponsiveSize() {
+		this.gameEditorParentElement.style.width = 'unset';
+		this.gameEditorParentElement.style.height = 'unset';
+	}
+
+	private responsiveSizeTemplateChanged(index: number) {
+		if (!index) {
+			this.gameEditorParentElement.classList.add('resizable');
+		} else {
+			this.gameEditorParentElement.classList.remove('resizable');
 		}
 	}
 
@@ -112,6 +152,28 @@ export class GameContainer extends HTMLElement {
 	}
 
 	// #endregion
+
+	// #region Other Event Handling
+
+	private onPreferencesChanged(key: PreferenceKey, value: any) {
+		switch (key) {
+			case 'responsive':
+				this.setResponsive(value === true);
+				break;
+			case 'responsiveSize':
+				this.setResponsiveSize(value);
+				break;
+			case 'responsiveSizeTemplateIndex':
+				this.responsiveSizeTemplateChanged(value);
+				break;
+		}
+	}
+
+	private onGameResized(width: number, height: number) {
+		Editor.prefs.responsiveSize = { width, height };
+	}
+
+	// #endregion
 }
 
-customElements.define(ComponentTags.GameContainer, GameContainer);
+customElements.define(GameContainer.tagName, GameContainer);

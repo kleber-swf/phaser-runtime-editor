@@ -1,7 +1,8 @@
-import { ComponentTags } from 'component-tags';
 import './search-field.scss';
 
 export class SearchField extends HTMLElement {
+	public static readonly tagName = 'phred-search-field';
+
 	private value: string;
 	private field: HTMLInputElement;
 
@@ -32,4 +33,4 @@ export class SearchField extends HTMLElement {
 	}
 }
 
-customElements.define(ComponentTags.SearchField, SearchField);
+customElements.define(SearchField.tagName, SearchField);

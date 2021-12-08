@@ -16,12 +16,17 @@ export interface PluginConfig {
 
 export interface Point {
 	x: number;
-	y: number
+	y: number;
 }
 
-export interface Rect{
+export interface Size {
+	width: number;
+	height: number;
+}
+
+export interface Rect {
 	x: number;
-	y: number
+	y: number;
 	width: number;
 	height: number;
 }

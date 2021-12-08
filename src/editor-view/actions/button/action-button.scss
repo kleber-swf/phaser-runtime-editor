@@ -1,10 +1,11 @@
 @import 'colors';
 
-phred-action-button.button {
-	min-width: 35px;
-	padding: 0;
+.button {
 	box-shadow: none;
 	position: relative;
+	padding: 0 !important;
+	width: 34px;
+	max-width: 34px;
 
 	&:hover {
 		background-color: $primary-color;
@@ -21,17 +22,17 @@ phred-action-button.button {
 		}
 	}
 
+	&:hover .tooltip {
+		opacity: 1;
+		transition: opacity 200ms 800ms;
+	}
+
 	&.selected {
 		background-color: lighten($primary-color, 10%);
 		color: $on-primary;
 		&:hover {
 			background-color: lighten($primary-color, 10%);
 		}
-	}
-
-	&:hover .tooltip {
-		opacity: 1;
-		transition: opacity 200ms 800ms;
 	}
 
 	.tooltip {

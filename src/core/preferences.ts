@@ -1,8 +1,11 @@
+import { Size } from 'plugin.model';
 import { OnlyProperties, PanelSide } from 'types';
 import { ActionHandler } from './action-handler';
 import { Actions } from './actions';
 
 export type PreferenceKey = OnlyProperties<Preferences>;
+
+const DEFAULT_RESPONSIVE_SIZE: Readonly<Size> = { width: 450, height: 800 };
 
 export class Preferences {
 	// #region Preferences
@@ -96,20 +99,63 @@ export class Preferences {
 		this.save('responsive', value);
 	}
 
+	private _responsiveSize: Size = Object.assign({}, DEFAULT_RESPONSIVE_SIZE);
+
+	public get responsiveSize() { return this._responsiveSize; }
+
+	public set responsiveSize(value: Size) {
+		value = value ?? Object.assign({}, DEFAULT_RESPONSIVE_SIZE);
+		value.width = value.width > 0 ? value.width : DEFAULT_RESPONSIVE_SIZE.width;
+		value.height = value.height > 0 ? value.height : DEFAULT_RESPONSIVE_SIZE.height;
+		this._responsiveSize = value;
+		this.notifyListeners('responsiveSize', value);
+		this.save('responsiveSize', value);
+	}
+
+	private _responsiveSizeTemplateIndex: number;
+
+	public get responsiveSizeTemplateIndex() { return this._responsiveSizeTemplateIndex; }
+
+	public setResponsiveSizeTemplate(index: number, width: number, height: number) {
+		this._responsiveSizeTemplateIndex = index;
+		this.notifyListeners('responsiveSizeTemplateIndex', index);
+
+		const currentSize = this._responsiveSize;
+
+		width = width ?? currentSize.width ?? DEFAULT_RESPONSIVE_SIZE.width;
+		height = height ?? currentSize.height ?? DEFAULT_RESPONSIVE_SIZE.height;
+
+		if (currentSize.height > currentSize.width) {
+			const aux = width;
+			width = height;
+			height = aux;
+		}
+
+		this.responsiveSize = { width, height };
+		this.save('responsiveSizeTemplateIndex', index);
+	}
+
 	// #endregion
 
 	public readonly onPreferenceChanged = new Phaser.Signal();
 
 	public constructor(clean: boolean) {
 		if (clean) localStorage.clear();
-		this._snap = this.load('snap', true);
-		this._gizmos = this.load('gizmos', true);
-		this._guides = this.load('guides', false);
-		this._hitArea = this.load('hitArea', false);
-		this._responsive = this.load('responsive', false);
-		this._refImageVisible = this.load('refImageVisible', false);
-		this._refImageX = this.load('refImageX', 0);
-		this._refImageY = this.load('refImageY', 0);
+		try {
+			this._snap = this.load('snap', true);
+			this._gizmos = this.load('gizmos', true);
+			this._guides = this.load('guides', false);
+			this._hitArea = this.load('hitArea', false);
+			this._responsive = this.load('responsive', false);
+			this._refImageVisible = this.load('refImageVisible', false);
+			this._refImageX = this.load('refImageX', 0);
+			this._refImageY = this.load('refImageY', 0);
+			this._responsiveSize = this.load('responsiveSize', Object.assign({}, DEFAULT_RESPONSIVE_SIZE));
+			this._responsiveSizeTemplateIndex = this.load('responsiveSizeTemplateIndex', 0);
+			console.log(this._responsiveSizeTemplateIndex);
+		} catch (_e: any) {
+			localStorage.clear();
+		}
 	}
 
 	// hmm... this is weird
@@ -119,6 +165,10 @@ export class Preferences {
 		actions.setActionCommand(Actions.TOGGLE_GUIDES, () => this.guides = !this._guides, () => this._guides);
 		actions.setActionCommand(Actions.TOGGLE_HIT_AREA, () => this.hitArea = !this._hitArea, () => this._hitArea);
 		actions.setActionCommand(Actions.TOGGLE_RESPONSIVE, () => this.responsive = !this._responsive, () => this._responsive);
+		actions.setActionCommand(Actions.TOGGLE_ORIENTATION, () => {
+			const size = this._responsiveSize;
+			this.responsiveSize = { width: size.height, height: size.width };
+		});
 		actions.setActionCommand(
 			Actions.TOGGLE_ALL_HIT_AREAS_SNAPSHOT,
 			() => this.allHitAreasSnapshot = !this._allHitAreasSnapshot,
@@ -148,7 +198,7 @@ export class Preferences {
 		return typeof defaultValue === 'string' ? v : JSON.parse(v);
 	}
 
-	private save(key: string, value: { toString: () => string }) {
-		localStorage.setItem(key, value.toString());
+	private save(key: string, value: any) {
+		localStorage.setItem(key, typeof value === 'object' ? JSON.stringify(value) : value.toString());
 	}
 }

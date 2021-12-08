@@ -1,4 +1,3 @@
-import { ComponentTags } from 'component-tags';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { InspectorPropertyModel } from 'data/inspector-data';
@@ -6,6 +5,8 @@ import { Inspector } from 'editor-view/inspector/inspector';
 import { PropertyEditor } from '../editors/property-editor';
 
 export class PropertiesInspector extends Inspector {
+	public static readonly tagName = 'phred-properties-inspector';
+
 	private editors: Record<string, PropertyEditor<any>> = {};
 
 	public init(game: Phaser.Game) {
@@ -73,4 +74,4 @@ export class PropertiesInspector extends Inspector {
 	}
 }
 
-customElements.define(ComponentTags.PropertiesInspector, PropertiesInspector);
+customElements.define(PropertiesInspector.tagName, PropertiesInspector);
