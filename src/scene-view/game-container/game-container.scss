@@ -4,6 +4,17 @@ phred-game-container {
 	overflow: auto;
 	position: relative;
 
+	&.responsive {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		#phred-game-parent {
+			width: 400px;
+			height: 700px;
+		}
+	}
+
 	#phred-game-parent {
 		position: absolute;
 		.phred-game,

@@ -77,13 +77,12 @@ export class GameContainer extends HTMLElement {
 	}
 
 	private setResponsive(responsive: boolean) {
-		const style = this.gameEditorParentElement.style;
 		if (responsive) {
-			style.width = '100%';
-			style.height = '100%';
+			if (!this.classList.contains('responsive')) {
+				this.classList.add('responsive');
+			}
 		} else {
-			style.width = 'unset';
-			style.height = 'unset';
+			this.classList.remove('responsive');
 		}
 	}
 
