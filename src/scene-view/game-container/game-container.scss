@@ -12,9 +12,12 @@ phred-game-container {
 		justify-content: center;
 
 		#phred-game-parent {
-			box-shadow: 9px 9px 8px 18px $shadow-color;
-			phred-game-resize-handle {
-				display: flex;
+			box-shadow: 0px 0px 8px 9px $shadow-color;
+			&.resizable {
+				box-shadow: 9px 9px 8px 18px $shadow-color;
+				phred-game-resize-handle {
+					display: flex;
+				}
 			}
 		}
 	}

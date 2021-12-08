@@ -13,7 +13,9 @@ const MAX_WIDTH = 10000;
 export class GameContainer extends HTMLElement {
 	public static readonly tagName = 'phred-game-container';
 
+	// TODO this could be a custom element
 	private gameOriginalParentElement: HTMLElement;
+
 	private gameEditorParentElement: HTMLElement;
 	private selectionArea: SelectionArea;
 	private game: Phaser.Game;
@@ -26,7 +28,7 @@ export class GameContainer extends HTMLElement {
 		this.appendChild(gp);
 
 		const sa = document.createElement(SelectionArea.tagName) as SelectionArea;
-		this.selectionArea = this.gameEditorParentElement.appendChild(sa);
+		this.selectionArea = gp.appendChild(sa);
 		sa.init(game);
 
 		this.createResizeHandles(gp);
@@ -45,6 +47,7 @@ export class GameContainer extends HTMLElement {
 
 		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
 		this.onPreferencesChanged('responsive', Editor.prefs.responsive);
+		this.onPreferencesChanged('responsiveSizeTemplateIndex', Editor.prefs.responsiveSizeTemplateIndex);
 
 		this.onmousedown = this.onInputDown;
 		this.onmousemove = this.onInputMove;
@@ -116,6 +119,14 @@ export class GameContainer extends HTMLElement {
 		this.gameEditorParentElement.style.height = 'unset';
 	}
 
+	private responsiveSizeTemplateChanged(index: number) {
+		if (!index) {
+			this.gameEditorParentElement.classList.add('resizable');
+		} else {
+			this.gameEditorParentElement.classList.remove('resizable');
+		}
+	}
+
 	// #region Panning
 
 	private _downPageX = 0;
@@ -142,11 +153,20 @@ export class GameContainer extends HTMLElement {
 
 	// #endregion
 
-	// #region Event Handling
+	// #region Other Event Handling
 
 	private onPreferencesChanged(key: PreferenceKey, value: any) {
-		if (key === 'responsive') this.setResponsive(value === true);
-		if (key === 'responsiveSize') this.setResponsiveSize(value);
+		switch (key) {
+			case 'responsive':
+				this.setResponsive(value === true);
+				break;
+			case 'responsiveSize':
+				this.setResponsiveSize(value);
+				break;
+			case 'responsiveSizeTemplateIndex':
+				this.responsiveSizeTemplateChanged(value);
+				break;
+		}
 	}
 
 	private onGameResized(width: number, height: number) {

@@ -112,6 +112,29 @@ export class Preferences {
 		this.save('responsiveSize', value);
 	}
 
+	private _responsiveSizeTemplateIndex: number;
+
+	public get responsiveSizeTemplateIndex() { return this._responsiveSizeTemplateIndex; }
+
+	public setResponsiveSizeTemplate(index: number, width: number, height: number) {
+		this._responsiveSizeTemplateIndex = index;
+		this.notifyListeners('responsiveSizeTemplateIndex', index);
+
+		const currentSize = this._responsiveSize;
+
+		width = width ?? currentSize.width ?? DEFAULT_RESPONSIVE_SIZE.width;
+		height = height ?? currentSize.height ?? DEFAULT_RESPONSIVE_SIZE.height;
+
+		if (currentSize.height > currentSize.width) {
+			const aux = width;
+			width = height;
+			height = aux;
+		}
+
+		this.responsiveSize = { width, height };
+		this.save('responsiveSizeTemplateIndex', index);
+	}
+
 	// #endregion
 
 	public readonly onPreferenceChanged = new Phaser.Signal();
@@ -128,6 +151,8 @@ export class Preferences {
 			this._refImageX = this.load('refImageX', 0);
 			this._refImageY = this.load('refImageY', 0);
 			this._responsiveSize = this.load('responsiveSize', Object.assign({}, DEFAULT_RESPONSIVE_SIZE));
+			this._responsiveSizeTemplateIndex = this.load('responsiveSizeTemplateIndex', 0);
+			console.log(this._responsiveSizeTemplateIndex);
 		} catch (_e: any) {
 			localStorage.clear();
 		}
