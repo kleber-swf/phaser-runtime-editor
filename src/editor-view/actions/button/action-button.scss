@@ -1,11 +1,13 @@
 @import 'colors';
 
-.button {
+phred-actions-toolbar .button {
 	box-shadow: none;
 	position: relative;
-	padding: 0 !important;
+	padding: 0;
 	width: 34px;
+	min-width: 34px;
 	max-width: 34px;
+	margin: 0 2px;
 
 	&:hover {
 		background-color: $primary-color;

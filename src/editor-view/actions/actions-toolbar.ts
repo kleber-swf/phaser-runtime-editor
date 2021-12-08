@@ -33,6 +33,7 @@ export class ActionsToolbar extends Widget {
 		this.createSeparator();
 
 		this.createButton(actions.getAction(Actions.ZOOM_OUT));
+		this.createButton(actions.getAction(Actions.ZOOM_RESET));
 		this.createButton(actions.getAction(Actions.ZOOM_IN));
 
 		this.createSeparator();

@@ -152,7 +152,6 @@ export class Preferences {
 			this._refImageY = this.load('refImageY', 0);
 			this._responsiveSize = this.load('responsiveSize', Object.assign({}, DEFAULT_RESPONSIVE_SIZE));
 			this._responsiveSizeTemplateIndex = this.load('responsiveSizeTemplateIndex', 0);
-			console.log(this._responsiveSizeTemplateIndex);
 		} catch (_e: any) {
 			localStorage.clear();
 		}

@@ -1,9 +1,9 @@
-import { PropertyElementTag } from 'property-element-tag';
 import { Actions } from 'core/actions';
 import { EditorData } from 'data/editor-data';
 import { InspectorData } from 'data/inspector-data';
 import { PhaserMeta } from 'data/phaser-meta';
 import { PluginConfig } from 'plugin.model';
+import { PropertyElementTag } from 'property-element-tag';
 import { ActionHandler } from './action-handler';
 import { History } from './history';
 import { Preferences } from './preferences';
@@ -238,7 +238,8 @@ class EditorClass {
 
 			{ id: Actions.ZOOM, shortcuts: ['ctrl+wheel'] },
 			{ id: Actions.ZOOM_IN, label: 'zoom in', icon: 'fa-search-plus', shortcuts: ['ctrl+=', 'ctrl++'] },
-			{ id: Actions.ZOOM_OUT, label: 'zoom out', icon: 'fa-search-minus', shortcuts: ['ctrl+-'] }
+			{ id: Actions.ZOOM_OUT, label: 'zoom out', icon: 'fa-search-minus', shortcuts: ['ctrl+-'] },
+			{ id: Actions.ZOOM_RESET, label: 'reset zoom', icon: 'fa-expand', shortcuts: ['ctrl+0'] }
 		);
 
 		return actions;

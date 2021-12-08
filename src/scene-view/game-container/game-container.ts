@@ -19,6 +19,7 @@ export class GameContainer extends HTMLElement {
 	private gameEditorParentElement: HTMLElement;
 	private selectionArea: SelectionArea;
 	private game: Phaser.Game;
+	private _zoomAmount = 0;
 
 	public init(game: Phaser.Game) {
 		this.game = game;
@@ -44,6 +45,7 @@ export class GameContainer extends HTMLElement {
 
 		actions.setActionCommand(Actions.ZOOM_IN, () => this.zoom(100));
 		actions.setActionCommand(Actions.ZOOM_OUT, () => this.zoom(-100));
+		actions.setActionCommand(Actions.ZOOM_RESET, () => this.resetZoom());
 
 		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
 		this.onPreferencesChanged('responsive', Editor.prefs.responsive);
@@ -93,8 +95,19 @@ export class GameContainer extends HTMLElement {
 		const el = this.gameEditorParentElement;
 		const width = Math.max(Math.min(el.clientWidth + amount, MAX_WIDTH), MIN_WIDTH);
 		const height = width * (el.clientHeight / el.clientWidth);
+		this._zoomAmount += width - el.clientWidth;
 		el.style.width = width + 'px';
 		el.style.height = height + 'px';
+	}
+
+	private resetZoom() {
+		const el = this.gameEditorParentElement;
+		const w = el.clientWidth - this._zoomAmount;
+		const ratio = w / el.clientWidth;
+		this._zoomAmount = 0;
+
+		el.style.width = w + 'px';
+		el.style.height = (el.clientHeight * ratio) + 'px';
 	}
 
 	private setResponsive(responsive: boolean) {

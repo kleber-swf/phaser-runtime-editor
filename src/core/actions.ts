@@ -22,4 +22,5 @@ export class Actions {
 	public static readonly ZOOM = 'ZOOM';
 	public static readonly ZOOM_IN = 'ZOOM_IN';
 	public static readonly ZOOM_OUT = 'ZOOM_OUT';
+	public static readonly ZOOM_RESET = 'ZOOM_RESET';
 }
