@@ -12,7 +12,7 @@ export class ActionsToolbar extends Widget {
 
 	private readonly buttons: ActionButton[] = [];
 	private orientationBtn: ActionButton;
-	private orientationPanel: SizeTemplatesPanel;
+	private orientationTemplates: SizeTemplatesPanel;
 
 	public setupActions(actions: ActionHandler) {
 		this.createButton(actions.getAction(Actions.TOGGLE_ENABLED));
@@ -28,7 +28,7 @@ export class ActionsToolbar extends Widget {
 
 		this.createButton(actions.getAction(Actions.TOGGLE_RESPONSIVE));
 		this.orientationBtn = this.createButton(actions.getAction(Actions.TOGGLE_ORIENTATION));
-		this.orientationPanel = this.appendChild(document.createElement(SizeTemplatesPanel.tagName)) as SizeTemplatesPanel;
+		this.orientationTemplates = this.appendChild(document.createElement(SizeTemplatesPanel.tagName)) as SizeTemplatesPanel;
 
 		this.createSeparator();
 
@@ -42,7 +42,7 @@ export class ActionsToolbar extends Widget {
 		this.createSeparator();
 		this.createSpacer();
 
-		this.orientationPanel.init();
+		this.orientationTemplates.init();
 		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
 		this.onPreferencesChanged('responsive', Editor.prefs.responsive);
 	}
@@ -50,6 +50,7 @@ export class ActionsToolbar extends Widget {
 	private onPreferencesChanged(key: PreferenceKey, value: any) {
 		if (key !== 'responsive') return;
 		this.orientationBtn.interactable = value === true;
+		this.orientationTemplates.interactable = value === true;
 	}
 
 	public enable() { this.buttons.forEach(e => e.updateState()); }

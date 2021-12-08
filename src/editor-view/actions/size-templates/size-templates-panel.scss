@@ -1,7 +1,35 @@
+@import 'colors';
 @import '../button/action-button.scss';
-phred-size-templates-panel {
+
+phred-size-templates-panel.fa {
 	display: flex;
-	.selected-template {
-		
+	width: 90px;
+	position: relative;
+
+	select.button {
+		flex: 1;
+		width: 100%;
+		max-width: initial;
+		padding: 0 28px 0 8px !important;
+		appearance: none;
+	}
+
+	&:after {
+		content: '\f0d7';
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		right: 0;
+		padding: 0 8px;
+		height: 100%;
+		width: 20px;
+		z-index: 1;
+		pointer-events: none;
+		color: rgba($on-background, 0.3);
+	}
+
+	&:hover:after {
+		color: $on-background;
 	}
 }

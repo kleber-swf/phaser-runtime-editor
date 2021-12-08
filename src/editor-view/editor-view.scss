@@ -222,6 +222,11 @@ phred-editor-view {
 		}
 	}
 
+	.disabled {
+		pointer-events: none;
+		opacity: 0.5;
+	}
+
 	.phred-content {
 		flex: 1;
 		display: inline-flex;

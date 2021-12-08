@@ -3,6 +3,9 @@
 .button {
 	box-shadow: none;
 	position: relative;
+	padding: 0 !important;
+	width: 34px;
+	max-width: 34px;
 
 	&:hover {
 		background-color: $primary-color;
@@ -30,11 +33,6 @@
 		&:hover {
 			background-color: lighten($primary-color, 10%);
 		}
-	}
-
-	&.disabled {
-		pointer-events: none;
-		opacity: 0.5;
 	}
 
 	.tooltip {

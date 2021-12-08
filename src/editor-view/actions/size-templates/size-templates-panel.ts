@@ -9,29 +9,30 @@ const OPTIONS = [
 	{ width: 900, height: 600, label: '3:2' },
 ];
 
-// 16:9		0.5625		800 450
-// 16:10		0.625			800 500
-// 19.5:9	0.4615		780 520
-// 3:2		0.66667		900 600
-// 4:3		0.75			800 600
-
 export class SizeTemplatesPanel extends HTMLElement {
 	public static readonly tagName = 'phred-size-templates-panel';
 
+	public set interactable(value: boolean) {
+		if (value) {
+			this.classList.remove('disabled');
+			return;
+		}
+		if (!this.classList.contains('disabled')) {
+			this.classList.add('disabled');
+		}
+	}
+
 	public init() {
-		const selectedTemplate = this.appendChild(document.createElement('div'));
-		selectedTemplate.classList.add('selected-template');
-
+		this.classList.add('fa');
 		const e = this.appendChild(document.createElement('select')) as HTMLSelectElement;
-		OPTIONS.forEach((value, index) => {
-			const o = e.appendChild(document.createElement('option'));
-			o.value = index.toString();
-			o.innerHTML = value.label;
-		});
+		e.classList.add('button');
 
-		const btn = this.appendChild(document.createElement('div'));
-		btn.classList.add('button');
-		btn.appendChild(document.createElement('i')).classList.add('fas', 'fa-caret-down');
+		OPTIONS.forEach((value, index) => {
+			const option = document.createElement('option');
+			option.value = index.toString();
+			option.innerHTML = value.label;
+			e.appendChild(option);
+		});
 	}
 }
 
