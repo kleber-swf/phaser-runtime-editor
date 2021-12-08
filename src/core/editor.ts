@@ -237,8 +237,8 @@ class EditorClass {
 			{ id: Actions.MOVE_RIGHT_10, shortcuts: ['shift+ArrowRight'] },
 
 			{ id: Actions.ZOOM, shortcuts: ['ctrl+wheel'] },
-			{ id: Actions.ZOOM_IN, label: 'zoom in', icon: 'fa-plus', shortcuts: ['ctrl+=', 'ctrl++'] },
-			{ id: Actions.ZOOM_OUT, label: 'zoom out', icon: 'fa-minus', shortcuts: ['ctrl+-'] }
+			{ id: Actions.ZOOM_IN, label: 'zoom in', icon: 'fa-search-plus', shortcuts: ['ctrl+=', 'ctrl++'] },
+			{ id: Actions.ZOOM_OUT, label: 'zoom out', icon: 'fa-search-minus', shortcuts: ['ctrl+-'] }
 		);
 
 		return actions;
