@@ -7,6 +7,7 @@ export class GameResizeHandle extends HTMLElement {
 	private dragBind: (e: MouseEvent) => void;
 	private stopDraggingBind: () => void;
 	private dragSideBind: (e: MouseEvent) => void;
+	public onStopDrag: (width: number, height: number) => void;
 
 	public init(parent: HTMLElement, side: 'right' | 'bottom' | 'both') {
 		this.parent = parent;
@@ -47,6 +48,7 @@ export class GameResizeHandle extends HTMLElement {
 	private stopDragging() {
 		window.removeEventListener('mousemove', this.dragBind);
 		window.removeEventListener('mouseup', this.stopDraggingBind);
+		this.onStopDrag(this.parent.clientWidth, this.parent.clientHeight);
 	}
 }
 

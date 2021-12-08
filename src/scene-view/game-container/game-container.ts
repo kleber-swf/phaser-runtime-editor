@@ -27,20 +27,9 @@ export class GameContainer extends HTMLElement {
 
 		const sa = document.createElement(SelectionArea.tagName) as SelectionArea;
 		this.selectionArea = this.gameEditorParentElement.appendChild(sa);
-
-		const handleRight = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
-		handleRight.init(gp, 'right');
-		gp.appendChild(handleRight);
-
-		const handleBottom = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
-		handleBottom.init(gp, 'bottom');
-		gp.appendChild(handleBottom);
-
-		const handleBoth = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
-		handleBoth.init(gp, 'both');
-		gp.appendChild(handleBoth);
-
 		sa.init(game);
+
+		this.createResizeHandles(gp);
 	}
 
 	public setupActions(actions: ActionHandler) {
@@ -62,9 +51,22 @@ export class GameContainer extends HTMLElement {
 		this.onmouseup = this.onInputUp;
 	}
 
-	private onPreferencesChanged(key: PreferenceKey, value: any) {
-		if (key === 'responsive') this.setResponsive(value === true);
-		if (key === 'responsiveSize') this.setResponsiveSize(value);
+	private createResizeHandles(parent: HTMLElement) {
+		const onStopDrag = this.onGameResized.bind(this);
+		const handleRight = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
+		handleRight.init(parent, 'right');
+		handleRight.onStopDrag = onStopDrag;
+		parent.appendChild(handleRight);
+
+		const handleBottom = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
+		handleBottom.init(parent, 'bottom');
+		handleBottom.onStopDrag = onStopDrag;
+		parent.appendChild(handleBottom);
+
+		const handleBoth = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
+		handleBoth.init(parent, 'both');
+		handleBoth.onStopDrag = onStopDrag;
+		parent.appendChild(handleBoth);
 	}
 
 	public enable(config: PluginConfig) {
@@ -75,7 +77,7 @@ export class GameContainer extends HTMLElement {
 		this.selectionArea.enable(config);
 	}
 
-	// returns the game to its original parent
+	/** Returns the game to its original parent */
 	public disable() {
 		this.selectionArea.disable();
 		const el = this.game.canvas.parentElement;
@@ -136,6 +138,19 @@ export class GameContainer extends HTMLElement {
 	private onInputUp() {
 		this.onmousemove = null;
 		document.removeEventListener('mouseup', this._onInputUpFn);
+	}
+
+	// #endregion
+
+	// #region Event Handling
+
+	private onPreferencesChanged(key: PreferenceKey, value: any) {
+		if (key === 'responsive') this.setResponsive(value === true);
+		if (key === 'responsiveSize') this.setResponsiveSize(value);
+	}
+
+	private onGameResized(width: number, height: number) {
+		Editor.prefs.responsiveSize = { width, height };
 	}
 
 	// #endregion
