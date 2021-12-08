@@ -4,6 +4,7 @@ phred-action-button.button {
 	min-width: 35px;
 	padding: 0;
 	box-shadow: none;
+	position: relative;
 
 	&:hover {
 		background-color: $primary-color;
@@ -25,6 +26,46 @@ phred-action-button.button {
 		color: $on-primary;
 		&:hover {
 			background-color: lighten($primary-color, 10%);
+		}
+	}
+
+	&:hover .tooltip {
+		opacity: 1;
+		transition: opacity 200ms 800ms;
+	}
+
+	.tooltip {
+		position: absolute;
+		top: 46px;
+		background-color: lighten($background-color, 2%);
+		color: $on-background;
+		padding: 4px 10px;
+		border-radius: 6px;
+		font-size: 14px;
+		text-align: center;
+		user-select: none;
+		pointer-events: none;
+		opacity: 0;
+		max-width: 150px;
+		box-sizing: border-box;
+		white-space: nowrap;
+		box-shadow: 0 2px 2px 2px $light-shadow-color;
+		transition: opacity 200ms 100ms;
+		z-index: 1;
+
+		&:before {
+			content: '';
+			position: absolute;
+			top: -4px;
+			left: 50%;
+			display: block;
+			width: 8px;
+			height: 8px;
+			background-color: lighten($background-color, 2%);
+			transform-origin: 4px 4px;
+			margin-left: -4px;
+			transform: rotateZ(45deg);
+			z-index: -1;
 		}
 	}
 }

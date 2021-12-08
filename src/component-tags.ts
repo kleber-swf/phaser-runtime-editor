@@ -1,4 +1,5 @@
 export class ComponentTags {
+	// TODO remove the ones that doesn't need to be here
 	public static readonly EditorView = 'phred-editor-view';
 	public static readonly GameContainer = 'phred-game-container';
 	public static readonly ActionsToolbar = 'phred-actions-toolbar';

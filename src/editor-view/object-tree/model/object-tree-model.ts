@@ -57,6 +57,7 @@ export class ObjectTreeModel {
 		filter = filter ? filter.toLowerCase() : '';
 		Object.keys(objects).forEach(k => {
 			const o = objects[k] as ObjectTreeNodeModel;
+			console.log(o.node?.title);
 			if (!o.node) return;
 			if (o.node.title.toLowerCase().indexOf(filter) >= 0) {
 				o.node.classList.remove('invisible');

@@ -161,7 +161,6 @@ class EditorClass {
 				id: Actions.TOGGLE_ENABLED,
 				label: 'edit',
 				icon: 'fa-edit',
-				shortcuts: ['ctrl+F2'],
 			},
 
 			{

@@ -8,6 +8,7 @@ phred-object-tree-inspector.phred-inspector {
 	&.filtering {
 		.content .node-children {
 			margin-left: 0;
+			display: flex;
 		}
 		.collapse-icon {
 			display: none;
