@@ -1,4 +1,4 @@
-import { ComponentTags } from 'component-tags';
+import { PropertyElementTag } from 'property-element-tag';
 import { InspectorPropertyModel } from 'data/inspector-data';
 import { PropertyEditor } from '../property-editor';
 
@@ -62,4 +62,4 @@ export class ValueListPropertyEditor extends PropertyEditor<any> {
 	protected valueToJson() { return this._internalValue.toString(); }
 }
 
-customElements.define(ComponentTags.ValueListPropertyEditor, ValueListPropertyEditor);
+customElements.define(PropertyElementTag.ValueListPropertyEditor, ValueListPropertyEditor);

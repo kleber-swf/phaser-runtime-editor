@@ -1,5 +1,5 @@
 import { InspectorPropertyModel } from 'data/inspector-data';
-import { ComponentTags } from 'component-tags';
+import { PropertyElementTag } from 'property-element-tag';
 import { PropertyEditor } from '../property-editor';
 
 export class TextPropertyEditor extends PropertyEditor<string> {
@@ -33,4 +33,4 @@ export class TextPropertyEditor extends PropertyEditor<string> {
 	}
 }
 
-customElements.define(ComponentTags.TextPropertyEditor, TextPropertyEditor);
+customElements.define(PropertyElementTag.TextPropertyEditor, TextPropertyEditor);

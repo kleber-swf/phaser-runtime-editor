@@ -1,4 +1,3 @@
-import { ComponentTags } from 'component-tags';
 import { Action, ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
@@ -8,6 +7,8 @@ import './actions-toolbar.scss';
 import { ActionButton } from './button/action-button';
 
 export class ActionsToolbar extends Widget {
+	public static readonly tagName = 'phred-actions-toolbar';
+
 	private readonly buttons: ActionButton[] = [];
 	private orientationBtn: ActionButton;
 
@@ -47,7 +48,7 @@ export class ActionsToolbar extends Widget {
 
 	private createButton(action: Action) {
 		if (!action) return null;
-		const btn = document.createElement(ComponentTags.ActionButton) as ActionButton;
+		const btn = document.createElement(ActionButton.tagName) as ActionButton;
 		btn.setAction(action);
 		this.appendChild(btn);
 		this.buttons.push(btn);
@@ -65,4 +66,4 @@ export class ActionsToolbar extends Widget {
 	}
 }
 
-customElements.define(ComponentTags.ActionsToolbar, ActionsToolbar);
+customElements.define(ActionsToolbar.tagName, ActionsToolbar);

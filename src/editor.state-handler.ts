@@ -1,4 +1,3 @@
-import { ComponentTags } from 'component-tags';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { DisabledUI } from 'disabled/disabled-ui';
@@ -34,7 +33,7 @@ export class EditorStateHandler {
 		this._initialized = true;
 		Editor.init(config);
 
-		this.editorView = document.createElement(ComponentTags.EditorView) as EditorView;
+		this.editorView = document.createElement(EditorView.tagName) as EditorView;
 		this.referenceImageController = new ReferenceImageController(this.game, config);
 
 		this.editorView.init(this.game);

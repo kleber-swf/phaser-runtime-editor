@@ -1,8 +1,8 @@
-import { ComponentTags } from 'component-tags';
 import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
+import { ResizeHandle } from 'editor-view/panel/resize-handle/resize-handle';
 import { PluginConfig, Size } from 'plugin.model';
 import { SelectionArea } from 'scene-view/selection-area/selection-area';
 import './game-container.scss';
@@ -11,6 +11,8 @@ const MIN_WIDTH = 100;
 const MAX_WIDTH = 10000;
 
 export class GameContainer extends HTMLElement {
+	public static readonly tagName = 'phred-game-container';
+
 	private gameOriginalParentElement: HTMLElement;
 	private gameEditorParentElement: HTMLElement;
 	private selectionArea: SelectionArea;
@@ -25,6 +27,11 @@ export class GameContainer extends HTMLElement {
 
 		const sa = document.createElement(SelectionArea.tagName) as SelectionArea;
 		this.selectionArea = this.gameEditorParentElement.appendChild(sa);
+
+		const handle = document.createElement(ResizeHandle.tagName) as ResizeHandle;
+		handle.init(this.gameEditorParentElement, 'left');
+		this.appendChild(handle);
+
 		sa.init(game);
 	}
 
@@ -90,7 +97,6 @@ export class GameContainer extends HTMLElement {
 	}
 
 	private setResponsiveSize(size: Size) {
-		console.log(size);
 		this.gameEditorParentElement.style.width = size.width + 'px';
 		this.gameEditorParentElement.style.height = size.height + 'px';
 	}
@@ -127,4 +133,4 @@ export class GameContainer extends HTMLElement {
 	// #endregion
 }
 
-customElements.define(ComponentTags.GameContainer, GameContainer);
+customElements.define(GameContainer.tagName, GameContainer);

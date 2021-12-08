@@ -1,4 +1,3 @@
-import { ComponentTags } from 'component-tags';
 import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
@@ -8,11 +7,13 @@ import { ActionButton } from '../button/action-button';
 import './reference-image-panel.scss';
 
 export class ReferenceImagePanel extends HTMLElement {
+	public static readonly tagName = 'phred-reference-image-panel';
+
 	private button: ActionButton;
 	private slider: HTMLInputElement;
 
 	public init(image: ReferenceImage) {
-		const btn = this.button = document.createElement(ComponentTags.ActionButton) as ActionButton;
+		const btn = this.button = document.createElement(ActionButton.tagName) as ActionButton;
 		this.appendChild(btn);
 
 		const slider = this.slider = document.createElement('input');
@@ -39,4 +40,4 @@ export class ReferenceImagePanel extends HTMLElement {
 	}
 }
 
-customElements.define(ComponentTags.ReferenceImagePanel, ReferenceImagePanel);
+customElements.define(ReferenceImagePanel.tagName, ReferenceImagePanel);
