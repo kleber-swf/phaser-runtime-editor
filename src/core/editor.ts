@@ -176,8 +176,7 @@ class EditorClass {
 				tooltip: 'Toggle gizmos',
 				icon: 'fa-vector-square',
 				toggle: true,
-				hold: true,
-				shortcuts: ['ctrl+shift+Shift', 'ctrl+shift+Control'],
+				shortcuts: ['ctrl+`', 'ctrl+.'],
 				category: 'scene',
 			},
 			{
@@ -244,10 +243,10 @@ class EditorClass {
 			},
 
 			{
-				id: Actions.DESELECT,
+				id: Actions.CLEAR_SELECTION,
 				shortcuts: ['Escape'],
 				category: 'general',
-				description: 'Deselect all objects',
+				description: 'Clear selection',
 			},
 			{
 				id: Actions.MOVE_UP_1,

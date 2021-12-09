@@ -53,7 +53,7 @@ export class EditorData {
 	}
 
 	public setupActions(actions: ActionHandler) {
-		actions.setActionCommand(Actions.DESELECT, () => this.selectObject(null, DataOrigin.ACTION));
+		actions.setActionCommand(Actions.CLEAR_SELECTION, () => this.selectObject(null, DataOrigin.ACTION));
 		actions.setActionCommand(Actions.PRINT_OBJECT, () => {
 			if (this._selectedObject) console.info(this._selectedObject);
 		});

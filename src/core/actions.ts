@@ -18,7 +18,7 @@ export class Actions {
 	public static readonly TOGGLE_ALL_HIT_AREAS_SNAPSHOT = 'TOGGLE_ALL_HIT_AREAS_SNAPSHOT';
 	public static readonly TOGGLE_ENABLED = 'TOGGLE_ENABLED';
 	public static readonly PRINT_OBJECT = 'PRINT_OBJECT';
-	public static readonly DESELECT = 'DESELECT';
+	public static readonly CLEAR_SELECTION = 'CLEAR_SELECTION';
 	public static readonly ZOOM = 'ZOOM';
 	public static readonly ZOOM_IN = 'ZOOM_IN';
 	public static readonly ZOOM_OUT = 'ZOOM_OUT';

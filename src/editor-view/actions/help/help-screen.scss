@@ -69,6 +69,8 @@ phred-help-screen {
 
 					.shortcut {
 						width: 90px;
+						display: flex;
+						flex-direction: column;
 					}
 
 					.description {

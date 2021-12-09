@@ -59,7 +59,10 @@ export class HelpScreen extends HTMLElement {
 		const shortcut = el.appendChild(document.createElement('label'));
 		shortcut.classList.add('shortcut');
 		if (action.shortcuts?.length) {
-			shortcut.innerText = this.humanReadableShortcut(action.shortcuts[0]);
+			shortcut.innerHTML = action.shortcuts
+				.map(s => `<span>${this.humanReadableShortcut(s)}</span>`)
+				.join('');
+			// shortcut.innerText = this.humanReadableShortcut(action.shortcuts[0]);
 		}
 
 		const label = el.appendChild(document.createElement('label'));
