@@ -1,6 +1,6 @@
 export interface PluginConfigBuilder {
 	root?: () => Container;
-	refImage?: () => Phaser.Image | Phaser.Sprite;
+	referenceImageUrl?: () => string;
 	pauseGame?: boolean;
 	clearPrefs?: boolean;
 	onShow?: () => void;
@@ -9,7 +9,7 @@ export interface PluginConfigBuilder {
 
 export interface PluginConfig {
 	root: Container;
-	refImage: Phaser.Image | Phaser.Sprite;
+	referenceImageUrl: string;
 	pauseGame: boolean;
 	clearPrefs: boolean;
 }

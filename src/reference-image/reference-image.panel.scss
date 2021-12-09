@@ -1,0 +1,10 @@
+@import 'colors';
+
+$height: 200px;
+
+phred-reference-image-panel {
+	.popup {
+		width: 200px;
+		height: $height;
+	}
+}

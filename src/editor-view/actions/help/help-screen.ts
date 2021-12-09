@@ -1,12 +1,15 @@
 import { Action } from 'core/action-handler';
 import { Editor } from 'core/editor';
+import { PopupContainer } from 'editor-view/popup/popup-container';
 import './help-screen.scss';
 
-export class HelpScreen extends HTMLElement {
+export class HelpScreen extends PopupContainer {
 	public static readonly tagName = 'phred-help-screen';
 
-	public connectedCallback() {
-		const popup = this.createPopup();
+	protected createPopup() {
+		const popup = super.createPopup();
+		popup.appendChild(document.createElement('h1')).innerText = 'Help';
+
 		const content = popup.appendChild(document.createElement('div'));
 		content.classList.add('content');
 
@@ -25,16 +28,6 @@ export class HelpScreen extends HTMLElement {
 			});
 
 		this.addEventListener('click', () => this.remove());
-	}
-
-	private createPopup() {
-		const popup = document.createElement('div');
-		popup.classList.add('popup');
-
-		popup.appendChild(document.createElement('h1'))
-			.innerText = 'Help';
-
-		this.appendChild(popup);
 		return popup;
 	}
 

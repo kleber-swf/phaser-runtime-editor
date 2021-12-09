@@ -87,7 +87,8 @@ export class EditorView extends Widget {
 	}
 
 	private showHelp() {
-		this.appendChild(document.createElement(HelpScreen.tagName));
+		(document.createElement(HelpScreen.tagName) as HelpScreen)
+			.openPopup();
 	}
 }
 

@@ -20,7 +20,7 @@ export class Plugin extends Phaser.Plugin {
 		this.insertHead();
 		if (!config) config = {};
 		if (!config.root) config.root = () => game.world;
-		if (!config.refImage) config.refImage = () => null;
+		if (!config.referenceImageUrl) config.referenceImageUrl = () => null;
 		this.configBuilder = config;
 		// this.config = {
 		// 	root: null,

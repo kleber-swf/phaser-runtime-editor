@@ -3,6 +3,7 @@ import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
 import { Widget } from 'editor-view/widget/widget';
+import { ReferenceImagePanel } from 'reference-image/reference-image.panel';
 import './actions-toolbar.scss';
 import { ActionButton } from './button/action-button';
 import { SizeTemplatesPanel } from './size-templates/size-templates-panel';
@@ -41,6 +42,7 @@ export class ActionsToolbar extends Widget {
 
 		this.createSeparator();
 		this.createButton(actions.getAction(Actions.PRINT_OBJECT));
+		this.createReferenceImagePanel(actions.getAction(Actions.TOGGLE_REF_IMAGE));
 		this.createSeparator();
 		this.createButton(actions.getAction(Actions.UNDO));
 		this.createSeparator();
@@ -100,6 +102,21 @@ export class ActionsToolbar extends Widget {
 		this.appendChild(btn);
 		this.buttons.push(btn);
 		return btn;
+	}
+
+	private createReferenceImagePanel(action: Action) {
+		this.createButton(action);
+
+		const optionsButton = this.appendChild(document.createElement('div'));
+		optionsButton.classList.add('open-options-button', 'button', 'action-button');
+
+		optionsButton.appendChild(document.createElement('i'))
+			.classList.add('fas', 'fa-caret-down');
+
+		optionsButton.addEventListener('click', () => {
+			(document.createElement(ReferenceImagePanel.tagName) as ReferenceImagePanel)
+				.openPopup(optionsButton);
+		});
 	}
 
 	private createSeparator() {

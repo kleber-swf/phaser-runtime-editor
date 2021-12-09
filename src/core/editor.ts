@@ -2,6 +2,7 @@ import { Actions } from 'core/actions';
 import { EditorData } from 'data/editor-data';
 import { InspectorData } from 'data/inspector-data';
 import { PhaserMeta } from 'data/phaser-meta';
+import { EditorView } from 'editor-view/editor-view';
 import { PluginConfig } from 'plugin.model';
 import { PropertyElementTag } from 'property-element-tag';
 import { ActionHandler } from './action-handler';
@@ -16,6 +17,8 @@ class EditorClass {
 	public actions: ActionHandler;
 	public history: History;
 	public prefs: Preferences;
+
+	public editorView: EditorView;
 
 	public init(config: PluginConfig) {
 		this.data = new EditorData();

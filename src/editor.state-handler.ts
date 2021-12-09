@@ -35,6 +35,7 @@ export class EditorStateHandler {
 		this.editorView = document.createElement(EditorView.tagName) as EditorView;
 		// this.referenceImageController = new ReferenceImageController(this.game, config);
 
+		Editor.editorView = this.editorView;
 		this.editorView.init(this.game);
 
 		this.setupInitialActions();
@@ -74,7 +75,7 @@ export class EditorStateHandler {
 		return {
 			clearPrefs: builder.clearPrefs,
 			pauseGame: builder.pauseGame,
-			refImage: builder.refImage(),
+			referenceImageUrl: builder.referenceImageUrl(),
 			root: builder.root(),
 		};
 	}
