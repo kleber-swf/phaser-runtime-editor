@@ -6,7 +6,7 @@ phred-help-screen {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(black, 0.4);
+	background-color: rgba(#0e0e0e, 0.4);
 	z-index: 1000;
 	display: flex;
 	align-items: center;
@@ -21,7 +21,7 @@ phred-help-screen {
 		justify-content: stretch;
 		align-items: stretch;
 		flex-direction: column;
-		background-color: rgba(black, 0.8);
+		background-color: rgba(#0e0e0e, 0.9);
 		box-shadow: 0 0 4px 4px $shadow-color;
 
 		h1 {
@@ -55,7 +55,7 @@ phred-help-screen {
 					padding: 3px 10px;
 					display: flex;
 					align-items: center;
-					background-color: rgba(white, 0.1);
+					background-color: rgba(#1f1f1f, 0.9);
 					font-size: 14px;
 
 					& > * {
