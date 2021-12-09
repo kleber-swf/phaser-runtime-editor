@@ -3,7 +3,6 @@ import { Editor } from 'core/editor';
 import { DisabledUI } from 'disabled/disabled-ui';
 import { EditorView } from 'editor-view/editor-view';
 import { PluginConfig, PluginConfigBuilder } from 'plugin.model';
-import { ReferenceImageController } from 'reference-image/reference-image.controller';
 
 export class EditorStateHandler {
 	private _initialized = false;
@@ -11,7 +10,7 @@ export class EditorStateHandler {
 	private disabledUI: DisabledUI;
 
 	private editorView: EditorView;
-	private referenceImageController: ReferenceImageController;
+	// private referenceImageController: ReferenceImageController;
 
 	private readonly game: Phaser.Game;
 	private configBuilder: PluginConfigBuilder;
@@ -34,7 +33,7 @@ export class EditorStateHandler {
 		Editor.init(config);
 
 		this.editorView = document.createElement(EditorView.tagName) as EditorView;
-		this.referenceImageController = new ReferenceImageController(this.game, config);
+		// this.referenceImageController = new ReferenceImageController(this.game, config);
 
 		this.editorView.init(this.game);
 
@@ -52,7 +51,7 @@ export class EditorStateHandler {
 		);
 
 		this.editorView.setupActions(actions);
-		this.referenceImageController.setupActions(actions);
+		// this.referenceImageController.setupActions(actions);
 
 		actions.addContainer('body', document.body);
 	}
@@ -65,7 +64,7 @@ export class EditorStateHandler {
 		if (!this._initialized) this.init(this.config);
 
 		this.editorView.enable(this.config);
-		this.referenceImageController.enable(this.config.refImage);
+		// this.referenceImageController.enable(this.config.refImage);
 
 		Editor.enable();
 		if (this.onshow) this.onshow();
@@ -85,7 +84,7 @@ export class EditorStateHandler {
 		this._isEnabled = false;
 		Editor.disable();
 		this.editorView.disable();
-		this.referenceImageController.disable();
+		// this.referenceImageController.disable();
 
 		this.disabledUI.enable();
 		if (this.onhide) this.onhide();

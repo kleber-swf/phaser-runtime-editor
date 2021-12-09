@@ -3,11 +3,11 @@ import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
 import { ReferenceImage } from 'scene-view/reference-image';
-import { ActionButton } from '../button/action-button';
+import { ActionButton } from '../../editor-view/actions/button/action-button';
 import './reference-image-panel.scss';
 
-export class ReferenceImagePanel extends HTMLElement {
-	public static readonly tagName = 'phred-reference-image-panel';
+export class OldReferenceImagePanel extends HTMLElement {
+	public static readonly tagName = 'phred-old-reference-image-panel';
 
 	private button: ActionButton;
 	private slider: HTMLInputElement;
@@ -40,4 +40,4 @@ export class ReferenceImagePanel extends HTMLElement {
 	}
 }
 
-customElements.define(ReferenceImagePanel.tagName, ReferenceImagePanel);
+customElements.define(OldReferenceImagePanel.tagName, OldReferenceImagePanel);
