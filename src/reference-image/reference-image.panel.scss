@@ -1,10 +1,19 @@
 @import 'colors';
 
-$height: 200px;
+$height: 160px;
 
-phred-reference-image-panel {
-	.popup {
+phred-reference-image-panel.popup-container {
+	background-color: transparent;
+	phred-popup {
+		position: absolute;
 		width: 200px;
-		height: $height;
+		height: 160px;
+		margin-left: -200px;
+		padding: 10px;
+
+		h1 {
+			font-size: 12px;
+			text-align: left;
+		}
 	}
 }

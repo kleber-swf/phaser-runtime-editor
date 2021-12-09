@@ -115,7 +115,7 @@ export class ActionsToolbar extends Widget {
 
 		optionsButton.addEventListener('click', () => {
 			(document.createElement(ReferenceImagePanel.tagName) as ReferenceImagePanel)
-				.openPopup(optionsButton);
+				.openPopup('Reference Image Options', optionsButton);
 		});
 	}
 

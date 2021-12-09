@@ -1,8 +1,10 @@
 @import 'colors';
 
-phred-help-screen {
-	.popup {
+phred-help-screen.popup-container {
+	phred-popup {
 		width: 500px;
+		background-color: rgba(#0e0e0e, 0.9);
+
 		.content .category-group {
 			margin: 4px 0;
 

@@ -6,12 +6,12 @@ import './help-screen.scss';
 export class HelpScreen extends PopupContainer {
 	public static readonly tagName = 'phred-help-screen';
 
-	protected createPopup() {
-		const popup = super.createPopup();
-		popup.appendChild(document.createElement('h1')).innerText = 'Help';
+	protected createPopup(title: string) {
+		const popup = super.createPopup(title);
+		// popup.appendChild(document.createElement('h1')).innerText = 'Help';
 
-		const content = popup.appendChild(document.createElement('div'));
-		content.classList.add('content');
+		// const content = popup.appendChild(document.createElement('div'));
+		// content.classList.add('content');
 
 		let lastCategory: string;
 		let group: HTMLElement;
@@ -22,12 +22,11 @@ export class HelpScreen extends PopupContainer {
 			.forEach(a => {
 				if (a.category !== lastCategory) {
 					lastCategory = a.category;
-					group = this.createCategoryGroup(lastCategory, content);
+					group = this.createCategoryGroup(lastCategory, popup.content);
 				}
 				this.createLine(a, group);
 			});
 
-		this.addEventListener('click', () => this.remove());
 		return popup;
 	}
 
