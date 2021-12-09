@@ -28,7 +28,7 @@ export class ActionButton extends HTMLElement {
 		} else {
 			const text = this.appendChild(document.createElement('span'));
 			text.classList.add('label');
-			text.textContent = action.label;
+			text.textContent = action.tooltip;
 		}
 		if (!action.toggle) {
 			this.onclick = () => action.command();
@@ -40,9 +40,10 @@ export class ActionButton extends HTMLElement {
 	}
 
 	private createTooltip(action: Action) {
+		if (!action.tooltip) return;
 		const tooltip = this.appendChild(document.createElement('div'));
 		tooltip.classList.add('tooltip');
-		let text = action.label;
+		let text = action.tooltip;
 		if (action.shortcuts?.length) {
 			text += ` (${action.shortcuts[0].replace('+Shift', '')})`;
 		}

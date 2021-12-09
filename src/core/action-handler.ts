@@ -1,11 +1,13 @@
 export interface Action {
 	id: string;
-	label?: string;
+	tooltip?: string;
+	description?: string;
 	icon?: string;
 	shortcuts?: string[];
 	toggle?: boolean;
 	hold?: boolean;
 	on?: string;
+	category: string;
 	command?: (e?: Event) => void;
 	state?: () => any;
 }
@@ -31,7 +33,7 @@ export class ActionHandler {
 			if (action.shortcuts) {
 				action.shortcuts.forEach(s => {
 					if (s in container) {
-						throw new Error(`There is already an action with shortcut ${s}: ${container[s].label}`);
+						throw new Error(`There is already an action with shortcut ${s}: ${container[s].tooltip}`);
 					}
 					container[s] = action;
 				});
@@ -43,7 +45,7 @@ export class ActionHandler {
 
 	public addContainer(id: string, container: HTMLElement) { this.containers[id] = container; }
 
-	public getActions() { return Object.values(this.actions); }
+	public getActions() { return this.actionById; }
 	public getAction(id: string) { return id in this.actionById ? this.actionById[id] : null; }
 
 	public setActionCommand(id: string, command: (e?: Event) => void, state?: () => boolean) {

@@ -1,9 +1,11 @@
 import { ActionHandler } from 'core/action-handler';
+import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { PluginConfig } from 'plugin.model';
 import { GameContainer } from '../scene-view/game-container/game-container';
 import { ActionsToolbar } from './actions/actions-toolbar';
+import { HelpScreen } from './actions/help/help-screen';
 import './editor-view.scss';
 import { ObjectTreeInspector } from './object-tree/inspector/object-tree-inspector';
 import { Panel } from './panel/panel';
@@ -29,6 +31,7 @@ export class EditorView extends Widget {
 	public setupActions(actions: ActionHandler) {
 		this.actions.setupActions(actions);
 		this.gameContainer.setupActions(actions);
+		actions.setActionCommand(Actions.HELP, () => this.showHelp());
 	}
 
 	private createElements() {
@@ -81,6 +84,10 @@ export class EditorView extends Widget {
 
 	public selectObject(from: DataOrigin, obj: PIXI.DisplayObject) {
 		this.panels.forEach(panel => panel.selectObject(obj, from));
+	}
+
+	private showHelp() {
+		this.appendChild(document.createElement(HelpScreen.tagName));
 	}
 }
 

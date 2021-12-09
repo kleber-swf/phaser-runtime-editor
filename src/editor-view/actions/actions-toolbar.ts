@@ -44,6 +44,8 @@ export class ActionsToolbar extends Widget {
 		this.createSeparator();
 		this.createButton(actions.getAction(Actions.UNDO));
 		this.createSeparator();
+		this.createButton(actions.getAction(Actions.HELP));
+		this.createSeparator();
 		this.createSpacer();
 
 		this.orientationTemplates.init();
