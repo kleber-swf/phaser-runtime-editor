@@ -14,6 +14,8 @@ A [Phaser-CE] plugin that shows a runtime editor for your game:
 -   Select multiple objects
 -   Object rotation. It's pretty hard!
 
+> The plugin was tested mostly on Google Chrome. So it might be different in other browsers.
+
 ## Installation
 
 After you install [Phaser-CE], use npm to install this plugin:
