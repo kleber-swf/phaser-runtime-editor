@@ -20,6 +20,7 @@ export class ReferenceImagePanel extends PopupContainer {
 
 		const content = popup.content;
 		content.appendChild(this.createOption('Alpha', this.createSlider(0, 1, 0.05, 1)));
+		content.appendChild(this.createOption('Hue', this.createSlider(0, 360, 0.05, 1)));
 		content.appendChild(this.createOption('Saturation', this.createSlider(0, 1, 0.05, 1)));
 
 		return popup;

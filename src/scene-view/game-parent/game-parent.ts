@@ -1,7 +1,8 @@
 import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
-import { Size } from 'plugin.model';
+import { PluginConfig, Size } from 'plugin.model';
+import { ReferenceImage } from 'scene-view/reference-image/reference-image';
 import { GameResizeHandle } from './game-resize-handle';
 
 const MIN_WIDTH = 100;
@@ -9,12 +10,24 @@ const MAX_WIDTH = 10000;
 
 export class GameParent extends HTMLElement {
 	public static readonly tagName = 'phred-game-parent';
-
+	private referenceImage: ReferenceImage;
 	private _zoomAmount = 0;
 
 	public init() {
 		this.id = GameParent.tagName;
 		this.createResizeHandles();
+		this.referenceImage = document.createElement(ReferenceImage.tagName) as ReferenceImage;
+		this.referenceImage.init();
+		this.appendChild(this.referenceImage);
+	}
+
+	public enable(gameElement: HTMLElement, config: PluginConfig) {
+		this.appendChild(gameElement);
+		this.referenceImage.enable(config);
+	}
+
+	public disable() {
+
 	}
 
 	private createResizeHandles() {

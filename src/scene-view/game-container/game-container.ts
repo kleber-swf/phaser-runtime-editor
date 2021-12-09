@@ -3,7 +3,6 @@ import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
 import { PluginConfig } from 'plugin.model';
 import { GameParent } from 'scene-view/game-parent/game-parent';
-import { ReferenceImage } from 'scene-view/reference-image/reference-image';
 import { SelectionArea } from 'scene-view/selection-area/selection-area';
 import './game-container.scss';
 
@@ -15,7 +14,6 @@ export class GameContainer extends HTMLElement {
 
 	private gameParent: GameParent;
 	private selectionArea: SelectionArea;
-	private referenceImage: ReferenceImage;
 
 	public init(game: Phaser.Game) {
 		this.game = game;
@@ -42,19 +40,20 @@ export class GameContainer extends HTMLElement {
 	}
 
 	public enable(config: PluginConfig) {
-		const el = this.game.canvas.parentElement;
-		this.gameOriginalParentElement = el.parentElement;
-		el.classList.add('phred-game');
-		this.gameParent.appendChild(el);
+		const gameElement = this.game.canvas.parentElement;
+		this.gameOriginalParentElement = gameElement.parentElement;
+		gameElement.classList.add('phred-game');
+		this.gameParent.enable(gameElement, config);
 		this.selectionArea.enable(config);
 	}
 
 	/** Returns the game to its original parent */
 	public disable() {
 		this.selectionArea.disable();
-		const el = this.game.canvas.parentElement;
-		el.classList.remove('phred-game');
-		this.gameOriginalParentElement.appendChild(el);
+		this.gameParent.disable();
+		const gameElement = this.game.canvas.parentElement;
+		gameElement.classList.remove('phred-game');
+		this.gameOriginalParentElement.appendChild(gameElement);
 		this.gameOriginalParentElement = null;
 	}
 
