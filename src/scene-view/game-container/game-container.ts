@@ -6,7 +6,6 @@ import { GameParent } from 'scene-view/game-parent/game-parent';
 import { ReferenceImage } from 'scene-view/reference-image/reference-image';
 import { SelectionArea } from 'scene-view/selection-area/selection-area';
 import './game-container.scss';
-import { GameResizeHandle } from './game-resize-handle';
 
 export class GameContainer extends HTMLElement {
 	public static readonly tagName = 'phred-game-container';
@@ -28,8 +27,6 @@ export class GameContainer extends HTMLElement {
 		const selectionArea = document.createElement(SelectionArea.tagName) as SelectionArea;
 		this.selectionArea = parent.appendChild(selectionArea);
 		selectionArea.init(game);
-
-		this.createResizeHandles(parent);
 	}
 
 	public setupActions(actions: ActionHandler) {
@@ -42,24 +39,6 @@ export class GameContainer extends HTMLElement {
 		this.onmousedown = this.onInputDown;
 		this.onmousemove = this.onInputMove;
 		this.onmouseup = this.onInputUp;
-	}
-
-	private createResizeHandles(parent: HTMLElement) {
-		const onStopDrag = this.onGameResized.bind(this);
-		const handleRight = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
-		handleRight.init(parent, 'right');
-		handleRight.onStopDrag = onStopDrag;
-		parent.appendChild(handleRight);
-
-		const handleBottom = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
-		handleBottom.init(parent, 'bottom');
-		handleBottom.onStopDrag = onStopDrag;
-		parent.appendChild(handleBottom);
-
-		const handleBoth = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
-		handleBoth.init(parent, 'both');
-		handleBoth.onStopDrag = onStopDrag;
-		parent.appendChild(handleBoth);
 	}
 
 	public enable(config: PluginConfig) {
@@ -131,10 +110,6 @@ export class GameContainer extends HTMLElement {
 				this.gameParent.responsiveSizeTemplateChanged(value);
 				break;
 		}
-	}
-
-	private onGameResized(width: number, height: number) {
-		Editor.prefs.responsiveSize = { width, height };
 	}
 
 	// #endregion

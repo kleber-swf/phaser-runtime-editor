@@ -1,7 +1,8 @@
 import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
+import { Editor } from 'core/editor';
 import { Size } from 'plugin.model';
-import './game-parent.scss';
+import { GameResizeHandle } from './game-resize-handle';
 
 const MIN_WIDTH = 100;
 const MAX_WIDTH = 10000;
@@ -13,6 +14,25 @@ export class GameParent extends HTMLElement {
 
 	public init() {
 		this.id = GameParent.tagName;
+		this.createResizeHandles();
+	}
+
+	private createResizeHandles() {
+		const onStopDrag = this.onGameResized.bind(this);
+		const handleRight = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
+		handleRight.init(this, 'right');
+		handleRight.onStopDrag = onStopDrag;
+		this.appendChild(handleRight);
+
+		const handleBottom = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
+		handleBottom.init(this, 'bottom');
+		handleBottom.onStopDrag = onStopDrag;
+		this.appendChild(handleBottom);
+
+		const handleBoth = document.createElement(GameResizeHandle.tagName) as GameResizeHandle;
+		handleBoth.init(this, 'both');
+		handleBoth.onStopDrag = onStopDrag;
+		this.appendChild(handleBoth);
 	}
 
 	public setupActions(actions: ActionHandler) {
@@ -61,6 +81,10 @@ export class GameParent extends HTMLElement {
 		} else {
 			this.classList.remove('resizable');
 		}
+	}
+
+	private onGameResized(width: number, height: number) {
+		Editor.prefs.responsiveSize = { width, height };
 	}
 }
 
