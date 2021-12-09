@@ -1,7 +1,7 @@
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
 
-export class ReferenceImage extends Phaser.Group {
+export class OldReferenceImage extends Phaser.Group {
 	private _parent: PIXI.DisplayObjectContainer;
 
 	public set image(value: Phaser.Image | Phaser.Sprite) {

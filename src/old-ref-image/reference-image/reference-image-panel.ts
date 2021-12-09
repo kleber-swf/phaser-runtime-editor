@@ -2,7 +2,7 @@ import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
-import { ReferenceImage } from 'scene-view/reference-image';
+import { OldReferenceImage } from 'old-ref-image/reference-image';
 import { ActionButton } from '../../editor-view/actions/button/action-button';
 import './reference-image-panel.scss';
 
@@ -12,7 +12,7 @@ export class OldReferenceImagePanel extends HTMLElement {
 	private button: ActionButton;
 	private slider: HTMLInputElement;
 
-	public init(image: ReferenceImage) {
+	public init(image: OldReferenceImage) {
 		const btn = this.button = document.createElement(ActionButton.tagName) as ActionButton;
 		this.appendChild(btn);
 

@@ -2,17 +2,17 @@ import { ActionHandler } from 'core/action-handler';
 import { ActionsToolbar } from 'editor-view/actions/actions-toolbar';
 import { OldReferenceImagePanel } from 'old-ref-image/reference-image/reference-image-panel';
 import { PluginConfig } from 'plugin.model';
-import { ReferenceImage } from 'scene-view/reference-image';
+import { OldReferenceImage } from './reference-image';
 
 export class OldReferenceImageController {
-	private readonly referenceImage: ReferenceImage;
+	private readonly referenceImage: OldReferenceImage;
 	private readonly panel: OldReferenceImagePanel;
 	private actionsToolbar: ActionsToolbar;
 
 	private image: PIXI.Sprite;
 
 	constructor(game: Phaser.Game, config: PluginConfig) {
-		this.referenceImage = new ReferenceImage(game, config.root);
+		this.referenceImage = new OldReferenceImage(game, config.root);
 		this.panel = document.createElement(OldReferenceImagePanel.tagName) as OldReferenceImagePanel;
 		this.panel.init(this.referenceImage);
 	}
