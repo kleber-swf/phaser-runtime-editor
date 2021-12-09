@@ -1,51 +1,39 @@
 import { ActionHandler } from 'core/action-handler';
-import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
-import { PluginConfig, Size } from 'plugin.model';
+import { PluginConfig } from 'plugin.model';
+import { GameParent } from 'scene-view/game-parent/game-parent';
+import { ReferenceImage } from 'scene-view/reference-image/reference-image';
 import { SelectionArea } from 'scene-view/selection-area/selection-area';
 import './game-container.scss';
 import { GameResizeHandle } from './game-resize-handle';
 
-const MIN_WIDTH = 100;
-const MAX_WIDTH = 10000;
-
 export class GameContainer extends HTMLElement {
 	public static readonly tagName = 'phred-game-container';
 
-	// TODO this could be a custom element
+	private game: Phaser.Game;
 	private gameOriginalParentElement: HTMLElement;
 
-	private gameEditorParentElement: HTMLElement;
+	private gameParent: GameParent;
 	private selectionArea: SelectionArea;
-	private game: Phaser.Game;
-	private _zoomAmount = 0;
+	private referenceImage: ReferenceImage;
 
 	public init(game: Phaser.Game) {
 		this.game = game;
 		this._onInputUpFn = this.onInputUp.bind(this);
-		const gp = this.gameEditorParentElement = document.createElement('div');
-		gp.id = 'phred-game-parent';
-		this.appendChild(gp);
+		const parent = this.gameParent = document.createElement(GameParent.tagName) as GameParent;
+		parent.init();
+		this.appendChild(parent);
 
-		const sa = document.createElement(SelectionArea.tagName) as SelectionArea;
-		this.selectionArea = gp.appendChild(sa);
-		sa.init(game);
+		const selectionArea = document.createElement(SelectionArea.tagName) as SelectionArea;
+		this.selectionArea = parent.appendChild(selectionArea);
+		selectionArea.init(game);
 
-		this.createResizeHandles(gp);
+		this.createResizeHandles(parent);
 	}
 
 	public setupActions(actions: ActionHandler) {
-		actions.setActionCommand(Actions.ZOOM, (e) => {
-			const w = e as WheelEvent;
-			// TODO scale anchor
-			// this.zoom(-w.deltaY, w.offsetX, w.offsetY);
-			this.zoom(-w.deltaY);
-		});
-
-		actions.setActionCommand(Actions.ZOOM_IN, () => this.zoom(100));
-		actions.setActionCommand(Actions.ZOOM_OUT, () => this.zoom(-100));
-		actions.setActionCommand(Actions.ZOOM_RESET, () => this.resetZoom());
+		this.gameParent.setupActions(actions);
 
 		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
 		this.onPreferencesChanged('responsive', Editor.prefs.responsive);
@@ -78,7 +66,7 @@ export class GameContainer extends HTMLElement {
 		const el = this.game.canvas.parentElement;
 		this.gameOriginalParentElement = el.parentElement;
 		el.classList.add('phred-game');
-		this.gameEditorParentElement.appendChild(el);
+		this.gameParent.appendChild(el);
 		this.selectionArea.enable(config);
 	}
 
@@ -91,52 +79,15 @@ export class GameContainer extends HTMLElement {
 		this.gameOriginalParentElement = null;
 	}
 
-	private zoom(amount: number) {
-		const el = this.gameEditorParentElement;
-		const width = Math.max(Math.min(el.clientWidth + amount, MAX_WIDTH), MIN_WIDTH);
-		const height = width * (el.clientHeight / el.clientWidth);
-		this._zoomAmount += width - el.clientWidth;
-		el.style.width = width + 'px';
-		el.style.height = height + 'px';
-	}
-
-	private resetZoom() {
-		const el = this.gameEditorParentElement;
-		const w = el.clientWidth - this._zoomAmount;
-		const ratio = w / el.clientWidth;
-		this._zoomAmount = 0;
-
-		el.style.width = w + 'px';
-		el.style.height = (el.clientHeight * ratio) + 'px';
-	}
-
 	private setResponsive(responsive: boolean) {
 		if (responsive) {
 			if (!this.classList.contains('responsive')) {
 				this.classList.add('responsive');
 			}
-			this.setResponsiveSize(Editor.prefs.responsiveSize);
+			this.gameParent.setResponsiveSize(Editor.prefs.responsiveSize);
 		} else {
 			this.classList.remove('responsive');
-			this.clearResponsiveSize();
-		}
-	}
-
-	private setResponsiveSize(size: Size) {
-		this.gameEditorParentElement.style.width = size.width + 'px';
-		this.gameEditorParentElement.style.height = size.height + 'px';
-	}
-
-	private clearResponsiveSize() {
-		this.gameEditorParentElement.style.width = 'unset';
-		this.gameEditorParentElement.style.height = 'unset';
-	}
-
-	private responsiveSizeTemplateChanged(index: number) {
-		if (!index) {
-			this.gameEditorParentElement.classList.add('resizable');
-		} else {
-			this.gameEditorParentElement.classList.remove('resizable');
+			this.gameParent.clearResponsiveSize();
 		}
 	}
 
@@ -174,10 +125,10 @@ export class GameContainer extends HTMLElement {
 				this.setResponsive(value === true);
 				break;
 			case 'responsiveSize':
-				this.setResponsiveSize(value);
+				this.gameParent.setResponsiveSize(value);
 				break;
 			case 'responsiveSizeTemplateIndex':
-				this.responsiveSizeTemplateChanged(value);
+				this.gameParent.responsiveSizeTemplateChanged(value);
 				break;
 		}
 	}
