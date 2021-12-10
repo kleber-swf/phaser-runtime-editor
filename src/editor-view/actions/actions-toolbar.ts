@@ -119,18 +119,10 @@ export class ActionsToolbar extends Widget {
 				this.orientationTemplates.interactable = value === true;
 				break;
 			case 'leftPanelVisible':
-				if (value === true) {
-					this.leftPanelToggle.classList.remove('is-hidden');
-				} else {
-					this.leftPanelToggle.classList.add('is-hidden');
-				}
+				this.leftPanelToggle.classList.addOrRemove('is-hidden', value !== true);
 				break;
 			case 'rightPanelVisible':
-				if (value === true) {
-					this.rightPanelToggle.classList.remove('is-hidden');
-				} else {
-					this.rightPanelToggle.classList.add('is-hidden');
-				}
+				this.rightPanelToggle.classList.addOrRemove('is-hidden', value !== true);
 				break;
 			case 'referenceImageEnabled':
 				this.referenceImageGroup.classList

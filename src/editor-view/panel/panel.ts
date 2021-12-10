@@ -16,11 +16,7 @@ export class Panel extends Widget {
 	private visiblePrefKey: PreferenceKey;
 
 	public set visible(value: boolean) {
-		if (value) {
-			this.classList.remove('hidden');
-		} else if (!this.classList.contains('hidden')) {
-			this.classList.add('hidden');
-		}
+		this.classList.addOrRemove('hidden', !value);
 	}
 
 	public setSide(value: PanelSide) {

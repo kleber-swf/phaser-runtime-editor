@@ -21,8 +21,7 @@ export class ObjectTreeNode extends HTMLElement {
 	public get title() { return this.label.textContent; }
 
 	public updateObjectVisibility(value: boolean) {
-		if (value) this.classList.remove('object-invisible');
-		else this.classList.add('object-invisible');
+		this.classList.addOrRemove('object-invisible', !value);
 	}
 
 	public setContent(model: ObjectTreeNodeModel) {

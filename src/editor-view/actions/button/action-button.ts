@@ -7,13 +7,7 @@ export class ActionButton extends HTMLElement {
 	private action: Action;
 
 	public set interactable(value: boolean) {
-		if (value) {
-			this.classList.remove('disabled');
-			return;
-		}
-		if (!this.classList.contains('disabled')) {
-			this.classList.add('disabled');
-		}
+		this.classList.addOrRemove('disabled', !value);
 	}
 
 	public setAction(action: Action) {
@@ -55,8 +49,7 @@ export class ActionButton extends HTMLElement {
 	}
 
 	public updateState() {
-		if (this.action.state?.()) this.classList.add('selected');
-		else this.classList.remove('selected');
+		this.classList.addOrRemove('selected', this.action.state?.());
 	}
 }
 

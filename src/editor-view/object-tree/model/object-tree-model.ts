@@ -58,11 +58,10 @@ export class ObjectTreeModel {
 		Object.keys(objects).forEach(k => {
 			const o = objects[k] as ObjectTreeNodeModel;
 			if (!o.node) return;
-			if (o.node.title.toLowerCase().indexOf(filter) >= 0) {
-				o.node.classList.remove('invisible');
-			} else {
-				o.node.classList.add('invisible');
-			}
+			o.node.classList.addOrRemove(
+				'invisible',
+				o.node.title.toLowerCase().indexOf(filter) < 0
+			);
 		});
 	}
 }

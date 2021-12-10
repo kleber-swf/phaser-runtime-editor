@@ -56,9 +56,7 @@ export class GameContainer extends HTMLElement {
 
 	private setResponsive(responsive: boolean) {
 		if (responsive) {
-			if (!this.classList.contains('responsive')) {
-				this.classList.add('responsive');
-			}
+			this.classList.add('responsive');
 			this.gameParent.setResponsiveSize(Editor.prefs.get('responsiveSize') as Size);
 		} else {
 			this.classList.remove('responsive');

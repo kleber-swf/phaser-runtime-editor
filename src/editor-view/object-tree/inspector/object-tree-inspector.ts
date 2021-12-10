@@ -112,8 +112,7 @@ export class ObjectTreeInspector extends Inspector {
 	}
 
 	private filterContent(filter: string) {
-		if (filter) this.classList.add('filtering');
-		else this.classList.remove('filtering');
+		this.classList.addOrRemove('filtering', !!filter);
 		this.model.filter(filter);
 	}
 

@@ -85,11 +85,7 @@ export class GameParent extends HTMLElement {
 	}
 
 	public responsiveSizeTemplateChanged(index: number) {
-		if (!index) {
-			this.classList.add('resizable');
-		} else {
-			this.classList.remove('resizable');
-		}
+		this.classList.addOrRemove('resizable', index === 0);
 	}
 
 	private onGameResized(width: number, height: number) {

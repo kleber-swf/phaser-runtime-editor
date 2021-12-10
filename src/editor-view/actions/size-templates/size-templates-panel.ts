@@ -16,13 +16,7 @@ export class SizeTemplatesPanel extends HTMLElement {
 	public static readonly tagName = 'phred-size-templates-panel';
 
 	public set interactable(value: boolean) {
-		if (value) {
-			this.classList.remove('disabled');
-			return;
-		}
-		if (!this.classList.contains('disabled')) {
-			this.classList.add('disabled');
-		}
+		this.classList.addOrRemove('disabled', !value);
 	}
 
 	public init() {
