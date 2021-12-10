@@ -6,7 +6,7 @@ import { PluginConfig, Size } from 'plugin.model';
 import { PropertyElementTag } from 'property-element-tag';
 import { ActionHandler } from './action-handler';
 import { History } from './history';
-import { Preferences } from './preferences';
+import { Preferences } from './preferences/preferences';
 import { ReferenceImageController } from './reference-image.controller';
 
 class EditorClass {

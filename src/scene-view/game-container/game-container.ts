@@ -1,6 +1,6 @@
 import { ActionHandler } from 'core/action-handler';
 import { Editor } from 'core/editor';
-import { PreferenceKey } from 'core/preferences';
+import { PreferenceKey } from 'core/preferences/preferences.model';
 import { PluginConfig, Size } from 'plugin.model';
 import { GameParent } from 'scene-view/game-parent/game-parent';
 import { SelectionArea } from 'scene-view/selection-area/selection-area';

@@ -1,5 +1,5 @@
 import { Editor } from 'core/editor';
-import { PreferenceKey } from 'core/preferences';
+import { PreferenceKey } from 'core/preferences/preferences.model';
 import { PanelSide } from 'types';
 import './panel-resize-handle.scss';
 

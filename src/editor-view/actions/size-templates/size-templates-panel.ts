@@ -1,5 +1,5 @@
 import { Editor } from 'core/editor';
-import { Preferences } from 'core/preferences';
+import { Preferences } from 'core/preferences/preferences';
 import { Size } from 'plugin.model';
 import './size-templates-panel.scss';
 

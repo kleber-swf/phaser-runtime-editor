@@ -1,5 +1,5 @@
 import { Editor } from 'core/editor';
-import { PreferenceKey } from 'core/preferences';
+import { PreferenceKey } from 'core/preferences/preferences.model';
 import { PluginConfig } from 'plugin.model';
 import { Gizmo, GIZMO_MOVE, GIZMO_SCALE } from './gizmos/gizmo';
 import { SelectionGizmo } from './gizmos/selection-gizmo';

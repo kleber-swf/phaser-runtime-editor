@@ -1,7 +1,7 @@
 import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
-import { PreferenceKey } from 'core/preferences';
+import { PreferenceKey } from 'core/preferences/preferences.model';
 import { OldReferenceImage } from 'old-ref-image/reference-image';
 import { ActionButton } from '../../editor-view/actions/button/action-button';
 import './reference-image-panel.scss';

@@ -1,5 +1,5 @@
 import { Editor } from 'core/editor';
-import { PreferenceKey } from 'core/preferences';
+import { PreferenceKey } from 'core/preferences/preferences.model';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
 import { Widget } from 'editor-view/widget/widget';

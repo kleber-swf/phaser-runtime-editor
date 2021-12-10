@@ -1,7 +1,7 @@
 import { Action, ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
-import { PreferenceKey } from 'core/preferences';
+import { PreferenceKey } from 'core/preferences/preferences.model';
 import { Widget } from 'editor-view/widget/widget';
 import './actions-toolbar.scss';
 import { ActionButton } from './button/action-button';
