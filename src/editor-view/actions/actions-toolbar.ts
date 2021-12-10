@@ -8,6 +8,8 @@ import './actions-toolbar.scss';
 import { ActionButton } from './button/action-button';
 import { SizeTemplatesPanel } from './size-templates/size-templates-panel';
 
+// TODO adding orientation and reference image to their groups, they can implement an
+// interface with `updateState()` method, same as `ActionButton`
 export class ActionsToolbar extends Widget {
 	public static readonly tagName = 'phred-actions-toolbar';
 
