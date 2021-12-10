@@ -1,11 +1,10 @@
 import { Size } from 'plugin.model';
 
-export interface PreferencesData {
+export interface PersistentData {
 	snap: boolean;
 	gizmos: boolean;
 	guides: boolean;
 	hitArea: boolean;
-	hitAreasSnapshot: boolean;	// do not save it
 
 	leftPanelVisible: boolean;
 	leftPanelSize: string;
@@ -18,7 +17,12 @@ export interface PreferencesData {
 	responsiveTemplateIndex: number;
 
 	referenceImageVisible: boolean;
-
 }
 
-export type PreferenceKey = keyof PreferencesData;
+export interface VolatileData {
+	hitAreasSnapshot: boolean;
+}
+
+export type PersistentDataKey = keyof PersistentData;
+export type VolatileDataKey = keyof VolatileData;
+export type PreferenceKey = PersistentDataKey | VolatileDataKey;

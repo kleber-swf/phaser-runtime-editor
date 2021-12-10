@@ -359,40 +359,48 @@ class EditorClass {
 
 	private setupPreferencesActions(actions: ActionHandler) {
 		const prefs = this.prefs;
+
 		actions.setActionCommand(
 			Actions.TOGGLE_SNAP,
 			() => prefs.toggle('snap'),
 			() => prefs.get('snap') as boolean
 		);
+
 		actions.setActionCommand(
 			Actions.TOGGLE_GIZMOS,
 			() => prefs.toggle('gizmos'),
 			() => prefs.get('gizmos') as boolean
 		);
+
 		actions.setActionCommand(
 			Actions.TOGGLE_GUIDES,
 			() => prefs.toggle('guides'),
 			() => prefs.get('guides') as boolean
 		);
+
 		actions.setActionCommand(
 			Actions.TOGGLE_HIT_AREA,
 			() => prefs.toggle('hitArea'),
 			() => prefs.get('hitArea') as boolean
 		);
+
 		actions.setActionCommand(
 			Actions.TOGGLE_RESPONSIVE,
 			() => prefs.toggle('responsive'),
 			() => prefs.get('responsive') as boolean
 		);
+
 		actions.setActionCommand(Actions.TOGGLE_ORIENTATION, () => {
 			const size = prefs.get('responsiveSize') as Size;
 			prefs.set('responsiveSize', { width: size.height, height: size.width });
 		});
+
 		actions.setActionCommand(
 			Actions.TOGGLE_HIT_AREAS_SNAPSHOT,
 			() => prefs.toggle('hitAreasSnapshot', false),
 			() => prefs.get('hitAreasSnapshot') as boolean
 		);
+
 		actions.setActionCommand(
 			Actions.TOGGLE_REF_IMAGE,
 			() => prefs.toggle('referenceImageVisible'),
@@ -404,6 +412,7 @@ class EditorClass {
 			() => prefs.toggle('leftPanelVisible'),
 			() => prefs.get('leftPanelVisible') as boolean
 		);
+
 		actions.setActionCommand(
 			Actions.TOGGLE_RIGHT_PANEL,
 			() => prefs.toggle('rightPanelVisible'),

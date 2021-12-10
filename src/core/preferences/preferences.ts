@@ -1,17 +1,16 @@
 import { Size } from 'plugin.model';
-import { PreferenceKey, PreferencesData } from './preferences.model';
+import { PersistentData, PreferenceKey, VolatileData } from './preferences.model';
 
 const LS_KEY = '_phred_preferences_';
 
 export class Preferences {
 	public static readonly DefaultResponsiveSize: Readonly<Size> = { width: 450, height: 800 };
 
-	private data: PreferencesData = {
+	private persistentData: PersistentData = {
 		snap: true,
 		gizmos: true,
 		guides: false,
 		hitArea: false,
-		hitAreasSnapshot: false,
 		responsive: false,
 		responsiveSize: Preferences.DefaultResponsiveSize,
 		responsiveTemplateIndex: 0,
@@ -25,41 +24,47 @@ export class Preferences {
 		referenceImageVisible: false,
 	};
 
+	private volatileData: VolatileData = {
+		hitAreasSnapshot: false,
+	};
+
 	public readonly onChange = new Phaser.Signal();
 
 	public constructor(clean: boolean) {
 		if (clean) localStorage.clear();
 		try {
 			const data = this.load();
-			this.data = Object.assign(this.data, data);
+			this.persistentData = Object.assign(this.persistentData, data);
 		} catch (_e: any) {
 			localStorage.clear();
 		}
 	}
 
-	public get(key: keyof PreferencesData) {
-		return this.data[key];
+	public get(key: PreferenceKey) {
+		return this.persistentData[key] ?? this.volatileData[key];
 	}
 
 	public set(key: PreferenceKey, value: any, save = true) {
-		this.data[key as string] = value;
-		if (save) this.save();
+		if (key in this.persistentData) {
+			this.persistentData[key] = value;
+			if (save) this.save();
+		} else {
+			this.volatileData[key] = value;
+		}
 		this.notifyListeners(key, value);
 	}
 
 	public toggle(key: PreferenceKey, save = true) {
-		this.set(key, !this.data[key], save);
+		this.set(key, !this.persistentData[key], save);
 	}
 
 	private load() {
 		const content = localStorage.getItem(LS_KEY);
-		console.log('loading', JSON.parse(content));
 		return content ? JSON.parse(content) : {};
 	}
 
 	private save() {
-		const content = JSON.stringify(this.data);
-		console.log('saving', this.data);
+		const content = JSON.stringify(this.persistentData);
 		localStorage.setItem(LS_KEY, content);
 	}
 
