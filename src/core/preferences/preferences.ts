@@ -22,6 +22,7 @@ export class Preferences {
 		rightPanelSize: undefined,
 
 		referenceImageVisible: false,
+		referenceImageFilters: { opacity: 0.4, hue: 0, saturation: 1 },
 	};
 
 	private volatileData: VolatileData = {

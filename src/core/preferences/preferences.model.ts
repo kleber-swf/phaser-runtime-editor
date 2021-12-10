@@ -1,4 +1,5 @@
 import { Size } from 'plugin.model';
+import { ReferenceImageFilters } from 'scene-view/reference-image/reference-image';
 
 export interface PersistentData {
 	snap: boolean;
@@ -17,6 +18,7 @@ export interface PersistentData {
 	responsiveTemplateIndex: number;
 
 	referenceImageVisible: boolean;
+	referenceImageFilters: ReferenceImageFilters;
 }
 
 export interface VolatileData {

@@ -23,6 +23,7 @@ export class PopupContainer extends HTMLElement {
 	}
 
 	public close() {
+		this.dispatchEvent(new CustomEvent('closed'));
 		this.remove();
 	}
 }

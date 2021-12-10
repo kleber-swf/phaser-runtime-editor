@@ -29,7 +29,7 @@ class EditorClass {
 		this.history = new History(this.data);
 		this.prefs = new Preferences(config.clearPrefs);
 
-		this.referenceImageController = new ReferenceImageController();
+		this.referenceImageController = new ReferenceImageController(this.prefs);
 	}
 
 	private createInspectorData() {
