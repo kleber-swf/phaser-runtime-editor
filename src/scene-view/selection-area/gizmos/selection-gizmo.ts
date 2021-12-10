@@ -25,7 +25,11 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 	private _pointCache2: Point = { x: 0, y: 0 };
 
 	public set visible(value: boolean) {
-		this.style.display = value && Editor.data.selectedObject ? 'block' : 'none';
+		this.classList.addOrRemove('invisible', !value);
+	}
+
+	public set enabled(value: boolean) {
+		this.classList.addOrRemove('disabled', !value);
 	}
 
 	public set showGuides(value: boolean) {

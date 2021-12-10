@@ -2,12 +2,20 @@
 
 phred-selection-gizmo {
 	position: absolute;
-	display: none;
+	display: block;
 	padding: 0;
 	margin: 0;
 	background-color: transparent;
 	padding: 0;
 	margin: 0;
+
+	&.invisible {
+		display: none;
+	}
+
+	&.disabled {
+		display: none;
+	}
 
 	div {
 		box-sizing: content-box;

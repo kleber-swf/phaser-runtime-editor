@@ -154,7 +154,7 @@ export class SelectionArea extends HTMLElement {
 	private onPreferencesChanged(key: PreferenceKey, value: any) {
 		switch (key) {
 			case 'gizmos':
-				this.gizmo.visible = value;
+				this.gizmo.enabled = value;
 				return;
 			case 'snap':
 				(this.handlers[GIZMO_MOVE] as MoveHandler)
