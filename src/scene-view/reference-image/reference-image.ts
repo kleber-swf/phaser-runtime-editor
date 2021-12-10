@@ -1,4 +1,3 @@
-import { PluginConfig } from 'plugin.model';
 import './reference-image.scss';
 
 export interface ReferenceImageFilters {
@@ -15,6 +14,8 @@ export type RefImageFilterTypes = keyof ReferenceImageFilters;
 export class ReferenceImage extends HTMLElement implements ReferenceImageFilters {
 	public static readonly tagName = 'phred-reference-image';
 	private image: HTMLImageElement;
+	private _src: string;
+
 	private filters: ReferenceImageFilters = {
 		opacity: 1,
 		hue: 0,
@@ -24,7 +25,13 @@ export class ReferenceImage extends HTMLElement implements ReferenceImageFilters
 		sepia: 0,
 	};
 
-	private set source(value: string) { this.image.src = value; }
+	public set source(value: string) {
+		if (this._src === value) return;
+		this._src = value;
+		this.image.src = value ?? '';
+		this.classList.addOrRemove('invisible', !value);
+		if (!value) this.dispatchEvent(new CustomEvent('imageLoaded', { detail: false }));
+	}
 
 	public set opacity(value: number) {
 		this.filters.opacity = Phaser.Math.clamp(value, 0, 1);
@@ -58,11 +65,11 @@ export class ReferenceImage extends HTMLElement implements ReferenceImageFilters
 
 	public init() {
 		this.image = this.appendChild(document.createElement('img'));
+		this.image.addEventListener('load', this.onImageLoadComplete.bind(this));
+		this.image.addEventListener('error', this.onImageLoadError.bind(this));
 	}
 
-	public enable(config: PluginConfig, filters: ReferenceImageFilters) {
-		this.source = config.referenceImageUrl;
-		console.log('loaded filters', filters);
+	public enable(filters: ReferenceImageFilters) {
 		this.filters = Object.assign(this.filters, filters);
 		this.applyFilters();
 	}
@@ -80,6 +87,16 @@ export class ReferenceImage extends HTMLElement implements ReferenceImageFilters
 			+ ` brightness(${f.brightness * 100}%)`
 			+ ` sepia(${f.sepia})`;
 		this.image.style.filter = filter;
+	}
+
+	private onImageLoadComplete() {
+		this.classList.remove('invisible');
+		this.dispatchEvent(new CustomEvent('imageLoaded', { detail: true }));
+	}
+
+	private onImageLoadError() {
+		this.classList.add('invisible');
+		this.dispatchEvent(new CustomEvent('imageLoaded', { detail: false }));
 	}
 }
 

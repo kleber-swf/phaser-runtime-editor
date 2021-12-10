@@ -20,7 +20,7 @@ class EditorClass {
 
 	public referenceImageController: ReferenceImageController;
 
-	public init(config: PluginConfig) {
+	public init(game: Phaser.Game, config: PluginConfig) {
 		this.data = new EditorData();
 		this.inspectorData = this.createInspectorData();
 		this.meta = new PhaserMeta();
@@ -29,7 +29,7 @@ class EditorClass {
 		this.history = new History(this.data);
 		this.prefs = new Preferences(config.clearPreferences);
 
-		this.referenceImageController = new ReferenceImageController(this.prefs);
+		this.referenceImageController = new ReferenceImageController(game, this.prefs);
 	}
 
 	private createInspectorData() {

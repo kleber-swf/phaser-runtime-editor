@@ -1,6 +1,6 @@
 export interface PluginConfigBuilder {
 	root?: () => Container;
-	referenceImageUrl?: () => string;
+	referenceImageUrl?: (width: number, height: number) => string;
 	pauseGame?: boolean;
 	clearPreferences?: boolean;
 	onShow?: () => void;
@@ -9,7 +9,7 @@ export interface PluginConfigBuilder {
 
 export interface PluginConfig {
 	root: Container;
-	referenceImageUrl: string;
+	referenceImageUrl: (width: number, height: number) => string;
 	pauseGame: boolean;
 	clearPreferences: boolean;
 }

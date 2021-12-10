@@ -113,3 +113,12 @@ Object.defineProperty(PIXI.DisplayObject.prototype, 'globalScale', {
 	configurable: true,
 	get() { return new PIXI.Point(this.worldTransform.a, this.worldTransform.d); },
 });
+
+Object.defineProperty(DOMTokenList.prototype, 'addOrRemove', {
+	enumerable: true,
+	configurable: true,
+	value(className: string, add: boolean) {
+		if (add) this.add(className);
+		else this.remove(className);
+	},
+});

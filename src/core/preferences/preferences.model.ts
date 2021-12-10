@@ -23,6 +23,7 @@ export interface PersistentData {
 
 export interface VolatileData {
 	hitAreasSnapshot: boolean;
+	referenceImageEnabled: boolean;
 }
 
 export type PersistentDataKey = keyof PersistentData;

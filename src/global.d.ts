@@ -23,3 +23,7 @@ declare namespace PIXI {
 }
 
 declare type Container = PIXI.DisplayObjectContainer | Phaser.Stage;
+
+interface DOMTokenList {
+	addOrRemove(className: string, add: boolean): void;
+}

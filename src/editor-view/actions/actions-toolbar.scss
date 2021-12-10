@@ -20,8 +20,10 @@ phred-actions-toolbar {
 		flex: 1 0 auto;
 	}
 
-	.open-options-button {
-		
+	.reference-image-group {
+		display: flex;
+		align-items: stretch;
+		justify-content: stretch;
 	}
 
 	.panel-toggle {

@@ -34,6 +34,7 @@ export class Preferences {
 
 	private volatileData: VolatileData = {
 		hitAreasSnapshot: false,
+		referenceImageEnabled: false,
 	};
 
 	public readonly onChange = new Phaser.Signal();

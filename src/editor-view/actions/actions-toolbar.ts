@@ -15,6 +15,7 @@ export class ActionsToolbar extends Widget {
 	private orientationBtn: ActionButton;
 	private orientationTemplates: SizeTemplatesPanel;
 
+	private referenceImageGroup: HTMLElement;
 	private leftPanelToggle: HTMLElement;
 	private rightPanelToggle: HTMLElement;
 
@@ -69,6 +70,48 @@ export class ActionsToolbar extends Widget {
 		);
 	}
 
+	public enable() { this.buttons.forEach(e => e.updateState()); }
+
+	public disable() { }
+
+	private createButton(action: Action, parent?: HTMLElement) {
+		if (!action) return null;
+		const btn = document.createElement(ActionButton.tagName) as ActionButton;
+		btn.setAction(action);
+		(parent ?? this).appendChild(btn);
+		this.buttons.push(btn);
+		return btn;
+	}
+
+	private createReferenceImagePanel(action: Action) {
+		const panel = this.appendChild(document.createElement('div'));
+		panel.classList.add('reference-image-group');
+
+		this.createButton(action, panel);
+
+		const optionsButton = panel.appendChild(document.createElement('div'));
+		optionsButton.classList.add('open-options-button', 'button', 'action-button');
+
+		optionsButton.appendChild(document.createElement('i'))
+			.classList.add('fas', 'fa-caret-down');
+
+		optionsButton.addEventListener('click', () => {
+			Editor.referenceImageController.openOptionsPanel(optionsButton);
+		});
+
+		this.referenceImageGroup = panel;
+	}
+
+	private createSeparator() {
+		this.appendChild(document.createElement('div'))
+			.classList.add('separator');
+	}
+
+	private createSpacer() {
+		this.appendChild(document.createElement('div'))
+			.classList.add('spacer');
+	}
+
 	private onPreferencesChanged(key: PreferenceKey, value: any) {
 		switch (key) {
 			case 'responsive':
@@ -89,44 +132,11 @@ export class ActionsToolbar extends Widget {
 					this.rightPanelToggle.classList.add('is-hidden');
 				}
 				break;
+			case 'referenceImageEnabled':
+				this.referenceImageGroup.classList
+					.addOrRemove('disabled', value !== true);
+				break;
 		}
-	}
-
-	public enable() { this.buttons.forEach(e => e.updateState()); }
-
-	public disable() { }
-
-	private createButton(action: Action) {
-		if (!action) return null;
-		const btn = document.createElement(ActionButton.tagName) as ActionButton;
-		btn.setAction(action);
-		this.appendChild(btn);
-		this.buttons.push(btn);
-		return btn;
-	}
-
-	private createReferenceImagePanel(action: Action) {
-		this.createButton(action);
-
-		const optionsButton = this.appendChild(document.createElement('div'));
-		optionsButton.classList.add('open-options-button', 'button', 'action-button');
-
-		optionsButton.appendChild(document.createElement('i'))
-			.classList.add('fas', 'fa-caret-down');
-
-		optionsButton.addEventListener('click', () => {
-			Editor.referenceImageController.showPanel(optionsButton);
-		});
-	}
-
-	private createSeparator() {
-		this.appendChild(document.createElement('div'))
-			.classList.add('separator');
-	}
-
-	private createSpacer() {
-		this.appendChild(document.createElement('div'))
-			.classList.add('spacer');
 	}
 }
 

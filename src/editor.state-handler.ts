@@ -30,7 +30,7 @@ export class EditorStateHandler {
 
 	private init(config: PluginConfig) {
 		this._initialized = true;
-		Editor.init(config);
+		Editor.init(this.game, config);
 
 		this.editorView = document.createElement(EditorView.tagName) as EditorView;
 
@@ -70,7 +70,7 @@ export class EditorStateHandler {
 		return {
 			clearPreferences: builder.clearPreferences,
 			pauseGame: builder.pauseGame,
-			referenceImageUrl: builder.referenceImageUrl(),
+			referenceImageUrl: builder.referenceImageUrl,
 			root: builder.root(),
 		};
 	}

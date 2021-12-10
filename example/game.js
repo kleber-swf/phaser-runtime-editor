@@ -36,7 +36,12 @@ function preload() {
 
 function create() {
 	const plugin = game.plugins.add(new Phaser.Plugin.RuntimeEditor(game, {
-		referenceImageUrl: () => './assets/reference.jpg',
+		referenceImageUrl(width, height) {
+			return width > height
+				? './refs/ref_landscape.jpg'
+				// : './refs/ref_portrait.jpg';
+				: null;
+		},
 	}));
 
 	const grid = new Phaser.Graphics(game);
