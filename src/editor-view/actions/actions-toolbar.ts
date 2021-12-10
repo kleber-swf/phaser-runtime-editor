@@ -12,10 +12,15 @@ export class ActionsToolbar extends Widget {
 	public static readonly tagName = 'phred-actions-toolbar';
 
 	private readonly buttons: ActionButton[] = [];
+
+	// TODO add these to a dedicated HTMLElement
 	private orientationBtn: ActionButton;
 	private orientationTemplates: SizeTemplatesPanel;
 
+	// TODO add these to a dedicated HTMLElement
 	private referenceImageGroup: HTMLElement;
+	private referenceImageGroupButton: HTMLElement;
+
 	private leftPanelToggle: HTMLElement;
 	private rightPanelToggle: HTMLElement;
 
@@ -32,6 +37,7 @@ export class ActionsToolbar extends Widget {
 		this.createSeparator();
 
 		this.createButton(actions.getAction(Actions.TOGGLE_RESPONSIVE));
+
 		this.orientationBtn = this.createButton(actions.getAction(Actions.TOGGLE_ORIENTATION));
 		this.orientationTemplates = this.appendChild(document.createElement(SizeTemplatesPanel.tagName)) as SizeTemplatesPanel;
 
@@ -99,6 +105,7 @@ export class ActionsToolbar extends Widget {
 			Editor.referenceImageController.openOptionsPanel(optionsButton);
 		});
 
+		this.referenceImageGroupButton = optionsButton;
 		this.referenceImageGroup = panel;
 	}
 
@@ -126,6 +133,10 @@ export class ActionsToolbar extends Widget {
 				break;
 			case 'referenceImageEnabled':
 				this.referenceImageGroup.classList
+					.addOrRemove('disabled', value !== true);
+				break;
+			case 'referenceImageVisible':
+				this.referenceImageGroupButton.classList
 					.addOrRemove('disabled', value !== true);
 				break;
 		}

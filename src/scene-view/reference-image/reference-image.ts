@@ -29,8 +29,12 @@ export class ReferenceImage extends HTMLElement implements ReferenceImageFilters
 		if (this._src === value) return;
 		this._src = value;
 		this.image.src = value ?? '';
-		this.classList.addOrRemove('invisible', !value);
+		this.classList.addOrRemove('invalid', !value);
 		if (!value) this.dispatchEvent(new CustomEvent('imageLoaded', { detail: false }));
+	}
+
+	public set visible(value: boolean) {
+		if (this._src) this.classList.addOrRemove('invisible', !value);
 	}
 
 	public set opacity(value: number) {
@@ -90,12 +94,13 @@ export class ReferenceImage extends HTMLElement implements ReferenceImageFilters
 	}
 
 	private onImageLoadComplete() {
-		this.classList.remove('invisible');
+		this.classList.remove('invalid');
 		this.dispatchEvent(new CustomEvent('imageLoaded', { detail: true }));
 	}
 
 	private onImageLoadError() {
-		this.classList.add('invisible');
+		this._src = null;
+		this.classList.add('invalid');
 		this.dispatchEvent(new CustomEvent('imageLoaded', { detail: false }));
 	}
 }

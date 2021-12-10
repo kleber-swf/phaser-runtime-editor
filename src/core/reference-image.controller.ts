@@ -26,6 +26,7 @@ export class ReferenceImageController {
 	public enable(config: PluginConfig) {
 		this.config = config;
 		this.onPreferencesChanged('responsive', this.prefs.get('responsive'));
+		this.onPreferencesChanged('referenceImageVisible', this.prefs.get('referenceImageVisible'));
 		this.image.enable(this.prefs.get('referenceImageFilters'));
 	}
 
@@ -36,12 +37,20 @@ export class ReferenceImageController {
 	}
 
 	private onPreferencesChanged(key: PreferenceKey, value: any) {
-		if (key === 'responsive') {
-			const size = value ? this.prefs.get('responsiveSize') as Size
-				: { width: this.game.width, height: this.game.height };
-			this.image.source = this.config.referenceImageUrl(size.width, size.height);
-		} else if (key === 'responsiveSize') {
-			this.image.source = this.config.referenceImageUrl(value.width, value.height);
+		switch (key) {
+			case 'referenceImageVisible':
+				this.image.visible = value === true;
+				break;
+			case 'responsive':
+				{
+					const size = value ? this.prefs.get('responsiveSize') as Size
+						: { width: this.game.width, height: this.game.height };
+					this.image.source = this.config.referenceImageUrl(size.width, size.height);
+				}
+				break;
+			case 'responsiveSize':
+				this.image.source = this.config.referenceImageUrl(value.width, value.height);
+				break;
 		}
 	}
 

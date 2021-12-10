@@ -6,7 +6,8 @@ phred-reference-image {
 	bottom: 0;
 	pointer-events: none;
 
-	&.invisible {
+	&.invisible,
+	&.invalid {
 		display: none;
 	}
 
