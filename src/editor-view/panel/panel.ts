@@ -13,6 +13,7 @@ export class Panel extends Widget {
 
 	private readonly inspectors: Inspector[] = [];
 	private side: PanelSide;
+	private prefKey: PreferenceKey;
 
 	public set visible(value: boolean) {
 		if (value) {
@@ -38,13 +39,15 @@ export class Panel extends Widget {
 
 	public init(game: Phaser.Game) {
 		const handle = document.createElement(PanelResizeHandle.tagName) as PanelResizeHandle;
+		this.prefKey = (this.side + 'PanelVisible') as PreferenceKey;
+		const widthPrefKey = (this.side + 'PanelSize') as PreferenceKey;
+
 		handle.init(this, this.side);
 		this.appendChild(handle);
 		this.inspectors.forEach(inspector => inspector.init(game));
-		this.style.width = Editor.prefs.getPanelSize(this.side);
+		this.style.width = Editor.prefs.get(widthPrefKey) as string;
 
-		this.onPreferencesChanged('leftPanelVisible', Editor.prefs.leftPanelVisible);
-		this.onPreferencesChanged('rightPanelVisible', Editor.prefs.rightPanelVisible);
+		this.onPreferencesChanged(this.prefKey, Editor.prefs.get(this.prefKey));
 		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
 	}
 
@@ -57,7 +60,7 @@ export class Panel extends Widget {
 	}
 
 	private onPreferencesChanged(key: PreferenceKey, value: any) {
-		if (key === this.side + 'PanelVisible') {
+		if (key === this.prefKey) {
 			this.visible = value === true;
 		}
 	}

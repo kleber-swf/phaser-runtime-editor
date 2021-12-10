@@ -26,7 +26,7 @@ export class OldReferenceImagePanel extends HTMLElement {
 		this.appendChild(slider);
 
 		Editor.prefs.onPreferenceChanged.add(this.onPreferenceChanged, this);
-		this.onPreferenceChanged('refImageVisible', Editor.prefs.refImageVisible);
+		this.onPreferenceChanged('referenceImageVisible', Editor.prefs.get('referenceImageVisible'));
 	}
 
 	public setupActions(actions: ActionHandler) {
@@ -34,7 +34,7 @@ export class OldReferenceImagePanel extends HTMLElement {
 	}
 
 	private onPreferenceChanged(pref: PreferenceKey, value: any) {
-		if (pref !== 'refImageVisible') return;
+		if (pref !== 'referenceImageVisible') return;
 		if (value) this.slider.removeAttribute('disabled');
 		else this.slider.setAttribute('disabled', 'true');
 	}

@@ -1,7 +1,7 @@
 import { ActionHandler } from 'core/action-handler';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
-import { PluginConfig } from 'plugin.model';
+import { PluginConfig, Size } from 'plugin.model';
 import { GameParent } from 'scene-view/game-parent/game-parent';
 import { SelectionArea } from 'scene-view/selection-area/selection-area';
 import './game-container.scss';
@@ -31,8 +31,8 @@ export class GameContainer extends HTMLElement {
 		this.gameParent.setupActions(actions);
 
 		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
-		this.onPreferencesChanged('responsive', Editor.prefs.responsive);
-		this.onPreferencesChanged('responsiveSizeTemplateIndex', Editor.prefs.responsiveSizeTemplateIndex);
+		this.onPreferencesChanged('responsive', Editor.prefs.get('responsive'));
+		this.onPreferencesChanged('responsiveSizeTemplateIndex', Editor.prefs.get('responsiveSizeTemplateIndex'));
 
 		this.onmousedown = this.onInputDown;
 		this.onmousemove = this.onInputMove;
@@ -62,7 +62,7 @@ export class GameContainer extends HTMLElement {
 			if (!this.classList.contains('responsive')) {
 				this.classList.add('responsive');
 			}
-			this.gameParent.setResponsiveSize(Editor.prefs.responsiveSize);
+			this.gameParent.setResponsiveSize(Editor.prefs.get('responsiveSize') as Size);
 		} else {
 			this.classList.remove('responsive');
 			this.gameParent.clearResponsiveSize();

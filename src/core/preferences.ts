@@ -1,236 +1,148 @@
 import { Size } from 'plugin.model';
-import { OnlyProperties, PanelSide } from 'types';
 import { ActionHandler } from './action-handler';
 import { Actions } from './actions';
 
-export type PreferenceKey = OnlyProperties<Preferences>;
+export interface PreferencesData {
+	snap: boolean;
+	gizmos: boolean;
+	guides: boolean;
+	hitArea: boolean;
+	allHitAreasSnapshot: boolean;	// do not save it
 
-const DEFAULT_RESPONSIVE_SIZE: Readonly<Size> = { width: 450, height: 800 };
+	// TODO join these properties
+	leftPanelVisible: boolean;
+	leftPanelSize: string;
+
+	// TODO join these properties
+	rightPanelVisible: boolean;
+	rightPanelSize: string;
+
+	// TODO join these properties
+	responsive: boolean;
+	responsiveSize: Size;
+	responsiveSizeTemplateIndex: number;
+
+	referenceImageVisible: boolean;
+
+}
+
+export type PreferenceKey = keyof PreferencesData;
+
+const LS_KEY = '_pred_preferences_';
 
 export class Preferences {
-	// #region Preferences
+	public static readonly DefaultResponsiveSize: Readonly<Size> = { width: 450, height: 800 };
+	private data: PreferencesData = {
+		snap: true,
+		gizmos: true,
+		guides: false,
+		referenceImageVisible: false,
+		hitArea: false,
+		allHitAreasSnapshot: false,
+		responsive: false,
+		responsiveSize: Preferences.DefaultResponsiveSize,
+		responsiveSizeTemplateIndex: 0,
 
-	private _snap = true;
+		leftPanelVisible: true,
+		leftPanelSize: undefined,
 
-	public get snap() { return this._snap; }
-
-	public set snap(value: boolean) {
-		this._snap = value;
-		this.notifyListeners('snap', value);
-		this.save('snap', value);
-	}
-
-	private _gizmos = true;
-
-	public get gizmos() { return this._gizmos; }
-
-	public set gizmos(value: boolean) {
-		this._gizmos = value;
-		this.notifyListeners('gizmos', value);
-		this.save('gizmos', value);
-	}
-
-	private _guides = false;
-
-	public get guides() { return this._guides; }
-
-	public set guides(value: boolean) {
-		this._guides = value;
-		this.notifyListeners('guides', value);
-		this.save('guides', value);
-	}
-
-	private _refImageVisible = false;
-
-	public get refImageVisible() { return this._refImageVisible; }
-
-	public set refImageVisible(value: boolean) {
-		this._refImageVisible = value;
-		this.notifyListeners('refImageVisible', value);
-		this.save('refImageVisible', value);
-	}
-
-	private _refImageX = 0;
-
-	public get refImageX() { return this._refImageX; }
-
-	public set refImageX(value: number) {
-		this._refImageX = value;
-		this.notifyListeners('refImageX', value);
-		this.save('refImageX', value);
-	}
-
-	private _refImageY = 0;
-
-	public get refImageY() { return this._refImageY; }
-
-	public set refImageY(value: number) {
-		this._refImageY = value;
-		this.notifyListeners('refImageY', value);
-		this.save('refImageY', value);
-	}
-
-	private _hitArea = false;
-
-	public get hitArea() { return this._hitArea; }
-
-	public set hitArea(value: boolean) {
-		this._hitArea = value;
-		this.notifyListeners('hitArea', value);
-		this.save('hitArea', value);
-	}
-
-	private _allHitAreasSnapshot = false;
-
-	public get allHitAreasSnapshot() { return this._allHitAreasSnapshot; }
-
-	public set allHitAreasSnapshot(value: boolean) {
-		this._allHitAreasSnapshot = value;
-		this.notifyListeners('allHitAreasSnapshot', value);
-	}
-
-	private _responsive = false;
-
-	public get responsive() { return this._responsive; }
-
-	public set responsive(value: boolean) {
-		this._responsive = value;
-		this.notifyListeners('responsive', value);
-		this.save('responsive', value);
-	}
-
-	private _responsiveSize: Size = Object.assign({}, DEFAULT_RESPONSIVE_SIZE);
-
-	public get responsiveSize() { return this._responsiveSize; }
-
-	public set responsiveSize(value: Size) {
-		value = value ?? Object.assign({}, DEFAULT_RESPONSIVE_SIZE);
-		value.width = value.width > 0 ? value.width : DEFAULT_RESPONSIVE_SIZE.width;
-		value.height = value.height > 0 ? value.height : DEFAULT_RESPONSIVE_SIZE.height;
-		this._responsiveSize = value;
-		this.notifyListeners('responsiveSize', value);
-		this.save('responsiveSize', value);
-	}
-
-	private _responsiveSizeTemplateIndex: number;
-
-	public get responsiveSizeTemplateIndex() { return this._responsiveSizeTemplateIndex; }
-
-	public setResponsiveSizeTemplate(index: number, width: number, height: number) {
-		this._responsiveSizeTemplateIndex = index;
-		this.notifyListeners('responsiveSizeTemplateIndex', index);
-
-		const currentSize = this._responsiveSize;
-
-		width = width ?? currentSize.width ?? DEFAULT_RESPONSIVE_SIZE.width;
-		height = height ?? currentSize.height ?? DEFAULT_RESPONSIVE_SIZE.height;
-
-		if (currentSize.height > currentSize.width) {
-			const aux = width;
-			width = height;
-			height = aux;
-		}
-
-		this.responsiveSize = { width, height };
-		this.save('responsiveSizeTemplateIndex', index);
-	}
-
-	private _leftPanelVisible = true;
-
-	public get leftPanelVisible(): boolean { return this._leftPanelVisible; }
-
-	public set leftPanelVisible(value: boolean) {
-		this._leftPanelVisible = value;
-		this.notifyListeners('leftPanelVisible', value);
-		this.save('leftPanelVisible', value);
-	}
-
-	private _rightPanelVisible = true;
-
-	public get rightPanelVisible(): boolean { return this._rightPanelVisible; }
-
-	public set rightPanelVisible(value: boolean) {
-		this._rightPanelVisible = value;
-		this.notifyListeners('rightPanelVisible', value);
-		this.save('rightPanelVisible', value);
-	}
-
-	// #endregion
+		rightPanelVisible: true,
+		rightPanelSize: undefined,
+	};
 
 	public readonly onPreferenceChanged = new Phaser.Signal();
 
 	public constructor(clean: boolean) {
 		if (clean) localStorage.clear();
 		try {
-			this._snap = this.load('snap', true);
-			this._gizmos = this.load('gizmos', true);
-			this._guides = this.load('guides', false);
-			this._hitArea = this.load('hitArea', false);
-			this._responsive = this.load('responsive', false);
-			this._refImageVisible = this.load('refImageVisible', false);
-			this._refImageX = this.load('refImageX', 0);
-			this._refImageY = this.load('refImageY', 0);
-			this._responsiveSize = this.load('responsiveSize', Object.assign({}, DEFAULT_RESPONSIVE_SIZE));
-			this._responsiveSizeTemplateIndex = this.load('responsiveSizeTemplateIndex', 0);
-			this._leftPanelVisible = this.load('leftPanelVisible', true);
-			this._rightPanelVisible = this.load('rightPanelVisible', true);
+			const data = this.load();
+			this.data = Object.assign(this.data, data);
 		} catch (_e: any) {
 			localStorage.clear();
 		}
 	}
 
+	public get(key: keyof PreferencesData) {
+		return this.data[key];
+	}
+
+	public set(key: PreferenceKey, value: any, save = true) {
+		this.data[key as string] = value;
+		if (save) this.save();
+		this.notifyListeners(key, value);
+	}
+
+	public toggle(key: PreferenceKey, save = true) {
+		this.set(key, !this.data[key], save);
+	}
+
+	private load() {
+		const content = localStorage.getItem(LS_KEY);
+		console.log('loading', JSON.parse(content));
+		return content ? JSON.parse(content) : {};
+	}
+
+	private save() {
+		const content = JSON.stringify(this.data);
+		console.log('saving', this.data);
+		localStorage.setItem(LS_KEY, content);
+	}
+
+	private notifyListeners(key: PreferenceKey, value: any) {
+		this.onPreferenceChanged.dispatch(key, value);
+	}
+
 	// hmm... this is weird
 	public setupActions(actions: ActionHandler) {
-		actions.setActionCommand(Actions.TOGGLE_SNAP, () => this.snap = !this._snap, () => this._snap);
-		actions.setActionCommand(Actions.TOGGLE_GIZMOS, () => this.gizmos = !this._gizmos, () => this._gizmos);
-		actions.setActionCommand(Actions.TOGGLE_GUIDES, () => this.guides = !this._guides, () => this._guides);
-		actions.setActionCommand(Actions.TOGGLE_HIT_AREA, () => this.hitArea = !this._hitArea, () => this._hitArea);
-		actions.setActionCommand(Actions.TOGGLE_RESPONSIVE, () => this.responsive = !this._responsive, () => this._responsive);
+		actions.setActionCommand(
+			Actions.TOGGLE_SNAP,
+			() => this.toggle('snap'),
+			() => this.get('snap') as boolean
+		);
+		actions.setActionCommand(
+			Actions.TOGGLE_GIZMOS,
+			() => this.toggle('gizmos'),
+			() => this.get('gizmos') as boolean
+		);
+		actions.setActionCommand(
+			Actions.TOGGLE_GUIDES,
+			() => this.toggle('guides'),
+			() => this.get('guides') as boolean
+		);
+		actions.setActionCommand(
+			Actions.TOGGLE_HIT_AREA,
+			() => this.toggle('hitArea'),
+			() => this.get('hitArea') as boolean
+		);
+		actions.setActionCommand(
+			Actions.TOGGLE_RESPONSIVE,
+			() => this.toggle('responsive'),
+			() => this.get('responsive') as boolean
+		);
 		actions.setActionCommand(Actions.TOGGLE_ORIENTATION, () => {
-			const size = this._responsiveSize;
-			this.responsiveSize = { width: size.height, height: size.width };
+			const size = this.get('responsiveSize') as Size;
+			this.set('responsiveSize', { width: size.height, height: size.width });
 		});
 		actions.setActionCommand(
 			Actions.TOGGLE_ALL_HIT_AREAS_SNAPSHOT,
-			() => this.allHitAreasSnapshot = !this._allHitAreasSnapshot,
-			() => this._allHitAreasSnapshot
+			() => this.toggle('allHitAreasSnapshot', false),
+			() => this.get('allHitAreasSnapshot') as boolean
 		);
 		actions.setActionCommand(
 			Actions.TOGGLE_REF_IMAGE,
-			() => this.refImageVisible = !this._refImageVisible,
-			() => this._refImageVisible
+			() => this.toggle('referenceImageVisible'),
+			() => this.get('referenceImageVisible') as boolean
 		);
 
 		actions.setActionCommand(
 			Actions.TOGGLE_LEFT_PANEL,
-			() => this.leftPanelVisible = !this._leftPanelVisible,
-			() => this._leftPanelVisible
+			() => this.toggle('leftPanelVisible'),
+			() => this.get('leftPanelVisible') as boolean
 		);
 		actions.setActionCommand(
 			Actions.TOGGLE_RIGHT_PANEL,
-			() => this.rightPanelVisible = !this._rightPanelVisible,
-			() => this._rightPanelVisible
+			() => this.toggle('rightPanelVisible'),
+			() => this.get('rightPanelVisible') as boolean
 		);
-	}
-
-	public setPanelSize(side: PanelSide, width: string) { this.save(`panel.${side}`, width); }
-
-	public getPanelSize(side: PanelSide): string {
-		const result = this.load<string>(`panel.${side}`, '');
-		return result === '' ? undefined : result;
-	}
-
-	private notifyListeners(field: PreferenceKey, value: any) {
-		this.onPreferenceChanged.dispatch(field, value);
-	}
-
-	private load<T>(key: string, defaultValue: T): T {
-		const v = localStorage.getItem(key);
-		if (!v) return defaultValue;
-		return typeof defaultValue === 'string' ? v : JSON.parse(v);
-	}
-
-	private save(key: string, value: any) {
-		localStorage.setItem(key, typeof value === 'object' ? JSON.stringify(value) : value.toString());
 	}
 }

@@ -41,10 +41,10 @@ export class SelectionArea extends HTMLElement {
 
 		const prefs = Editor.prefs;
 		prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
-		this.onPreferencesChanged('gizmos', prefs.gizmos);
-		this.onPreferencesChanged('snap', prefs.snap);
-		this.onPreferencesChanged('guides', prefs.guides);
-		this.onPreferencesChanged('hitArea', prefs.hitArea);
+		this.onPreferencesChanged('gizmos', prefs.get('gizmos'));
+		this.onPreferencesChanged('snap', prefs.get('snap'));
+		this.onPreferencesChanged('guides', prefs.get('guides'));
+		this.onPreferencesChanged('hitArea', prefs.get('hitArea'));
 	}
 
 	public enable(config: PluginConfig) {

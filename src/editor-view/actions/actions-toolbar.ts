@@ -61,9 +61,9 @@ export class ActionsToolbar extends Widget {
 		rightPanelToggle.addEventListener('click', () => actions.getAction(Actions.TOGGLE_RIGHT_PANEL).command());
 		this.rightPanelToggle = rightPanelToggle;
 
-		this.onPreferencesChanged('responsive', Editor.prefs.responsive);
-		this.onPreferencesChanged('leftPanelVisible', Editor.prefs.leftPanelVisible);
-		this.onPreferencesChanged('rightPanelVisible', Editor.prefs.rightPanelVisible);
+		this.onPreferencesChanged('responsive', Editor.prefs.get('responsive'));
+		this.onPreferencesChanged('leftPanelVisible', Editor.prefs.get('leftPanelVisible'));
+		this.onPreferencesChanged('rightPanelVisible', Editor.prefs.get('rightPanelVisible'));
 		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
 	}
 

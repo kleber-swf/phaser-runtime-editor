@@ -1,4 +1,5 @@
 import { Editor } from 'core/editor';
+import { PreferenceKey } from 'core/preferences';
 import { PanelSide } from 'types';
 import './panel-resize-handle.scss';
 
@@ -52,7 +53,7 @@ export class PanelResizeHandle extends HTMLElement {
 		e.preventDefault();
 		window.removeEventListener('mousemove', this._resize);
 		window.removeEventListener('mouseup', this._stopResize);
-		Editor.prefs.setPanelSize(this.side, this.panel.style.width);
+		Editor.prefs.set((this.side + 'PanelSize') as PreferenceKey, this.panel.style.width);
 	}
 }
 

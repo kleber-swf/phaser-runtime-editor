@@ -93,7 +93,7 @@ export class GameParent extends HTMLElement {
 	}
 
 	private onGameResized(width: number, height: number) {
-		Editor.prefs.responsiveSize = { width, height };
+		Editor.prefs.set('responsiveSize', { width, height });
 	}
 }
 

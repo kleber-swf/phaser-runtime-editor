@@ -1,4 +1,6 @@
 import { Editor } from 'core/editor';
+import { Preferences } from 'core/preferences';
+import { Size } from 'plugin.model';
 import './size-templates-panel.scss';
 
 const OPTIONS = [
@@ -35,7 +37,7 @@ export class SizeTemplatesPanel extends HTMLElement {
 			el.appendChild(option);
 		});
 
-		el.value = (Editor.prefs.responsiveSizeTemplateIndex ?? 0).toString();
+		el.value = (Editor.prefs.get('responsiveSizeTemplateIndex') ?? 0).toString();
 		el.addEventListener('change', this.onValueChanged.bind(this));
 	}
 
@@ -43,7 +45,25 @@ export class SizeTemplatesPanel extends HTMLElement {
 		const index = parseInt((e.target as HTMLOptionElement).value, 10);
 		if (isNaN(index) || index < 0 || index >= OPTIONS.length) return;
 		const option = OPTIONS[index];
-		Editor.prefs.setResponsiveSizeTemplate(index, option.width, option.height);
+		this.setResponsiveSizeTemplate(index, option.width, option.height);
+	}
+
+	public setResponsiveSizeTemplate(index: number, width: number, height: number) {
+		const prefs = Editor.prefs;
+
+		const currentSize = prefs.get('responsiveSize') as Size;
+
+		width = width ?? currentSize.width ?? Preferences.DefaultResponsiveSize.width;
+		height = height ?? currentSize.height ?? Preferences.DefaultResponsiveSize.height;
+
+		if (currentSize.height > currentSize.width) {
+			const aux = width;
+			width = height;
+			height = aux;
+		}
+
+		prefs.set('responsiveSizeTemplateIndex', index, false);
+		prefs.set('responsiveSize', { width, height }, true);
 	}
 }
 

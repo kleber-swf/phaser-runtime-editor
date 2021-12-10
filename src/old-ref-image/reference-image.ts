@@ -1,5 +1,4 @@
 import { Editor } from 'core/editor';
-import { PreferenceKey } from 'core/preferences';
 
 export class OldReferenceImage extends Phaser.Group {
 	private _parent: PIXI.DisplayObjectContainer;
@@ -16,10 +15,10 @@ export class OldReferenceImage extends Phaser.Group {
 			this.addChild(value);
 			value.inputEnabled = true;
 			value.input.draggable = true;
-			value.events.onDragStop.add(() => {
-				Editor.prefs.refImageX = value.x;
-				Editor.prefs.refImageY = value.y;
-			});
+			// value.events.onDragStop.add(() => {
+			// 	Editor.prefs.refImageX = value.x;
+			// 	Editor.prefs.refImageY = value.y;
+			// });
 		}
 		this.visible = true;
 	}
@@ -35,7 +34,7 @@ export class OldReferenceImage extends Phaser.Group {
 		Editor.prefs.onPreferenceChanged.add(this.onPreferenceChanged, this);
 	}
 
-	private onPreferenceChanged(pref: PreferenceKey, value: any) {
+	private onPreferenceChanged(pref: string, value: any) {
 		if (pref !== 'refImageVisible') return;
 		if (value) this.show();
 		else this.hide();
@@ -50,7 +49,7 @@ export class OldReferenceImage extends Phaser.Group {
 	}
 
 	public enable() {
-		this.onPreferenceChanged('refImageVisible', Editor.prefs.refImageVisible);
+		// this.onPreferenceChanged('refImageVisible', Editor.prefs.refImageVisible);
 	}
 
 	public disable() {
