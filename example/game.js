@@ -39,8 +39,7 @@ function create() {
 		referenceImageUrl(width, height) {
 			return width > height
 				? './refs/ref_landscape.jpg'
-				// : './refs/ref_portrait.jpg';
-				: null;
+				: './refs/ref_portrait.jpg';
 		},
 	}));
 

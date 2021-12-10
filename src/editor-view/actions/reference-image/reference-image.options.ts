@@ -1,8 +1,8 @@
 import { PopupContainer } from 'editor-view/popup/popup-container';
 import { ReferenceImage, RefImageFilterTypes } from 'scene-view/reference-image/reference-image';
-import './reference-image.panel.scss';
+import './reference-image.options.scss';
 
-export class ReferenceImagePanel extends PopupContainer {
+export class ReferenceImageOptions extends PopupContainer {
 	public static readonly tagName = 'phred-reference-image-panel';
 
 	private image: ReferenceImage;
@@ -55,4 +55,4 @@ export class ReferenceImagePanel extends PopupContainer {
 	}
 }
 
-customElements.define(ReferenceImagePanel.tagName, ReferenceImagePanel);
+customElements.define(ReferenceImageOptions.tagName, ReferenceImageOptions);

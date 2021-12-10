@@ -50,13 +50,12 @@ export class SizeTemplatesPanel extends HTMLElement {
 
 	public setResponsiveSizeTemplate(index: number, width: number, height: number) {
 		const prefs = Editor.prefs;
-
 		const currentSize = prefs.get('responsiveSize') as Size;
 
-		width = width ?? currentSize.width ?? Preferences.DefaultResponsiveSize.width;
-		height = height ?? currentSize.height ?? Preferences.DefaultResponsiveSize.height;
-
-		if (currentSize.height > currentSize.width) {
+		if (!width || !height) {
+			width = currentSize.width ?? Preferences.DefaultResponsiveSize.width;
+			height = currentSize.height ?? Preferences.DefaultResponsiveSize.height;
+		} else if (currentSize.height > currentSize.width) {
 			const aux = width;
 			width = height;
 			height = aux;
