@@ -1,17 +1,17 @@
 export interface PluginConfigBuilder {
 	root?: () => Container;
-	refImage?: () => Phaser.Image | Phaser.Sprite;
+	referenceImageUrl?: (width: number, height: number) => string;
 	pauseGame?: boolean;
-	clearPrefs?: boolean;
+	clearPreferences?: boolean;
 	onShow?: () => void;
 	onHide?: () => void;
 }
 
 export interface PluginConfig {
 	root: Container;
-	refImage: Phaser.Image | Phaser.Sprite;
+	referenceImageUrl: (width: number, height: number) => string;
 	pauseGame: boolean;
-	clearPrefs: boolean;
+	clearPreferences: boolean;
 }
 
 export interface Point {
@@ -30,3 +30,5 @@ export interface Rect {
 	width: number;
 	height: number;
 }
+
+export type PanelSide = 'left' | 'right';

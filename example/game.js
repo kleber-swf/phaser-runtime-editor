@@ -2,7 +2,7 @@
 
 const game = new Phaser.Game({
 	width: 1920,
-	height: 1920,
+	height: 1080,
 	renderer: Phaser.CANVAS,
 	parent: 'game',
 	scaleMode: Phaser.ScaleManager.USER_SCALE,
@@ -36,7 +36,11 @@ function preload() {
 
 function create() {
 	const plugin = game.plugins.add(new Phaser.Plugin.RuntimeEditor(game, {
-		refImage: () => new Phaser.Image(game, 0, 0, 'ref'),
+		referenceImageUrl(width, height) {
+			return width > height
+				? './refs/ref_landscape.jpg'
+				: './refs/ref_portrait.jpg';
+		},
 	}));
 
 	const grid = new Phaser.Graphics(game);

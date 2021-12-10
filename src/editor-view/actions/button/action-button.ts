@@ -7,13 +7,7 @@ export class ActionButton extends HTMLElement {
 	private action: Action;
 
 	public set interactable(value: boolean) {
-		if (value) {
-			this.classList.remove('disabled');
-			return;
-		}
-		if (!this.classList.contains('disabled')) {
-			this.classList.add('disabled');
-		}
+		this.classList.addOrRemove('disabled', !value);
 	}
 
 	public setAction(action: Action) {
@@ -24,7 +18,6 @@ export class ActionButton extends HTMLElement {
 		if (action.icon) {
 			const icon = this.appendChild(document.createElement('i'));
 			icon.classList.add('fas', action.icon);
-			// TODO tooltip
 		} else {
 			const text = this.appendChild(document.createElement('span'));
 			text.classList.add('label');
@@ -56,8 +49,7 @@ export class ActionButton extends HTMLElement {
 	}
 
 	public updateState() {
-		if (this.action.state?.()) this.classList.add('selected');
-		else this.classList.remove('selected');
+		this.classList.addOrRemove('selected', this.action.state?.());
 	}
 }
 

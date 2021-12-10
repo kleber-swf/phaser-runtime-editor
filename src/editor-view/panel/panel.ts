@@ -1,10 +1,10 @@
 import { Editor } from 'core/editor';
-import { PreferenceKey } from 'core/preferences';
+import { PreferenceKey } from 'core/preferences/preferences.model';
+import { PreferencesUtil } from 'core/preferences/preferences.util';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
 import { Widget } from 'editor-view/widget/widget';
-import { PluginConfig } from 'plugin.model';
-import { PanelSide } from 'types';
+import { PanelSide, PluginConfig } from 'plugin.model';
 import './panel.scss';
 import { PanelResizeHandle } from './resize-handle/panel-resize-handle';
 
@@ -13,13 +13,10 @@ export class Panel extends Widget {
 
 	private readonly inspectors: Inspector[] = [];
 	private side: PanelSide;
+	private visiblePrefKey: PreferenceKey;
 
 	public set visible(value: boolean) {
-		if (value) {
-			this.classList.remove('hidden');
-		} else if (!this.classList.contains('hidden')) {
-			this.classList.add('hidden');
-		}
+		this.classList.addOrRemove('hidden', !value);
 	}
 
 	public setSide(value: PanelSide) {
@@ -38,14 +35,15 @@ export class Panel extends Widget {
 
 	public init(game: Phaser.Game) {
 		const handle = document.createElement(PanelResizeHandle.tagName) as PanelResizeHandle;
+		this.visiblePrefKey = (this.side + 'PanelVisible') as PreferenceKey;
+		const sizePrefKey = (this.side + 'PanelSize') as PreferenceKey;
+
 		handle.init(this, this.side);
 		this.appendChild(handle);
 		this.inspectors.forEach(inspector => inspector.init(game));
-		this.style.width = Editor.prefs.getPanelSize(this.side);
+		this.style.width = Editor.prefs.get(sizePrefKey) as string;
 
-		this.onPreferencesChanged('leftPanelVisible', Editor.prefs.leftPanelVisible);
-		this.onPreferencesChanged('rightPanelVisible', Editor.prefs.rightPanelVisible);
-		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
+		PreferencesUtil.setupPreferences([this.visiblePrefKey], this.onPreferencesChanged, this);
 	}
 
 	public enable(config: PluginConfig) {
@@ -57,7 +55,7 @@ export class Panel extends Widget {
 	}
 
 	private onPreferencesChanged(key: PreferenceKey, value: any) {
-		if (key === this.side + 'PanelVisible') {
+		if (key === this.visiblePrefKey) {
 			this.visible = value === true;
 		}
 	}

@@ -20,6 +20,12 @@ phred-actions-toolbar {
 		flex: 1 0 auto;
 	}
 
+	.reference-image-group {
+		display: flex;
+		align-items: stretch;
+		justify-content: stretch;
+	}
+
 	.panel-toggle {
 		position: absolute;
 		width: 20px;

@@ -2,8 +2,8 @@ import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { DisabledUI } from 'disabled/disabled-ui';
 import { EditorView } from 'editor-view/editor-view';
+import { PopupContainer } from 'editor-view/popup/popup-container';
 import { PluginConfig, PluginConfigBuilder } from 'plugin.model';
-import { ReferenceImageController } from 'reference-image/reference-image.controller';
 
 export class EditorStateHandler {
 	private _initialized = false;
@@ -11,7 +11,6 @@ export class EditorStateHandler {
 	private disabledUI: DisabledUI;
 
 	private editorView: EditorView;
-	private referenceImageController: ReferenceImageController;
 
 	private readonly game: Phaser.Game;
 	private configBuilder: PluginConfigBuilder;
@@ -31,11 +30,11 @@ export class EditorStateHandler {
 
 	private init(config: PluginConfig) {
 		this._initialized = true;
-		Editor.init(config);
+		Editor.init(this.game, config);
 
 		this.editorView = document.createElement(EditorView.tagName) as EditorView;
-		this.referenceImageController = new ReferenceImageController(this.game, config);
 
+		PopupContainer.parent = this.editorView;
 		this.editorView.init(this.game);
 
 		this.setupInitialActions();
@@ -52,8 +51,6 @@ export class EditorStateHandler {
 		);
 
 		this.editorView.setupActions(actions);
-		this.referenceImageController.setupActions(actions);
-
 		actions.addContainer('body', document.body);
 	}
 
@@ -65,17 +62,15 @@ export class EditorStateHandler {
 		if (!this._initialized) this.init(this.config);
 
 		this.editorView.enable(this.config);
-		this.referenceImageController.enable(this.config.refImage);
-
-		Editor.enable();
+		Editor.enable(this.config);
 		if (this.onshow) this.onshow();
 	}
 
 	private createConfig(builder: PluginConfigBuilder): PluginConfig {
 		return {
-			clearPrefs: builder.clearPrefs,
+			clearPreferences: builder.clearPreferences,
 			pauseGame: builder.pauseGame,
-			refImage: builder.refImage(),
+			referenceImageUrl: builder.referenceImageUrl,
 			root: builder.root(),
 		};
 	}
@@ -85,7 +80,7 @@ export class EditorStateHandler {
 		this._isEnabled = false;
 		Editor.disable();
 		this.editorView.disable();
-		this.referenceImageController.disable();
+		// this.referenceImageController.disable();
 
 		this.disabledUI.enable();
 		if (this.onhide) this.onhide();

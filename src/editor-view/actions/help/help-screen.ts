@@ -1,14 +1,17 @@
 import { Action } from 'core/action-handler';
 import { Editor } from 'core/editor';
+import { PopupContainer } from 'editor-view/popup/popup-container';
 import './help-screen.scss';
 
-export class HelpScreen extends HTMLElement {
+export class HelpScreen extends PopupContainer {
 	public static readonly tagName = 'phred-help-screen';
 
-	public connectedCallback() {
-		const popup = this.createPopup();
-		const content = popup.appendChild(document.createElement('div'));
-		content.classList.add('content');
+	protected createPopup(title: string) {
+		const popup = super.createPopup(title);
+		// popup.appendChild(document.createElement('h1')).innerText = 'Help';
+
+		// const content = popup.appendChild(document.createElement('div'));
+		// content.classList.add('content');
 
 		let lastCategory: string;
 		let group: HTMLElement;
@@ -19,22 +22,11 @@ export class HelpScreen extends HTMLElement {
 			.forEach(a => {
 				if (a.category !== lastCategory) {
 					lastCategory = a.category;
-					group = this.createCategoryGroup(lastCategory, content);
+					group = this.createCategoryGroup(lastCategory, popup.content);
 				}
 				this.createLine(a, group);
 			});
 
-		this.addEventListener('click', () => this.remove());
-	}
-
-	private createPopup() {
-		const popup = document.createElement('div');
-		popup.classList.add('popup');
-
-		popup.appendChild(document.createElement('h1'))
-			.innerText = 'Help';
-
-		this.appendChild(popup);
 		return popup;
 	}
 

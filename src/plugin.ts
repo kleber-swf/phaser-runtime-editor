@@ -20,7 +20,7 @@ export class Plugin extends Phaser.Plugin {
 		this.insertHead();
 		if (!config) config = {};
 		if (!config.root) config.root = () => game.world;
-		if (!config.refImage) config.refImage = () => null;
+		if (!config.referenceImageUrl) config.referenceImageUrl = () => null;
 		this.configBuilder = config;
 		// this.config = {
 		// 	root: null,
@@ -112,4 +112,13 @@ Object.defineProperty(PIXI.DisplayObject.prototype, 'globalScale', {
 	enumerable: true,
 	configurable: true,
 	get() { return new PIXI.Point(this.worldTransform.a, this.worldTransform.d); },
+});
+
+Object.defineProperty(DOMTokenList.prototype, 'addOrRemove', {
+	enumerable: true,
+	configurable: true,
+	value(className: string, add: boolean) {
+		if (add) this.add(className);
+		else this.remove(className);
+	},
 });

@@ -2,11 +2,12 @@ import { Actions } from 'core/actions';
 import { EditorData } from 'data/editor-data';
 import { InspectorData } from 'data/inspector-data';
 import { PhaserMeta } from 'data/phaser-meta';
-import { PluginConfig } from 'plugin.model';
+import { PluginConfig, Size } from 'plugin.model';
 import { PropertyElementTag } from 'property-element-tag';
 import { ActionHandler } from './action-handler';
 import { History } from './history';
-import { Preferences } from './preferences';
+import { Preferences } from './preferences/preferences';
+import { ReferenceImageController } from './reference-image.controller';
 
 class EditorClass {
 	public data: EditorData;
@@ -17,14 +18,18 @@ class EditorClass {
 	public history: History;
 	public prefs: Preferences;
 
-	public init(config: PluginConfig) {
+	public referenceImageController: ReferenceImageController;
+
+	public init(game: Phaser.Game, config: PluginConfig) {
 		this.data = new EditorData();
 		this.inspectorData = this.createInspectorData();
 		this.meta = new PhaserMeta();
 
 		this.actions = this.createActions();
 		this.history = new History(this.data);
-		this.prefs = new Preferences(config.clearPrefs);
+		this.prefs = new Preferences(config.clearPreferences);
+
+		this.referenceImageController = new ReferenceImageController(game, this.prefs);
 	}
 
 	private createInspectorData() {
@@ -195,7 +200,7 @@ class EditorClass {
 				category: 'scene',
 			},
 			{
-				id: Actions.TOGGLE_ALL_HIT_AREAS_SNAPSHOT,
+				id: Actions.TOGGLE_HIT_AREAS_SNAPSHOT,
 				toggle: true,
 				tooltip: 'Toggle all hit areas snapshot',
 				description: 'Shows a snapshot of all hit areas in the scene',
@@ -352,15 +357,79 @@ class EditorClass {
 		return actions;
 	}
 
+	private setupPreferencesActions(actions: ActionHandler) {
+		const prefs = this.prefs;
+
+		actions.setActionCommand(
+			Actions.TOGGLE_SNAP,
+			() => prefs.toggle('snap'),
+			() => prefs.get('snap') as boolean
+		);
+
+		actions.setActionCommand(
+			Actions.TOGGLE_GIZMOS,
+			() => prefs.toggle('gizmos'),
+			() => prefs.get('gizmos') as boolean
+		);
+
+		actions.setActionCommand(
+			Actions.TOGGLE_GUIDES,
+			() => prefs.toggle('guides'),
+			() => prefs.get('guides') as boolean
+		);
+
+		actions.setActionCommand(
+			Actions.TOGGLE_HIT_AREA,
+			() => prefs.toggle('hitArea'),
+			() => prefs.get('hitArea') as boolean
+		);
+
+		actions.setActionCommand(
+			Actions.TOGGLE_RESPONSIVE,
+			() => prefs.toggle('responsive'),
+			() => prefs.get('responsive') as boolean
+		);
+
+		actions.setActionCommand(Actions.TOGGLE_ORIENTATION, () => {
+			const size = prefs.get('responsiveSize') as Size;
+			prefs.set('responsiveSize', { width: size.height, height: size.width });
+		});
+
+		actions.setActionCommand(
+			Actions.TOGGLE_HIT_AREAS_SNAPSHOT,
+			() => prefs.toggle('hitAreasSnapshot'),
+			() => prefs.get('hitAreasSnapshot') as boolean
+		);
+
+		actions.setActionCommand(
+			Actions.TOGGLE_REF_IMAGE,
+			() => prefs.toggle('referenceImageVisible'),
+			() => prefs.get('referenceImageVisible') as boolean
+		);
+
+		actions.setActionCommand(
+			Actions.TOGGLE_LEFT_PANEL,
+			() => prefs.toggle('leftPanelVisible'),
+			() => prefs.get('leftPanelVisible') as boolean
+		);
+
+		actions.setActionCommand(
+			Actions.TOGGLE_RIGHT_PANEL,
+			() => prefs.toggle('rightPanelVisible'),
+			() => prefs.get('rightPanelVisible') as boolean
+		);
+	}
+
 	public setupInitialActions() {
 		const actions = this.actions;
-		this.prefs.setupActions(actions);
+		this.setupPreferencesActions(actions);
 		this.history.setupActions(actions);
 		this.data.setupActions(actions);
 	}
 
-	public enable() {
+	public enable(config: PluginConfig) {
 		this.actions.enable();
+		this.referenceImageController.enable(config);
 	}
 
 	public disable() {
