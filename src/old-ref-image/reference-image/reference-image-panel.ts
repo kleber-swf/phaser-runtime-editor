@@ -25,7 +25,7 @@ export class OldReferenceImagePanel extends HTMLElement {
 		slider.value = image.alpha.toString();
 		this.appendChild(slider);
 
-		Editor.prefs.onPreferenceChanged.add(this.onPreferenceChanged, this);
+		Editor.prefs.onChange.add(this.onPreferenceChanged, this);
 		this.onPreferenceChanged('referenceImageVisible', Editor.prefs.get('referenceImageVisible'));
 	}
 

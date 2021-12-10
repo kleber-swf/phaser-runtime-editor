@@ -2,6 +2,7 @@ import { Action, ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences/preferences.model';
+import { PreferencesUtil } from 'core/preferences/preferences.util';
 import { Widget } from 'editor-view/widget/widget';
 import './actions-toolbar.scss';
 import { ActionButton } from './button/action-button';
@@ -61,10 +62,11 @@ export class ActionsToolbar extends Widget {
 		rightPanelToggle.addEventListener('click', () => actions.getAction(Actions.TOGGLE_RIGHT_PANEL).command());
 		this.rightPanelToggle = rightPanelToggle;
 
-		this.onPreferencesChanged('responsive', Editor.prefs.get('responsive'));
-		this.onPreferencesChanged('leftPanelVisible', Editor.prefs.get('leftPanelVisible'));
-		this.onPreferencesChanged('rightPanelVisible', Editor.prefs.get('rightPanelVisible'));
-		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
+		PreferencesUtil.setupPreferences(
+			['responsive', 'leftPanelVisible', 'rightPanelVisible'],
+			this.onPreferencesChanged,
+			this
+		);
 	}
 
 	private onPreferencesChanged(key: PreferenceKey, value: any) {

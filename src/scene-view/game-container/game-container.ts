@@ -1,6 +1,7 @@
 import { ActionHandler } from 'core/action-handler';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences/preferences.model';
+import { PreferencesUtil } from 'core/preferences/preferences.util';
 import { PluginConfig, Size } from 'plugin.model';
 import { GameParent } from 'scene-view/game-parent/game-parent';
 import { SelectionArea } from 'scene-view/selection-area/selection-area';
@@ -29,11 +30,7 @@ export class GameContainer extends HTMLElement {
 
 	public setupActions(actions: ActionHandler) {
 		this.gameParent.setupActions(actions);
-
-		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
-		this.onPreferencesChanged('responsive', Editor.prefs.get('responsive'));
-		this.onPreferencesChanged('responsiveTemplateIndex', Editor.prefs.get('responsiveTemplateIndex'));
-
+		PreferencesUtil.setupPreferences(['responsive', 'responsiveTemplateIndex'], this.onPreferencesChanged, this);
 		this.onmousedown = this.onInputDown;
 		this.onmousemove = this.onInputMove;
 		this.onmouseup = this.onInputUp;

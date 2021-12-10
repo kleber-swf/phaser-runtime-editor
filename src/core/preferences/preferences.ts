@@ -25,7 +25,7 @@ export class Preferences {
 		referenceImageVisible: false,
 	};
 
-	public readonly onPreferenceChanged = new Phaser.Signal();
+	public readonly onChange = new Phaser.Signal();
 
 	public constructor(clean: boolean) {
 		if (clean) localStorage.clear();
@@ -64,6 +64,6 @@ export class Preferences {
 	}
 
 	private notifyListeners(key: PreferenceKey, value: any) {
-		this.onPreferenceChanged.dispatch(key, value);
+		this.onChange.dispatch(key, value);
 	}
 }

@@ -1,5 +1,6 @@
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences/preferences.model';
+import { PreferencesUtil } from 'core/preferences/preferences.util';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
 import { Widget } from 'editor-view/widget/widget';
@@ -13,7 +14,7 @@ export class Panel extends Widget {
 
 	private readonly inspectors: Inspector[] = [];
 	private side: PanelSide;
-	private prefKey: PreferenceKey;
+	private visiblePrefKey: PreferenceKey;
 
 	public set visible(value: boolean) {
 		if (value) {
@@ -39,16 +40,15 @@ export class Panel extends Widget {
 
 	public init(game: Phaser.Game) {
 		const handle = document.createElement(PanelResizeHandle.tagName) as PanelResizeHandle;
-		this.prefKey = (this.side + 'PanelVisible') as PreferenceKey;
-		const widthPrefKey = (this.side + 'PanelSize') as PreferenceKey;
+		this.visiblePrefKey = (this.side + 'PanelVisible') as PreferenceKey;
+		const sizePrefKey = (this.side + 'PanelSize') as PreferenceKey;
 
 		handle.init(this, this.side);
 		this.appendChild(handle);
 		this.inspectors.forEach(inspector => inspector.init(game));
-		this.style.width = Editor.prefs.get(widthPrefKey) as string;
+		this.style.width = Editor.prefs.get(sizePrefKey) as string;
 
-		this.onPreferencesChanged(this.prefKey, Editor.prefs.get(this.prefKey));
-		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
+		PreferencesUtil.setupPreferences([this.visiblePrefKey], this.onPreferencesChanged, this);
 	}
 
 	public enable(config: PluginConfig) {
@@ -60,7 +60,7 @@ export class Panel extends Widget {
 	}
 
 	private onPreferencesChanged(key: PreferenceKey, value: any) {
-		if (key === this.prefKey) {
+		if (key === this.visiblePrefKey) {
 			this.visible = value === true;
 		}
 	}

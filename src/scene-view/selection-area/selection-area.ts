@@ -1,5 +1,6 @@
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences/preferences.model';
+import { PreferencesUtil } from 'core/preferences/preferences.util';
 import { PluginConfig } from 'plugin.model';
 import { Gizmo, GIZMO_MOVE, GIZMO_SCALE } from './gizmos/gizmo';
 import { SelectionGizmo } from './gizmos/selection-gizmo';
@@ -38,13 +39,11 @@ export class SelectionArea extends HTMLElement {
 		this.addEventListener('mousemove', this.onMouseMove.bind(this));
 
 		Editor.data.onSelectedObjectChanged.add(this.onSelectedObjectChanged, this);
-
-		const prefs = Editor.prefs;
-		prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
-		this.onPreferencesChanged('gizmos', prefs.get('gizmos'));
-		this.onPreferencesChanged('snap', prefs.get('snap'));
-		this.onPreferencesChanged('guides', prefs.get('guides'));
-		this.onPreferencesChanged('hitArea', prefs.get('hitArea'));
+		PreferencesUtil.setupPreferences(
+			['gizmos', 'snap', 'guides', 'hitArea'],
+			this.onPreferencesChanged,
+			this
+		);
 	}
 
 	public enable(config: PluginConfig) {

@@ -31,7 +31,7 @@ export class OldReferenceImage extends Phaser.Group {
 		this.alpha = 0.3;
 
 		this._parent = root;
-		Editor.prefs.onPreferenceChanged.add(this.onPreferenceChanged, this);
+		Editor.prefs.onChange.add(this.onPreferenceChanged, this);
 	}
 
 	private onPreferenceChanged(pref: string, value: any) {
