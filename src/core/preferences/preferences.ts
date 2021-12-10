@@ -64,7 +64,7 @@ export class Preferences {
 	}
 
 	public toggle(key: PreferenceKey, save = true) {
-		this.set(key, !this.persistentData[key], save);
+		this.set(key, !(key in this.persistentData ? this.persistentData[key] : this.volatileData[key]), save);
 	}
 
 	private load() {

@@ -397,7 +397,7 @@ class EditorClass {
 
 		actions.setActionCommand(
 			Actions.TOGGLE_HIT_AREAS_SNAPSHOT,
-			() => prefs.toggle('hitAreasSnapshot', false),
+			() => prefs.toggle('hitAreasSnapshot'),
 			() => prefs.get('hitAreasSnapshot') as boolean
 		);
 
