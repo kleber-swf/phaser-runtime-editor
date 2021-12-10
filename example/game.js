@@ -36,7 +36,8 @@ function preload() {
 
 function create() {
 	const plugin = game.plugins.add(new Phaser.Plugin.RuntimeEditor(game, {
-		referenceImageUrl(width, height) {
+		referenceImageUrl(width, height, responsive) {
+			console.log(responsive);
 			return width > height
 				? './refs/ref_landscape.jpg'
 				: './refs/ref_portrait.jpg';

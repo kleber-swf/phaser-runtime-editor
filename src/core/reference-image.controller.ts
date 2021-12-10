@@ -45,11 +45,11 @@ export class ReferenceImageController {
 				{
 					const size = value ? this.prefs.get('responsiveSize') as Size
 						: { width: this.game.width, height: this.game.height };
-					this.image.source = this.config.referenceImageUrl(size.width, size.height);
+					this.image.source = this.config.referenceImageUrl(size.width, size.height, value);
 				}
 				break;
 			case 'responsiveSize':
-				this.image.source = this.config.referenceImageUrl(value.width, value.height);
+				this.image.source = this.config.referenceImageUrl(value.width, value.height, true);
 				break;
 		}
 	}
