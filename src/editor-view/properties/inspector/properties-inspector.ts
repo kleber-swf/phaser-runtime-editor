@@ -15,8 +15,10 @@ export class PropertiesInspector extends Inspector {
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 	}
 
-	private onPropertyChanged(origin: DataOrigin, property: string, value: any) {
-		if (origin !== DataOrigin.INSPECTOR) {
+	private onPropertyChanged(origin: DataOrigin, property: string, value: any, object: PIXI.DisplayObject) {
+		if (origin === DataOrigin.INSPECTOR) {
+			object[property] = value;
+		} else {
 			this.editors[property]?.propertyChangedOutsideInspector(value);
 		}
 	}
