@@ -48,6 +48,14 @@ export class MoveHandler implements DraggingHandler {
 		this.updateObjectTransform(object);
 	}
 
+	public moveBy(object: PIXI.DisplayObject, dx: number, dy: number) {
+		if (object) {
+			object.x += dx;
+			object.y += dy;
+			this.updateObjectTransform(object);
+		}
+	}
+
 	private updateObjectTransform(object: PIXI.DisplayObject) {
 		object.updateTransform();
 		Editor.data.propertyChanged('position', object.position, DataOrigin.SCENE);

@@ -30,6 +30,7 @@ export class GameContainer extends HTMLElement {
 
 	public setupActions(actions: ActionHandler) {
 		this.gameParent.setupActions(actions);
+		this.selectionArea.setupActions(actions);
 		PreferencesUtil.setupPreferences(['responsive', 'responsiveTemplateIndex'], this.onPreferencesChanged, this);
 		this.onmousedown = this.onInputDown;
 		this.onmousemove = this.onInputMove;

@@ -1,3 +1,5 @@
+import { ActionHandler } from 'core/action-handler';
+import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences/preferences.model';
 import { PreferencesUtil } from 'core/preferences/preferences.util';
@@ -46,14 +48,19 @@ export class SelectionArea extends HTMLElement {
 		);
 	}
 
-	public enable(config: PluginConfig) {
-		this.selectionHandler.enable(config.root);
-		this.hitAreaSnapshot.enable(config.root);
-		this._enabled = true;
-		window.requestAnimationFrame(this.updateBind);
-	}
+	public setupActions(actions: ActionHandler) {
+		const handler = (this.handlers[GIZMO_MOVE] as MoveHandler);
 
-	public disable() { this._enabled = false; }
+		actions.setActionCommand(Actions.MOVE_UP_1, () => handler.moveBy(Editor.data.selectedObject, 0, -1));
+		actions.setActionCommand(Actions.MOVE_DOWN_1, () => handler.moveBy(Editor.data.selectedObject, 0, 1));
+		actions.setActionCommand(Actions.MOVE_LEFT_1, () => handler.moveBy(Editor.data.selectedObject, -1, 0));
+		actions.setActionCommand(Actions.MOVE_RIGHT_1, () => handler.moveBy(Editor.data.selectedObject, 1, 0));
+
+		actions.setActionCommand(Actions.MOVE_UP_10, () => handler.moveBy(Editor.data.selectedObject, 0, -10));
+		actions.setActionCommand(Actions.MOVE_DOWN_10, () => handler.moveBy(Editor.data.selectedObject, 0, 10));
+		actions.setActionCommand(Actions.MOVE_LEFT_10, () => handler.moveBy(Editor.data.selectedObject, -10, 0));
+		actions.setActionCommand(Actions.MOVE_RIGHT_10, () => handler.moveBy(Editor.data.selectedObject, 10, 0));
+	}
 
 	private createHandlers() {
 		this.selectionHandler = new SelectionHandler();
@@ -77,6 +84,15 @@ export class SelectionArea extends HTMLElement {
 	}
 
 	// #endregion
+
+	public enable(config: PluginConfig) {
+		this.selectionHandler.enable(config.root);
+		this.hitAreaSnapshot.enable(config.root);
+		this._enabled = true;
+		window.requestAnimationFrame(this.updateBind);
+	}
+
+	public disable() { this._enabled = false; }
 
 	private update() {
 		this.gizmo.redraw();
