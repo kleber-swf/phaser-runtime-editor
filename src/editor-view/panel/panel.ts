@@ -4,8 +4,7 @@ import { PreferencesUtil } from 'core/preferences/preferences.util';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
 import { Widget } from 'editor-view/widget/widget';
-import { PluginConfig } from 'plugin.model';
-import { PanelSide } from 'types';
+import { PanelSide, PluginConfig } from 'plugin.model';
 import './panel.scss';
 import { PanelResizeHandle } from './resize-handle/panel-resize-handle';
 

@@ -1,6 +1,6 @@
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences/preferences.model';
-import { PanelSide } from 'types';
+import { PanelSide } from 'plugin.model';
 import './panel-resize-handle.scss';
 
 export class PanelResizeHandle extends HTMLElement {

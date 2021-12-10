@@ -24,7 +24,6 @@ export class ActionButton extends HTMLElement {
 		if (action.icon) {
 			const icon = this.appendChild(document.createElement('i'));
 			icon.classList.add('fas', action.icon);
-			// TODO tooltip
 		} else {
 			const text = this.appendChild(document.createElement('span'));
 			text.classList.add('label');
