@@ -11,10 +11,10 @@ export class Preferences {
 		gizmos: true,
 		guides: false,
 		hitArea: false,
-		allHitAreasSnapshot: false,
+		hitAreasSnapshot: false,
 		responsive: false,
 		responsiveSize: Preferences.DefaultResponsiveSize,
-		responsiveSizeTemplateIndex: 0,
+		responsiveTemplateIndex: 0,
 
 		leftPanelVisible: true,
 		leftPanelSize: undefined,

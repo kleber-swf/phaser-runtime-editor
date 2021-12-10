@@ -151,7 +151,7 @@ export class SelectionArea extends HTMLElement {
 			case 'hitArea':
 				this.gizmo.showHitArea = value === true;
 				return;
-			case 'allHitAreasSnapshot':
+			case 'hitAreasSnapshot':
 				if (value === true) this.hitAreaSnapshot.show();
 				else this.hitAreaSnapshot.hide();
 		}

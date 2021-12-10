@@ -37,7 +37,7 @@ export class SizeTemplatesPanel extends HTMLElement {
 			el.appendChild(option);
 		});
 
-		el.value = (Editor.prefs.get('responsiveSizeTemplateIndex') ?? 0).toString();
+		el.value = (Editor.prefs.get('responsiveTemplateIndex') ?? 0).toString();
 		el.addEventListener('change', this.onValueChanged.bind(this));
 	}
 
@@ -62,7 +62,7 @@ export class SizeTemplatesPanel extends HTMLElement {
 			height = aux;
 		}
 
-		prefs.set('responsiveSizeTemplateIndex', index, false);
+		prefs.set('responsiveTemplateIndex', index, false);
 		prefs.set('responsiveSize', { width, height }, true);
 	}
 }

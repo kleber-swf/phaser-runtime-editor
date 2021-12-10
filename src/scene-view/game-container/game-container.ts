@@ -32,7 +32,7 @@ export class GameContainer extends HTMLElement {
 
 		Editor.prefs.onPreferenceChanged.add(this.onPreferencesChanged, this);
 		this.onPreferencesChanged('responsive', Editor.prefs.get('responsive'));
-		this.onPreferencesChanged('responsiveSizeTemplateIndex', Editor.prefs.get('responsiveSizeTemplateIndex'));
+		this.onPreferencesChanged('responsiveTemplateIndex', Editor.prefs.get('responsiveTemplateIndex'));
 
 		this.onmousedown = this.onInputDown;
 		this.onmousemove = this.onInputMove;
@@ -105,7 +105,7 @@ export class GameContainer extends HTMLElement {
 			case 'responsiveSize':
 				this.gameParent.setResponsiveSize(value);
 				break;
-			case 'responsiveSizeTemplateIndex':
+			case 'responsiveTemplateIndex':
 				this.gameParent.responsiveSizeTemplateChanged(value);
 				break;
 		}

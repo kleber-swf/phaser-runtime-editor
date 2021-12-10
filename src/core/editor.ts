@@ -200,7 +200,7 @@ class EditorClass {
 				category: 'scene',
 			},
 			{
-				id: Actions.TOGGLE_ALL_HIT_AREAS_SNAPSHOT,
+				id: Actions.TOGGLE_HIT_AREAS_SNAPSHOT,
 				toggle: true,
 				tooltip: 'Toggle all hit areas snapshot',
 				description: 'Shows a snapshot of all hit areas in the scene',
@@ -389,9 +389,9 @@ class EditorClass {
 			prefs.set('responsiveSize', { width: size.height, height: size.width });
 		});
 		actions.setActionCommand(
-			Actions.TOGGLE_ALL_HIT_AREAS_SNAPSHOT,
-			() => prefs.toggle('allHitAreasSnapshot', false),
-			() => prefs.get('allHitAreasSnapshot') as boolean
+			Actions.TOGGLE_HIT_AREAS_SNAPSHOT,
+			() => prefs.toggle('hitAreasSnapshot', false),
+			() => prefs.get('hitAreasSnapshot') as boolean
 		);
 		actions.setActionCommand(
 			Actions.TOGGLE_REF_IMAGE,

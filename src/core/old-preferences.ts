@@ -191,7 +191,7 @@ export class OldPreferences {
 			this.responsiveSize = { width: size.height, height: size.width };
 		});
 		actions.setActionCommand(
-			Actions.TOGGLE_ALL_HIT_AREAS_SNAPSHOT,
+			Actions.TOGGLE_HIT_AREAS_SNAPSHOT,
 			() => this.allHitAreasSnapshot = !this._allHitAreasSnapshot,
 			() => this._allHitAreasSnapshot
 		);
