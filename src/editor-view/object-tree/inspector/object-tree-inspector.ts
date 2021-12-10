@@ -25,7 +25,14 @@ export class ObjectTreeInspector extends Inspector {
 	}
 
 	public enable(config: PluginConfig) { this.setRoot(config.root); }
-	public disable() { this.model.empty(); }
+
+	public disable() {
+		this.model.empty();
+
+		const emptyContent = this.contentElement.cloneNode(false);
+		this.replaceChild(emptyContent, this.contentElement);
+		this.contentElement = emptyContent as HTMLElement;
+	}
 
 	private setRoot(root: PIXI.DisplayObjectContainer | Phaser.Stage) {
 		this.model.create(root);
