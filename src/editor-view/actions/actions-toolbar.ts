@@ -2,7 +2,6 @@ import { Action, ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences';
-import { ReferenceImagePanel } from 'editor-view/actions/reference-image/reference-image.panel';
 import { Widget } from 'editor-view/widget/widget';
 import './actions-toolbar.scss';
 import { ActionButton } from './button/action-button';
@@ -114,8 +113,7 @@ export class ActionsToolbar extends Widget {
 			.classList.add('fas', 'fa-caret-down');
 
 		optionsButton.addEventListener('click', () => {
-			(document.createElement(ReferenceImagePanel.tagName) as ReferenceImagePanel)
-				.openPopup('Reference Image Options', optionsButton);
+			Editor.referenceImageController.showPanel(optionsButton);
 		});
 	}
 

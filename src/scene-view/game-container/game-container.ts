@@ -43,7 +43,7 @@ export class GameContainer extends HTMLElement {
 		const gameElement = this.game.canvas.parentElement;
 		this.gameOriginalParentElement = gameElement.parentElement;
 		gameElement.classList.add('phred-game');
-		this.gameParent.enable(gameElement, config);
+		this.gameParent.enable(gameElement);
 		this.selectionArea.enable(config);
 	}
 

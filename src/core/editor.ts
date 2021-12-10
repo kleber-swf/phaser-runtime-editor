@@ -2,12 +2,12 @@ import { Actions } from 'core/actions';
 import { EditorData } from 'data/editor-data';
 import { InspectorData } from 'data/inspector-data';
 import { PhaserMeta } from 'data/phaser-meta';
-import { EditorView } from 'editor-view/editor-view';
 import { PluginConfig } from 'plugin.model';
 import { PropertyElementTag } from 'property-element-tag';
 import { ActionHandler } from './action-handler';
 import { History } from './history';
 import { Preferences } from './preferences';
+import { ReferenceImageController } from './reference-image.controller';
 
 class EditorClass {
 	public data: EditorData;
@@ -18,7 +18,7 @@ class EditorClass {
 	public history: History;
 	public prefs: Preferences;
 
-	public editorView: EditorView;
+	public referenceImageController: ReferenceImageController;
 
 	public init(config: PluginConfig) {
 		this.data = new EditorData();
@@ -28,6 +28,8 @@ class EditorClass {
 		this.actions = this.createActions();
 		this.history = new History(this.data);
 		this.prefs = new Preferences(config.clearPrefs);
+
+		this.referenceImageController = new ReferenceImageController();
 	}
 
 	private createInspectorData() {
@@ -362,8 +364,9 @@ class EditorClass {
 		this.data.setupActions(actions);
 	}
 
-	public enable() {
+	public enable(config: PluginConfig) {
 		this.actions.enable();
+		this.referenceImageController.enable(config);
 	}
 
 	public disable() {

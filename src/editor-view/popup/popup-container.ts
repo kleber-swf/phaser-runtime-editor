@@ -1,8 +1,8 @@
-import { Editor } from 'core/editor';
 import { Popup } from './popup';
 import './popup-container.scss';
 
 export class PopupContainer extends HTMLElement {
+	public static parent: HTMLElement;
 	protected popup: Popup;
 
 	public connectedCallback() {
@@ -11,14 +11,18 @@ export class PopupContainer extends HTMLElement {
 
 	public openPopup(title: string, ..._args: any[]) {
 		this.createPopup(title);
-		Editor.editorView.appendChild(this);
+		PopupContainer.parent.appendChild(this);
 	}
 
 	protected createPopup(title: string) {
 		this.popup = this.appendChild(document.createElement(Popup.tagName)) as Popup;
 		this.popup.addEventListener('click', e => e.stopPropagation());
 		this.popup.init(title);
-		this.addEventListener('click', () => this.remove());
+		this.addEventListener('click', this.close.bind(this));
 		return this.popup;
+	}
+
+	public close() {
+		this.remove();
 	}
 }
