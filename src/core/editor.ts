@@ -1,5 +1,5 @@
 import { Actions } from 'core/actions';
-import { EditorData } from 'data/editor-data';
+import { DataOrigin, EditorData } from 'data/editor-data';
 import { InspectorData } from 'data/inspector-data';
 import { PhaserMeta } from 'data/phaser-meta';
 import { PluginConfig, Size } from 'plugin.model';
@@ -433,6 +433,7 @@ class EditorClass {
 	}
 
 	public disable() {
+		this.data.selectObject(null, DataOrigin.ACTION);
 		this.actions.disable();
 	}
 }

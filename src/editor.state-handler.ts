@@ -80,8 +80,6 @@ export class EditorStateHandler {
 		this._isEnabled = false;
 		Editor.disable();
 		this.editorView.disable();
-		// this.referenceImageController.disable();
-
 		this.disabledUI.enable();
 		if (this.onhide) this.onhide();
 	}

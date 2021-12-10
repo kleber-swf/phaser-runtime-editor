@@ -52,7 +52,7 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 
 	public init() {
 		Editor.data.onSelectedObjectChanged.add(this.onSelectionChanged, this);
-		this.classList.add('selector');
+		this.classList.add('selector', 'invisible');
 
 		this.addEventListener('mouseover', this.onMouseOver.bind(this));
 		this.addEventListener('mouseout', this.onMouseOut.bind(this));
