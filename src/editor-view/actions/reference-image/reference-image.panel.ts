@@ -23,9 +23,9 @@ export class ReferenceImagePanel extends PopupContainer {
 		const popup = super.createPopup(title);
 		const content = popup.content;
 		const filters = this.image.getFilters();
-		content.appendChild(this.createOption('Alpha', this.createSlider('opacity', 0, 1, filters.opacity)));
-		content.appendChild(this.createOption('Hue', this.createSlider('hue', 0, 360, filters.hue)));
-		content.appendChild(this.createOption('Saturation', this.createSlider('saturation', 0, 1, filters.saturation)));
+		Object.keys(filters).forEach(k => content.appendChild(
+			this.createOption(k, this.createSlider(k as RefImageFilterTypes, filters[k]))
+		));
 
 		return popup;
 	}
@@ -43,11 +43,11 @@ export class ReferenceImagePanel extends PopupContainer {
 		return option;
 	}
 
-	private createSlider(property: RefImageFilterTypes, min: number, max: number, value: number) {
+	private createSlider(property: RefImageFilterTypes, value: number) {
 		const slider = document.createElement('input');
 		slider.type = 'range';
-		slider.min = min.toString();
-		slider.max = max.toString();
+		slider.min = '0';
+		slider.max = '1';
 		slider.step = '0.05';
 		slider.value = value.toString();
 		slider.oninput = () => this.image.setProperty(property, parseFloat(slider.value));

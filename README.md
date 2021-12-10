@@ -47,7 +47,7 @@ const config = {
     onShow: () => console.log('reuntime editor opened'),
     onHide: () => console.log('reuntime editor closed'),
     pauseGame: true,
-    clearPrefs: false,
+    clearPreferences: false,
 };
 
 game.plugins.add(new Phaser.Plugin.RuntimeEditor(game, config));
@@ -60,7 +60,7 @@ The config object can have the following properties (all of them optional):
 -   `onShow()`: a method that is called right after the plugin is shown. Default: `null`.
 -   `onHide()`: a method that is called right after the plugin is hidden. Default: `null`.
 -   `pauseGame`: whether the plugin should pause your game on show or not. If this is set to `true` the game will come back to it's original state when the plugin is hidden. Default: `false`.
--   `clearPrefs`: whether the local preferences should be cleared when the plugin is shown. Default: `false`.
+-   `clearPreferences`: whether the local preferences should be cleared when the plugin is shown. Default: `false`.
 
 > Notice that there is an [example project] inside the plugin's project where you can see it in use.
 

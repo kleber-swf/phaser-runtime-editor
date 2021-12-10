@@ -5,6 +5,9 @@ export interface ReferenceImageFilters {
 	opacity: number;
 	hue: number;
 	saturation: number;
+	contrast: number;
+	brightness: number;
+	sepia: number;
 }
 
 export type RefImageFilterTypes = keyof ReferenceImageFilters;
@@ -12,7 +15,14 @@ export type RefImageFilterTypes = keyof ReferenceImageFilters;
 export class ReferenceImage extends HTMLElement implements ReferenceImageFilters {
 	public static readonly tagName = 'phred-reference-image';
 	private image: HTMLImageElement;
-	private filters = { opacity: 1, hue: 0, saturation: 1 };
+	private filters: ReferenceImageFilters = {
+		opacity: 1,
+		hue: 0,
+		saturation: 1,
+		contrast: 1,
+		brightness: 1,
+		sepia: 0,
+	};
 
 	private set source(value: string) { this.image.src = value; }
 
@@ -22,12 +32,27 @@ export class ReferenceImage extends HTMLElement implements ReferenceImageFilters
 	}
 
 	public set hue(value: number) {
-		this.filters.hue = Phaser.Math.clamp(value, 0, 360);
+		this.filters.hue = Phaser.Math.clamp(value, 0, 1);
 		this.applyFilters();
 	}
 
 	public set saturation(value: number) {
 		this.filters.saturation = Phaser.Math.clamp(value, 0, 1);
+		this.applyFilters();
+	}
+
+	public set contrast(value: number) {
+		this.filters.contrast = Phaser.Math.clamp(value, 0, 1);
+		this.applyFilters();
+	}
+
+	public set brightness(value: number) {
+		this.filters.brightness = Phaser.Math.clamp(value, 0, 1);
+		this.applyFilters();
+	}
+
+	public set sepia(value: number) {
+		this.filters.sepia = Phaser.Math.clamp(value, 0, 1);
 		this.applyFilters();
 	}
 
@@ -37,7 +62,8 @@ export class ReferenceImage extends HTMLElement implements ReferenceImageFilters
 
 	public enable(config: PluginConfig, filters: ReferenceImageFilters) {
 		this.source = config.referenceImageUrl;
-		this.filters = filters;
+		console.log('loaded filters', filters);
+		this.filters = Object.assign(this.filters, filters);
 		this.applyFilters();
 	}
 
@@ -47,7 +73,13 @@ export class ReferenceImage extends HTMLElement implements ReferenceImageFilters
 
 	private applyFilters() {
 		const f = this.filters;
-		this.image.style.filter = `opacity(${f.opacity}) hue-rotate(${f.hue}deg) saturate(${f.saturation})`;
+		const filter = `opacity(${f.opacity})`
+			+ ` hue-rotate(${f.hue * 360}deg)`
+			+ ` saturate(${f.saturation})`
+			+ ` contrast(${f.contrast * 100}%)`
+			+ ` brightness(${f.brightness * 100}%)`
+			+ ` sepia(${f.sepia})`;
+		this.image.style.filter = filter;
 	}
 }
 

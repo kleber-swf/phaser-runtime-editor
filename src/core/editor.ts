@@ -27,7 +27,7 @@ class EditorClass {
 
 		this.actions = this.createActions();
 		this.history = new History(this.data);
-		this.prefs = new Preferences(config.clearPrefs);
+		this.prefs = new Preferences(config.clearPreferences);
 
 		this.referenceImageController = new ReferenceImageController(this.prefs);
 	}

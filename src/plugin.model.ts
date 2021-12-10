@@ -2,7 +2,7 @@ export interface PluginConfigBuilder {
 	root?: () => Container;
 	referenceImageUrl?: () => string;
 	pauseGame?: boolean;
-	clearPrefs?: boolean;
+	clearPreferences?: boolean;
 	onShow?: () => void;
 	onHide?: () => void;
 }
@@ -11,7 +11,7 @@ export interface PluginConfig {
 	root: Container;
 	referenceImageUrl: string;
 	pauseGame: boolean;
-	clearPrefs: boolean;
+	clearPreferences: boolean;
 }
 
 export interface Point {

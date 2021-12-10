@@ -68,7 +68,7 @@ export class EditorStateHandler {
 
 	private createConfig(builder: PluginConfigBuilder): PluginConfig {
 		return {
-			clearPrefs: builder.clearPrefs,
+			clearPreferences: builder.clearPreferences,
 			pauseGame: builder.pauseGame,
 			referenceImageUrl: builder.referenceImageUrl(),
 			root: builder.root(),
