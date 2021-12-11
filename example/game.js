@@ -130,6 +130,7 @@ function create() {
 	child = game.add.sprite(900, 600, 'phaser');
 	child.name = 'sprite';
 	child.scale.set(2, 2);
+	child.inputEnabled = true;
 
 	game.add.bitmapText(50, 50, 'font', 'This is a bitmap text', 30)
 		.name = 'bitmap text';

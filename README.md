@@ -1,6 +1,6 @@
 # Phaser-CE Runtime Editor
 
-A [Phaser-CE] plugin that shows a runtime editor for your game:
+A [Phaser-CE] plugin that shows a runtime editor for your game.
 
 ## What it can do?
 

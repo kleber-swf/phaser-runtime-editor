@@ -47,21 +47,9 @@ phred-scale-gizmo {
 
 	&.middle {
 		top: 50%;
-		cursor: ew-resize;
 	}
 
 	&.center {
 		left: 50%;
-		cursor: ns-resize;
-	}
-
-	&.top.left,
-	&.bottom.right {
-		cursor: nwse-resize;
-	}
-
-	&.top.right,
-	&.bottom.left {
-		cursor: nesw-resize;
 	}
 }

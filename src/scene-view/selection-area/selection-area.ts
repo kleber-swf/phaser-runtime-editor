@@ -24,6 +24,8 @@ export class SelectionArea extends HTMLElement {
 	private hitAreaSnapshot: HitAreaSnapshot;
 
 	private _enabled: boolean;
+	private _extraClasses: string[] = [];
+
 	private updateBind: () => void;
 
 	// #region Initialization
@@ -110,6 +112,8 @@ export class SelectionArea extends HTMLElement {
 
 	private onMouseDown(e: MouseEvent) {
 		if (e.button !== 0) return;
+		const areaClasses = (e.target as Gizmo).areaClasses;
+		if (areaClasses) this._extraClasses.push(...areaClasses);
 		this._mouseIsDown = true;
 		this._isDragging = false;
 		this._hasSelection = this.gizmo.isOver;
@@ -119,7 +123,11 @@ export class SelectionArea extends HTMLElement {
 	private onMouseUp(e: MouseEvent) {
 		if (e.button !== 0) return;
 		this._mouseIsDown = false;
-		this._handler?.stopHandling(e);
+		if (this._handler) {
+			this._handler.stopHandling(e);
+			this.classList.remove(...this._extraClasses);
+		}
+		this._extraClasses.length = 0;
 		this._handler = null;
 		this.gizmo.stopMoving();
 		if (!(this._hasSelection && this._isDragging)) {
@@ -140,8 +148,9 @@ export class SelectionArea extends HTMLElement {
 				}
 			}
 			if (this._hasSelection) {
-				this._handler.startHandling(e, Editor.data.selectedObject);
 				this.gizmo.startMoving();
+				this._handler.startHandling(e, Editor.data.selectedObject);
+				this.classList.add(...this._extraClasses);
 				return;
 			}
 		}

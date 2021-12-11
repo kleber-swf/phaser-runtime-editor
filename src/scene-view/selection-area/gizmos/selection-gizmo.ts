@@ -15,6 +15,7 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 	private anchor: HTMLElement;
 	private guides: HTMLElement;
 	private hitArea: HTMLElement;
+	public readonly areaClasses = ['move'];
 
 	private _object: PIXI.DisplayObject;
 	private _isOver = false;

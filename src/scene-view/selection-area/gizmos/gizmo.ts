@@ -16,4 +16,5 @@ export enum VSide {
 
 export interface Gizmo extends HTMLElement {
 	get type(): number;
+	readonly areaClasses: string[];
 }

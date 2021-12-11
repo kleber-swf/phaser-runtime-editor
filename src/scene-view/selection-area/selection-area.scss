@@ -7,4 +7,29 @@ phred-selection-area {
 	padding: 0;
 	margin: 0;
 	overflow: hidden;
+
+	&.move {
+		cursor: move;
+	}
+
+	&.scale,
+	.scale {
+		&.middle {
+			cursor: ew-resize;
+		}
+
+		&.center {
+			cursor: ns-resize;
+		}
+
+		&.top.left,
+		&.bottom.right {
+			cursor: nwse-resize;
+		}
+
+		&.top.right,
+		&.bottom.left {
+			cursor: nesw-resize;
+		}
+	}
 }
