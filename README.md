@@ -25,7 +25,7 @@ A plugin that shows a runtime editor for your [Phaser-CE] game.
 
 After you install [Phaser-CE], use npm to install Phaser Runtime Editor:
 
-```bash
+```sh
 npm install -D @kleber-swf/phaser-runtime-editor
 ```
 
