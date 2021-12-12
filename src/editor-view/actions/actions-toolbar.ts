@@ -1,27 +1,17 @@
 import { Action, ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
-import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences/preferences.model';
 import { PreferencesUtil } from 'core/preferences/preferences.util';
 import { Widget } from 'editor-view/widget/widget';
 import './actions-toolbar.scss';
 import { ActionButton } from './button/action-button';
+import { ReferenceImageGroup } from './reference-image/group/reference-image-group';
 import { ResponsiveGroup } from './responsive/responsive-group';
 
-// TODO adding orientation and reference image to their groups, they can implement an
-// interface with `updateState()` method, same as `ActionButton`
 export class ActionsToolbar extends Widget {
 	public static readonly tagName = 'phred-actions-toolbar';
 
 	private readonly buttons: ActionButton[] = [];
-
-	// TODO add these to a dedicated HTMLElement
-	// private orientationBtn: ActionButton;
-	// private orientationTemplates: SizeTemplatesPanel;
-
-	// TODO add these to a dedicated HTMLElement
-	private referenceImageGroup: HTMLElement;
-	private referenceImageGroupButton: HTMLElement;
 
 	private leftPanelToggle: HTMLElement;
 	private rightPanelToggle: HTMLElement;
@@ -46,7 +36,7 @@ export class ActionsToolbar extends Widget {
 
 		this.createSeparator();
 		this.createButton(actions.getAction(Actions.PRINT_OBJECT));
-		this.createReferenceImagePanel(actions.getAction(Actions.TOGGLE_REF_IMAGE));
+		this.createReferenceImageGroup(actions);
 		this.createSeparator();
 		this.createButton(actions.getAction(Actions.UNDO));
 		this.createSeparator();
@@ -84,26 +74,6 @@ export class ActionsToolbar extends Widget {
 		return btn;
 	}
 
-	private createReferenceImagePanel(action: Action) {
-		const panel = this.appendChild(document.createElement('div'));
-		panel.classList.add('reference-image-group');
-
-		this.createButton(action, panel);
-
-		const optionsButton = panel.appendChild(document.createElement('div'));
-		optionsButton.classList.add('open-options-button', 'button', 'action-button');
-
-		optionsButton.appendChild(document.createElement('i'))
-			.classList.add('fas', 'fa-caret-down');
-
-		optionsButton.addEventListener('click', () => {
-			Editor.referenceImageController.openOptionsPanel(optionsButton);
-		});
-
-		this.referenceImageGroupButton = optionsButton;
-		this.referenceImageGroup = panel;
-	}
-
 	private createSeparator() {
 		this.appendChild(document.createElement('div'))
 			.classList.add('separator');
@@ -121,6 +91,13 @@ export class ActionsToolbar extends Widget {
 		this.appendChild(group);
 	}
 
+	private createReferenceImageGroup(actions: ActionHandler) {
+		const group = document.createElement(ReferenceImageGroup.tagName) as ReferenceImageGroup;
+		group.init(actions);
+		// this.buttons.push(group);
+		this.appendChild(group);
+	}
+
 	private onPreferencesChanged(key: PreferenceKey, value: any) {
 		switch (key) {
 			case 'leftPanelVisible':
@@ -128,14 +105,6 @@ export class ActionsToolbar extends Widget {
 				break;
 			case 'rightPanelVisible':
 				this.rightPanelToggle.classList.addOrRemove('is-hidden', value !== true);
-				break;
-			case 'referenceImageEnabled':
-				this.referenceImageGroup.classList
-					.addOrRemove('disabled', value !== true);
-				break;
-			case 'referenceImageVisible':
-				this.referenceImageGroupButton.classList
-					.addOrRemove('disabled', value !== true);
 				break;
 		}
 	}
