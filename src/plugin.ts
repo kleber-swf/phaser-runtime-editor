@@ -13,7 +13,6 @@ export class Plugin extends Phaser.Plugin {
 	private readonly editorState: EditorStateHandler;
 	private gamePreState: GameStateConfig;
 	private configBuilder: PluginConfigBuilder;
-	// private config: PluginConfig;
 
 	public constructor(game: Phaser.Game, config?: PluginConfigBuilder) {
 		super(game, game.plugins);
@@ -22,12 +21,6 @@ export class Plugin extends Phaser.Plugin {
 		if (!config.root) config.root = () => game.world;
 		if (!config.referenceImageUrl) config.referenceImageUrl = () => null;
 		this.configBuilder = config;
-		// this.config = {
-		// 	root: null,
-		// 	refImage: null,
-		// 	clearPrefs: config.clearPrefs ?? false,
-		// 	pauseGame: config.pauseGame ?? false,
-		// };
 
 		this.editorState = new EditorStateHandler(game, config);
 		this.editorState.onshow = this.onEditorShow.bind(this);

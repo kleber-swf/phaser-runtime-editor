@@ -6,7 +6,7 @@ import { PreferencesUtil } from 'core/preferences/preferences.util';
 import { Widget } from 'editor-view/widget/widget';
 import './actions-toolbar.scss';
 import { ActionButton } from './button/action-button';
-import { SizeTemplatesPanel } from './size-templates/size-templates-panel';
+import { ResponsiveGroup } from './responsive/responsive-group';
 
 // TODO adding orientation and reference image to their groups, they can implement an
 // interface with `updateState()` method, same as `ActionButton`
@@ -16,8 +16,8 @@ export class ActionsToolbar extends Widget {
 	private readonly buttons: ActionButton[] = [];
 
 	// TODO add these to a dedicated HTMLElement
-	private orientationBtn: ActionButton;
-	private orientationTemplates: SizeTemplatesPanel;
+	// private orientationBtn: ActionButton;
+	// private orientationTemplates: SizeTemplatesPanel;
 
 	// TODO add these to a dedicated HTMLElement
 	private referenceImageGroup: HTMLElement;
@@ -37,12 +37,7 @@ export class ActionsToolbar extends Widget {
 		this.createButton(actions.getAction(Actions.TOGGLE_HIT_AREAS_SNAPSHOT));
 
 		this.createSeparator();
-
-		this.createButton(actions.getAction(Actions.TOGGLE_RESPONSIVE));
-
-		this.orientationBtn = this.createButton(actions.getAction(Actions.TOGGLE_ORIENTATION));
-		this.orientationTemplates = this.appendChild(document.createElement(SizeTemplatesPanel.tagName)) as SizeTemplatesPanel;
-
+		this.createResponsiveGroup(actions);
 		this.createSeparator();
 
 		this.createButton(actions.getAction(Actions.ZOOM_OUT));
@@ -59,8 +54,6 @@ export class ActionsToolbar extends Widget {
 		this.createSeparator();
 		this.createSpacer();
 
-		this.orientationTemplates.init();
-
 		const leftPanelToggle = this.appendChild(document.createElement('div'));
 		leftPanelToggle.classList.add('left', 'panel-toggle', 'fa');
 		leftPanelToggle.addEventListener('click', () => actions.getAction(Actions.TOGGLE_LEFT_PANEL).command());
@@ -72,7 +65,7 @@ export class ActionsToolbar extends Widget {
 		this.rightPanelToggle = rightPanelToggle;
 
 		PreferencesUtil.setupPreferences(
-			['responsive', 'leftPanelVisible', 'rightPanelVisible'],
+			['leftPanelVisible', 'rightPanelVisible'],
 			this.onPreferencesChanged,
 			this
 		);
@@ -121,12 +114,15 @@ export class ActionsToolbar extends Widget {
 			.classList.add('spacer');
 	}
 
+	private createResponsiveGroup(actions: ActionHandler) {
+		const group = document.createElement(ResponsiveGroup.tagName) as ResponsiveGroup;
+		group.init(actions);
+		// this.buttons.push(group);
+		this.appendChild(group);
+	}
+
 	private onPreferencesChanged(key: PreferenceKey, value: any) {
 		switch (key) {
-			case 'responsive':
-				this.orientationBtn.interactable = value === true;
-				this.orientationTemplates.interactable = value === true;
-				break;
 			case 'leftPanelVisible':
 				this.leftPanelToggle.classList.addOrRemove('is-hidden', value !== true);
 				break;
