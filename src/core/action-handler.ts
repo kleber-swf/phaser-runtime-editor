@@ -8,6 +8,7 @@ export interface Action {
 	hold?: boolean;
 	on?: string;
 	category: string;
+	stritct?: boolean;
 	command?: (e?: Event) => void;
 	state?: () => any;
 }
@@ -78,13 +79,13 @@ export class ActionHandler {
 	}
 
 	private onKeyDown(e: KeyboardEvent, actions: Record<string, Action>, container: HTMLElement) {
-		if (e.target !== container) return;
 		const k = (e.ctrlKey ? 'ctrl+' : '')
-			+ (e.shiftKey ? 'shift+' : '')
-			+ (e.altKey ? 'alt+' : '')
+		+ (e.shiftKey ? 'shift+' : '')
+		+ (e.altKey ? 'alt+' : '')
 			+ e.key;
 		if (k in actions) {
 			const action = actions[k];
+			if (action.stritct && e.target !== container) return;
 			action.command?.(e);
 			if (action.toggle && action.hold) {
 				this._holdingToggleAction = action;
