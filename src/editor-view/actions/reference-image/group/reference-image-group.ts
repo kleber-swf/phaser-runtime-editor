@@ -1,20 +1,22 @@
-import { Action, ActionHandler } from 'core/action-handler';
+import { ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences/preferences.model';
 import { PreferencesUtil } from 'core/preferences/preferences.util';
+import { ActionView } from 'editor-view/actions/action-view';
 import { ActionButton } from 'editor-view/actions/button/action-button';
+import { ReferenceImageOptions } from '../options/reference-image.options';
 import './reference-image-group.scss';
 
-export class ReferenceImageGroup extends HTMLElement {
+export class ReferenceImageGroup extends HTMLElement implements ActionView {
 	public static readonly tagName = 'phred-reference-image-group';
 
+	private button: ActionButton;
 	private optionsButton: HTMLElement;
 
 	public init(actions: ActionHandler) {
 		this.classList.add('reference-image-group');
-
-		this.createButton(actions.getAction(Actions.TOGGLE_REF_IMAGE));
+		this.button = this.createButton(actions);
 
 		const optionsButton = this.appendChild(document.createElement('div'));
 		optionsButton.classList.add('open-options-button', 'button', 'action-button');
@@ -22,9 +24,7 @@ export class ReferenceImageGroup extends HTMLElement {
 		optionsButton.appendChild(document.createElement('i'))
 			.classList.add('fas', 'fa-caret-down');
 
-		optionsButton.addEventListener('click', () => {
-			Editor.referenceImageController.openOptionsPanel(optionsButton);
-		});
+		optionsButton.addEventListener('click', this.openOptions.bind(this));
 
 		this.optionsButton = optionsButton;
 
@@ -35,12 +35,22 @@ export class ReferenceImageGroup extends HTMLElement {
 		);
 	}
 
-	private createButton(action: Action) {
-		if (!action) return null;
+	private createButton(actions: ActionHandler) {
 		const btn = document.createElement(ActionButton.tagName) as ActionButton;
-		btn.setAction(action);
+		btn.setAction(actions.getAction(Actions.TOGGLE_REF_IMAGE));
 		this.appendChild(btn);
 		return btn;
+	}
+
+	public updateState() {
+		this.button.updateState();
+	}
+
+	private openOptions() {
+		const image = Editor.referenceImageController.image;
+		const p = (document.createElement(ReferenceImageOptions.tagName) as ReferenceImageOptions);
+		p.openPopup('Reference Image Options', this.optionsButton, image);
+		p.addEventListener('closed', () => Editor.prefs.set('referenceImageFilters', image.getFilters()));
 	}
 
 	private onPreferencesChanged(pref: PreferenceKey, value: any) {

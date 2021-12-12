@@ -3,6 +3,7 @@ import { Actions } from 'core/actions';
 import { PreferenceKey } from 'core/preferences/preferences.model';
 import { PreferencesUtil } from 'core/preferences/preferences.util';
 import { Widget } from 'editor-view/widget/widget';
+import { ActionView } from './action-view';
 import './actions-toolbar.scss';
 import { ActionButton } from './button/action-button';
 import { ReferenceImageGroup } from './reference-image/group/reference-image-group';
@@ -11,7 +12,7 @@ import { ResponsiveGroup } from './responsive/responsive-group';
 export class ActionsToolbar extends Widget {
 	public static readonly tagName = 'phred-actions-toolbar';
 
-	private readonly buttons: ActionButton[] = [];
+	private readonly views: ActionView[] = [];
 
 	private leftPanelToggle: HTMLElement;
 	private rightPanelToggle: HTMLElement;
@@ -61,7 +62,7 @@ export class ActionsToolbar extends Widget {
 		);
 	}
 
-	public enable() { this.buttons.forEach(e => e.updateState()); }
+	public enable() { this.views.forEach(e => e.updateState()); }
 
 	public disable() { }
 
@@ -70,7 +71,7 @@ export class ActionsToolbar extends Widget {
 		const btn = document.createElement(ActionButton.tagName) as ActionButton;
 		btn.setAction(action);
 		(parent ?? this).appendChild(btn);
-		this.buttons.push(btn);
+		this.views.push(btn);
 		return btn;
 	}
 
@@ -87,14 +88,14 @@ export class ActionsToolbar extends Widget {
 	private createResponsiveGroup(actions: ActionHandler) {
 		const group = document.createElement(ResponsiveGroup.tagName) as ResponsiveGroup;
 		group.init(actions);
-		// this.buttons.push(group);
+		this.views.push(group);
 		this.appendChild(group);
 	}
 
 	private createReferenceImageGroup(actions: ActionHandler) {
 		const group = document.createElement(ReferenceImageGroup.tagName) as ReferenceImageGroup;
 		group.init(actions);
-		// this.buttons.push(group);
+		this.views.push(group);
 		this.appendChild(group);
 	}
 
