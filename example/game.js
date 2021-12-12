@@ -61,19 +61,6 @@ function create() {
 	const parent = new Phaser.Group(game, game.world);
 	parent.position.set(100, 300);
 
-	// parent.top = 0;
-	// game.tweens.create(parent.scale)
-	// 	.to({ x: 0.5, y: 0.5 }, 2000)
-	// 	.to({ x: 1, y: 1 }, 2000)
-	// 	.repeatAll(-1)
-	// 	.start();
-
-	// game.tweens.create(parent)
-	// 	.to({ top: 0 }, 2000)
-	// 	.to({ top: 0 }, 2000)
-	// 	.repeatAll(-1)
-	// 	.start();
-
 	// 0   0
 	let child = el(DIST * 0, DIST * 0, SIZE, SIZE, parent, 'child-a0-p0 child-a0-p0 child-a0-p0 child-a0-p0');
 	child.scale.set(2, 2);
@@ -170,12 +157,4 @@ function el(x, y, w, h, parent, name) {
 	g.inputEnabled = true;
 	// g.useHandCursor = true;
 	return g;
-}
-
-function update() {
-	// 	if (cursors.up.isDown) game.camera.y -= 4;
-	// 	else if (cursors.down.isDown) game.camera.y += 4;
-
-	// 	if (cursors.left.isDown) game.camera.x -= 4;
-	// 	else if (cursors.right.isDown) game.camera.x += 4;
 }
