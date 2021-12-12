@@ -45,7 +45,7 @@ There are some options you can pass as an optional second parameter when creatin
 
 ```js
 const config = {
-	root() => game.world,
+    root() => game.world,
     referenceImageUrl() => 'http://some/preview/image.png',
     onShow() => console.log('reuntime editor opened'),
     onHide() => console.log('reuntime editor closed'),
