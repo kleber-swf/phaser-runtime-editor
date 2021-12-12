@@ -1,7 +1,8 @@
 import { Action } from 'core/action-handler';
+import { ActionView } from '../action-view';
 import './action-button.scss';
 
-export class ActionButton extends HTMLElement {
+export class ActionButton extends HTMLElement implements ActionView {
 	public static readonly tagName = 'phred-action-button';
 
 	private action: Action;

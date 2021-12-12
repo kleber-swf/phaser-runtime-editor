@@ -1,27 +1,18 @@
 import { Action, ActionHandler } from 'core/action-handler';
 import { Actions } from 'core/actions';
-import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences/preferences.model';
 import { PreferencesUtil } from 'core/preferences/preferences.util';
 import { Widget } from 'editor-view/widget/widget';
+import { ActionView } from './action-view';
 import './actions-toolbar.scss';
 import { ActionButton } from './button/action-button';
-import { SizeTemplatesPanel } from './size-templates/size-templates-panel';
+import { ReferenceImageGroup } from './reference-image/group/reference-image-group';
+import { ResponsiveGroup } from './responsive/responsive-group';
 
-// TODO adding orientation and reference image to their groups, they can implement an
-// interface with `updateState()` method, same as `ActionButton`
 export class ActionsToolbar extends Widget {
 	public static readonly tagName = 'phred-actions-toolbar';
 
-	private readonly buttons: ActionButton[] = [];
-
-	// TODO add these to a dedicated HTMLElement
-	private orientationBtn: ActionButton;
-	private orientationTemplates: SizeTemplatesPanel;
-
-	// TODO add these to a dedicated HTMLElement
-	private referenceImageGroup: HTMLElement;
-	private referenceImageGroupButton: HTMLElement;
+	private readonly views: ActionView[] = [];
 
 	private leftPanelToggle: HTMLElement;
 	private rightPanelToggle: HTMLElement;
@@ -37,12 +28,7 @@ export class ActionsToolbar extends Widget {
 		this.createButton(actions.getAction(Actions.TOGGLE_HIT_AREAS_SNAPSHOT));
 
 		this.createSeparator();
-
-		this.createButton(actions.getAction(Actions.TOGGLE_RESPONSIVE));
-
-		this.orientationBtn = this.createButton(actions.getAction(Actions.TOGGLE_ORIENTATION));
-		this.orientationTemplates = this.appendChild(document.createElement(SizeTemplatesPanel.tagName)) as SizeTemplatesPanel;
-
+		this.createResponsiveGroup(actions);
 		this.createSeparator();
 
 		this.createButton(actions.getAction(Actions.ZOOM_OUT));
@@ -51,15 +37,13 @@ export class ActionsToolbar extends Widget {
 
 		this.createSeparator();
 		this.createButton(actions.getAction(Actions.PRINT_OBJECT));
-		this.createReferenceImagePanel(actions.getAction(Actions.TOGGLE_REF_IMAGE));
+		this.createReferenceImageGroup(actions);
 		this.createSeparator();
 		this.createButton(actions.getAction(Actions.UNDO));
 		this.createSeparator();
 		this.createButton(actions.getAction(Actions.HELP));
 		this.createSeparator();
 		this.createSpacer();
-
-		this.orientationTemplates.init();
 
 		const leftPanelToggle = this.appendChild(document.createElement('div'));
 		leftPanelToggle.classList.add('left', 'panel-toggle', 'fa');
@@ -72,13 +56,13 @@ export class ActionsToolbar extends Widget {
 		this.rightPanelToggle = rightPanelToggle;
 
 		PreferencesUtil.setupPreferences(
-			['responsive', 'leftPanelVisible', 'rightPanelVisible'],
+			['leftPanelVisible', 'rightPanelVisible'],
 			this.onPreferencesChanged,
 			this
 		);
 	}
 
-	public enable() { this.buttons.forEach(e => e.updateState()); }
+	public enable() { this.views.forEach(e => e.updateState()); }
 
 	public disable() { }
 
@@ -87,28 +71,8 @@ export class ActionsToolbar extends Widget {
 		const btn = document.createElement(ActionButton.tagName) as ActionButton;
 		btn.setAction(action);
 		(parent ?? this).appendChild(btn);
-		this.buttons.push(btn);
+		this.views.push(btn);
 		return btn;
-	}
-
-	private createReferenceImagePanel(action: Action) {
-		const panel = this.appendChild(document.createElement('div'));
-		panel.classList.add('reference-image-group');
-
-		this.createButton(action, panel);
-
-		const optionsButton = panel.appendChild(document.createElement('div'));
-		optionsButton.classList.add('open-options-button', 'button', 'action-button');
-
-		optionsButton.appendChild(document.createElement('i'))
-			.classList.add('fas', 'fa-caret-down');
-
-		optionsButton.addEventListener('click', () => {
-			Editor.referenceImageController.openOptionsPanel(optionsButton);
-		});
-
-		this.referenceImageGroupButton = optionsButton;
-		this.referenceImageGroup = panel;
 	}
 
 	private createSeparator() {
@@ -121,25 +85,27 @@ export class ActionsToolbar extends Widget {
 			.classList.add('spacer');
 	}
 
+	private createResponsiveGroup(actions: ActionHandler) {
+		const group = document.createElement(ResponsiveGroup.tagName) as ResponsiveGroup;
+		group.init(actions);
+		this.views.push(group);
+		this.appendChild(group);
+	}
+
+	private createReferenceImageGroup(actions: ActionHandler) {
+		const group = document.createElement(ReferenceImageGroup.tagName) as ReferenceImageGroup;
+		group.init(actions);
+		this.views.push(group);
+		this.appendChild(group);
+	}
+
 	private onPreferencesChanged(key: PreferenceKey, value: any) {
 		switch (key) {
-			case 'responsive':
-				this.orientationBtn.interactable = value === true;
-				this.orientationTemplates.interactable = value === true;
-				break;
 			case 'leftPanelVisible':
 				this.leftPanelToggle.classList.addOrRemove('is-hidden', value !== true);
 				break;
 			case 'rightPanelVisible':
 				this.rightPanelToggle.classList.addOrRemove('is-hidden', value !== true);
-				break;
-			case 'referenceImageEnabled':
-				this.referenceImageGroup.classList
-					.addOrRemove('disabled', value !== true);
-				break;
-			case 'referenceImageVisible':
-				this.referenceImageGroupButton.classList
-					.addOrRemove('disabled', value !== true);
 				break;
 		}
 	}

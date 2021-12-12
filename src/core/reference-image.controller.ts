@@ -1,4 +1,3 @@
-import { ReferenceImageOptions } from 'editor-view/actions/reference-image/reference-image.options';
 import { PluginConfig, Size } from 'plugin.model';
 import { ReferenceImage } from 'scene-view/reference-image/reference-image';
 import { Preferences } from './preferences/preferences';
@@ -7,8 +6,9 @@ import { PreferenceKey } from './preferences/preferences.model';
 export class ReferenceImageController {
 	private game: Phaser.Game;
 	private prefs: Preferences;
-	private image: ReferenceImage;
 	private config: PluginConfig;
+
+	public image: ReferenceImage;
 
 	public createImage(parent: HTMLElement) {
 		this.image = document.createElement(ReferenceImage.tagName) as ReferenceImage;
@@ -28,12 +28,6 @@ export class ReferenceImageController {
 		this.onPreferencesChanged('responsive', this.prefs.get('responsive'));
 		this.onPreferencesChanged('referenceImageVisible', this.prefs.get('referenceImageVisible'));
 		this.image.enable(this.prefs.get('referenceImageFilters'));
-	}
-
-	public openOptionsPanel(opener: HTMLElement) {
-		const p = (document.createElement(ReferenceImageOptions.tagName) as ReferenceImageOptions);
-		p.openPopup('Reference Image Options', opener, this.image);
-		p.addEventListener('closed', () => this.prefs.set('referenceImageFilters', this.image.getFilters()));
 	}
 
 	private onPreferencesChanged(key: PreferenceKey, value: any) {
