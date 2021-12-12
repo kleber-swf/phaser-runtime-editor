@@ -1,5 +1,5 @@
 import { InspectorPropertyModel } from 'data/inspector-data';
-import { ComponentTags } from 'component-tags';
+import { PropertyElementTag } from 'property-element-tag';
 import { PropertyEditor } from '../property-editor';
 
 export class BooleanPropertyEditor extends PropertyEditor<boolean> {
@@ -13,6 +13,8 @@ export class BooleanPropertyEditor extends PropertyEditor<boolean> {
 		return input;
 	}
 
+	protected getDefaultValue() { return false; }
+
 	public setInternalValue(value: boolean) {
 		this.input.checked = value;
 		this._internalValue = value;
@@ -24,4 +26,4 @@ export class BooleanPropertyEditor extends PropertyEditor<boolean> {
 	}
 }
 
-customElements.define(ComponentTags.BooleanPropertyEditor, BooleanPropertyEditor);
+customElements.define(PropertyElementTag.BooleanPropertyEditor, BooleanPropertyEditor);

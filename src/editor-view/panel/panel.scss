@@ -10,7 +10,7 @@ phred-panel {
 	z-index: 2;
 	position: relative;
 	overflow: visible;
-	min-width: 100px;
+	min-width: 200px;
 
 	&.large {
 		width: 300px;
@@ -32,5 +32,10 @@ phred-panel {
 
 	&.right {
 		box-shadow: -4px 0px 4px $shadow-color;
+	}
+
+	&.hidden {
+		min-width: 0px;
+		width: 0px !important;
 	}
 }

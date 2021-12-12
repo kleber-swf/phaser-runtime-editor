@@ -23,11 +23,14 @@ export class ObjectTreeModel {
 		this.createNode(root, this.objectMap, null, 0);
 	}
 
-	// TODO __type and __isLeaf should be make elsewhere
+	public empty() { this.objectMap = null; }
+
+	// TODO __type and __isLeaf should be made elsewhere
 	private createNode(child: PIXI.DisplayObject, map: Record<number, ObjectTreeNodeModel>, parent: ObjectTreeNodeModel, level: number) {
 		if (!child.__instanceId) child.__instanceId = IdUtil.genIntId();
 		const type = Editor.meta.getType(child);
 		child.__type = type.name;
+		child.__baseType = type.type;
 
 		const isLeaf = type.ignoreChildren || !(child.children && child.children.length > 0);
 		child.__isLeaf = isLeaf;
@@ -35,15 +38,18 @@ export class ObjectTreeModel {
 		const node = map[child.__instanceId] = {
 			obj: child,
 			collapsed: false,
-			type, level,
-			isLeaf, parent,
+			type,
+			level,
+			isLeaf,
+			parent,
 		};
 
 		if (isLeaf) return;
 
 		level += 1;
-		for (let i = 0, n = child.children.length; i < n; i++)
+		for (let i = 0, n = child.children.length; i < n; i++) {
 			this.createNode(child.children[i], map, node, level);
+		}
 	}
 
 	public filter(filter: string) {
@@ -52,10 +58,10 @@ export class ObjectTreeModel {
 		Object.keys(objects).forEach(k => {
 			const o = objects[k] as ObjectTreeNodeModel;
 			if (!o.node) return;
-			if (o.node.title.toLowerCase().indexOf(filter) >= 0)
-				o.node.classList.remove('invisible');
-			else
-				o.node.classList.add('invisible');
+			o.node.classList.addOrRemove(
+				'excluded',
+				o.node.title.toLowerCase().indexOf(filter) < 0
+			);
 		});
 	}
 }

@@ -1,0 +1,45 @@
+@import 'colors';
+
+$handle-width: 6px;
+$active-handle-margin: 20px;
+
+phred-panel-resize-handle {
+	height: 100%;
+	position: absolute;
+	cursor: e-resize;
+	background-color: transparent;
+
+	&:active {
+		&.left {
+			right: -($active-handle-margin + $handle-width/2);
+		}
+		&.right {
+			left: -($active-handle-margin + $handle-width/2);
+		}
+		& > .thumb {
+			margin: 0 $active-handle-margin;
+		}
+	}
+
+	&:hover {
+		& > .thumb {
+			background-color: $primary-color;
+			transition: background-color 200ms 500ms;
+		}
+	}
+
+	&.left {
+		right: -$handle-width/2;
+	}
+
+	&.right {
+		left: -$handle-width/2;
+	}
+
+	& > .thumb {
+		width: $handle-width;
+		height: 100%;
+		background-color: transparent;
+		transition: background-color 100ms 200ms;
+	}
+}

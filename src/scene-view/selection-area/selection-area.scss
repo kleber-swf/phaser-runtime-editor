@@ -1,0 +1,35 @@
+phred-selection-area {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+
+	&.move {
+		cursor: move;
+	}
+
+	&.scale,
+	.scale {
+		&.middle {
+			cursor: ew-resize;
+		}
+
+		&.center {
+			cursor: ns-resize;
+		}
+
+		&.top.left,
+		&.bottom.right {
+			cursor: nwse-resize;
+		}
+
+		&.top.right,
+		&.bottom.left {
+			cursor: nesw-resize;
+		}
+	}
+}

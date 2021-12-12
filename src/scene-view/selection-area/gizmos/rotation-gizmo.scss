@@ -1,0 +1,23 @@
+$distance: -35px;
+
+phred-rotation-gizmo {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: maroon;
+	border: 1px solid white;
+
+	&.top {
+		top: $distance;
+	}
+	&.left {
+		left: $distance;
+	}
+	&.bottom {
+		bottom: $distance;
+	}
+	&.right {
+		right: $distance;
+	}
+}

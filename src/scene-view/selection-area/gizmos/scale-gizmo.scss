@@ -1,0 +1,55 @@
+@import 'editor-vars';
+
+$handle-size: 15px;
+$size: 25px;
+$padding: ($size - $handle-size)/2;
+
+phred-scale-gizmo {
+	position: absolute;
+	display: block;
+	box-sizing: border-box;
+	width: $size;
+	height: $size;
+	margin: -($size + 2)/2;
+	border-radius: $size;
+	pointer-events: all;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.handle {
+		box-sizing: border-box;
+		width: $handle-size;
+		height: $handle-size;
+		pointer-events: none;
+		background-color: $selection-color;
+		border-radius: 50%;
+		margin: auto;
+		padding: 0;
+		box-shadow: $gizmo-shadow;
+	}
+
+	&.top {
+		top: 0;
+	}
+
+	&.left {
+		left: 0;
+	}
+
+	&.bottom {
+		bottom: 0;
+	}
+
+	&.right {
+		right: 0;
+	}
+
+	&.middle {
+		top: 50%;
+	}
+
+	&.center {
+		left: 50%;
+	}
+}

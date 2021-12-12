@@ -5,6 +5,7 @@ phred-object-tree-node {
 	cursor: pointer;
 	flex: 1;
 	min-width: 100%;
+	user-select: none;
 
 	&.selected {
 		& > .node-head {
@@ -28,7 +29,7 @@ phred-object-tree-node {
 		}
 	}
 
-	&.invisible {
+	&.excluded {
 		& > .node-head {
 			display: none;
 		}

@@ -1,27 +1,27 @@
 import { Editor } from 'core/editor';
 import { EditorStateHandler } from 'editor.state-handler';
 import Phaser from 'phaser-ce';
+import { PluginConfigBuilder } from 'plugin.model';
+import './index.scss';
 
-export interface PluginConfig {
-	root?: Container;
-	refImage?: PIXI.Sprite;
-	pauseGame?: boolean;
-	clearPrefs?: boolean;
-	onShow?: () => void;
-	onHide?: () => void;
+interface GameStateConfig {
+	disableVisibilityChange: boolean;
+	slowMotion: number;
+	scaleMode: number;
 }
 
 export class Plugin extends Phaser.Plugin {
 	private readonly editorState: EditorStateHandler;
-	private gamePreState: { disableVisibilityChange: boolean, slowMotion: number };
-	private config: PluginConfig;
+	private gamePreState: GameStateConfig;
+	private configBuilder: PluginConfigBuilder;
 
-	public constructor(game: Phaser.Game, config?: PluginConfig) {
+	public constructor(game: Phaser.Game, config?: PluginConfigBuilder) {
 		super(game, game.plugins);
 		this.insertHead();
 		if (!config) config = {};
-		config.root = config.root ?? game.world
-		this.config = config;
+		if (!config.root) config.root = () => game.world;
+		if (!config.referenceImageUrl) config.referenceImageUrl = () => null;
+		this.configBuilder = config;
 
 		this.editorState = new EditorStateHandler(game, config);
 		this.editorState.onshow = this.onEditorShow.bind(this);
@@ -59,32 +59,40 @@ export class Plugin extends Phaser.Plugin {
 		link.href = src.replace('.min.js', '.css');
 	}
 
-	public show() {
-		this.editorState.show();
-	}
+	public show() { this.editorState.show(); }
 
 	private onEditorShow() {
 		(this as any).postUpdate = this._postUpdate.bind(this);
 		this.hasPostUpdate = true;
 
+		const game = this.game;
+
+		// saves the pre editor game state
 		this.gamePreState = {
-			disableVisibilityChange: this.game.stage.disableVisibilityChange,
-			slowMotion: this.game.time.slowMotion,
+			disableVisibilityChange: game.stage.disableVisibilityChange,
+			slowMotion: game.time.slowMotion,
+			scaleMode: game.scale.scaleMode,
 		};
 
-		this.game.stage.disableVisibilityChange = true;
-		if (this.config.pauseGame) this.game.time.slowMotion = Number.POSITIVE_INFINITY;
+		// applies some properties to the game
+		game.stage.disableVisibilityChange = true;
+		if (this.configBuilder.pauseGame) game.time.slowMotion = Number.POSITIVE_INFINITY;
+		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
-		this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-		if (this.config.onShow) this.config.onShow();
+		if (this.configBuilder.onShow) this.configBuilder.onShow();
 	}
 
 	private onEditorHide() {
 		this.hasPostUpdate = false;
 		(this as any).postUpdate = null;
-		this.game.stage.disableVisibilityChange = this.gamePreState.disableVisibilityChange;
-		this.game.time.slowMotion = this.gamePreState.slowMotion;
-		if (this.config.onHide) this.config.onHide();
+
+		// recovers pre editor game state
+		const { game, gamePreState } = this;
+		game.stage.disableVisibilityChange = gamePreState.disableVisibilityChange;
+		game.time.slowMotion = gamePreState.slowMotion;
+		game.scale.scaleMode = gamePreState.scaleMode;
+
+		if (this.configBuilder.onHide) this.configBuilder.onHide();
 	}
 
 	private _postUpdate() {
@@ -93,3 +101,18 @@ export class Plugin extends Phaser.Plugin {
 }
 
 (Phaser.Plugin as any).RuntimeEditor = Plugin;
+
+Object.defineProperty(PIXI.DisplayObject.prototype, 'globalScale', {
+	enumerable: true,
+	configurable: true,
+	get() { return new PIXI.Point(this.worldTransform.a, this.worldTransform.d); },
+});
+
+Object.defineProperty(DOMTokenList.prototype, 'addOrRemove', {
+	enumerable: true,
+	configurable: true,
+	value(className: string, add: boolean) {
+		if (add) this.add(className);
+		else this.remove(className);
+	},
+});

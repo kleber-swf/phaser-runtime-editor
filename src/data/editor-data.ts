@@ -5,7 +5,7 @@ export enum DataOrigin {
 	ACTION = 0,
 	SCENE = 1,
 	INSPECTOR = 2,
-};
+}
 
 export class EditorData {
 	private _selectedObject: PIXI.DisplayObject;
@@ -53,9 +53,9 @@ export class EditorData {
 	}
 
 	public setupActions(actions: ActionHandler) {
-		actions.setActionCommand(Actions.DESELECT, () => this.selectObject(null, DataOrigin.ACTION));
+		actions.setActionCommand(Actions.CLEAR_SELECTION, () => this.selectObject(null, DataOrigin.ACTION));
 		actions.setActionCommand(Actions.PRINT_OBJECT, () => {
 			if (this._selectedObject) console.info(this._selectedObject);
-		})
+		});
 	}
 }

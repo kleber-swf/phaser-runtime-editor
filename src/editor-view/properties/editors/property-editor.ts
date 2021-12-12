@@ -10,13 +10,12 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 
 	protected _internalValue: T;
 
-	public connectedCallback() {
-		this.classList.add('property-editor');
-	}
+	public connectedCallback() { this.classList.add('property-editor'); }
 
 	public setContent(prop: InspectorPropertyModel, value: T, hasCopyButton: boolean, fieldId?: string) {
 		fieldId = fieldId ?? `${prop.name}-${IdUtil.genHexId()}`;
 		this.prop = prop;
+		if (!value) value = this.getDefaultValue();
 
 		const titleCol = this.appendChild(document.createElement('div'));
 		titleCol.classList.add('property-title', prop.name);
@@ -57,10 +56,8 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 			.classList.add('fas', 'fa-clone');
 	}
 
-	protected copyToClipboard() {
-		navigator.clipboard
-			.writeText(`"${this.prop.name}": ${JSON.stringify(this.getInternalValue())}`);
-	}
+	protected copyToClipboard() { navigator.clipboard.writeText(`"${this.prop.name}": ${this.valueToJson()}`); }
+	protected valueToJson(): string { return JSON.stringify(this.getInternalValue()); }
 
 	public propertyChangedOutsideInspector(value: T) {
 		this.changedOutsideInspector = true;
@@ -81,9 +78,11 @@ export abstract class PropertyEditor<T> extends HTMLElement {
 	public abstract setInternalValue(value: T): void;
 	public abstract updateInternalValue(e: Event): void;
 
+	protected abstract getDefaultValue(): T;
+
 	public savePreviousValue() {
 		Editor.history.prepare(Editor.data.selectedObject, {
-			[this.prop.name]: this.getInternalValue()
+			[this.prop.name]: this.getInternalValue(),
 		}).commit();
 	}
 }

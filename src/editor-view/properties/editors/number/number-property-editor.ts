@@ -1,5 +1,5 @@
 import { InspectorPropertyModel } from 'data/inspector-data';
-import { ComponentTags } from 'component-tags';
+import { PropertyElementTag } from 'property-element-tag';
 import { PropertyEditor } from '../property-editor';
 
 export class NumberPropertyEditor extends PropertyEditor<number> {
@@ -12,6 +12,8 @@ export class NumberPropertyEditor extends PropertyEditor<number> {
 		if (prop.data) Object.keys(prop.data).forEach(p => input.setAttribute(p, prop.data[p]));
 		return input;
 	}
+
+	protected getDefaultValue() { return 0; }
 
 	public setInternalValue(value: number) {
 		value = value === null || isNaN(value) ? 0 : value;
@@ -26,4 +28,4 @@ export class NumberPropertyEditor extends PropertyEditor<number> {
 	}
 }
 
-customElements.define(ComponentTags.NumberPropertyEditor, NumberPropertyEditor);
+customElements.define(PropertyElementTag.NumberPropertyEditor, NumberPropertyEditor);

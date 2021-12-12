@@ -1,32 +1,44 @@
-import { ComponentTags } from 'component-tags';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
-import { PluginConfig } from 'plugin';
+import { PluginConfig } from 'plugin.model';
 import { ObjectTreeModel, ObjectTreeNodeModel } from '../model/object-tree-model';
 import { SearchField } from '../search-field/search-field';
 import { ObjectTreeNode } from '../tree-node/object-tree-node';
 import './object-tree-inspector.scss';
 
 export class ObjectTreeInspector extends Inspector {
+	public static readonly tagName = 'phred-object-tree-inspector';
+
 	private readonly model: ObjectTreeModel = new ObjectTreeModel();
 
-	public init(game: Phaser.Game, config: PluginConfig) {
-		super.init(game, config);
+	public init(game: Phaser.Game) {
+		super.init(game);
 		this.title = 'Objects';
 
-		const el = this.headerElement.appendChild(document.createElement(ComponentTags.SearchField)) as SearchField;
+		const el = this.headerElement.appendChild(document.createElement(SearchField.tagName)) as SearchField;
 		el.init();
 		el.onValueChanged = this.filterContent.bind(this);
+		el.onClear = this.onFilterClear.bind(this);
 
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
-		this.setRoot(config.root);
+	}
+
+	public enable(config: PluginConfig) { this.setRoot(config.root); }
+
+	public disable() {
+		this.model.empty();
+
+		const emptyContent = this.contentElement.cloneNode(false);
+		this.replaceChild(emptyContent, this.contentElement);
+		this.contentElement = emptyContent as HTMLElement;
 	}
 
 	private setRoot(root: PIXI.DisplayObjectContainer | Phaser.Stage) {
 		this.model.create(root);
-		for (let i = 0, n = root.children.length; i < n; i++)
+		for (let i = 0, n = root.children.length; i < n; i++) {
 			this.createNode(root.children[i], this.contentElement, this.model);
+		}
 	}
 
 	private createNode(obj: PIXI.DisplayObject, parent: HTMLElement, model: ObjectTreeModel) {
@@ -34,7 +46,7 @@ export class ObjectTreeInspector extends Inspector {
 		const m = model.getById(obj.__instanceId);
 		if (!m) throw new Error(`Model not found for ${obj.__instanceId}`);
 
-		const node = parent.appendChild(document.createElement(ComponentTags.ObjectTreeNode)) as ObjectTreeNode;
+		const node = parent.appendChild(document.createElement(ObjectTreeNode.tagName)) as ObjectTreeNode;
 		node.classList.add(`level-${m.level}`);
 		node.onNodeSelect = this.onNodeSelected.bind(this);
 		node.onCollapseStateChanged = this.onNodeCollapseStateChanged.bind(this);
@@ -57,7 +69,6 @@ export class ObjectTreeInspector extends Inspector {
 		}
 		if (property === 'visible') {
 			this._lastSelectedModel.node.updateObjectVisibility(value);
-			return;
 		}
 	}
 
@@ -102,15 +113,22 @@ export class ObjectTreeInspector extends Inspector {
 			model.node.expand();
 		}
 
-		if (model.parent)
+		if (model.parent) {
 			this.expandParents(model.parent);
+		}
 	}
 
 	private filterContent(filter: string) {
-		if (filter) this.classList.add('filtering');
-		else this.classList.remove('filtering');
+		this.classList.addOrRemove('filtering', !!filter);
 		this.model.filter(filter);
+	}
+
+	private onFilterClear() {
+		if (this._lastSelectedModel?.parent) {
+			this.expandParents(this._lastSelectedModel.parent);
+			this._lastSelectedModel.node.focus();
+		}
 	}
 }
 
-customElements.define(ComponentTags.ObjectTreeInspector, ObjectTreeInspector);
+customElements.define(ObjectTreeInspector.tagName, ObjectTreeInspector);

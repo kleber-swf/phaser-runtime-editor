@@ -1,15 +1,16 @@
-import { ComponentTags } from 'component-tags';
 import { Actions } from 'core/actions';
-import { EditorData } from 'data/editor-data';
+import { DataOrigin, EditorData } from 'data/editor-data';
 import { InspectorData } from 'data/inspector-data';
 import { PhaserMeta } from 'data/phaser-meta';
-import { PluginConfig } from 'plugin';
+import { PluginConfig, Size } from 'plugin.model';
+import { PropertyElementTag } from 'property-element-tag';
 import { ActionHandler } from './action-handler';
 import { History } from './history';
-import { Preferences } from './preferences';
+import { Preferences } from './preferences/preferences';
+import { ReferenceImageController } from './reference-image.controller';
 
 class EditorClass {
-	public data: EditorData
+	public data: EditorData;
 	public inspectorData: InspectorData;
 	public meta: PhaserMeta;
 
@@ -17,31 +18,39 @@ class EditorClass {
 	public history: History;
 	public prefs: Preferences;
 
-	public init(config: PluginConfig) {
+	public referenceImageController: ReferenceImageController;
+
+	public init(game: Phaser.Game, config: PluginConfig) {
 		this.data = new EditorData();
 		this.inspectorData = this.createInspectorData();
 		this.meta = new PhaserMeta();
 
 		this.actions = this.createActions();
 		this.history = new History(this.data);
-		this.prefs = new Preferences(config.clearPrefs);
+		this.prefs = new Preferences(config.clearPreferences);
+
+		this.referenceImageController = new ReferenceImageController(game, this.prefs);
 	}
 
 	private createInspectorData() {
 		const data = new InspectorData();
 		data.addTypeEditors({
 			// basic types
-			string: ComponentTags.StringPropertyEditor,
-			text: ComponentTags.TextPropertyEditor,
-			number: ComponentTags.NumberPropertyEditor,
-			boolean: ComponentTags.BooleanPropertyEditor,
+			string: PropertyElementTag.StringPropertyEditor,
+			text: PropertyElementTag.TextPropertyEditor,
+			number: PropertyElementTag.NumberPropertyEditor,
+			boolean: PropertyElementTag.BooleanPropertyEditor,
 
 			// PIXI/Phaser types
-			point: ComponentTags.PointPropertyEditor,
-			rect: ComponentTags.RectPropertyEditor,
+			point: PropertyElementTag.PointPropertyEditor,
+			rect: PropertyElementTag.RectPropertyEditor,
+
+			// custom
+			color: PropertyElementTag.ColorPropertyEditor,
+			valueList: PropertyElementTag.ValueListPropertyEditor,
 
 			// default
-			default: ComponentTags.StringPropertyEditor,
+			default: PropertyElementTag.StringPropertyEditor,
 		});
 
 		data.addInspectableProperties([
@@ -59,33 +68,43 @@ class EditorClass {
 			// Sprite
 			{ name: 'key', typeHint: 'string' },
 			{ name: 'frameName', label: 'frame', typeHint: 'string' },
-			{ name: 'blendMode', typeHint: 'number' },
-			{ name: 'tint', typeHint: 'number', data: { min: 0, max: 0xFFFFFF } },
+			{ name: 'blendMode', typeHint: 'valueList', values: Phaser.blendModes },
+			{ name: 'tint', typeHint: 'color' },
+			// TODO waiting for multiple type hint
+			// { name: 'hitArea', typeHint: 'rect' },
 
 			// Text
 			{ name: 'text', typeHint: 'text', data: { rows: 3 } },
 			{ name: 'font', typeHint: 'string' },
 			{ name: 'fontSize', typeHint: 'number', data: { min: 0, step: 1 } },
-			{ name: 'fontStyle', typeHint: 'string' },
-			{ name: 'fontVariant', typeHint: 'string' },
-			{ name: 'fontWeight', typeHint: 'string' },
+			{ name: 'fontStyle', typeHint: 'valueList', values: ['normal', 'italic', 'oblique'] },
+			{ name: 'fontWeight', typeHint: 'valueList', values: ['normal', 'bold', 'bolder', 'lighter', '100', '200', '300', '400', '500', '600', '700', '800', '900'] },
+			{ name: 'fontVariant', typeHint: 'valueList', values: ['normal', 'small-caps'] },
 			{ name: 'autoRound', typeHint: 'boolean' },
-			{ name: 'align', typeHint: 'string' },
+			{ name: 'align', typeHint: 'valueList', values: ['left', 'center', 'right'] },
 			{ name: 'wordWrap', typeHint: 'boolean' },
 			{ name: 'wordWrapWidth', typeHint: 'number', data: { min: 0, step: 1 } },
 			{ name: 'useAdvancedWordWrap', typeHint: 'boolean' },
 			{ name: 'padding', typeHint: 'point' },
 			// { name: 'textBounds', typeHint: 'rect' },  // TODO waiting for null checking on rect editor
-			{ name: 'boundsAlignH', typeHint: 'string' },
-			{ name: 'boundsAlignV', typeHint: 'string' },
-
+			{ name: 'boundsAlignH', typeHint: 'valueList', values: ['left', 'center', 'right'] },
+			{ name: 'boundsAlignV', typeHint: 'valueList', values: ['top', 'middle', 'bottom'] },
 		]);
 
 		const basicProperties = {
-			title: '', properties: [
-				'__type', 'name', 'position', 'scale', 'pivot', 'anchor',
-				'alpha', 'visible', 'angle', '_bounds'
-			]
+			title: '',
+			properties: [
+				'__type',
+				'name',
+				'position',
+				'scale',
+				'pivot',
+				'anchor',
+				'alpha',
+				'visible',
+				'angle',
+				'_bounds',
+			],
 		};
 
 		data.addObjectProperties('default', [basicProperties]);
@@ -111,11 +130,23 @@ class EditorClass {
 			{
 				title: 'Text',
 				properties: [
-					'text', 'font', 'fontSize', 'fontStyle', 'fontVariant', 'fontWeight', 'autoRound',
+					'text',
+					'font',
+					'fontSize',
+					'fontStyle',
+					'fontVariant',
+					'fontWeight',
+					'autoRound',
 					'divider',
-					'align', 'wordWrap', 'wordWrapWidth', 'useAdvancedWordWrap',
+					'align',
+					'wordWrap',
+					'wordWrapWidth',
+					'useAdvancedWordWrap',
 					'divider',
-					'padding', /*'textBounds', */'boundsAlignH', 'boundsAlignV']
+					'padding', /* 'textBounds', */
+					'boundsAlignH',
+					'boundsAlignV',
+				],
 			},
 		]);
 
@@ -133,81 +164,284 @@ class EditorClass {
 		actions.add(
 			{
 				id: Actions.TOGGLE_ENABLED,
-				label: 'edit',
+				tooltip: 'Toggle editor',
 				icon: 'fa-edit',
-				toggle: true,
-				shortcuts: ['ctrl+F2']
+				category: 'general',
 			},
 
 			{
 				id: Actions.TOGGLE_SNAP,
-				label: 'snap',
+				tooltip: 'Toggle snap',
 				icon: 'fa-border-all',
 				toggle: true,
+				category: 'scene',
 			},
 			{
 				id: Actions.TOGGLE_GIZMOS,
-				label: 'gizmos',
+				tooltip: 'Toggle gizmos',
 				icon: 'fa-vector-square',
 				toggle: true,
-				hold: true,
-				shortcuts: ['ctrl+shift+Shift', 'ctrl+shift+Control'],
+				shortcuts: ['ctrl+`', 'ctrl+.'],
+				category: 'scene',
 			},
 			{
 				id: Actions.TOGGLE_GUIDES,
 				toggle: true,
-				label: 'guides',
+				tooltip: 'Toggle guides',
 				icon: 'fa-compress',
+				category: 'scene',
+			},
+			{
+				id: Actions.TOGGLE_HIT_AREA,
+				toggle: true,
+				tooltip: 'Toggle hit area',
+				description: 'Toggle hit area for selected object',
+				icon: 'fa-hand-point-up',
+				category: 'scene',
+			},
+			{
+				id: Actions.TOGGLE_HIT_AREAS_SNAPSHOT,
+				toggle: true,
+				tooltip: 'Toggle all hit areas snapshot',
+				description: 'Shows a snapshot of all hit areas in the scene',
+				icon: 'fa-layer-group',
+				category: 'scene',
+			},
+			{
+				id: Actions.TOGGLE_RESPONSIVE,
+				toggle: true,
+				tooltip: 'Toggle responsive',
+				description: 'Toggle responsive mode',
+				icon: 'fa-tablet-alt',
+				category: 'view',
+			},
+			{
+				id: Actions.TOGGLE_ORIENTATION,
+				tooltip: 'Change orientation',
+				description: 'Change orientation on responsive mode',
+				icon: 'fa-retweet',
+				category: 'view',
 			},
 			{
 				id: Actions.TOGGLE_REF_IMAGE,
-				label: 'reference image',
-				icon: 'fa-image'
+				toggle: true,
+				tooltip: 'Toggle reference image',
+				description: 'Toggle reference image (if any)',
+				icon: 'fa-image',
+				category: 'scene',
 			},
 			{
 				id: Actions.UNDO,
-				label: 'undo',
+				tooltip: 'Undo',
 				icon: 'fa-undo-alt',
 				shortcuts: ['ctrl+z'],
+				category: 'general',
 			},
 
 			{
 				id: Actions.PRINT_OBJECT,
-				label: 'print',
+				tooltip: 'Print to console',
+				description: 'Print the selected element into the console',
 				icon: 'fa-terminal',
 				shortcuts: ['ctrl+alt+p'],
+				category: 'general',
 			},
 
-			{ id: Actions.DESELECT, shortcuts: ['Escape'], },
-			{ id: Actions.MOVE_UP_1, shortcuts: ['ArrowUp'], },
-			{ id: Actions.MOVE_DOWN_1, shortcuts: ['ArrowDown'], },
-			{ id: Actions.MOVE_LEFT_1, shortcuts: ['ArrowLeft'], },
-			{ id: Actions.MOVE_RIGHT_1, shortcuts: ['ArrowRight'], },
-			{ id: Actions.MOVE_UP_10, shortcuts: ['shift+ArrowUp'], },
-			{ id: Actions.MOVE_DOWN_10, shortcuts: ['shift+ArrowDown'], },
-			{ id: Actions.MOVE_LEFT_10, shortcuts: ['shift+ArrowLeft'], },
-			{ id: Actions.MOVE_RIGHT_10, shortcuts: ['shift+ArrowRight'], },
+			{
+				id: Actions.CLEAR_SELECTION,
+				shortcuts: ['Escape'],
+				category: 'general',
+				description: 'Clear selection',
+			},
+			{
+				id: Actions.MOVE_UP_1,
+				shortcuts: ['ArrowUp'],
+				stritct: true,
+				category: 'scene',
+				description: 'Move selected object up by 1px',
+			},
+			{
+				id: Actions.MOVE_DOWN_1,
+				shortcuts: ['ArrowDown'],
+				stritct: true,
+				category: 'scene',
+				description: 'Move selected object down by 1px',
+			},
+			{
+				id: Actions.MOVE_LEFT_1,
+				shortcuts: ['ArrowLeft'],
+				stritct: true,
+				category: 'scene',
+				description: 'Move selected object left 1px',
+			},
+			{
+				id: Actions.MOVE_RIGHT_1,
+				shortcuts: ['ArrowRight'],
+				stritct: true,
+				category: 'scene',
+				description: 'Move selected object right by 1px',
+			},
+			{
+				id: Actions.MOVE_UP_10,
+				shortcuts: ['shift+ArrowUp'],
+				stritct: true,
+				category: 'scene',
+				description: 'Move selected object up by 10px',
+			},
+			{
+				id: Actions.MOVE_DOWN_10,
+				shortcuts: ['shift+ArrowDown'],
+				stritct: true,
+				category: 'scene',
+				description: 'Move selected object down by 10px',
+			},
+			{
+				id: Actions.MOVE_LEFT_10,
+				shortcuts: ['shift+ArrowLeft'],
+				stritct: true,
+				category: 'scene',
+				description: 'Move selected object left by 10px',
+			},
+			{
+				id: Actions.MOVE_RIGHT_10,
+				shortcuts: ['shift+ArrowRight'],
+				stritct: true,
+				category: 'scene',
+				description: 'Move selected object right by 10px',
+			},
 
-			{ id: Actions.ZOOM, shortcuts: ['ctrl+wheel'], },
-			{ id: Actions.ZOOM_IN, label: 'zoom in', icon: 'fa-plus', shortcuts: ['ctrl+=', 'ctrl++'], },
-			{ id: Actions.ZOOM_OUT, label: 'zoom out', icon: 'fa-minus', shortcuts: ['ctrl+-'], },
+			{
+				id: Actions.ZOOM,
+				shortcuts: ['ctrl+wheel'],
+				category: 'view',
+				description: 'Zoom',
+			},
+			{
+				id: Actions.ZOOM_IN,
+				tooltip: 'Zoom in',
+				icon: 'fa-search-plus',
+				shortcuts: ['ctrl+=', 'ctrl++'],
+				category: 'view',
+			},
+			{
+				id: Actions.ZOOM_OUT,
+				tooltip: 'Zoom out',
+				icon: 'fa-search-minus',
+				shortcuts: ['ctrl+-'],
+				category: 'view',
+			},
+			{
+				id: Actions.ZOOM_RESET,
+				tooltip: 'Reset zoom',
+				description: 'Reset zoom to default',
+				icon: 'fa-expand',
+				shortcuts: ['ctrl+0'],
+				category: 'view',
+			},
+
+			{
+				id: Actions.TOGGLE_LEFT_PANEL,
+				tooltip: 'Toogle left panel',
+				icon: 'fa-angle-double-left',
+				shortcuts: ['ctrl+['],
+				category: 'view',
+			},
+			{
+				id: Actions.TOGGLE_RIGHT_PANEL,
+				tooltip: 'Toogle right panel',
+				icon: 'fa-angle-double-right',
+				shortcuts: ['ctrl+]'],
+				category: 'view',
+			},
+
+			{
+				id: Actions.HELP,
+				tooltip: 'Help',
+				icon: 'fa-question',
+				category: 'general',
+			}
 		);
 
 		return actions;
 	}
 
+	private setupPreferencesActions(actions: ActionHandler) {
+		const prefs = this.prefs;
+
+		actions.setActionCommand(
+			Actions.TOGGLE_SNAP,
+			() => prefs.toggle('snap'),
+			() => prefs.get('snap') as boolean
+		);
+
+		actions.setActionCommand(
+			Actions.TOGGLE_GIZMOS,
+			() => prefs.toggle('gizmos'),
+			() => prefs.get('gizmos') as boolean
+		);
+
+		actions.setActionCommand(
+			Actions.TOGGLE_GUIDES,
+			() => prefs.toggle('guides'),
+			() => prefs.get('guides') as boolean
+		);
+
+		actions.setActionCommand(
+			Actions.TOGGLE_HIT_AREA,
+			() => prefs.toggle('hitArea'),
+			() => prefs.get('hitArea') as boolean
+		);
+
+		actions.setActionCommand(
+			Actions.TOGGLE_RESPONSIVE,
+			() => prefs.toggle('responsive'),
+			() => prefs.get('responsive') as boolean
+		);
+
+		actions.setActionCommand(Actions.TOGGLE_ORIENTATION, () => {
+			const size = prefs.get('responsiveSize') as Size;
+			prefs.set('responsiveSize', { width: size.height, height: size.width });
+		});
+
+		actions.setActionCommand(
+			Actions.TOGGLE_HIT_AREAS_SNAPSHOT,
+			() => prefs.toggle('hitAreasSnapshot'),
+			() => prefs.get('hitAreasSnapshot') as boolean
+		);
+
+		actions.setActionCommand(
+			Actions.TOGGLE_REF_IMAGE,
+			() => prefs.toggle('referenceImageVisible'),
+			() => prefs.get('referenceImageVisible') as boolean
+		);
+
+		actions.setActionCommand(
+			Actions.TOGGLE_LEFT_PANEL,
+			() => prefs.toggle('leftPanelVisible'),
+			() => prefs.get('leftPanelVisible') as boolean
+		);
+
+		actions.setActionCommand(
+			Actions.TOGGLE_RIGHT_PANEL,
+			() => prefs.toggle('rightPanelVisible'),
+			() => prefs.get('rightPanelVisible') as boolean
+		);
+	}
+
 	public setupInitialActions() {
 		const actions = this.actions;
-		this.prefs.setupActions(actions);
+		this.setupPreferencesActions(actions);
 		this.history.setupActions(actions);
 		this.data.setupActions(actions);
 	}
 
-	public enable() {
+	public enable(config: PluginConfig) {
 		this.actions.enable();
+		this.referenceImageController.enable(config);
 	}
 
 	public disable() {
+		this.data.selectObject(null, DataOrigin.ACTION);
 		this.actions.disable();
 	}
 }

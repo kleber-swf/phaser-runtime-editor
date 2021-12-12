@@ -1,33 +1,47 @@
 import { Action } from 'core/action-handler';
-import { Editor } from 'core/editor';
-import { PreferenceKey } from 'core/preferences';
-import { ComponentTags } from 'component-tags';
+import { ActionView } from '../action-view';
 import './action-button.scss';
 
-export class ActionButton extends HTMLElement {
+export class ActionButton extends HTMLElement implements ActionView {
+	public static readonly tagName = 'phred-action-button';
+
 	private action: Action;
+
+	public set interactable(value: boolean) {
+		this.classList.addOrRemove('disabled', !value);
+	}
 
 	public setAction(action: Action) {
 		this.classList.add('button');
 		this.action = action;
+		this.createTooltip(action);
+
 		if (action.icon) {
 			const icon = this.appendChild(document.createElement('i'));
 			icon.classList.add('fas', action.icon);
-			// TODO tooltip
 		} else {
 			const text = this.appendChild(document.createElement('span'));
 			text.classList.add('label');
-			text.textContent = action.label;
+			text.textContent = action.tooltip;
 		}
 		if (!action.toggle) {
 			this.onclick = () => action.command();
 			return;
 		}
+
 		this.onclick = this.toggleSelected.bind(this);
 		this.updateState();
-		Editor.prefs.onPreferenceChanged.add((pref: PreferenceKey) => {
-			if (pref === 'gizmos') this.updateState();
-		});
+	}
+
+	private createTooltip(action: Action) {
+		if (!action.tooltip) return;
+		const tooltip = this.appendChild(document.createElement('div'));
+		tooltip.classList.add('tooltip');
+		let text = action.tooltip;
+		if (action.shortcuts?.length) {
+			text += ` (${action.shortcuts[0].replace('+Shift', '')})`;
+		}
+		tooltip.innerText = text;
 	}
 
 	private toggleSelected() {
@@ -35,10 +49,9 @@ export class ActionButton extends HTMLElement {
 		this.updateState();
 	}
 
-	private updateState() {
-		if (this.action.state()) this.classList.add('selected');
-		else this.classList.remove('selected');
+	public updateState() {
+		this.classList.addOrRemove('selected', this.action.state?.());
 	}
 }
 
-customElements.define(ComponentTags.ActionButton, ActionButton);
+customElements.define(ActionButton.tagName, ActionButton);

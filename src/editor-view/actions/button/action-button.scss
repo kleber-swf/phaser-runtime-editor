@@ -1,25 +1,73 @@
 @import 'colors';
 
-phred-action-button.button {
-	min-width: 35px;
-	padding: 0;
+phred-actions-toolbar .button {
 	box-shadow: none;
+	position: relative;
+	padding: 0;
+	width: 36px;
+	min-width: 36px;
+	max-width: 36px;
+	margin: 0 2px;
 
 	&:hover {
 		background-color: $primary-color;
 		color: $on-primary;
-		box-shadow: 0 1px 2px 2px $shadow-color;
-		padding-bottom: 1px;
+		box-shadow: 0 1px 1px 2px $light-shadow-color;
+		& > i {
+			transform: translateY(-1px);
+		}
 	}
 
 	&:active {
 		& > i {
-			transform: translateY(1px);
+			transform: translateY(0px);
 		}
+	}
+
+	&:hover .tooltip {
+		opacity: 1;
+		transition: opacity 200ms 800ms;
 	}
 
 	&.selected {
 		background-color: lighten($primary-color, 10%);
 		color: $on-primary;
+		&:hover {
+			background-color: lighten($primary-color, 10%);
+		}
+	}
+
+	.tooltip {
+		position: absolute;
+		top: 46px;
+		background-color: lighten($background-color, 2%);
+		color: $on-background;
+		padding: 4px 10px;
+		border-radius: 6px;
+		font-size: 14px;
+		text-align: center;
+		user-select: none;
+		pointer-events: none;
+		opacity: 0;
+		max-width: 150px;
+		box-sizing: border-box;
+		box-shadow: 0 2px 2px 2px $light-shadow-color;
+		transition: opacity 200ms 100ms;
+		z-index: 1;
+
+		&:before {
+			content: '';
+			position: absolute;
+			top: -4px;
+			left: 50%;
+			display: block;
+			width: 8px;
+			height: 8px;
+			background-color: lighten($background-color, 2%);
+			transform-origin: 4px 4px;
+			margin-left: -4px;
+			transform: rotateZ(45deg);
+			z-index: -1;
+		}
 	}
 }

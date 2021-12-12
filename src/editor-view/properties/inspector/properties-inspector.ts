@@ -1,23 +1,26 @@
-import { ComponentTags } from 'component-tags';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { InspectorPropertyModel } from 'data/inspector-data';
 import { Inspector } from 'editor-view/inspector/inspector';
-import { PluginConfig } from 'plugin';
 import { PropertyEditor } from '../editors/property-editor';
 
 export class PropertiesInspector extends Inspector {
+	public static readonly tagName = 'phred-properties-inspector';
+
 	private editors: Record<string, PropertyEditor<any>> = {};
 
-	public init(game: Phaser.Game, config: PluginConfig) {
-		super.init(game, config);
+	public init(game: Phaser.Game) {
+		super.init(game);
 		this.title = 'Properties';
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 	}
 
-	private onPropertyChanged(origin: DataOrigin, property: string, value: any) {
-		if (origin !== DataOrigin.INSPECTOR)
+	private onPropertyChanged(origin: DataOrigin, property: string, value: any, object: PIXI.DisplayObject) {
+		if (origin === DataOrigin.INSPECTOR) {
+			object[property] = value;
+		} else {
 			this.editors[property]?.propertyChangedOutsideInspector(value);
+		}
 	}
 
 	private createPropertyEditor(prop: InspectorPropertyModel, value: any, tagName: string) {
@@ -52,16 +55,17 @@ export class PropertiesInspector extends Inspector {
 		this.contentElement.style.visibility = 'visible';
 
 		const idata = Editor.inspectorData;
-		const propertyGroups = idata.getObjectPropertiesForType(obj.__type)
+		const propertyGroups = idata.getObjectPropertiesForType(obj.__baseType);
 		propertyGroups.forEach(group => {
 			if (group.title) this.createTitleElement(group.title);
 			group.properties.forEach(prop => {
-				if (prop !== 'divider')
+				if (prop !== 'divider') {
 					this.createEditorForProperty(obj, idata.getInspectableProperty(prop));
-				else
+				} else {
 					this.createDivider();
+				}
 			});
-		})
+		});
 	}
 
 	private createEditorForProperty(obj: PIXI.DisplayObject, prop: InspectorPropertyModel) {
@@ -72,4 +76,4 @@ export class PropertiesInspector extends Inspector {
 	}
 }
 
-customElements.define(ComponentTags.PropertiesInspector, PropertiesInspector);
+customElements.define(PropertiesInspector.tagName, PropertiesInspector);

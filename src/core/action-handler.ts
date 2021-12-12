@@ -1,11 +1,14 @@
 export interface Action {
 	id: string;
-	label?: string;
+	tooltip?: string;
+	description?: string;
 	icon?: string;
 	shortcuts?: string[];
 	toggle?: boolean;
 	hold?: boolean;
 	on?: string;
+	category: string;
+	stritct?: boolean;
 	command?: (e?: Event) => void;
 	state?: () => any;
 }
@@ -30,8 +33,9 @@ export class ActionHandler {
 
 			if (action.shortcuts) {
 				action.shortcuts.forEach(s => {
-					if (s in container)
-						throw new Error(`There is already an action with shortcut ${s}: ${container[s].label}`);
+					if (s in container) {
+						throw new Error(`There is already an action with shortcut ${s}: ${container[s].tooltip}`);
+					}
 					container[s] = action;
 				});
 			}
@@ -42,7 +46,7 @@ export class ActionHandler {
 
 	public addContainer(id: string, container: HTMLElement) { this.containers[id] = container; }
 
-	public getActions() { return Object.values(this.actions); }
+	public getActions() { return this.actionById; }
 	public getAction(id: string) { return id in this.actionById ? this.actionById[id] : null; }
 
 	public setActionCommand(id: string, command: (e?: Event) => void, state?: () => boolean) {
@@ -54,7 +58,6 @@ export class ActionHandler {
 		action.command = command;
 		action.state = state;
 	}
-
 
 	public enable() {
 		Object.keys(this.containers).forEach(cid => {
@@ -76,16 +79,17 @@ export class ActionHandler {
 	}
 
 	private onKeyDown(e: KeyboardEvent, actions: Record<string, Action>, container: HTMLElement) {
-		if (e.target !== container) return;
 		const k = (e.ctrlKey ? 'ctrl+' : '')
-			+ (e.shiftKey ? 'shift+' : '')
-			+ (e.altKey ? 'alt+' : '')
+		+ (e.shiftKey ? 'shift+' : '')
+		+ (e.altKey ? 'alt+' : '')
 			+ e.key;
 		if (k in actions) {
 			const action = actions[k];
+			if (action.stritct && e.target !== container) return;
 			action.command?.(e);
-			if (action.toggle && action.hold)
+			if (action.toggle && action.hold) {
 				this._holdingToggleAction = action;
+			}
 			e.preventDefault();
 		}
 	}
@@ -96,7 +100,7 @@ export class ActionHandler {
 		this._holdingToggleAction = null;
 	}
 
-	private onWheel(e: WheelEvent, actions: Record<string, Action>, container: HTMLElement) {
+	private onWheel(e: WheelEvent, actions: Record<string, Action>, _container: HTMLElement) {
 		const k = (e.ctrlKey ? 'ctrl+' : '')
 			+ (e.shiftKey ? 'shift+' : '')
 			+ (e.altKey ? 'alt+' : '')

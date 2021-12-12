@@ -11,11 +11,19 @@ export class Actions {
 	public static readonly TOGGLE_SNAP = 'TOGGLE_SNAP';
 	public static readonly TOGGLE_GIZMOS = 'TOGGLE_GIZMOS';
 	public static readonly TOGGLE_GUIDES = 'TOGGLE_GUIDES';
+	public static readonly TOGGLE_HIT_AREA = 'TOGGLE_HIT_AREA';
+	public static readonly TOGGLE_RESPONSIVE = 'TOGGLE_RESPONSIVE';
+	public static readonly TOGGLE_ORIENTATION = 'TOGGLE_ORIENTATION';
 	public static readonly TOGGLE_REF_IMAGE = 'TOGGLE_REF_IMAGE';
+	public static readonly TOGGLE_HIT_AREAS_SNAPSHOT = 'TOGGLE_HIT_AREAS_SNAPSHOT';
 	public static readonly TOGGLE_ENABLED = 'TOGGLE_ENABLED';
 	public static readonly PRINT_OBJECT = 'PRINT_OBJECT';
-	public static readonly DESELECT = 'DESELECT';
+	public static readonly CLEAR_SELECTION = 'CLEAR_SELECTION';
 	public static readonly ZOOM = 'ZOOM';
 	public static readonly ZOOM_IN = 'ZOOM_IN';
 	public static readonly ZOOM_OUT = 'ZOOM_OUT';
+	public static readonly ZOOM_RESET = 'ZOOM_RESET';
+	public static readonly TOGGLE_LEFT_PANEL = 'TOGGLE_LEFT_PANEL';
+	public static readonly TOGGLE_RIGHT_PANEL = 'TOGGLE_RIGHT_PANEL';
+	public static readonly HELP = 'HELP';
 }

@@ -10,7 +10,7 @@ export class DisabledUI {
 
 	public constructor() {
 		const btn = document.createElement('div');
-		btn.classList.add('button', 'edit-button');
+		btn.classList.add('edit-button');
 		this.button = btn;
 
 		btn.appendChild(document.createElement('i'))

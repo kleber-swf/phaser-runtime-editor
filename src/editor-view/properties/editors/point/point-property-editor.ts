@@ -1,5 +1,5 @@
 import { InspectorPropertyModel } from 'data/inspector-data';
-import { ComponentTags } from 'component-tags';
+import { PropertyElementTag } from 'property-element-tag';
 import { NumberPropertyEditor } from '../number/number-property-editor';
 import { PropertyEditor } from '../property-editor';
 import './point-property-editor.scss';
@@ -16,14 +16,14 @@ export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 
 	protected createInnerContent(fieldId: string, value: PIXI.Point, prop: InspectorPropertyModel) {
 		const parent = this.appendChild(document.createElement('div'));
-		parent.classList.add('vertical-content')
+		parent.classList.add('vertical-content');
 
-		const xinput = this.xinput = document.createElement(ComponentTags.NumberPropertyEditor) as NumberPropertyEditor;
+		const xinput = this.xinput = document.createElement(PropertyElementTag.NumberPropertyEditor) as NumberPropertyEditor;
 		xinput.setContent({ name: 'x', typeHint: 'number', data: prop.data }, value.x, false, fieldId);
 		xinput.onchange = this.onInputChanged.bind(this);
 		parent.appendChild(xinput);
 
-		const yinput = this.yinput = document.createElement(ComponentTags.NumberPropertyEditor) as NumberPropertyEditor;
+		const yinput = this.yinput = document.createElement(PropertyElementTag.NumberPropertyEditor) as NumberPropertyEditor;
 		yinput.setContent({ name: 'y', typeHint: 'number', data: prop.data }, value.y, false);
 		yinput.onchange = this.onInputChanged.bind(this);
 		parent.appendChild(yinput);
@@ -37,6 +37,8 @@ export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 		if (save) this.savePreviousValue();
 		super.onValueChanged(e, false);
 	}
+
+	protected getDefaultValue() { return new PIXI.Point(); }
 
 	public getInternalValue() { return this.internalValue.clone(); }
 
@@ -60,4 +62,4 @@ export class PointPropertyEditor extends PropertyEditor<PIXI.Point> {
 	}
 }
 
-customElements.define(ComponentTags.PointPropertyEditor, PointPropertyEditor);
+customElements.define(PropertyElementTag.PointPropertyEditor, PointPropertyEditor);

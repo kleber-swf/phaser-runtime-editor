@@ -1,5 +1,4 @@
 import { PhaserObjectType } from 'data/phaser-meta';
-import { ComponentTags } from 'component-tags';
 import { ObjectTreeNodeModel } from '../model/object-tree-model';
 import './object-tree-node.scss';
 
@@ -7,6 +6,8 @@ const SELECTED_CLASS = 'selected';
 const COLLAPSED_CLASS = 'collapsed';
 
 export class ObjectTreeNode extends HTMLElement {
+	public static readonly tagName = 'phred-object-tree-node';
+
 	public model: ObjectTreeNodeModel;
 	private label: HTMLElement;
 	private collapseIcon: HTMLElement;
@@ -20,8 +21,7 @@ export class ObjectTreeNode extends HTMLElement {
 	public get title() { return this.label.textContent; }
 
 	public updateObjectVisibility(value: boolean) {
-		if (value) this.classList.remove('object-invisible');
-		else this.classList.add('object-invisible');
+		this.classList.addOrRemove('object-invisible', !value);
 	}
 
 	public setContent(model: ObjectTreeNodeModel) {
@@ -57,8 +57,10 @@ export class ObjectTreeNode extends HTMLElement {
 
 	public select(focus: boolean) {
 		this.classList.add(SELECTED_CLASS);
-		if (focus) this.collapseIcon.scrollIntoView();
+		if (focus) this.focus();
 	}
+
+	public focus() { this.collapseIcon.scrollIntoView(); }
 
 	public clearSelection() { this.classList.remove(SELECTED_CLASS); }
 
@@ -66,8 +68,9 @@ export class ObjectTreeNode extends HTMLElement {
 		if (this.model.collapsed) this.expand();
 		else this.collapse();
 		e.stopImmediatePropagation();
-		if (this.onCollapseStateChanged)
+		if (this.onCollapseStateChanged) {
 			this.onCollapseStateChanged(this, this.model.collapsed, e.altKey);
+		}
 	}
 
 	public collapse() {
@@ -81,4 +84,4 @@ export class ObjectTreeNode extends HTMLElement {
 	}
 }
 
-customElements.define(ComponentTags.ObjectTreeNode, ObjectTreeNode);
+customElements.define(ObjectTreeNode.tagName, ObjectTreeNode);

@@ -1,0 +1,100 @@
+@import 'editor-vars';
+
+phred-selection-gizmo {
+	position: absolute;
+	display: block;
+	padding: 0;
+	margin: 0;
+	background-color: transparent;
+	padding: 0;
+	margin: 0;
+
+	&.disabled {
+		display: none;
+	}
+
+	div {
+		box-sizing: content-box;
+		position: absolute;
+		padding: 0;
+		box-shadow: $gizmo-shadow;
+		pointer-events: none;
+	}
+
+	.handlers {
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		box-shadow: none;
+		box-sizing: border-box;
+		border: 2px solid rgba(white, 0.8);
+		box-shadow: inset $gizmo-shadow, $gizmo-shadow;
+
+		.pivot {
+			width: 8px;
+			height: 8px;
+			border-radius: 50%;
+			margin-left: -10px;
+			margin-top: -10px;
+			border: 4px solid rgba($selection-color, 0.6);
+		}
+
+		.anchor {
+			width: 8px;
+			height: 8px;
+			margin-left: -6px;
+			margin-top: -6px;
+			background-color: rgba(#8ebf24, 0.9);
+			transform-origin: 4px 4px;
+			transform: rotateZ(45deg);
+		}
+	}
+
+	.guides {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		user-select: none;
+		pointer-events: none;
+		padding: 0;
+		margin: 0;
+		box-shadow: none;
+
+		div {
+			padding: 0;
+			margin: 0;
+			position: absolute;
+			border: 1px solid rgba(#fff, 0.15);
+			user-select: none;
+			pointer-events: none;
+			box-shadow: none;
+		}
+
+		.horizontal {
+			width: 200vw;
+			margin-left: -100vw;
+			border-left: none;
+			border-right: none;
+			height: 100%;
+		}
+
+		.vertical {
+			width: 100%;
+			margin-top: -100vh;
+			border-top: none;
+			border-bottom: none;
+			height: 200vh;
+		}
+	}
+
+	.hit-area {
+		display: block;
+		position: absolute;
+		box-sizing: border-box;
+		padding: 0;
+		margin: 0;
+		border: 1px solid orange;
+		background-color: rgba(orange, 0.1);
+	}
+}
