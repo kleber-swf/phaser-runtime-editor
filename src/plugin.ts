@@ -2,6 +2,7 @@ import { Editor } from 'core/editor';
 import { EditorStateHandler } from 'editor.state-handler';
 import Phaser from 'phaser-ce';
 import { PluginConfigBuilder } from 'plugin.model';
+import './index.scss';
 
 interface GameStateConfig {
 	disableVisibilityChange: boolean;

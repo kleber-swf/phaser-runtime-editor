@@ -29,7 +29,7 @@ phred-object-tree-node {
 		}
 	}
 
-	&.invisible {
+	&.excluded {
 		& > .node-head {
 			display: none;
 		}

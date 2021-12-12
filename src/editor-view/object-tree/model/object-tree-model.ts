@@ -59,7 +59,7 @@ export class ObjectTreeModel {
 			const o = objects[k] as ObjectTreeNodeModel;
 			if (!o.node) return;
 			o.node.classList.addOrRemove(
-				'invisible',
+				'excluded',
 				o.node.title.toLowerCase().indexOf(filter) < 0
 			);
 		});

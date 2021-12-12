@@ -1,5 +1,4 @@
 @import 'colors';
-@import 'editor-vars';
 
 @mixin basic-input-properties {
 	font-size: 14px;
@@ -225,6 +224,10 @@ phred-editor-view {
 	.disabled {
 		pointer-events: none;
 		opacity: 0.5;
+	}
+
+	.invisible {
+		display: none;
 	}
 
 	.phred-content {
