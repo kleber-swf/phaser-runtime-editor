@@ -51,6 +51,13 @@ export class ScaleHandler implements DraggingHandler {
 			y: (object.pivot.y / (object.height / object.scale.y)),
 		};
 
+		if (object.anchor && 'texture' in object) {
+			this._normalizedPivot = {
+				x: object.anchor.x + this._normalizedPivot.x,
+				y: object.anchor.y + this._normalizedPivot.y,
+			};
+		}
+
 		this._vsign = Math.sign(vside - 0.5);
 		this._hsign = Math.sign(hside - 0.5);
 

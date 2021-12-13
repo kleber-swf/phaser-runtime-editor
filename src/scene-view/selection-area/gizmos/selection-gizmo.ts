@@ -122,8 +122,8 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 
 		if (object.anchor) {
 			SelectionUtil.pointFromGameToArea(
-				object.anchor.x * (object.width / object.scale.x),
-				object.anchor.y * (object.height / object.scale.y),
+				object.anchor.x * bounds.width,
+				object.anchor.y * bounds.height,
 				_pointCache1
 			);
 			this.anchor.style.top = _pointCache1.y + 'px';
