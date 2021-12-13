@@ -1,15 +1,15 @@
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences/preferences.model';
-import { PanelSide } from 'plugin.model';
+import { Side } from 'plugin.model';
 import './panel-resize-handle.scss';
 
 export class PanelResizeHandle extends HTMLElement {
 	public static readonly tagName = 'phred-panel-resize-handle';
 
 	private panel: HTMLElement;
-	private side: PanelSide;
+	private side: Side;
 
-	public init(panel: HTMLElement, side: PanelSide) {
+	public init(panel: HTMLElement, side: Side) {
 		this.side = side;
 		const thumb = document.createElement('div');
 		thumb.classList.add('thumb');
