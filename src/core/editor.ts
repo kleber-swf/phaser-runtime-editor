@@ -67,7 +67,7 @@ class EditorClass {
 
 			// Sprite
 			{ name: 'key', typeHint: 'string' },
-			{ name: 'frameName', label: 'frame', typeHint: 'string' },
+			{ name: 'frameName', typeHint: 'string' },
 			{ name: 'blendMode', typeHint: 'valueList', values: Phaser.blendModes },
 			{ name: 'tint', typeHint: 'color' },
 			// TODO waiting for multiple type hint

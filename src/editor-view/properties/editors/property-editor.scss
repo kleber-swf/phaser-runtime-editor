@@ -14,8 +14,9 @@
 	}
 
 	.property-title {
-		min-width: 25%;
-		padding: 0 2px;
+		min-width: 30%;
+		max-width: 30%;
+		padding: 2px 6px;
 		overflow: hidden;
 
 		label {
@@ -25,7 +26,6 @@
 			overflow: hidden;
 			display: inline-block;
 			width: 100%;
-			padding: 2px 6px;
 		}
 	}
 
