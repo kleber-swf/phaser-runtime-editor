@@ -6,7 +6,7 @@ const game = new Phaser.Game({
 	renderer: Phaser.CANVAS,
 	parent: 'game',
 	scaleMode: Phaser.ScaleManager.USER_SCALE,
-	state: { preload, create, update },
+	state: { preload, create },
 	backgroundColor: '#333',
 });
 
@@ -28,9 +28,7 @@ let _colorIndex = 0;
 // ======================================================== //
 
 function preload() {
-	game.load.image('mushroom', 'assets/sprites/mushroom2.png');
 	game.load.image('phaser', 'assets/sprites/phaser1.png');
-	game.load.image('ref', 'assets/sprites/ref.png');
 	game.load.bitmapFont('font', 'assets/fonts/nokia.png', 'assets/fonts/nokia.xml');
 }
 
@@ -114,21 +112,23 @@ function create() {
 	child = el(DIST * 3, 500, SIZE, SIZE, parent, 'child-inverted');
 	child.scale.set(-1, -1);
 
-	child = game.add.sprite(900, 600, 'phaser');
-	child.name = 'sprite';
-	child.scale.set(2, 2);
-	child.inputEnabled = true;
-
-	game.add.bitmapText(50, 50, 'font', 'This is a bitmap text', 30)
-		.name = 'bitmap text';
-
-	child = el(900, 700, SIZE * 4, SIZE * 4, parent, 'deep-hierarchy');
+	child = el(960, -100, SIZE * 4, SIZE * 4, parent, 'deep-hierarchy');
 	child = el(50, 50, SIZE * 3.5, SIZE * 3.5, child, 'child-1');
 	child = el(50, 50, SIZE * 3, SIZE * 3, child, 'child-2');
 	child = el(50, 50, SIZE * 2.5, SIZE * 2.5, child, 'child-3');
 	child = el(50, 50, SIZE * 2, SIZE * 2, child, 'child-4');
 	child = el(50, 50, SIZE * 1.5, SIZE * 1.5, child, 'child-5');
 	child = el(50, 50, SIZE, SIZE, child, 'child-6');
+
+	const bt = game.add.bitmapText(50, 50, 'font', 'This is a bitmap text', 30);
+	bt.name = 'bitmap text';
+
+	const sprite = game.add.sprite(960, 540, 'phaser');
+	sprite.name = 'sprite';
+	sprite.scale.set(2, 2);
+	sprite.anchor.set(0.5, 0.5);
+	sprite.inputEnabled = true;
+	sprite.pivot.set(0, 20);
 
 	plugin.show();
 }
