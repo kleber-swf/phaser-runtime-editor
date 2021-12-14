@@ -1,3 +1,4 @@
+import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
@@ -22,6 +23,8 @@ export class ObjectTreeInspector extends Inspector {
 		el.onClear = this.onFilterClear.bind(this);
 
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
+
+		this.addAction(Editor.actions.getAction(Actions.SELECT_PARENT), 'right');
 	}
 
 	public enable(config: PluginConfig) { this.setRoot(config.root); }

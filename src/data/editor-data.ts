@@ -57,5 +57,9 @@ export class EditorData {
 		actions.setActionCommand(Actions.PRINT_OBJECT, () => {
 			if (this._selectedObject) console.info(this._selectedObject);
 		});
+
+		actions.setActionCommand(Actions.SELECT_PARENT, () => {
+			if (this.selectedObject) this.selectObject(this.selectedObject.parent, DataOrigin.ACTION);
+		});
 	}
 }

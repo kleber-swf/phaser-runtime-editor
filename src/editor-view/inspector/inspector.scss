@@ -29,6 +29,11 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: flex-start;
+		text-transform: none;
+
+		.title {
+			text-transform: uppercase;
+		}
 
 		.actions {
 			display: flex;

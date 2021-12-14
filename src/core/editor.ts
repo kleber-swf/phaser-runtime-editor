@@ -359,6 +359,13 @@ class EditorClass {
 				tooltip: 'Help',
 				icon: 'fa-question',
 				category: 'general',
+			},
+
+			{
+				id: Actions.SELECT_PARENT,
+				tooltip: 'Select parent',
+				icon: 'fa-level-up-alt',
+				category: 'object-tree',
 			}
 		);
 

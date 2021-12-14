@@ -26,4 +26,5 @@ export class Actions {
 	public static readonly TOGGLE_LEFT_PANEL = 'TOGGLE_LEFT_PANEL';
 	public static readonly TOGGLE_RIGHT_PANEL = 'TOGGLE_RIGHT_PANEL';
 	public static readonly HELP = 'HELP';
+	public static readonly SELECT_PARENT = 'SELECT_PARENT';
 }
