@@ -4,7 +4,7 @@ import { PreferencesUtil } from 'core/preferences/preferences.util';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
 import { Widget } from 'editor-view/widget/widget';
-import { PanelSide, PluginConfig } from 'plugin.model';
+import { Side, PluginConfig } from 'plugin.model';
 import './panel.scss';
 import { PanelResizeHandle } from './resize-handle/panel-resize-handle';
 
@@ -12,14 +12,14 @@ export class Panel extends Widget {
 	public static readonly tagName = 'phred-panel';
 
 	private readonly inspectors: Inspector[] = [];
-	private side: PanelSide;
+	private side: Side;
 	private visiblePrefKey: PreferenceKey;
 
 	public set visible(value: boolean) {
 		this.classList.addOrRemove('hidden', !value);
 	}
 
-	public setSide(value: PanelSide) {
+	public setSide(value: Side) {
 		this.side = value;
 		this.classList.add(value);
 	}
@@ -40,7 +40,7 @@ export class Panel extends Widget {
 
 		handle.init(this, this.side);
 		this.appendChild(handle);
-		this.inspectors.forEach(inspector => inspector.init(game));
+		this.inspectors.forEach(inspector => inspector.init(game, this.side));
 		this.style.width = Editor.prefs.get(sizePrefKey) as string;
 
 		PreferencesUtil.setupPreferences([this.visiblePrefKey], this.onPreferencesChanged, this);

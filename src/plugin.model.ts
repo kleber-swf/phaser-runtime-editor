@@ -31,4 +31,4 @@ export interface Rect {
 	height: number;
 }
 
-export type PanelSide = 'left' | 'right';
+export type Side = 'left' | 'right';
