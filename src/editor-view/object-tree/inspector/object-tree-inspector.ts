@@ -1,7 +1,7 @@
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
-import { PluginConfig } from 'plugin.model';
+import { PluginConfig, Side } from 'plugin.model';
 import { ObjectTreeModel, ObjectTreeNodeModel } from '../model/object-tree-model';
 import { SearchField } from '../search-field/search-field';
 import { ObjectTreeNode } from '../tree-node/object-tree-node';
@@ -12,8 +12,8 @@ export class ObjectTreeInspector extends Inspector {
 
 	private readonly model: ObjectTreeModel = new ObjectTreeModel();
 
-	public init(game: Phaser.Game) {
-		super.init(game);
+	public init(game: Phaser.Game, side: Side) {
+		super.init(game, side);
 		this.title = 'Objects';
 
 		const el = this.headerElement.appendChild(document.createElement(SearchField.tagName)) as SearchField;

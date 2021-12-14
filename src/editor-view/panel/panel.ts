@@ -40,7 +40,7 @@ export class Panel extends Widget {
 
 		handle.init(this, this.side);
 		this.appendChild(handle);
-		this.inspectors.forEach(inspector => inspector.init(game));
+		this.inspectors.forEach(inspector => inspector.init(game, this.side));
 		this.style.width = Editor.prefs.get(sizePrefKey) as string;
 
 		PreferencesUtil.setupPreferences([this.visiblePrefKey], this.onPreferencesChanged, this);
