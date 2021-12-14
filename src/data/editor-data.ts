@@ -41,6 +41,8 @@ export class EditorData {
 	private _hasScheduledEvents = false;
 	private _scheduledEvents: { [id: string]: { value: any, from: DataOrigin } } = {};
 
+	public readonly onObjectLocked = new Phaser.Signal();
+
 	public dispatchScheduledEvents() {
 		if (!this._hasScheduledEvents) return;
 		this._hasScheduledEvents = false;
@@ -59,7 +61,14 @@ export class EditorData {
 		});
 
 		actions.setActionCommand(Actions.SELECT_PARENT, () => {
-			if (this.selectedObject) this.selectObject(this.selectedObject.parent, DataOrigin.ACTION);
+			if (this._selectedObject) this.selectObject(this._selectedObject.parent, DataOrigin.ACTION);
 		});
+
+		actions.setActionCommand(Actions.LOCK_SELECTION, () => {
+			if (this._selectedObject) {
+				this._selectedObject.__locked = !this._selectedObject.__locked;
+				this.onObjectLocked.dispatch(this._selectedObject);
+			}
+		}, () => this._selectedObject?.__locked);
 	}
 }

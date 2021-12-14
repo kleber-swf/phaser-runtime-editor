@@ -23,7 +23,9 @@ export class ObjectTreeInspector extends Inspector {
 		el.onClear = this.onFilterClear.bind(this);
 
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
+		Editor.data.onObjectLocked.add(this.onObjectLocked, this);
 
+		this.addAction(Editor.actions.getAction(Actions.LOCK_SELECTION), 'right');
 		this.addAction(Editor.actions.getAction(Actions.SELECT_PARENT), 'right');
 	}
 
@@ -45,12 +47,13 @@ export class ObjectTreeInspector extends Inspector {
 	}
 
 	private createNode(obj: PIXI.DisplayObject, parent: HTMLElement, model: ObjectTreeModel) {
-		if (obj.__skip) return;
+		// if (obj.__locked) return;
 		const m = model.getById(obj.__instanceId);
 		if (!m) throw new Error(`Model not found for ${obj.__instanceId}`);
 
 		const node = parent.appendChild(document.createElement(ObjectTreeNode.tagName)) as ObjectTreeNode;
 		node.classList.add(`level-${m.level}`);
+
 		node.onNodeSelect = this.onNodeSelected.bind(this);
 		node.onCollapseStateChanged = this.onNodeCollapseStateChanged.bind(this);
 		node.setContent(m);
@@ -75,23 +78,11 @@ export class ObjectTreeInspector extends Inspector {
 		}
 	}
 
-	private onNodeSelected(node: ObjectTreeNode) {
-		if (node?.model === this._lastSelectedModel) return;
-		if (this._lastSelectedModel) this._lastSelectedModel.node.clearSelection();
-		this._lastSelectedModel = node.model;
-		Editor.data.selectObject(node.model.obj, DataOrigin.INSPECTOR);
-	}
-
-	private onNodeCollapseStateChanged(node: ObjectTreeNode, collapsed: boolean, all: boolean) {
-		const m = node.model;
-		this.changeCollapseState(m, collapsed, all);
-	}
-
 	private changeCollapseState(model: ObjectTreeNodeModel, collapsed: boolean, all: boolean) {
 		model.collapsed = collapsed;
 		if (!(all && model.obj.children?.length)) return;
 		model.obj.children.forEach(child => {
-			if (child.__skip) return;
+			if (child.__locked) return;
 			const n = this.model.getById(child.__instanceId);
 			if (collapsed) n.node.collapse();
 			else n.node.expand();
@@ -124,6 +115,32 @@ export class ObjectTreeInspector extends Inspector {
 	private filterContent(filter: string) {
 		this.classList.addOrRemove('filtering', !!filter);
 		this.model.filter(filter);
+	}
+
+	private onObjectLocked(object: PIXI.DisplayObject) {
+		if (!object) return;
+		let model: ObjectTreeNodeModel;
+
+		if (this._lastSelectedModel?.obj?.__instanceId === object.__instanceId) {
+			model = this._lastSelectedModel;
+		} else {
+			model = this.model.getById(object.__instanceId);
+		}
+
+		if (!model?.obj) return;
+		model.node.locked = object.__locked;
+	}
+
+	private onNodeSelected(node: ObjectTreeNode) {
+		if (node?.model === this._lastSelectedModel) return;
+		if (this._lastSelectedModel) this._lastSelectedModel.node.clearSelection();
+		this._lastSelectedModel = node.model;
+		Editor.data.selectObject(node.model.obj, DataOrigin.INSPECTOR);
+	}
+
+	private onNodeCollapseStateChanged(node: ObjectTreeNode, collapsed: boolean, all: boolean) {
+		const m = node.model;
+		this.changeCollapseState(m, collapsed, all);
 	}
 
 	private onFilterClear() {

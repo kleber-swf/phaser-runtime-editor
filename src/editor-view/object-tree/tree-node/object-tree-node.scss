@@ -36,6 +36,13 @@ phred-object-tree-node {
 		}
 	}
 
+	&.locked {
+		font-style: italic;
+		.node-head i.fas.fa-lock {
+			display: flex;
+		}
+	}
+
 	.node-head {
 		height: 24px;
 		display: flex;
@@ -47,6 +54,11 @@ phred-object-tree-node {
 			display: flex;
 			align-items: center;
 			justify-content: center;
+
+			&.fa-lock {
+				font-size: 9px;
+				display: none;
+			}
 		}
 
 		.collapse-icon {

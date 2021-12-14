@@ -362,9 +362,16 @@ class EditorClass {
 			},
 
 			{
+				id: Actions.LOCK_SELECTION,
+				tooltip: 'Toggle lock selection',
+				icon: 'fa-lock',
+				category: 'object-tree',
+			},
+			{
 				id: Actions.SELECT_PARENT,
 				tooltip: 'Select parent',
 				icon: 'fa-level-up-alt',
+				toggle: true,
 				category: 'object-tree',
 			}
 		);
