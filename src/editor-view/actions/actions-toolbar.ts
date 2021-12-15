@@ -18,6 +18,7 @@ export class ActionsToolbar extends Widget {
 	private rightPanelToggle: HTMLElement;
 
 	public setupActions(actions: ActionHandler) {
+		this.classList.add('actions-toolbar');
 		this.createButton(actions.getAction(Actions.TOGGLE_ENABLED));
 		this.createSeparator();
 

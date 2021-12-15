@@ -2,9 +2,10 @@ import { Actions } from 'core/actions';
 import { DataOrigin, EditorData } from 'data/editor-data';
 import { InspectorData } from 'data/inspector-data';
 import { PhaserMeta } from 'data/phaser-meta';
-import { PluginConfig, Size } from 'plugin.model';
+import { PluginConfig } from 'plugin.model';
 import { PropertyElementTag } from 'property-element-tag';
 import { ActionHandler } from './action-handler';
+import { ActionsSetup } from './actions-setup';
 import { History } from './history';
 import { Preferences } from './preferences/preferences';
 import { ReferenceImageController } from './reference-image.controller';
@@ -359,85 +360,35 @@ class EditorClass {
 				tooltip: 'Help',
 				icon: 'fa-question',
 				category: 'general',
+			},
+
+			{
+				id: Actions.LOCK_SELECTION,
+				tooltip: 'Lock/unlock selection',
+				toggle: true,
+				icon: 'fa-lock',
+				category: 'object-tree',
+			},
+			{
+				id: Actions.SELECT_PARENT,
+				tooltip: 'Select parent',
+				icon: 'fa-level-up-alt',
+				toggle: true,
+				category: 'object-tree',
 			}
 		);
 
 		return actions;
 	}
 
-	private setupPreferencesActions(actions: ActionHandler) {
-		const prefs = this.prefs;
-
-		actions.setActionCommand(
-			Actions.TOGGLE_SNAP,
-			() => prefs.toggle('snap'),
-			() => prefs.get('snap') as boolean
-		);
-
-		actions.setActionCommand(
-			Actions.TOGGLE_GIZMOS,
-			() => prefs.toggle('gizmos'),
-			() => prefs.get('gizmos') as boolean
-		);
-
-		actions.setActionCommand(
-			Actions.TOGGLE_GUIDES,
-			() => prefs.toggle('guides'),
-			() => prefs.get('guides') as boolean
-		);
-
-		actions.setActionCommand(
-			Actions.TOGGLE_HIT_AREA,
-			() => prefs.toggle('hitArea'),
-			() => prefs.get('hitArea') as boolean
-		);
-
-		actions.setActionCommand(
-			Actions.TOGGLE_RESPONSIVE,
-			() => prefs.toggle('responsive'),
-			() => prefs.get('responsive') as boolean
-		);
-
-		actions.setActionCommand(Actions.TOGGLE_ORIENTATION, () => {
-			const size = prefs.get('responsiveSize') as Size;
-			prefs.set('responsiveSize', { width: size.height, height: size.width });
-		});
-
-		actions.setActionCommand(
-			Actions.TOGGLE_HIT_AREAS_SNAPSHOT,
-			() => prefs.toggle('hitAreasSnapshot'),
-			() => prefs.get('hitAreasSnapshot') as boolean
-		);
-
-		actions.setActionCommand(
-			Actions.TOGGLE_REF_IMAGE,
-			() => prefs.toggle('referenceImageVisible'),
-			() => prefs.get('referenceImageVisible') as boolean
-		);
-
-		actions.setActionCommand(
-			Actions.TOGGLE_LEFT_PANEL,
-			() => prefs.toggle('leftPanelVisible'),
-			() => prefs.get('leftPanelVisible') as boolean
-		);
-
-		actions.setActionCommand(
-			Actions.TOGGLE_RIGHT_PANEL,
-			() => prefs.toggle('rightPanelVisible'),
-			() => prefs.get('rightPanelVisible') as boolean
-		);
-	}
-
-	public setupInitialActions() {
-		const actions = this.actions;
-		this.setupPreferencesActions(actions);
-		this.history.setupActions(actions);
-		this.data.setupActions(actions);
+	public setupInitialActions(root: Container) {
+		new ActionsSetup().setup(this.actions, this.data, this.history, this.prefs, root);
 	}
 
 	public enable(config: PluginConfig) {
 		this.actions.enable();
 		this.referenceImageController.enable(config);
+		this.data.enable(config.root, config.saveLockedObjectsPath, this.prefs);
 	}
 
 	public disable() {

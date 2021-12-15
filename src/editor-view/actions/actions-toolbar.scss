@@ -10,6 +10,13 @@ phred-actions-toolbar {
 	justify-content: stretch;
 	position: relative;
 
+	phred-action-button {
+		width: 36px;
+		min-width: 36px;
+		max-width: 36px;
+		margin: 0 2px;
+	}
+
 	.separator {
 		display: inline-block;
 		border-left: 1px solid rgba(darken($on-background, 40%), 0.3);

@@ -6,6 +6,7 @@ export interface PersistentData {
 	gizmos: boolean;
 	guides: boolean;
 	hitArea: boolean;
+	lockedObjects: string[]
 
 	leftPanelVisible: boolean;
 	leftPanelSize: string;

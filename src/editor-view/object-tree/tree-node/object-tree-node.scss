@@ -6,6 +6,7 @@ phred-object-tree-node {
 	flex: 1;
 	min-width: 100%;
 	user-select: none;
+	font-size: 14px;
 
 	&.selected {
 		& > .node-head {
@@ -35,8 +36,19 @@ phred-object-tree-node {
 		}
 	}
 
+	&.locked {
+		font-style: italic;
+		.node-head .fas.fa-lock {
+			display: flex;
+			opacity: 0.4;
+		}
+		& > .node-head i.fas.fa-lock {
+			opacity: 1;
+		}
+	}
+
 	.node-head {
-		height: 26px;
+		height: 24px;
 		display: flex;
 		align-items: center;
 		justify-content: stretch;
@@ -46,12 +58,17 @@ phred-object-tree-node {
 			display: flex;
 			align-items: center;
 			justify-content: center;
+
+			&.fa-lock {
+				font-size: 9px;
+				display: none;
+			}
 		}
 
 		.collapse-icon {
-			width: 26px;
-			height: 26px;
+			height: 20px;
 			margin-right: 2px;
+			margin: 0 4px;
 			transition: transform 0.2s;
 		}
 
@@ -59,7 +76,7 @@ phred-object-tree-node {
 			display: inline-block;
 			width: 16px;
 			height: 16px;
-			margin: 0 6px 0 0;
+			margin: 0 4px 0 0;
 		}
 
 		.node-name {

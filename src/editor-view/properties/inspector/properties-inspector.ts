@@ -2,6 +2,7 @@ import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { InspectorPropertyModel } from 'data/inspector-data';
 import { Inspector } from 'editor-view/inspector/inspector';
+import { Side } from 'plugin.model';
 import { PropertyEditor } from '../editors/property-editor';
 
 export class PropertiesInspector extends Inspector {
@@ -9,8 +10,8 @@ export class PropertiesInspector extends Inspector {
 
 	private editors: Record<string, PropertyEditor<any>> = {};
 
-	public init(game: Phaser.Game) {
-		super.init(game);
+	public init(game: Phaser.Game, side: Side) {
+		super.init(game, side);
 		this.title = 'Properties';
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 	}

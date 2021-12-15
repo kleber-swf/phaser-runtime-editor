@@ -1,7 +1,9 @@
+import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
-import { PluginConfig } from 'plugin.model';
+import { PluginConfig, Side } from 'plugin.model';
+import { LockObjectActionButton } from '../lock-object/lock-object.action-button';
 import { ObjectTreeModel, ObjectTreeNodeModel } from '../model/object-tree-model';
 import { SearchField } from '../search-field/search-field';
 import { ObjectTreeNode } from '../tree-node/object-tree-node';
@@ -12,8 +14,8 @@ export class ObjectTreeInspector extends Inspector {
 
 	private readonly model: ObjectTreeModel = new ObjectTreeModel();
 
-	public init(game: Phaser.Game) {
-		super.init(game);
+	public init(game: Phaser.Game, side: Side) {
+		super.init(game, side);
 		this.title = 'Objects';
 
 		const el = this.headerElement.appendChild(document.createElement(SearchField.tagName)) as SearchField;
@@ -22,6 +24,10 @@ export class ObjectTreeInspector extends Inspector {
 		el.onClear = this.onFilterClear.bind(this);
 
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
+		Editor.data.onObjectLocked.add(this.onObjectLocked, this);
+
+		this.addAction(Editor.actions.getAction(Actions.LOCK_SELECTION), 'right', LockObjectActionButton.tagName);
+		this.addAction(Editor.actions.getAction(Actions.SELECT_PARENT), 'right');
 	}
 
 	public enable(config: PluginConfig) { this.setRoot(config.root); }
@@ -42,12 +48,13 @@ export class ObjectTreeInspector extends Inspector {
 	}
 
 	private createNode(obj: PIXI.DisplayObject, parent: HTMLElement, model: ObjectTreeModel) {
-		if (obj.__skip) return;
+		// if (obj.__locked) return;
 		const m = model.getById(obj.__instanceId);
 		if (!m) throw new Error(`Model not found for ${obj.__instanceId}`);
 
 		const node = parent.appendChild(document.createElement(ObjectTreeNode.tagName)) as ObjectTreeNode;
 		node.classList.add(`level-${m.level}`);
+
 		node.onNodeSelect = this.onNodeSelected.bind(this);
 		node.onCollapseStateChanged = this.onNodeCollapseStateChanged.bind(this);
 		node.setContent(m);
@@ -72,23 +79,11 @@ export class ObjectTreeInspector extends Inspector {
 		}
 	}
 
-	private onNodeSelected(node: ObjectTreeNode) {
-		if (node?.model === this._lastSelectedModel) return;
-		if (this._lastSelectedModel) this._lastSelectedModel.node.clearSelection();
-		this._lastSelectedModel = node.model;
-		Editor.data.selectObject(node.model.obj, DataOrigin.INSPECTOR);
-	}
-
-	private onNodeCollapseStateChanged(node: ObjectTreeNode, collapsed: boolean, all: boolean) {
-		const m = node.model;
-		this.changeCollapseState(m, collapsed, all);
-	}
-
 	private changeCollapseState(model: ObjectTreeNodeModel, collapsed: boolean, all: boolean) {
 		model.collapsed = collapsed;
 		if (!(all && model.obj.children?.length)) return;
 		model.obj.children.forEach(child => {
-			if (child.__skip) return;
+			if (child.__locked) return;
 			const n = this.model.getById(child.__instanceId);
 			if (collapsed) n.node.collapse();
 			else n.node.expand();
@@ -121,6 +116,32 @@ export class ObjectTreeInspector extends Inspector {
 	private filterContent(filter: string) {
 		this.classList.addOrRemove('filtering', !!filter);
 		this.model.filter(filter);
+	}
+
+	private onObjectLocked(object: PIXI.DisplayObject) {
+		if (!object) return;
+		let model: ObjectTreeNodeModel;
+
+		if (this._lastSelectedModel?.obj?.__instanceId === object.__instanceId) {
+			model = this._lastSelectedModel;
+		} else {
+			model = this.model.getById(object.__instanceId);
+		}
+
+		if (!model?.obj) return;
+		model.node.locked = object.__locked;
+	}
+
+	private onNodeSelected(node: ObjectTreeNode) {
+		if (node?.model === this._lastSelectedModel) return;
+		if (this._lastSelectedModel) this._lastSelectedModel.node.clearSelection();
+		this._lastSelectedModel = node.model;
+		Editor.data.selectObject(node.model.obj, DataOrigin.INSPECTOR);
+	}
+
+	private onNodeCollapseStateChanged(node: ObjectTreeNode, collapsed: boolean, all: boolean) {
+		const m = node.model;
+		this.changeCollapseState(m, collapsed, all);
 	}
 
 	private onFilterClear() {

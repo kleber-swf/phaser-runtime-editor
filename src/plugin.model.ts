@@ -1,17 +1,19 @@
 export interface PluginConfigBuilder {
-	root?: () => Container;
-	referenceImageUrl?: (width: number, height: number, responsive: boolean) => string;
 	pauseGame?: boolean;
 	clearPreferences?: boolean;
+	saveLockedObjectsPath?: boolean;
+	root?: () => Container;
+	referenceImageUrl?: (width: number, height: number, responsive: boolean) => string;
 	onShow?: () => void;
 	onHide?: () => void;
 }
 
 export interface PluginConfig {
-	root: Container;
-	referenceImageUrl: (width: number, height: number, responsive: boolean) => string;
 	pauseGame: boolean;
 	clearPreferences: boolean;
+	saveLockedObjectsPath: boolean;
+	root: Container;
+	referenceImageUrl: (width: number, height: number, responsive: boolean) => string;
 }
 
 export interface Point {
@@ -31,4 +33,4 @@ export interface Rect {
 	height: number;
 }
 
-export type PanelSide = 'left' | 'right';
+export type Side = 'left' | 'right';

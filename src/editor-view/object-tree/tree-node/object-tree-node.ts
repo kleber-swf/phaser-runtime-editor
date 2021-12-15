@@ -14,6 +14,10 @@ export class ObjectTreeNode extends HTMLElement {
 	public onNodeSelect: (node: ObjectTreeNode) => void;
 	public onCollapseStateChanged: (node: ObjectTreeNode, collapsed: boolean, all: boolean) => void;
 
+	public set locked(value: boolean) {
+		this.classList.addOrRemove('locked', value);
+	}
+
 	public updateTitle(type: PhaserObjectType, value: string) {
 		this.label.textContent = value?.length > 0 ? value : type.name;
 	}
@@ -42,6 +46,10 @@ export class ObjectTreeNode extends HTMLElement {
 
 		this.label = head.appendChild(document.createElement('div'));
 		this.label.classList.add('node-name');
+		this.locked = model.obj.__locked;
+
+		// head.appendChild(document.createElement('div')).classList.add('spacer');
+		head.appendChild(document.createElement('i')).classList.add('fas', 'fa-lock');
 
 		this.updateTitle(model.type, model.obj.name);
 		this.updateObjectVisibility(model.obj.visible);
