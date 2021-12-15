@@ -28,4 +28,5 @@ export class Actions {
 	public static readonly HELP = 'HELP';
 	public static readonly SELECT_PARENT = 'SELECT_PARENT';
 	public static readonly LOCK_SELECTION = 'LOCK_SELECTION';
+	public static readonly REFRESH_OBJECT_TREE = 'REFRESH_OBJECT_TREE';
 }
