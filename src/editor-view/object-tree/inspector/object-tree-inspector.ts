@@ -12,6 +12,7 @@ import './object-tree-inspector.scss';
 export class ObjectTreeInspector extends Inspector {
 	public static readonly tagName = 'phred-object-tree-inspector';
 
+	private root: Container;
 	private readonly model: ObjectTreeModel = new ObjectTreeModel();
 
 	public init(game: Phaser.Game, side: Side) {
@@ -26,25 +27,34 @@ export class ObjectTreeInspector extends Inspector {
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 		Editor.data.onObjectLocked.add(this.onObjectLocked, this);
 
+		this.addAction(Editor.actions.getAction(Actions.REFRESH_OBJECT_TREE), 'right');
 		this.addAction(Editor.actions.getAction(Actions.LOCK_SELECTION), 'right', LockObjectActionButton.tagName);
 		this.addAction(Editor.actions.getAction(Actions.SELECT_PARENT), 'right');
+
+		Editor.actions.setActionCommand(
+			Actions.REFRESH_OBJECT_TREE,
+			() => this.setRoot(this.root)
+		);
 	}
 
 	public enable(config: PluginConfig) { this.setRoot(config.root); }
+	public disable() { this.clear(); }
 
-	public disable() {
+	private setRoot(root: PIXI.DisplayObjectContainer | Phaser.Stage) {
+		this.root = root;
+		this.clear();
+		this.model.create(root);
+		for (let i = 0, n = root.children.length; i < n; i++) {
+			this.createNode(root.children[i], this.contentElement, this.model);
+		}
+	}
+
+	private clear() {
 		this.model.empty();
 
 		const emptyContent = this.contentElement.cloneNode(false);
 		this.replaceChild(emptyContent, this.contentElement);
 		this.contentElement = emptyContent as HTMLElement;
-	}
-
-	private setRoot(root: PIXI.DisplayObjectContainer | Phaser.Stage) {
-		this.model.create(root);
-		for (let i = 0, n = root.children.length; i < n; i++) {
-			this.createNode(root.children[i], this.contentElement, this.model);
-		}
 	}
 
 	private createNode(obj: PIXI.DisplayObject, parent: HTMLElement, model: ObjectTreeModel) {

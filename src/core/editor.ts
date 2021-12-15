@@ -375,6 +375,12 @@ class EditorClass {
 				icon: 'fa-level-up-alt',
 				toggle: true,
 				category: 'object-tree',
+			},
+			{
+				id: Actions.REFRESH_OBJECT_TREE,
+				tooltip: 'Refresh',
+				icon: 'fa-sync-alt',
+				category: 'object-tree',
 			}
 		);
 
