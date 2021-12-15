@@ -3,6 +3,7 @@ import { Editor } from 'core/editor';
 import { DataOrigin } from 'data/editor-data';
 import { Inspector } from 'editor-view/inspector/inspector';
 import { PluginConfig, Side } from 'plugin.model';
+import { LockObjectActionButton } from '../lock-object/lock-object.action-button';
 import { ObjectTreeModel, ObjectTreeNodeModel } from '../model/object-tree-model';
 import { SearchField } from '../search-field/search-field';
 import { ObjectTreeNode } from '../tree-node/object-tree-node';
@@ -25,7 +26,7 @@ export class ObjectTreeInspector extends Inspector {
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 		Editor.data.onObjectLocked.add(this.onObjectLocked, this);
 
-		this.addAction(Editor.actions.getAction(Actions.LOCK_SELECTION), 'right');
+		this.addAction(Editor.actions.getAction(Actions.LOCK_SELECTION), 'right', LockObjectActionButton.tagName);
 		this.addAction(Editor.actions.getAction(Actions.SELECT_PARENT), 'right');
 	}
 

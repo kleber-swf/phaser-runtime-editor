@@ -35,12 +35,13 @@
 			text-transform: uppercase;
 		}
 
-		.actions {
+		&.actions-toolbar .actions {
 			display: flex;
 			align-items: stretch;
 			justify-content: stretch;
 
-			phred-action-button {
+			phred-action-button,
+			phred-lock-object-action-button {
 				width: 20px;
 				height: 20px;
 				i {

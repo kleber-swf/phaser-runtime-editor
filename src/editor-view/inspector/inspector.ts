@@ -43,14 +43,14 @@ export abstract class Inspector extends Widget {
 
 	public disable() { }
 
-	public addAction(action: Action, side: Side) {
+	public addAction(action: Action, side: Side, buttonTagName = ActionButton.tagName) {
 		const container = side === 'left' ? this.leftActionsContainer : this.rightActionsContainer;
-		const button = this.createButton(action);
+		const button = this.createButton(action, buttonTagName);
 		container.appendChild(button);
 	}
 
-	private createButton(action: Action) {
-		const btn = document.createElement(ActionButton.tagName) as ActionButton;
+	private createButton(action: Action, buttonTagName: string) {
+		const btn = document.createElement(buttonTagName) as ActionButton;
 		btn.setAction(action);
 		return btn;
 	}
