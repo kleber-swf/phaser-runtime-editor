@@ -34,6 +34,7 @@ function preload() {
 
 function create() {
 	const plugin = game.plugins.add(new Phaser.Plugin.RuntimeEditor(game, {
+		saveLockedObjectsPath: true,
 		referenceImageUrl(width, height, _responsive) {
 			return width > height
 				? './refs/ref_landscape.jpg'

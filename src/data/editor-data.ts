@@ -1,6 +1,3 @@
-import { ActionHandler } from 'core/action-handler';
-import { Actions } from 'core/actions';
-
 export enum DataOrigin {
 	ACTION = 0,
 	SCENE = 1,
@@ -52,23 +49,5 @@ export class EditorData {
 			const e = events[k];
 			this.onPropertyChanged.dispatch(e.from, k, e.value, this._selectedObject);
 		});
-	}
-
-	public setupActions(actions: ActionHandler) {
-		actions.setActionCommand(Actions.CLEAR_SELECTION, () => this.selectObject(null, DataOrigin.ACTION));
-		actions.setActionCommand(Actions.PRINT_OBJECT, () => {
-			if (this._selectedObject) console.info(this._selectedObject);
-		});
-
-		actions.setActionCommand(Actions.SELECT_PARENT, () => {
-			if (this._selectedObject) this.selectObject(this._selectedObject.parent, DataOrigin.ACTION);
-		});
-
-		actions.setActionCommand(Actions.LOCK_SELECTION, () => {
-			if (this._selectedObject) {
-				this._selectedObject.__locked = !this._selectedObject.__locked;
-				this.onObjectLocked.dispatch(this._selectedObject);
-			}
-		}, () => this._selectedObject?.__locked);
 	}
 }
