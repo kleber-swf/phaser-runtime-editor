@@ -132,10 +132,6 @@ function create() {
 	sprite.pivot.set(0, 20);
 
 	plugin.show();
-
-	setTimeout(() => {
-		sprite.parent.removeChild(sprite);
-	}, 2000);
 }
 
 function el(x, y, w, h, parent, name) {
