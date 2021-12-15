@@ -22,13 +22,13 @@ export class BaseActionButton extends HTMLElement implements ActionView {
 			text.classList.add('label');
 			text.textContent = action.tooltip;
 		}
+
 		if (!action.toggle) {
 			this.onclick = () => action.command();
-			return;
+		} else {
+			this.addEventListener('click', this.toggleSelected.bind(this));
+			this.updateState();
 		}
-
-		this.onclick = this.toggleSelected.bind(this);
-		this.updateState();
 	}
 
 	protected createTooltip(action: Action) {

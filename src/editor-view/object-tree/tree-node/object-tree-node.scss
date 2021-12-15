@@ -38,8 +38,12 @@ phred-object-tree-node {
 
 	&.locked {
 		font-style: italic;
-		.node-head i.fas.fa-lock {
+		.node-head .fas.fa-lock {
 			display: flex;
+			opacity: 0.4;
+		}
+		& > .node-head i.fas.fa-lock {
+			opacity: 1;
 		}
 	}
 
