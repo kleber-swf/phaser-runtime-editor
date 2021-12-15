@@ -8,6 +8,8 @@ export enum DataOrigin {
 
 export class EditorData {
 	public root: Container;
+	private saveLockedObjects = false;
+
 	private _selectedObject: PIXI.DisplayObject;
 
 	public get selectedObject() { return this._selectedObject; }
@@ -54,9 +56,14 @@ export class EditorData {
 		});
 	}
 
-	public enable(root: Container, prefs: Preferences) {
+	public enable(root: Container, saveLockedObjects: boolean, prefs: Preferences) {
 		this.root = root;
+		this.saveLockedObjects = saveLockedObjects;
+
+		if (!this.saveLockedObjects) return;
+
 		const lockedObjects = prefs.get('lockedObjects') as string[];
+
 		for (let i = lockedObjects.length - 1; i >= 0; i--) {
 			let o: PIXI.DisplayObject = root;
 			const path = lockedObjects[i].split(',').map(e => parseInt(e, 10));
@@ -74,12 +81,17 @@ export class EditorData {
 			if (o) o.__locked = true;
 			else lockedObjects.splice(i, 1);
 		}
+
+		prefs.set('lockedObjects', lockedObjects);
 	}
 
 	public toggleLockSelection(root: Container, prefs: Preferences) {
 		if (!this._selectedObject) return;
 		const obj = this._selectedObject;
 		obj.__locked = !obj.__locked;
+		this.onObjectLocked.dispatch(obj);
+
+		if (!this.saveLockedObjects) return;
 
 		const path: number[] = [];
 		let o = obj;
@@ -97,7 +109,5 @@ export class EditorData {
 		} else if (i >= 0) locked.splice(i, 1);
 
 		prefs.set('lockedObjects', locked);
-
-		this.onObjectLocked.dispatch(obj);
 	}
 }

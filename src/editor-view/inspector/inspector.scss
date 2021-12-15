@@ -4,7 +4,7 @@
 	font-size: 12px;
 	font-weight: bold;
 	color: $unfocused-text-color;
-	padding: 6px 8px;
+	padding: 6px 4px;
 	margin: 0 0 8px 0;
 	height: 20px;
 	text-transform: uppercase;
@@ -33,6 +33,7 @@
 
 		.title {
 			text-transform: uppercase;
+			margin: 0 4px;
 		}
 
 		&.actions-toolbar .actions {

@@ -388,7 +388,7 @@ class EditorClass {
 	public enable(config: PluginConfig) {
 		this.actions.enable();
 		this.referenceImageController.enable(config);
-		this.data.enable(config.root, this.prefs);
+		this.data.enable(config.root, config.saveLockedObjectsPath, this.prefs);
 	}
 
 	public disable() {
