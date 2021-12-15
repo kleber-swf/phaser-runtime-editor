@@ -41,7 +41,7 @@ export class EditorStateHandler {
 	}
 
 	private setupInitialActions() {
-		Editor.setupInitialActions();
+		Editor.setupInitialActions(this.config.root);
 
 		const actions = Editor.actions;
 		actions.setActionCommand(
@@ -61,8 +61,8 @@ export class EditorStateHandler {
 		this.disabledUI.disable();
 		if (!this._initialized) this.init(this.config);
 
-		this.editorView.enable(this.config);
 		Editor.enable(this.config);
+		this.editorView.enable(this.config);
 		if (this.onshow) this.onshow();
 	}
 
@@ -70,6 +70,7 @@ export class EditorStateHandler {
 		return {
 			clearPreferences: builder.clearPreferences,
 			pauseGame: builder.pauseGame,
+			saveLockedObjectsPath: builder.saveLockedObjectsPath ?? false,
 			referenceImageUrl: builder.referenceImageUrl,
 			root: builder.root(),
 		};

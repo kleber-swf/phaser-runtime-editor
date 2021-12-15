@@ -1,2 +1,7 @@
 .vscode
+.github
 example
+.editorconfig
+.eslintcache
+.eslintrc.js
+.prettierrc

@@ -30,7 +30,7 @@ export class SelectionHandler {
 	private getObjectsUnderPoint(x: number, y: number, children: PIXI.DisplayObject[], objects: PIXI.DisplayObject[]) {
 		for (let i = children.length - 1; i >= 0; i--) {
 			const child = children[i];
-			if (!child.visible || child.__skip || !('getBounds' in child)) continue;
+			if (!child.visible || child.__locked || !('getBounds' in child)) continue;
 			const bounds: PIXI.Rectangle = child.getBounds();
 			if (!child.__isLeaf) this.getObjectsUnderPoint(x, y, child.children, objects);
 			if (bounds.contains(x, y)) objects.push(child);

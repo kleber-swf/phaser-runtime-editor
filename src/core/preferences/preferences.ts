@@ -11,6 +11,8 @@ export class Preferences {
 		gizmos: true,
 		guides: false,
 		hitArea: false,
+		lockedObjects: [],
+
 		responsive: false,
 		responsiveSize: Preferences.DefaultResponsiveSize,
 		responsiveTemplateIndex: 0,

@@ -1,13 +1,9 @@
 @import 'colors';
 
-phred-actions-toolbar .button {
+.actions-toolbar .button {
 	box-shadow: none;
 	position: relative;
 	padding: 0;
-	width: 36px;
-	min-width: 36px;
-	max-width: 36px;
-	margin: 0 2px;
 
 	&:hover {
 		background-color: $primary-color;

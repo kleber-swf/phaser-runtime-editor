@@ -34,6 +34,7 @@ function preload() {
 
 function create() {
 	const plugin = game.plugins.add(new Phaser.Plugin.RuntimeEditor(game, {
+		saveLockedObjectsPath: true,
 		referenceImageUrl(width, height, _responsive) {
 			return width > height
 				? './refs/ref_landscape.jpg'
@@ -50,7 +51,7 @@ function create() {
 	for (let i = 0; i < game.width; i += 100) grid.moveTo(i, 0).lineTo(i, game.height);
 	for (let i = 0; i < game.height; i += 100) grid.moveTo(0, i).lineTo(game.width, i);
 
-	grid.__skip = true;
+	grid.__locked = true;
 	game.world.add(grid);
 
 	const SIZE = 200;

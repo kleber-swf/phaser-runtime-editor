@@ -1,6 +1,4 @@
 import { DataOrigin, EditorData } from '../data/editor-data';
-import { ActionHandler } from './action-handler';
-import { Actions } from './actions';
 
 export interface HistoryEntry {
 	obj: PIXI.DisplayObject;
@@ -17,10 +15,6 @@ export class History {
 	public readonly onHistoryWalk = new Phaser.Signal();
 
 	constructor(private readonly data: EditorData) { }
-
-	public setupActions(actions: ActionHandler) {
-		actions.setActionCommand(Actions.UNDO, this.undo.bind(this));
-	}
 
 	public prepare(obj: PIXI.DisplayObject, properties: { [id: string]: any }) {
 		const entry = this.holdingEntry = { obj, properties };

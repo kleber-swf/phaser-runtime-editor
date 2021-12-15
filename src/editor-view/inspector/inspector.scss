@@ -4,7 +4,7 @@
 	font-size: 12px;
 	font-weight: bold;
 	color: $unfocused-text-color;
-	padding: 6px 8px;
+	padding: 6px 4px;
 	margin: 0 0 8px 0;
 	height: 20px;
 	text-transform: uppercase;
@@ -25,6 +25,31 @@
 	h1 {
 		@include inspector-title;
 		background-color: rgba(black, 0.2);
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+		text-transform: none;
+
+		.title {
+			text-transform: uppercase;
+			margin: 0 4px;
+		}
+
+		&.actions-toolbar .actions {
+			display: flex;
+			align-items: stretch;
+			justify-content: stretch;
+
+			phred-action-button,
+			phred-lock-object-action-button {
+				width: 20px;
+				height: 20px;
+				i {
+					font-size: 10px;
+				}
+			}
+		}
 	}
 
 	h2 {
@@ -44,5 +69,9 @@
 		color: $unfocused-text-color;
 		padding: 0;
 		overflow: auto;
+	}
+
+	.spacer {
+		flex: 1;
 	}
 }

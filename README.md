@@ -119,6 +119,10 @@ The config object can have the following properties (all of them optional):
 -   It can expand and collapse its nodes (use alt + click to expand/collapse all of its children)
 -   It has an icon for each type of object to make it easy to identify them
 -   Dims invisible objects
+-   Actions:
+    1. Lock/unlock selected object
+    2. Select the selected object's parent
+    3. Filter
 
 ### Properties Panel
 
