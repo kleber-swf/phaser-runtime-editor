@@ -364,7 +364,7 @@ class EditorClass {
 
 			{
 				id: Actions.LOCK_SELECTION,
-				tooltip: 'Toggle lock selection',
+				tooltip: 'Lock/unlock selection',
 				toggle: true,
 				icon: 'fa-lock',
 				category: 'object-tree',
