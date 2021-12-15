@@ -1,3 +1,5 @@
+import { Preferences } from 'core/preferences/preferences';
+
 export enum DataOrigin {
 	ACTION = 0,
 	SCENE = 1,
@@ -5,6 +7,7 @@ export enum DataOrigin {
 }
 
 export class EditorData {
+	public root: Container;
 	private _selectedObject: PIXI.DisplayObject;
 
 	public get selectedObject() { return this._selectedObject; }
@@ -49,5 +52,52 @@ export class EditorData {
 			const e = events[k];
 			this.onPropertyChanged.dispatch(e.from, k, e.value, this._selectedObject);
 		});
+	}
+
+	public enable(root: Container, prefs: Preferences) {
+		this.root = root;
+		const lockedObjects = prefs.get('lockedObjects') as string[];
+		for (let i = lockedObjects.length - 1; i >= 0; i--) {
+			let o: PIXI.DisplayObject = root;
+			const path = lockedObjects[i].split(',').map(e => parseInt(e, 10));
+
+			for (let p = 0; p < path.length; p++) {
+				const index = path[p];
+				if (index >= 0 && index < o.children.length) {
+					o = o.children[index];
+					continue;
+				}
+				o = null;
+				break;
+			}
+
+			if (o) o.__locked = true;
+			else lockedObjects.splice(i, 1);
+		}
+	}
+
+	public toggleLockSelection(root: Container, prefs: Preferences) {
+		if (!this._selectedObject) return;
+		const obj = this._selectedObject;
+		obj.__locked = !obj.__locked;
+
+		const path: number[] = [];
+		let o = obj;
+		while (o.parent && o !== root) {
+			path.unshift(o.parent.getChildIndex(o));
+			o = o.parent;
+		}
+
+		const pathId = path.join(',');
+		const locked = prefs.get('lockedObjects') as string[];
+		const i = locked.indexOf(pathId);
+
+		if (obj.__locked) {
+			if (i < 0) locked.push(pathId);
+		} else if (i >= 0) locked.splice(i, 1);
+
+		prefs.set('lockedObjects', locked);
+
+		this.onObjectLocked.dispatch(obj);
 	}
 }

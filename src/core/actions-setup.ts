@@ -6,8 +6,8 @@ import { History } from './history';
 import { Preferences } from './preferences/preferences';
 
 export class ActionsSetup {
-	public setup(actions: ActionHandler, data: EditorData, history: History, prefs: Preferences) {
-		this.setupDataActions(data, actions, prefs);
+	public setup(actions: ActionHandler, data: EditorData, history: History, prefs: Preferences, root: Container) {
+		this.setupDataActions(data, actions, root, prefs);
 		this.setuphistoryActions(history, actions);
 		this.setupPreferencesActions(prefs, actions);
 	}
@@ -77,7 +77,7 @@ export class ActionsSetup {
 		);
 	}
 
-	public setupDataActions(data: EditorData, actions: ActionHandler, prefs: Preferences) {
+	public setupDataActions(data: EditorData, actions: ActionHandler, root: Container, prefs: Preferences) {
 		actions.setActionCommand(Actions.CLEAR_SELECTION, () => data.selectObject(null, DataOrigin.ACTION));
 		actions.setActionCommand(Actions.PRINT_OBJECT, () => {
 			if (data.selectedObject) console.info(data.selectedObject);
@@ -89,33 +89,8 @@ export class ActionsSetup {
 
 		actions.setActionCommand(
 			Actions.LOCK_SELECTION,
-			() => this.toggleLockSelection(data, prefs),
+			() => data.toggleLockSelection(root, prefs),
 			() => data.selectedObject?.__locked
 		);
-	}
-
-	private toggleLockSelection(data: EditorData, prefs: Preferences) {
-		if (!data.selectedObject) return;
-		const obj = data.selectedObject;
-		obj.__locked = !obj.__locked;
-
-		const path: number[] = [];
-		let o = obj;
-		while (o.parent) {
-			path.unshift(o.parent.getChildIndex(o));
-			o = o.parent;
-		}
-
-		const pathId = path.join(',');
-		const locked = prefs.get('lockedObjects') as string[];
-		const i = locked.indexOf(pathId);
-
-		if (obj.__locked) {
-			if (i < 0) locked.push(pathId);
-		} else if (i >= 0) locked.splice(i, 1);
-
-		prefs.set('lockedObjects', locked);
-
-		data.onObjectLocked.dispatch(obj);
 	}
 }

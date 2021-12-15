@@ -381,13 +381,14 @@ class EditorClass {
 		return actions;
 	}
 
-	public setupInitialActions() {
-		new ActionsSetup().setup(this.actions, this.data, this.history, this.prefs);
+	public setupInitialActions(root: Container) {
+		new ActionsSetup().setup(this.actions, this.data, this.history, this.prefs, root);
 	}
 
 	public enable(config: PluginConfig) {
 		this.actions.enable();
 		this.referenceImageController.enable(config);
+		this.data.enable(config.root, this.prefs);
 	}
 
 	public disable() {
