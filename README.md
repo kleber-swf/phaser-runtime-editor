@@ -162,6 +162,11 @@ To help you with this pipeline, the Editor has a reference image parameter (`ref
 
 When you set this parameter to a valid image url, the reference image options panel is available in the Editor. These options are to adjust the image filters and opacity to make it easy to distinguish it from the real game.
 
+### Selection
+Every time you select an object inside the Editor a global variable is set with it: `selection`. This variable is accessible in the browser's console by typing its name inside it. This way you can not just print its content but also get/set fields values and call methods on it.
+
+![Selection Example](./docs/selection.webp?raw=true 'Selection Example')
+
 ### Actions
 
 ![Actions Toolbar](./docs/actions-toolbar.webp?raw=true 'Actions Toolbar')
