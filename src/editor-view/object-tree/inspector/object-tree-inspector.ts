@@ -33,7 +33,10 @@ export class ObjectTreeInspector extends Inspector {
 
 		Editor.actions.setActionCommand(
 			Actions.REFRESH_OBJECT_TREE,
-			() => this.setRoot(this.root)
+			() => {
+				Editor.data.selectObject(null, DataOrigin.ACTION);
+				this.setRoot(this.root);
+			}
 		);
 	}
 
