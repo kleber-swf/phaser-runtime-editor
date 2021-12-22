@@ -70,7 +70,7 @@ export class EditorStateHandler {
 		return {
 			clearPreferences: builder.clearPreferences,
 			pauseGame: builder.pauseGame,
-			saveLockedObjectsPath: builder.saveLockedObjectsPath ?? false,
+			saveLockedObjectsPath: builder.saveLockedObjectsPath ?? true,
 			referenceImageUrl: builder.referenceImageUrl,
 			root: builder.root(),
 		};

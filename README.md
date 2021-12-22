@@ -51,6 +51,7 @@ const config = {
     onHide() => console.log('reuntime editor closed'),
     pauseGame: true,
     clearPreferences: false,
+    saveLockedObjectsPath: true,
 };
 
 game.plugins.add(new Phaser.Plugin.RuntimeEditor(game, config));
@@ -106,6 +107,10 @@ The config object can have the following properties (all of them optional):
 
     Default: `false`.
 
+-   `saveLockedObjectsPath: boolean`
+
+    Whether the locked objects should be saved between runs. Check [Object Tree](#object-tree) for more info on locking objects.
+
 > Notice that there is an [example project] inside the Editor's project where you can see it in use.
 
 ## Features
@@ -120,9 +125,14 @@ The config object can have the following properties (all of them optional):
 -   It has an icon for each type of object to make it easy to identify them
 -   Dims invisible objects
 -   Actions:
-    1. Lock/unlock selected object
-    2. Select the selected object's parent
-    3. Filter
+
+    1. **Refresh**. Refreshes the Object Tree objects. The tree is refreshed every time the Editor opens so this is useful only when the hierarchy changes while the Editor is open.
+
+    2. **Lock/unlock selected object**. Locked objects can't be selected inside the [Scene View](#scene-view). They still can be selected inside the Object Tree. By default, locked objects are saved between runs. If you don't want this, set the `saveLockedObjectsPath` to `false` when instantiating the Plugin.
+
+    3. **Select the selected object's parent**. This is useful for when you have a huge object hierarchy and wants to select the parent of the selected object fast.
+
+    4. **Filter**. Filters objects inside the tree by their names.
 
 ### Properties Panel
 
@@ -161,6 +171,12 @@ Its common to have a reference image made by the art team so the developer can m
 To help you with this pipeline, the Editor has a reference image parameter (`referenceImageUrl`) inside the initial config that lets you tell what is the url for this image.
 
 When you set this parameter to a valid image url, the reference image options panel is available in the Editor. These options are to adjust the image filters and opacity to make it easy to distinguish it from the real game.
+
+### Selection
+
+Every time you select an object inside the Editor a global variable is set with it: `selection`. This variable is accessible in the browser's console by typing its name inside it. This way you can not just print its content but also get/set fields values and call methods on it.
+
+![Selection Example](./docs/selection.webp?raw=true 'Selection Example')
 
 ### Actions
 

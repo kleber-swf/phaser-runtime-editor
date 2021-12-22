@@ -17,6 +17,7 @@ export class EditorData {
 	public selectObject(value: PIXI.DisplayObject, from: DataOrigin) {
 		if (value === this._selectedObject) return;
 		this._selectedObject = value;
+		(window as any).selection = value;
 		this.onSelectedObjectChanged.dispatch(from, value);
 	}
 

@@ -374,6 +374,7 @@ class EditorClass {
 				tooltip: 'Select parent',
 				icon: 'fa-level-up-alt',
 				toggle: true,
+				shortcuts: ['ctrl+shift+q'],
 				category: 'object-tree',
 			},
 			{

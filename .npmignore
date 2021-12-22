@@ -5,3 +5,7 @@ example
 .eslintcache
 .eslintrc.js
 .prettierrc
+src
+config
+node_modules
+tsconfig.json
