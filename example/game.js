@@ -29,6 +29,7 @@ let _colorIndex = 0;
 
 function preload() {
 	game.load.image('phaser', 'assets/sprites/phaser1.png');
+	game.load.image('particle', 'assets/particles/blue.png');
 	game.load.bitmapFont('font', 'assets/fonts/nokia.png', 'assets/fonts/nokia.xml');
 }
 
@@ -130,6 +131,15 @@ function create() {
 	sprite.anchor.set(0.5, 0.5);
 	sprite.inputEnabled = true;
 	sprite.pivot.set(0, 20);
+
+	// const emitter = game.add.emitter(game.world.centerX, game.world.centerY + 500, 200);
+	// emitter.makeParticles('particle');
+
+	// emitter.setRotation(0, 0);
+	// emitter.setAlpha(0.3, 0.8);
+	// emitter.setScale(0.5, 1);
+	// emitter.gravity = -200;
+	// emitter.start(false, 5000, 100);
 
 	plugin.show();
 }
