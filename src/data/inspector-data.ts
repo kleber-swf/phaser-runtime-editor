@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-export type InspectableType = 'string' | 'text' | 'number' | 'boolean' | 'point' | 'rect' | 'color' | 'valueList' | 'default';
+export type InspectableType = 'string' | 'text' | 'number' | 'boolean' | 'point' | 'rect' | 'color' | 'cssColor' | 'valueList' | 'default';
 
 export interface InspectorPropertyModel {
 	name: string;

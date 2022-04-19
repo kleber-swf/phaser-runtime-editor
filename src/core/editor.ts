@@ -48,6 +48,7 @@ class EditorClass {
 
 			// custom
 			color: PropertyElementTag.ColorPropertyEditor,
+			cssColor: PropertyElementTag.CssColorPropertyEditor,
 			valueList: PropertyElementTag.ValueListPropertyEditor,
 
 			// default
@@ -71,6 +72,7 @@ class EditorClass {
 			{ name: 'frameName', typeHint: 'string' },
 			{ name: 'blendMode', typeHint: 'valueList', values: Phaser.blendModes },
 			{ name: 'tint', typeHint: 'color' },
+			{ name: 'smoothed', typeHint: 'boolean' },
 			// TODO waiting for multiple type hint
 			// { name: 'hitArea', typeHint: 'rect' },
 
@@ -82,14 +84,26 @@ class EditorClass {
 			{ name: 'fontWeight', typeHint: 'valueList', values: ['normal', 'bold', 'bolder', 'lighter', '100', '200', '300', '400', '500', '600', '700', '800', '900'] },
 			{ name: 'fontVariant', typeHint: 'valueList', values: ['normal', 'small-caps'] },
 			{ name: 'autoRound', typeHint: 'boolean' },
+			{ name: 'resolution', typeHint: 'number', data: { min: 0, step: 1 } },
 			{ name: 'align', typeHint: 'valueList', values: ['left', 'center', 'right'] },
+			{ name: 'lineSpacing', typeHint: 'number', data: { step: 1 } },
 			{ name: 'wordWrap', typeHint: 'boolean' },
 			{ name: 'wordWrapWidth', typeHint: 'number', data: { min: 0, step: 1 } },
 			{ name: 'useAdvancedWordWrap', typeHint: 'boolean' },
 			{ name: 'padding', typeHint: 'point' },
-			// { name: 'textBounds', typeHint: 'rect' },  // TODO waiting for null checking on rect editor
+			{ name: 'textBounds', typeHint: 'rect' }, // TODO waiting for null checking on rect editor
 			{ name: 'boundsAlignH', typeHint: 'valueList', values: ['left', 'center', 'right'] },
 			{ name: 'boundsAlignV', typeHint: 'valueList', values: ['top', 'middle', 'bottom'] },
+			{ name: 'shadowBlur', typeHint: 'number', data: { min: 0, step: 0.1 } },
+			{ name: 'shadowColor', typeHint: 'string' },
+			{ name: 'shadowOffsetX', typeHint: 'number', data: { min: 0, step: 0.1 } },
+			{ name: 'shadowOffsetY', typeHint: 'number', data: { min: 0, step: 0.1 } },
+			{ name: 'shadowFill', typeHint: 'boolean' },
+			{ name: 'shadowStroke', typeHint: 'boolean' },
+			{ name: 'stroke', typeHint: 'string' },
+			{ name: 'strokeThickness', typeHint: 'number', data: { min: 0, step: 0.1 } },
+			{ name: 'characterLimitSize', typeHint: 'number', data: { min: 0, step: 1 } },
+			{ name: 'characterLimitSuffix', typeHint: 'string' },
 		]);
 
 		const basicProperties = {
@@ -112,12 +126,12 @@ class EditorClass {
 
 		data.addObjectProperties('Phaser.Sprite', [
 			basicProperties,
-			{ title: 'Sprite', properties: ['key', 'frameName', 'blendMode', 'tint'] },
+			{ title: 'Sprite', properties: ['key', 'frameName', 'blendMode', 'tint', 'smoothed'] },
 		]);
 
 		data.addObjectProperties('Phaser.Image', [
 			basicProperties,
-			{ title: 'Sprite', properties: ['key', 'frameName', 'blendMode', 'tint'] },
+			{ title: 'Sprite', properties: ['key', 'frameName', 'blendMode', 'tint', 'smoothed'] },
 		]);
 
 		data.addObjectProperties('Phaser.Graphics', [
@@ -127,7 +141,7 @@ class EditorClass {
 
 		data.addObjectProperties('Phaser.Text', [
 			basicProperties,
-			{ title: 'Sprite', properties: ['blendMode', 'tint'] },
+			{ title: 'Sprite', properties: ['blendMode', 'tint', 'smoothed'] },
 			{
 				title: 'Text',
 				properties: [
@@ -138,15 +152,35 @@ class EditorClass {
 					'fontVariant',
 					'fontWeight',
 					'autoRound',
-					'divider',
+					'resolution',
+					'---',
 					'align',
+					'lineSpacing',
 					'wordWrap',
 					'wordWrapWidth',
 					'useAdvancedWordWrap',
-					'divider',
-					'padding', /* 'textBounds', */
+					'---',
+					'padding',
+					'textBounds',
 					'boundsAlignH',
 					'boundsAlignV',
+					'---',
+					'characterLimitSize',
+					'characterLimitSuffix',
+				],
+			},
+			{
+				title: 'Effects',
+				properties: [
+					'shadowBlur',
+					'shadowColor',
+					'shadowOffsetX',
+					'shadowOffsetY',
+					'shadowFill',
+					'---',
+					'shadowStroke',
+					'stroke',
+					'strokeThickness',
 				],
 			},
 		]);

@@ -37,6 +37,12 @@ Inside your game, after the Phaser's Game instance is created, add it as a Phase
 game.plugins.add(new Phaser.Plugin.RuntimeEditor(game));
 ```
 
+Also, add to your `index.html` after the insertion of `phaser.js` and before your `game.js`:
+
+```html
+<script id="phaser-runtime-editor" src="/js/phaser-runtime-editor.min.js"></script>
+```
+
 This will make it available for you at runtime. You will notice a small icon at the top left corner of your game. Click on it to open the editor.
 
 ### Options

@@ -16,7 +16,7 @@ export class PhaserMeta {
 		[Phaser.RETROFONT]: { type: 'Phaser.RetroFont', icon: 'fa-font' },
 		[Phaser.TEXT]: { type: 'Phaser.Text', icon: 'fa-font' },
 		[Phaser.TILESPRITE]: { type: 'Phaser.TileSprite', icon: 'fa-chess-board' },
-		// [Phaser.EMITTER]: { type: 'Phaser.Emitter', icon: '' },
+		[Phaser.EMITTER]: { type: 'Phaser.Emitter', icon: 'fa-snowflake', ignoreChildren: true },
 		// [Phaser.SPRITEBATCH]: { type: 'Phaser.SpriteBatch', icon: 'fa-images' },
 		// [Phaser.TILEMAP]: { type: 'Phaser.TileMap', icon: '' },
 		// [Phaser.TILEMAPLAYER]: { type: 'Phaser.TileMapPlayer', icon: '' },

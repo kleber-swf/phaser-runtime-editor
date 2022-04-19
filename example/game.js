@@ -29,6 +29,7 @@ let _colorIndex = 0;
 
 function preload() {
 	game.load.image('phaser', 'assets/sprites/phaser1.png');
+	game.load.image('particle', 'assets/particles/blue.png');
 	game.load.bitmapFont('font', 'assets/fonts/nokia.png', 'assets/fonts/nokia.xml');
 }
 
@@ -121,8 +122,16 @@ function create() {
 	child = el(50, 50, SIZE * 1.5, SIZE * 1.5, child, 'child-5');
 	child = el(50, 50, SIZE, SIZE, child, 'child-6');
 
-	const bt = game.add.bitmapText(50, 50, 'font', 'This is a bitmap text', 30);
-	bt.name = 'bitmap text';
+	game.add.bitmapText(50, 50, 'font', 'This is a bitmap text', 30);
+
+	const t = game.add.text(50, 150, 'This is a TTF text', {
+		font: '36pt sans-serif',
+		fontWeight: 'bold',
+		fill: '#FF0',
+		shadowBlur: 4,
+		shadowColor: '#F00',
+	});
+	t.shadowFill = true;
 
 	const sprite = game.add.sprite(960, 540, 'phaser');
 	sprite.name = 'sprite';
@@ -130,6 +139,15 @@ function create() {
 	sprite.anchor.set(0.5, 0.5);
 	sprite.inputEnabled = true;
 	sprite.pivot.set(0, 20);
+
+	// const emitter = game.add.emitter(game.world.centerX, game.world.centerY + 500, 200);
+	// emitter.makeParticles('particle');
+
+	// emitter.setRotation(0, 0);
+	// emitter.setAlpha(0.3, 0.8);
+	// emitter.setScale(0.5, 1);
+	// emitter.gravity = -200;
+	// emitter.start(false, 5000, 100);
 
 	plugin.show();
 }

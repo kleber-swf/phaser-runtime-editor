@@ -60,7 +60,7 @@ export class PropertiesInspector extends Inspector {
 		propertyGroups.forEach(group => {
 			if (group.title) this.createTitleElement(group.title);
 			group.properties.forEach(prop => {
-				if (prop !== 'divider') {
+				if (prop !== '---') {
 					this.createEditorForProperty(obj, idata.getInspectableProperty(prop));
 				} else {
 					this.createDivider();
