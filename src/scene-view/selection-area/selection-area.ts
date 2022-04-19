@@ -122,6 +122,7 @@ export class SelectionArea extends HTMLElement {
 
 	private onMouseUp(e: MouseEvent) {
 		if (e.button !== 0) return;
+		if (!this._mouseIsDown) return;
 		this._mouseIsDown = false;
 		if (this._handler) {
 			this._handler.stopHandling(e);
