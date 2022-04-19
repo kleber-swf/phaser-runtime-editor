@@ -22,9 +22,10 @@ export class ColorPropertyEditor extends PropertyEditor<number> {
 	}
 
 	public updateInternalValue(): number {
+		// TODO use some Phaser function for this
 		let hex = this.input.value;
 		const hashMissing = !hex.startsWith('#');
-		if (!hashMissing) hex = hex.substr(1);
+		if (!hashMissing) hex = hex.substring(1);
 		if (hex.length === 3) {
 			hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
 		}

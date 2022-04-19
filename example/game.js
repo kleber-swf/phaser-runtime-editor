@@ -122,8 +122,16 @@ function create() {
 	child = el(50, 50, SIZE * 1.5, SIZE * 1.5, child, 'child-5');
 	child = el(50, 50, SIZE, SIZE, child, 'child-6');
 
-	const bt = game.add.bitmapText(50, 50, 'font', 'This is a bitmap text', 30);
-	bt.name = 'bitmap text';
+	game.add.bitmapText(50, 50, 'font', 'This is a bitmap text', 30);
+
+	const t = game.add.text(50, 150, 'This is a TTF text', {
+		font: '36pt sans-serif',
+		fontWeight: 'bold',
+		fill: '#FF0',
+		shadowBlur: 4,
+		shadowColor: '#F00',
+	});
+	t.shadowFill = true;
 
 	const sprite = game.add.sprite(960, 540, 'phaser');
 	sprite.name = 'sprite';

@@ -48,6 +48,7 @@ class EditorClass {
 
 			// custom
 			color: PropertyElementTag.ColorPropertyEditor,
+			cssColor: PropertyElementTag.CssColorPropertyEditor,
 			valueList: PropertyElementTag.ValueListPropertyEditor,
 
 			// default
@@ -90,6 +91,12 @@ class EditorClass {
 			// { name: 'textBounds', typeHint: 'rect' },  // TODO waiting for null checking on rect editor
 			{ name: 'boundsAlignH', typeHint: 'valueList', values: ['left', 'center', 'right'] },
 			{ name: 'boundsAlignV', typeHint: 'valueList', values: ['top', 'middle', 'bottom'] },
+			{ name: 'shadowBlur', typeHint: 'number', data: { min: 0, step: 0.1 } },
+			{ name: 'shadowColor', typeHint: 'cssColor' },
+			{ name: 'shadowOffsetX', typeHint: 'number', data: { min: 0, step: 0.1 } },
+			{ name: 'shadowOffsetY', typeHint: 'number', data: { min: 0, step: 0.1 } },
+			{ name: 'shadowFill', typeHint: 'boolean' },
+			{ name: 'shadowStroke', typeHint: 'boolean' },
 		]);
 
 		const basicProperties = {
@@ -147,6 +154,12 @@ class EditorClass {
 					'padding', /* 'textBounds', */
 					'boundsAlignH',
 					'boundsAlignV',
+					'shadowBlur',
+					'shadowColor',
+					'shadowOffsetX',
+					'shadowOffsetY',
+					'shadowFill',
+					'shadowStroke',
 				],
 			},
 		]);
