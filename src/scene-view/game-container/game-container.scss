@@ -6,6 +6,16 @@ phred-game-container {
 	overflow: auto;
 	position: relative;
 
+	&.passthru {
+		pointer-events: none;
+		* {
+			pointer-events: none;
+		}
+		.phred-game * {
+			pointer-events: all !important;
+		}
+	}
+
 	&.responsive {
 		display: flex;
 		align-items: center;
@@ -26,6 +36,7 @@ phred-game-container {
 		position: absolute;
 		.phred-game,
 		.phred-game * {
+			pointer-events: none;
 			max-width: 100% !important;
 			width: 100% !important;
 			height: 100% !important;

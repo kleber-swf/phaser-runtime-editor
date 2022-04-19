@@ -344,6 +344,12 @@ class EditorClass {
 				category: 'scene',
 				description: 'Move selected object right by 10px',
 			},
+			{
+				id: Actions.TOGGLE_PASS_THRU,
+				shortcuts: ['ctrl+1'],
+				toggle: true,
+				category: 'scene',
+			},
 
 			{
 				id: Actions.ZOOM,

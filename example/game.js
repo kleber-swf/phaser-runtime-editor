@@ -139,6 +139,9 @@ function create() {
 	sprite.anchor.set(0.5, 0.5);
 	sprite.inputEnabled = true;
 	sprite.pivot.set(0, 20);
+	sprite.events.onInputOver.add(() => sprite.alpha = 0.8);
+	sprite.events.onInputOut.add(() => sprite.alpha = 1);
+	sprite.events.onInputDown.add(() => console.log('INPUT DOWN ON SPRITE'));
 
 	// const emitter = game.add.emitter(game.world.centerX, game.world.centerY + 500, 200);
 	// emitter.makeParticles('particle');
