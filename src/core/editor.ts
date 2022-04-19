@@ -349,6 +349,9 @@ class EditorClass {
 				shortcuts: ['ctrl+1'],
 				toggle: true,
 				category: 'scene',
+				icon: 'fa-ghost',
+				tooltip: 'Toggle pass thru',
+				description: 'Toggle pass thru mode (click on the game)',
 			},
 
 			{
