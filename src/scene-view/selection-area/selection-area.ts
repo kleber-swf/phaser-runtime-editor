@@ -41,7 +41,6 @@ export class SelectionArea extends HTMLElement {
 		this.addEventListener('mousedown', this.onMouseDown.bind(this));
 		this.addEventListener('mouseup', this.onMouseUp.bind(this));
 		this.addEventListener('mousemove', this.onMouseMove.bind(this));
-
 		Editor.data.onSelectedObjectChanged.add(this.onSelectedObjectChanged, this);
 		PreferencesUtil.setupPreferences(
 			['gizmos', 'snap', 'guides', 'hitArea'],
@@ -122,6 +121,7 @@ export class SelectionArea extends HTMLElement {
 
 	private onMouseUp(e: MouseEvent) {
 		if (e.button !== 0) return;
+		if (!this._mouseIsDown) return;
 		this._mouseIsDown = false;
 		if (this._handler) {
 			this._handler.stopHandling(e);

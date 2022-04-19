@@ -1,7 +1,9 @@
 import { ActionHandler } from 'core/action-handler';
+import { Actions } from 'core/actions';
 import { Editor } from 'core/editor';
 import { PreferenceKey } from 'core/preferences/preferences.model';
 import { PreferencesUtil } from 'core/preferences/preferences.util';
+import { DataOrigin } from 'data/editor-data';
 import { PluginConfig, Size } from 'plugin.model';
 import { GameParent } from 'scene-view/game-parent/game-parent';
 import { SelectionArea } from 'scene-view/selection-area/selection-area';
@@ -15,6 +17,18 @@ export class GameContainer extends HTMLElement {
 
 	private gameParent: GameParent;
 	private selectionArea: SelectionArea;
+
+	private passThru = false;
+
+	private setPassThru(value: boolean) {
+		this.passThru = value;
+		if (value) {
+			this.classList.add('passthru');
+			Editor.data.selectObject(null, DataOrigin.ACTION);
+		} else {
+			this.classList.remove('passthru');
+		}
+	}
 
 	public init(game: Phaser.Game) {
 		this.game = game;
@@ -31,10 +45,20 @@ export class GameContainer extends HTMLElement {
 	public setupActions(actions: ActionHandler) {
 		this.gameParent.setupActions(actions);
 		this.selectionArea.setupActions(actions);
-		PreferencesUtil.setupPreferences(['responsive', 'responsiveTemplateIndex'], this.onPreferencesChanged, this);
+		PreferencesUtil.setupPreferences(
+			['responsive', 'responsiveTemplateIndex', 'gamePaused'],
+			this.onPreferencesChanged,
+			this
+		);
 		this.onmousedown = this.onInputDown;
 		this.onmousemove = this.onInputMove;
 		this.onmouseup = this.onInputUp;
+
+		actions.setActionCommand(
+			Actions.TOGGLE_PASS_THRU,
+			() => this.setPassThru(!this.passThru),
+			() => this.passThru
+		);
 	}
 
 	public enable(config: PluginConfig) {
@@ -103,6 +127,9 @@ export class GameContainer extends HTMLElement {
 				break;
 			case 'responsiveTemplateIndex':
 				this.gameParent.responsiveSizeTemplateChanged(value);
+				break;
+			case 'gamePaused':
+				this.game.paused = value as boolean;
 				break;
 		}
 	}

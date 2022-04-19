@@ -11,6 +11,7 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 	public readonly type = GIZMO_MOVE;
 
 	private handlers: HTMLElement[] = [];
+	private handlersParent: HTMLElement;
 	private pivot: HTMLElement;
 	private anchor: HTMLElement;
 	private guides: HTMLElement;
@@ -30,7 +31,7 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 	}
 
 	public set enabled(value: boolean) {
-		this.classList.addOrRemove('disabled', !value);
+		this.handlersParent.classList.addOrRemove('disabled', !value);
 	}
 
 	public set showGuides(value: boolean) {
@@ -61,7 +62,7 @@ export class SelectionGizmo extends HTMLElement implements Gizmo {
 		this.createGuides();
 		this.createHitArea();
 
-		const handlersParent = this.appendChild(document.createElement('div'));
+		const handlersParent = this.handlersParent = this.appendChild(document.createElement('div'));
 		handlersParent.classList.add('handlers');
 		this.createResizeHandlers(this.handlers, handlersParent);
 	}

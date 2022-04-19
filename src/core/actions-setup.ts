@@ -75,6 +75,12 @@ export class ActionsSetup {
 			() => prefs.toggle('rightPanelVisible'),
 			() => prefs.get('rightPanelVisible') as boolean
 		);
+
+		actions.setActionCommand(
+			Actions.TOGGLE_GAME_PAUSED,
+			() => prefs.toggle('gamePaused'),
+			() => prefs.get('gamePaused') as boolean
+		);
 	}
 
 	public setupDataActions(data: EditorData, actions: ActionHandler, root: Container, prefs: Preferences) {

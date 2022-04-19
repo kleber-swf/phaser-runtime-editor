@@ -2,6 +2,7 @@ import { Size } from 'plugin.model';
 import { ReferenceImageFilters } from 'scene-view/reference-image/reference-image';
 
 export interface PersistentData {
+	gamePaused: boolean;
 	snap: boolean;
 	gizmos: boolean;
 	guides: boolean;
