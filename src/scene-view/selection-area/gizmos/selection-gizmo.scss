@@ -9,10 +9,6 @@ phred-selection-gizmo {
 	padding: 0;
 	margin: 0;
 
-	&.disabled {
-		display: none;
-	}
-
 	div {
 		box-sizing: content-box;
 		position: absolute;
@@ -30,6 +26,10 @@ phred-selection-gizmo {
 		box-sizing: border-box;
 		border: 2px solid rgba(white, 0.8);
 		box-shadow: inset $gizmo-shadow, $gizmo-shadow;
+
+		&.disabled {
+			display: none;
+		}
 
 		.pivot {
 			width: 8px;
