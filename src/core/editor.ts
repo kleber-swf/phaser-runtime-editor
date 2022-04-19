@@ -92,11 +92,13 @@ class EditorClass {
 			{ name: 'boundsAlignH', typeHint: 'valueList', values: ['left', 'center', 'right'] },
 			{ name: 'boundsAlignV', typeHint: 'valueList', values: ['top', 'middle', 'bottom'] },
 			{ name: 'shadowBlur', typeHint: 'number', data: { min: 0, step: 0.1 } },
-			{ name: 'shadowColor', typeHint: 'cssColor' },
+			{ name: 'shadowColor', typeHint: 'string' },
 			{ name: 'shadowOffsetX', typeHint: 'number', data: { min: 0, step: 0.1 } },
 			{ name: 'shadowOffsetY', typeHint: 'number', data: { min: 0, step: 0.1 } },
 			{ name: 'shadowFill', typeHint: 'boolean' },
 			{ name: 'shadowStroke', typeHint: 'boolean' },
+			{ name: 'stroke', typeHint: 'string' },
+			{ name: 'strokeThickness', typeHint: 'number', data: { min: 0, step: 0.1 } },
 		]);
 
 		const basicProperties = {
@@ -145,21 +147,29 @@ class EditorClass {
 					'fontVariant',
 					'fontWeight',
 					'autoRound',
-					'divider',
+					'---',
 					'align',
 					'wordWrap',
 					'wordWrapWidth',
 					'useAdvancedWordWrap',
-					'divider',
+					'---',
 					'padding', /* 'textBounds', */
 					'boundsAlignH',
 					'boundsAlignV',
+				],
+			},
+			{
+				title: 'Effects',
+				properties: [
 					'shadowBlur',
 					'shadowColor',
 					'shadowOffsetX',
 					'shadowOffsetY',
 					'shadowFill',
+					'---',
 					'shadowStroke',
+					'stroke',
+					'strokeThickness',
 				],
 			},
 		]);

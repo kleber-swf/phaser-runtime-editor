@@ -17,6 +17,7 @@ export class CssColorPropertyEditor extends PropertyEditor<string> {
 
 	public setInternalValue(value: string) {
 		// TODO use some Phaser function for this
+		// TODO validate color names
 		if (value === null) return;
 		const hasHash = value.startsWith('#');
 		const intValue = parseInt(hasHash ? value.substring(1) : value, 16);
