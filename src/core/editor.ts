@@ -243,6 +243,22 @@ class EditorClass {
 				category: 'scene',
 			},
 			{
+				id: Actions.TOGGLE_GAME_PAUSED,
+				toggle: true,
+				tooltip: 'Toggle game paused',
+				icon: 'fa-pause',
+				category: 'game',
+			},
+			{
+				id: Actions.TOGGLE_PASS_THRU,
+				shortcuts: ['ctrl+1'],
+				toggle: true,
+				tooltip: 'Toggle pass thru',
+				icon: 'fa-ghost',
+				category: 'game',
+				description: 'Toggle pass thru mode (click on the game)',
+			},
+			{
 				id: Actions.TOGGLE_RESPONSIVE,
 				toggle: true,
 				tooltip: 'Toggle responsive',
@@ -343,15 +359,6 @@ class EditorClass {
 				stritct: true,
 				category: 'scene',
 				description: 'Move selected object right by 10px',
-			},
-			{
-				id: Actions.TOGGLE_PASS_THRU,
-				shortcuts: ['ctrl+1'],
-				toggle: true,
-				category: 'scene',
-				icon: 'fa-ghost',
-				tooltip: 'Toggle pass thru',
-				description: 'Toggle pass thru mode (click on the game)',
 			},
 
 			{

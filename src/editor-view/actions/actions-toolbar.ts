@@ -20,19 +20,22 @@ export class ActionsToolbar extends Widget {
 	public setupActions(actions: ActionHandler) {
 		this.classList.add('actions-toolbar');
 		this.createButton(actions.getAction(Actions.TOGGLE_ENABLED));
-		this.createSeparator();
 
+		this.createSeparator();
 		this.createButton(actions.getAction(Actions.TOGGLE_SNAP));
 		this.createButton(actions.getAction(Actions.TOGGLE_GUIDES));
 		this.createButton(actions.getAction(Actions.TOGGLE_GIZMOS));
 		this.createButton(actions.getAction(Actions.TOGGLE_HIT_AREA));
 		this.createButton(actions.getAction(Actions.TOGGLE_HIT_AREAS_SNAPSHOT));
+
+		this.createSeparator();
+		this.createButton(actions.getAction(Actions.TOGGLE_GAME_PAUSED));
 		this.createButton(actions.getAction(Actions.TOGGLE_PASS_THRU));
 
 		this.createSeparator();
 		this.createResponsiveGroup(actions);
-		this.createSeparator();
 
+		this.createSeparator();
 		this.createButton(actions.getAction(Actions.ZOOM_OUT));
 		this.createButton(actions.getAction(Actions.ZOOM_RESET));
 		this.createButton(actions.getAction(Actions.ZOOM_IN));
@@ -40,10 +43,13 @@ export class ActionsToolbar extends Widget {
 		this.createSeparator();
 		this.createButton(actions.getAction(Actions.PRINT_OBJECT));
 		this.createReferenceImageGroup(actions);
+
 		this.createSeparator();
 		this.createButton(actions.getAction(Actions.UNDO));
+
 		this.createSeparator();
 		this.createButton(actions.getAction(Actions.HELP));
+
 		this.createSeparator();
 		this.createSpacer();
 

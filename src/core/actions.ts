@@ -8,6 +8,7 @@ export class Actions {
 	public static readonly MOVE_DOWN_10 = 'MOVE_DOWN_10';
 	public static readonly MOVE_LEFT_10 = 'MOVE_LEFT_10';
 	public static readonly MOVE_RIGHT_10 = 'MOVE_RIGHT_10';
+	public static readonly TOGGLE_PASS_THRU = 'PASS_THRU';
 	public static readonly TOGGLE_SNAP = 'TOGGLE_SNAP';
 	public static readonly TOGGLE_GIZMOS = 'TOGGLE_GIZMOS';
 	public static readonly TOGGLE_GUIDES = 'TOGGLE_GUIDES';
@@ -17,9 +18,9 @@ export class Actions {
 	public static readonly TOGGLE_REF_IMAGE = 'TOGGLE_REF_IMAGE';
 	public static readonly TOGGLE_HIT_AREAS_SNAPSHOT = 'TOGGLE_HIT_AREAS_SNAPSHOT';
 	public static readonly TOGGLE_ENABLED = 'TOGGLE_ENABLED';
+	public static readonly TOGGLE_GAME_PAUSED = 'TOGGLE_GAME_PAUSED';
 	public static readonly PRINT_OBJECT = 'PRINT_OBJECT';
 	public static readonly CLEAR_SELECTION = 'CLEAR_SELECTION';
-	public static readonly TOGGLE_PASS_THRU = 'PASS_THRU';
 	public static readonly ZOOM = 'ZOOM';
 	public static readonly ZOOM_IN = 'ZOOM_IN';
 	public static readonly ZOOM_OUT = 'ZOOM_OUT';

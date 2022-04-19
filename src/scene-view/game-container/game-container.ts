@@ -45,7 +45,11 @@ export class GameContainer extends HTMLElement {
 	public setupActions(actions: ActionHandler) {
 		this.gameParent.setupActions(actions);
 		this.selectionArea.setupActions(actions);
-		PreferencesUtil.setupPreferences(['responsive', 'responsiveTemplateIndex'], this.onPreferencesChanged, this);
+		PreferencesUtil.setupPreferences(
+			['responsive', 'responsiveTemplateIndex', 'gamePaused'],
+			this.onPreferencesChanged,
+			this
+		);
 		this.onmousedown = this.onInputDown;
 		this.onmousemove = this.onInputMove;
 		this.onmouseup = this.onInputUp;
@@ -123,6 +127,9 @@ export class GameContainer extends HTMLElement {
 				break;
 			case 'responsiveTemplateIndex':
 				this.gameParent.responsiveSizeTemplateChanged(value);
+				break;
+			case 'gamePaused':
+				this.game.paused = value as boolean;
 				break;
 		}
 	}

@@ -7,6 +7,7 @@ export class Preferences {
 	public static readonly DefaultResponsiveSize: Readonly<Size> = { width: 450, height: 800 };
 
 	private persistentData: PersistentData = {
+		gamePaused: false,
 		snap: true,
 		gizmos: true,
 		guides: false,
