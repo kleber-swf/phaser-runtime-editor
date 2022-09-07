@@ -16,7 +16,7 @@ export class BaseActionButton extends HTMLElement implements ActionView {
 
 		if (action.icon) {
 			const icon = this.appendChild(document.createElement('i'));
-			icon.classList.add('fas', action.icon);
+			icon.classList.add('fa-solid', action.icon);
 		} else {
 			const text = this.appendChild(document.createElement('span'));
 			text.classList.add('label');

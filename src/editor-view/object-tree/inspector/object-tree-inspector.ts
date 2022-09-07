@@ -27,6 +27,7 @@ export class ObjectTreeInspector extends Inspector {
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 		Editor.data.onObjectLocked.add(this.onObjectLocked, this);
 
+		this.addAction(Editor.actions.getAction(Actions.COLLAPSE_OBJECT_TREE), 'right');
 		this.addAction(Editor.actions.getAction(Actions.REFRESH_OBJECT_TREE), 'right');
 		this.addAction(Editor.actions.getAction(Actions.LOCK_SELECTION), 'right', LockObjectActionButton.tagName);
 		this.addAction(Editor.actions.getAction(Actions.SELECT_PARENT), 'right');
@@ -36,6 +37,13 @@ export class ObjectTreeInspector extends Inspector {
 			() => {
 				Editor.data.selectObject(null, DataOrigin.ACTION);
 				this.setRoot(this.root);
+			}
+		);
+
+		Editor.actions.setActionCommand(
+			Actions.COLLAPSE_OBJECT_TREE,
+			() => {
+				this.changeCollapseState(this.model.root, true, true);
 			}
 		);
 	}

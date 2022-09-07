@@ -434,6 +434,12 @@ class EditorClass {
 				tooltip: 'Refresh',
 				icon: 'fa-sync-alt',
 				category: 'object-tree',
+			},
+			{
+				id: Actions.COLLAPSE_OBJECT_TREE,
+				tooltip: 'Collapse all',
+				icon: 'fa-minus',
+				category: 'object-tree',
 			}
 		);
 
