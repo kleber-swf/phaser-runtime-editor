@@ -35,10 +35,10 @@
 		"lint": "eslint --cache --fix --color --ext .ts \"src\"",
 		"example": "browser-sync start -c ./config/bs-config.js",
 		"postinstall": "npm rebuild node-sass",
-		"prebuild": "rm -rf dist; npm run barrel",
+		"prebuild": "npm run changelog; rm -rf dist; npm run barrel",
 		"build": "rollup -c ./config/rollup.config.js",
 		"prepublishOnly": "npm run build",
-		"changelog": "auto-changelog -p -c config/auto-changelog.json"
+		"changelog": "auto-changelog -p -c config/auto-changelog.json && git add CHANGELOG.md && git commit -m \"Changelog updated\""
 	},
 	"dependencies": {
 		"phaser-ce": "^2.19.2"

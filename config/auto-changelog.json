@@ -3,5 +3,6 @@
 	"template": "config/changelog-template.hbs",
 	"unreleased": true,
 	"commitLimit": false,
-	"package": true
+	"package": true,
+	"ignoreCommitPattern": "([Cc]hangelog updated)|([Vv]ersion updated)|([Mm]erge)|([Mm]inor)"
 }
