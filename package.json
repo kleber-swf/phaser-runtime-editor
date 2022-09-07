@@ -37,7 +37,8 @@
 		"postinstall": "npm rebuild node-sass",
 		"prebuild": "rm -rf dist; npm run barrel",
 		"build": "rollup -c ./config/rollup.config.js",
-		"prepublishOnly": "npm run build"
+		"prepublishOnly": "npm run build",
+		"changelog": "auto-changelog -p"
 	},
 	"dependencies": {
 		"phaser-ce": "^2.19.2"
@@ -47,6 +48,7 @@
 		"@rollup/plugin-node-resolve": "^13.0.6",
 		"@rollup/plugin-typescript": "^8.3.0",
 		"@typescript-eslint/eslint-plugin": "^5.5.0",
+		"auto-changelog": "^2.4.0",
 		"autoprefixer": "^10.4.0",
 		"barrelsby": "^2.3.0",
 		"browser-sync": "^2.27.7",
