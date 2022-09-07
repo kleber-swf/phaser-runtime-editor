@@ -78,6 +78,7 @@ class EditorClass {
 
 			// Text
 			{ name: 'text', typeHint: 'text', data: { rows: 3 } },
+			{ name: 'fill', typeHint: 'cssColor' },
 			{ name: 'font', typeHint: 'string' },
 			{ name: 'fontSize', typeHint: 'number', data: { min: 0, step: 1 } },
 			{ name: 'fontStyle', typeHint: 'valueList', values: ['normal', 'italic', 'oblique'] },
@@ -146,6 +147,7 @@ class EditorClass {
 				title: 'Text',
 				properties: [
 					'text',
+					'fill',
 					'font',
 					'fontSize',
 					'fontStyle',
