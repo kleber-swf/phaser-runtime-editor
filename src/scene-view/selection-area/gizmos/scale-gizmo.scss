@@ -1,8 +1,6 @@
-@import 'editor-vars';
-
 $handle-size: 15px;
 $size: 25px;
-$padding: ($size - $handle-size)/2;
+$padding: calc(($size - $handle-size) * 0.5);
 
 phred-scale-gizmo {
 	position: absolute;
@@ -10,7 +8,7 @@ phred-scale-gizmo {
 	box-sizing: border-box;
 	width: $size;
 	height: $size;
-	margin: -($size + 2)/2;
+	margin: calc(($size + 2px) * -0.5);
 	border-radius: $size;
 	pointer-events: all;
 	display: flex;

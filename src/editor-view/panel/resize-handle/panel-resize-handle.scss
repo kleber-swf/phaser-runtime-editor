@@ -1,5 +1,3 @@
-@import 'colors';
-
 $handle-width: 6px;
 $active-handle-margin: 20px;
 
@@ -11,10 +9,10 @@ phred-panel-resize-handle {
 
 	&:active {
 		&.left {
-			right: -($active-handle-margin + $handle-width/2);
+			right: calc(($active-handle-margin + $handle-width/2) * -1);
 		}
 		&.right {
-			left: -($active-handle-margin + $handle-width/2);
+			left: calc(($active-handle-margin + $handle-width/2) * -1);
 		}
 		& > .thumb {
 			margin: 0 $active-handle-margin;
@@ -29,11 +27,11 @@ phred-panel-resize-handle {
 	}
 
 	&.left {
-		right: -$handle-width/2;
+		right: calc($handle-width * -0.5);
 	}
 
 	&.right {
-		left: -$handle-width/2;
+		left: calc($handle-width * -0.5);
 	}
 
 	& > .thumb {

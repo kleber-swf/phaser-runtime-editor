@@ -1,2 +1,23 @@
-@import 'colors';
-@import 'editor-vars';
+$primary-color: #2980b9;
+$on-primary: #F2F2F2;
+
+$background-color: #232323;
+$on-background: #D0D0D0;
+
+$border-color: #1B1B1B;
+$shadow-color: rgba(#111, 0.6);
+$light-shadow-color: rgba(#111, 0.2);
+
+$selection-color: #62c3d9;
+
+$focused-text-color: $on-background;
+$unfocused-text-color: darken($on-background, 20%);
+$disabled-text-color: rgba($on-background, 0.5);
+
+$button-text-color: darken($on-background, 40%);
+
+$input-background: lighten($background-color, 3);
+$input-foreground: $on-background;
+$focused-input-border: rgba($on-background, 0.3);
+
+$gizmo-shadow: 0 0 2px 2px $shadow-color;
