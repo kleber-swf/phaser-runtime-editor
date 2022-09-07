@@ -94,7 +94,7 @@ export class ObjectTreeInspector extends Inspector {
 
 	private changeCollapseState(model: ObjectTreeNodeModel, collapsed: boolean, all: boolean) {
 		model.collapsed = collapsed;
-		if (!(all && model.obj.children?.length)) return;
+		if (model.isLeaf || !(all && model.obj.children?.length)) return;
 		model.obj.children.forEach(child => {
 			if (child.__locked) return;
 			const n = this.model.getById(child.__instanceId);
