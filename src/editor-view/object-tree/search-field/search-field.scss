@@ -2,7 +2,7 @@ phred-search-field {
 	position: relative;
 	opacity: 0.8;
 	box-sizing: border-box;
-	padding: 4px 10px;
+	padding: 4px 4px;
 	box-shadow: 0 4px 4px $light-shadow-color;
 	margin-bottom: 2px;
 
@@ -13,8 +13,8 @@ phred-search-field {
 		content: '\f002';
 		display: inline-block;
 		position: absolute;
-		top: 8px;
-		left: 16px;
+		top: 10px;
+		left: 10px;
 	}
 
 	input[type='text'] {
@@ -27,7 +27,7 @@ phred-search-field {
 	.clear-button {
 		display: inline-block;
 		position: absolute;
-		right: 10px;
+		right: 6px;
 		top: 0;
 		width: 20px;
 		height: 20px;
@@ -35,9 +35,10 @@ phred-search-field {
 		cursor: pointer;
 		text-align: center;
 		vertical-align: middle;
-		padding-top: 2px;
+		// padding-top: 2px;
 
 		&::after {
+			padding-top: 4px;
 			font-family: 'Font Awesome 5 Free';
 			font-size: 10px;
 			font-weight: 900;
