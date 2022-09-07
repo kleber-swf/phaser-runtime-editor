@@ -19,7 +19,7 @@ export class ObjectTreeInspector extends Inspector {
 		super.init(game, side);
 		this.title = 'Objects';
 
-		const el = this.headerElement.appendChild(document.createElement(SearchField.tagName)) as SearchField;
+		const el = this.insertBefore(document.createElement(SearchField.tagName), this.contentElement) as SearchField;
 		el.init();
 		el.onValueChanged = this.filterContent.bind(this);
 		el.onClear = this.onFilterClear.bind(this);
@@ -27,6 +27,7 @@ export class ObjectTreeInspector extends Inspector {
 		Editor.data.onPropertyChanged.add(this.onPropertyChanged, this);
 		Editor.data.onObjectLocked.add(this.onObjectLocked, this);
 
+		this.addAction(Editor.actions.getAction(Actions.COLLAPSE_OBJECT_TREE), 'right');
 		this.addAction(Editor.actions.getAction(Actions.REFRESH_OBJECT_TREE), 'right');
 		this.addAction(Editor.actions.getAction(Actions.LOCK_SELECTION), 'right', LockObjectActionButton.tagName);
 		this.addAction(Editor.actions.getAction(Actions.SELECT_PARENT), 'right');
@@ -36,6 +37,13 @@ export class ObjectTreeInspector extends Inspector {
 			() => {
 				Editor.data.selectObject(null, DataOrigin.ACTION);
 				this.setRoot(this.root);
+			}
+		);
+
+		Editor.actions.setActionCommand(
+			Actions.COLLAPSE_OBJECT_TREE,
+			() => {
+				this.changeCollapseState(this.model.root, true, true);
 			}
 		);
 	}
@@ -94,7 +102,7 @@ export class ObjectTreeInspector extends Inspector {
 
 	private changeCollapseState(model: ObjectTreeNodeModel, collapsed: boolean, all: boolean) {
 		model.collapsed = collapsed;
-		if (!(all && model.obj.children?.length)) return;
+		if (model.isLeaf || !(all && model.obj.children?.length)) return;
 		model.obj.children.forEach(child => {
 			if (child.__locked) return;
 			const n = this.model.getById(child.__instanceId);

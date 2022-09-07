@@ -13,18 +13,21 @@ export class CssColorPropertyEditor extends PropertyEditor<string> {
 		return input;
 	}
 
-	protected getDefaultValue() { return '#000'; }
+	protected getDefaultValue() { return '#FFFFFF'; }
 
 	public setInternalValue(value: string) {
-		// TODO use some Phaser function for this
-		// TODO validate color names
-		if (value === null) return;
-		const hasHash = value.startsWith('#');
-		const intValue = parseInt(hasHash ? value.substring(1) : value, 16);
-		if (intValue < 0 || intValue > 0xFFFFFF) return;
-		if (!hasHash) value = '#' + value.toUpperCase();
-		this._internalValue = value;
-		this.input.value = value;
+		if (!value) return;
+		if (!isNaN(parseInt(value, 16))) {
+			value = '#' + value;
+		}
+		const s = new Option().style;
+		s.color = value;
+		if (s.color !== '') {
+			this._internalValue = value;
+			this.input.value = value;
+		} else {
+			this.input.value = this._internalValue;
+		}
 	}
 
 	public updateInternalValue(): string {

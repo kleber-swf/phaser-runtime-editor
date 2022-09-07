@@ -73,9 +73,9 @@ export class ObjectTreeNode extends HTMLElement {
 	public clearSelection() { this.classList.remove(SELECTED_CLASS); }
 
 	public onCollapseIconClick(e: MouseEvent) {
+		e.stopImmediatePropagation();
 		if (this.model.collapsed) this.expand();
 		else this.collapse();
-		e.stopImmediatePropagation();
 		if (this.onCollapseStateChanged) {
 			this.onCollapseStateChanged(this, this.model.collapsed, e.altKey);
 		}

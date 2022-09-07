@@ -31,4 +31,5 @@ export class Actions {
 	public static readonly SELECT_PARENT = 'SELECT_PARENT';
 	public static readonly LOCK_SELECTION = 'LOCK_SELECTION';
 	public static readonly REFRESH_OBJECT_TREE = 'REFRESH_OBJECT_TREE';
+	public static readonly COLLAPSE_OBJECT_TREE = 'COLLAPSE_OBJECT_TREE';
 }

@@ -132,13 +132,15 @@ The config object can have the following properties (all of them optional):
 -   Dims invisible objects
 -   Actions:
 
-    1. **Refresh**. Refreshes the Object Tree objects. The tree is refreshed every time the Editor opens so this is useful only when the hierarchy changes while the Editor is open.
+    1. **Collapse All**. Collapses all nodes in the Object Tree.
 
-    2. **Lock/unlock selected object**. Locked objects can't be selected inside the [Scene View](#scene-view). They still can be selected inside the Object Tree. By default, locked objects are saved between runs. If you don't want this, set the `saveLockedObjectsPath` to `false` when instantiating the Plugin.
+    2. **Refresh**. Refreshes the Object Tree nodes. The tree is refreshed every time the Editor opens so this is useful only when the hierarchy changes while the Editor is open.
 
-    3. **Select the selected object's parent**. This is useful for when you have a huge object hierarchy and wants to select the parent of the selected object fast.
+    3. **Lock/unlock selected object**. Locked nodes can't be selected inside the [Scene View](#scene-view). They still can be selected inside the Object Tree. By default, locked nodes are saved between runs. If you don't want this, set the `saveLockedObjectsPath` to `false` when instantiating the Plugin.
 
-    4. **Filter**. Filters objects inside the tree by their names.
+    4. **Select the selected object's parent**. This is useful for when you have a huge object hierarchy and wants to select the parent of the selected object fast.
+
+    5. **Filter**. Filters objects inside the tree by their names.
 
 ### Properties Panel
 

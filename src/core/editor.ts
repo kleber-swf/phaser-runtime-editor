@@ -64,7 +64,7 @@ class EditorClass {
 			{ name: 'anchor', typeHint: 'point', data: { step: 0.1 } },
 			{ name: 'alpha', typeHint: 'number', data: { min: 0, max: 1, step: 0.1 } },
 			{ name: 'visible', typeHint: 'boolean' },
-			{ name: 'angle', typeHint: 'number', data: { readonly: true } },
+			{ name: 'angle', typeHint: 'number' },
 			{ name: '_bounds', label: 'bounds', typeHint: 'rect', data: { readonly: true } },
 
 			// Sprite
@@ -78,6 +78,7 @@ class EditorClass {
 
 			// Text
 			{ name: 'text', typeHint: 'text', data: { rows: 3 } },
+			{ name: 'fill', typeHint: 'cssColor' },
 			{ name: 'font', typeHint: 'string' },
 			{ name: 'fontSize', typeHint: 'number', data: { min: 0, step: 1 } },
 			{ name: 'fontStyle', typeHint: 'valueList', values: ['normal', 'italic', 'oblique'] },
@@ -146,6 +147,7 @@ class EditorClass {
 				title: 'Text',
 				properties: [
 					'text',
+					'fill',
 					'font',
 					'fontSize',
 					'fontStyle',
@@ -188,7 +190,7 @@ class EditorClass {
 		data.addObjectProperties('Phaser.BitmapText', [
 			basicProperties,
 			{ title: 'Sprite', properties: ['tint'] },
-			{ title: 'Bitmap Text', properties: ['font', 'fontSize', 'align'] },
+			{ title: 'Bitmap Text', properties: ['text', 'font', 'fontSize', 'align'] },
 		]);
 
 		return data;
@@ -431,6 +433,12 @@ class EditorClass {
 				id: Actions.REFRESH_OBJECT_TREE,
 				tooltip: 'Refresh',
 				icon: 'fa-sync-alt',
+				category: 'object-tree',
+			},
+			{
+				id: Actions.COLLAPSE_OBJECT_TREE,
+				tooltip: 'Collapse all',
+				icon: 'fa-minus',
 				category: 'object-tree',
 			}
 		);
