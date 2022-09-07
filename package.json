@@ -1,6 +1,6 @@
 {
 	"name": "@kleber-swf/phaser-runtime-editor",
-	"version": "1.4.0",
+	"version": "1.5.0",
 	"description": "A runtime editor for Phaser-CE projects",
 	"author": "Kleber Silva <kleber.swf@gmail.com>",
 	"license": "MIT",
@@ -38,7 +38,7 @@
 		"prebuild": "rm -rf dist; npm run barrel",
 		"build": "rollup -c ./config/rollup.config.js",
 		"prepublishOnly": "npm run build",
-		"changelog": "auto-changelog -p"
+		"changelog": "auto-changelog -p -c config/auto-changelog.json"
 	},
 	"dependencies": {
 		"phaser-ce": "^2.19.2"
