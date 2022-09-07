@@ -190,7 +190,7 @@ class EditorClass {
 		data.addObjectProperties('Phaser.BitmapText', [
 			basicProperties,
 			{ title: 'Sprite', properties: ['tint'] },
-			{ title: 'Bitmap Text', properties: ['font', 'fontSize', 'align'] },
+			{ title: 'Bitmap Text', properties: ['text', 'font', 'fontSize', 'align'] },
 		]);
 
 		return data;
