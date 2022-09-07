@@ -15,12 +15,15 @@ export interface ObjectTreeNodeModel {
 
 export class ObjectTreeModel {
 	private objectMap: Record<number, ObjectTreeNodeModel>;
+	private _root: ObjectTreeNodeModel;
+
+	public get root() { return this._root; }
 
 	public getById(instanceId: number) { return this.objectMap[instanceId]; }
 
 	public create(root: PIXI.DisplayObjectContainer | Phaser.Stage) {
 		this.objectMap = {};
-		this.createNode(root, this.objectMap, null, 0);
+		this._root = this.createNode(root, this.objectMap, null, 0);
 	}
 
 	public empty() { this.objectMap = null; }
@@ -44,12 +47,14 @@ export class ObjectTreeModel {
 			parent,
 		};
 
-		if (isLeaf) return;
-
-		level += 1;
-		for (let i = 0, n = child.children.length; i < n; i++) {
-			this.createNode(child.children[i], map, node, level);
+		if (!isLeaf) {
+			level += 1;
+			for (let i = 0, n = child.children.length; i < n; i++) {
+				this.createNode(child.children[i], map, node, level);
+			}
 		}
+
+		return node;
 	}
 
 	public filter(filter: string) {
