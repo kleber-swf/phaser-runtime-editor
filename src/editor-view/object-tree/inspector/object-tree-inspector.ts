@@ -19,7 +19,7 @@ export class ObjectTreeInspector extends Inspector {
 		super.init(game, side);
 		this.title = 'Objects';
 
-		const el = this.headerElement.appendChild(document.createElement(SearchField.tagName)) as SearchField;
+		const el = this.insertBefore(document.createElement(SearchField.tagName), this.contentElement) as SearchField;
 		el.init();
 		el.onValueChanged = this.filterContent.bind(this);
 		el.onClear = this.onFilterClear.bind(this);
