@@ -64,7 +64,7 @@ class EditorClass {
 			{ name: 'anchor', typeHint: 'point', data: { step: 0.1 } },
 			{ name: 'alpha', typeHint: 'number', data: { min: 0, max: 1, step: 0.1 } },
 			{ name: 'visible', typeHint: 'boolean' },
-			{ name: 'angle', typeHint: 'number', data: { readonly: true } },
+			{ name: 'angle', typeHint: 'number' },
 			{ name: '_bounds', label: 'bounds', typeHint: 'rect', data: { readonly: true } },
 
 			// Sprite
